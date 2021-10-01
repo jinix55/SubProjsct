@@ -62,7 +62,7 @@
 					<td><c:out value="${company.companyNm}"/></td>
 					<td><c:out value="${company.companyDsc}"/></td>
 					<td><c:out value="${company.note}"/></td>
-					<td><spring:eval expression="company.restDt" /></td>
+					<td><spring:eval expression="company.rgstDt" /></td>
 					<td>
 						<c:choose>
 							<c:when test="${company.useYn eq 'Y' }">

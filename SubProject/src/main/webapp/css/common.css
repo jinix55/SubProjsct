@@ -252,7 +252,7 @@ footer.on {margin-left:30px; width:calc(100% - 30px)}
 .btn.search2 {color:#fff; background:#393939; border:1px solid #393939;}
 .btn.search {color:#fff; background:#393939; border:1px solid #393939;border-radius:0 3px 3px 0; }
 .btn.tb {height: 32px;line-height: 30px;padding: 0 15px;display: inline-block;vertical-align: middle;}
-.btn.yes {width: auto;height: 28px;line-height: 28px;/* padding: 0 14px; */background: #F7B821;border-radius: 28px !important;color:#fff;max-width: 70px;}
+.btn.yes {margin-left: 10%; width: auto;height: 28px;line-height: 28px;/* padding: 0 14px; */background: #F7B821;border-radius: 28px !important;color:#fff;max-width: 70px;}
 .btn.no {width: auto;height: 28px;line-height: 28px;/* padding: 0 14px; */background: #ccc;border-radius: 28px !important;color:#fff;max-width: 70px;}
 .unlockAccount{height: 28px;line-height: 28px;} 
 .unlockAccount2{height: 28px;line-height: 28px;background-color: #4B7E6D;border-radius: 28px;color:#fff} 
