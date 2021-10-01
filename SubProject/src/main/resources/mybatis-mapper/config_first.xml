@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings>
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <setting name="cacheEnabled" value="false"/>
+    <setting name="jdbcTypeForNull" value="NULL"/>
+    <setting name="useGeneratedKeys" value="false"/>
+  </settings>
+  <typeAliases>
+    <typeAlias alias="map" type="java.util.Map"/>
+    <typeAlias alias="faqModel" type="com.portal.adm.board.model.FaqModel"/>
+    <typeAlias alias="noticeModel" type="com.portal.adm.board.model.NoticeModel"/>
+    <typeAlias alias="codeModel" type="com.portal.adm.code.model.CodeModel"/>
+    <typeAlias alias="deptClModel" type="com.portal.adm.dept.model.DeptClModel"/>
+    <typeAlias alias="fileModel" type="com.portal.adm.file.model.FileModel"/>
+    <typeAlias alias="memberCriteria" type="com.portal.adm.member.model.MemberCriteria"/>
+    <typeAlias alias="memberModel" type="com.portal.adm.member.model.MemberModel"/>
+    <typeAlias alias="menuModel" type="com.portal.adm.menu.model.MenuModel"/>
+    <typeAlias alias="roleModel" type="com.portal.adm.role.model.RoleModel"/>
+    <typeAlias alias="roleGroupModel" type="com.portal.adm.role.model.RoleGroupModel"/>
+    <typeAlias alias="logModel" type="com.portal.adm.log.model.LogModel"/>
+    <typeAlias alias="holidayModel" type="com.portal.adm.holiday.model.HolidayModel"/>
+  </typeAliases>
+  <typeHandlers>
+    <typeHandler javaType="org.json.JSONObject" jdbcType="VARCHAR" handler="com.portal.config.sql.VarcharToJSONObjectTypeHandler" />
+    <typeHandler javaType="org.json.JSONArray" jdbcType="VARCHAR" handler="com.portal.config.sql.VarcharToJSONArrayTypeHandler" />
+  </typeHandlers>
+</configuration>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.company.mapper.CompanyMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectCompanyList" resultType="com.portal.adm.company.model.CompanyModel" parameterType="com.portal.adm.company.model.CompanyModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
+			, COMPANY_ID
+			, COMPANY_CODE
+			, COMPANY_NO
+			, COMPANY_NM
+			, COMPANY_DSC
+			, ADDRESS
+			, TELEPHONE_NO
+			, REPRESENTATIVE_NM
+			, NOTE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_COMPANY
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectCompanyListCount" resultType="int">
+		SELECT
+			count(1)
+		FROM T_COMPANY
+	</select>
+</mapper>

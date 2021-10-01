@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.holiday.mapper.HolidayMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectHolidayList" parameterType="com.portal.adm.holiday.model.HolidayModel" resultType="com.portal.adm.holiday.model.HolidayModel">
+		select
+			HOLI_NM
+			, HOLI_TYPE 
+			, SOLAR_DATE
+			, LUNAR_DATE
+			, GANJI
+			, LEAP_YEAR
+			, MEMO
+			, USE_YN
+		from T_HOLIDAY
+		WHERE date_format(solar_date,'%Y') = date_format(now(),'%Y')
+		order by SOLAR_DATE asc
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectHolidayListCount" parameterType="com.portal.adm.holiday.model.HolidayModel" resultType="int">
+		select 
+			count(*)
+		from T_HOLIDAY
+	</select>
+	
+	<select id="selectHolidayOne" parameterType="string" resultType="com.portal.adm.holiday.model.HolidayModel">
+		select 
+			HOLI_NM
+			, HOLI_TYPE 
+			, SOLAR_DATE
+			, LUNAR_DATE
+			, GANJI
+			, LEAP_YEAR
+			, MEMO
+			, USE_YN
+		from T_HOLIDAY
+		where SOLAR_DATE = #{solarDate}
+	</select>
+	
+	<insert id="insertHolidayOne"  parameterType="com.portal.adm.holiday.model.HolidayModel" >
+		insert into T_HOLIDAY (
+			HOLI_NM
+			, HOLI_TYPE 
+			, SOLAR_DATE
+			, LUNAR_DATE
+			, GANJI
+			, LEAP_YEAR
+			, MEMO
+			, USE_YN
+		)
+		values (
+			#{holiNm}
+			, #{holiType} 
+			, #{solarDate}
+			, #{lunarDate}
+			, #{ganji}
+			, #{leapYear}
+			, #{memo}
+			, #{useYn}
+		)
+	</insert>
+	
+	<update id="updatetHolidayOne" parameterType="com.portal.adm.holiday.model.HolidayModel" >
+		update T_HOLIDAY set
+			  HOLI_NM = #{holiNm}
+			, HOLI_TYPE = #{holiType}
+			, USE_YN = #{useYn}
+			, MEMO = #{memo}
+		where SOLAR_DATE = #{solarDate}
+	</update>
+	
+	<update id="updatetHolidayActive" parameterType="com.portal.adm.holiday.model.HolidayModel" >
+		update T_HOLIDAY set
+			USE_YN = #{useYn}
+		where SOLAR_DATE = #{solarDate}
+	</update>
+
+</mapper>

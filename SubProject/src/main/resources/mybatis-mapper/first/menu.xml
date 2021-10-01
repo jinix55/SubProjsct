@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.menu.mapper.MenuMapper">
+
+    <sql id="paging">
+        limit #{offSet}, #{pageSize}
+    </sql>
+
+    <select id="selectList" resultType="com.portal.adm.menu.model.MenuModel">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
+) SELECT
+    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+  , LV
+  , R.FULL_PATH_ID
+  , R.FULL_PATH_NM
+  , R.FULL_ORD_SEQ
+FROM R
+ORDER BY FULL_ORD_SEQ, MENU_NM
+    </select>
+
+    <select id="select" resultType="com.portal.adm.menu.model.MenuModel" parameterType="com.portal.adm.menu.model.MenuModel">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
+) SELECT
+    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+  , LV
+  , R.FULL_PATH_ID
+  , R.FULL_PATH_NM
+  , R.FULL_ORD_SEQ
+FROM R
+WHERE MENU_ID = #{menuId}
+    </select>
+
+    <insert id="insert" parameterType="com.portal.adm.menu.model.MenuModel">
+INSERT INTO t_group_menu (
+    MENU_ID
+  , UP_MENU_ID
+  , MENU_NM
+  , MENU_URL
+  , MENU_DSC
+  , ORD_SEQ
+  , USE_YN
+  , RGST_ID
+  , MODI_ID
+  , MENU_SE
+  , MENU_ATTR
+) VALUES (
+    #{menuId}
+  , #{upMenuId}
+  , #{menuNm}
+  , #{menuUrl}
+  , #{menuDsc}
+  , #{ordSeq}
+  , 'Y'
+  , #{rgstId}
+  , #{modiId}
+  , #{menuSe}
+  , #{menuAttr}
+)
+    </insert>
+
+    <update id="update" parameterType="com.portal.adm.menu.model.MenuModel">
+UPDATE t_group_menu SET
+    up_menu_id = #{upMenuId}
+  , menu_nm = #{menuNm}
+  , menu_url = #{menuUrl}
+  , menu_dsc = #{menuDsc}
+  , ord_seq = #{ordSeq}
+  , use_yn = #{useYn}
+  , modi_id = #{modiId}
+  , modi_dt = NOW()
+  , menu_se = #{menuSe}
+  , menu_attr = #{menuAttr}
+WHERE MENU_ID = #{menuId}
+    </update>
+
+    <delete id="delete" parameterType="com.portal.adm.menu.model.MenuModel">
+UPDATE t_group_menu SET
+    use_yn = 'N'
+  , modi_id = #{modiId}
+  , modi_dt = NOW()
+WHERE MENU_ID = #{menuId}
+    </delete>
+
+    <select id="selectUpperMenuIdForMenuUrl" resultType="string" parameterType="com.portal.adm.menu.model.MenuModel">
+<!-- <![CDATA[ -->
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL AND M.MENU_SE = 'M'
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE = 'M'
+) SELECT
+    UP_MENU_ID
+FROM R
+WHERE LV > 0 AND MENU_URL = #{menuUrl}
+ORDER BY FULL_ORD_SEQ DESC, MENU_NM
+LIMIT 1
+<!-- ]]> -->
+    </select>
+    
+    <select id="selectTopMenuListWithAuth" resultType="com.portal.adm.menu.model.MenuModel" parameterType="string">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y'
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+) SELECT
+    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+  , LV
+  , R.FULL_PATH_ID
+  , R.FULL_PATH_NM
+  , R.FULL_ORD_SEQ
+FROM R
+WHERE LV = 1
+ORDER BY FULL_ORD_SEQ, MENU_NM
+    </select>
+    
+    <select id="selectLeftMenuListWithAuth" resultType="com.portal.adm.menu.model.MenuModel" parameterType="map">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y'
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+) SELECT
+    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+  , LV
+  , R.FULL_PATH_ID
+  , R.FULL_PATH_NM
+  , R.FULL_ORD_SEQ
+FROM R
+<!-- 좌측 메뉴 트리 구조 노출로 루트 빼고 보이도록 처리 -->
+WHERE UP_MENU_ID IS NOT NULL
+ORDER BY FULL_ORD_SEQ, MENU_NM
+    </select>
+
+	<select id="selectFirstMenuUrl" resultType="string" parameterType="map">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+    FROM t_group_menu M
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y'
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+) SELECT
+    MENU_URL
+FROM R
+<![CDATA[
+WHERE LV > 1
+]]>
+		<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(menuUrl)'>
+  AND MENU_URL LIKE concat(#{menuUrl},'%')
+		</if>
+ORDER BY ORD_SEQ, MENU_NM
+LIMIT 1
+	</select>
+    
+    <select id="selectMenuAuthList" resultType="com.portal.adm.menu.model.MenuModel">
+    	SELECT
+			A.MENU_ID
+			, COUNT(*)
+			, B.MENU_NM
+			, B.MENU_URL
+			, B.ORD_SEQ
+			, B.UP_MENU_ID
+		FROM
+			t_group_menu_auth A
+		LEFT OUTER JOIN t_group_menu B 
+		ON
+			A.MENU_ID = B.MENU_ID
+		GROUP BY
+			A.MENU_ID,
+			B.MENU_ID
+    
+    </select>
+    
+    <select id="selectMenuListWithAuth" resultType="com.portal.adm.menu.model.MenuModel" parameterType="string">
+WITH RECURSIVE R AS (
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , 0 AS LV
+      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+    FROM t_group_menu M
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+    UNION ALL
+    SELECT
+        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+      , R.LV + 1 AS LV
+      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+    FROM R
+    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+) SELECT
+    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+  , LV
+  , R.FULL_PATH_ID
+  , R.FULL_PATH_NM
+  , R.FULL_ORD_SEQ
+FROM R
+    </select>
+    
+    <update id="updateMenuListWithAuth" parameterType="com.portal.adm.menu.model.MenuModel">
+		INSERT INTO t_group_menu_auth
+		(AUTH_ID, MENU_ID, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT)
+		VALUES(#{authId}, #{menuId}, #{menuAuthAttr}, #{authUseYn}, #{rgstId}, now(), #{modiId}, now())
+		ON DUPLICATE KEY UPDATE
+		AUTH_ID = #{authId}
+		, MENU_ID =  #{menuId}
+		, MENU_ATTR = (SELECT MENU_ATTR FROM t_group_menu WHERE MENU_ID = #{menuId})
+		, USE_YN = #{authUseYn}
+		, MODI_ID = #{modiId}
+		, MODI_DT = NOW()
+    </update>
+</mapper>

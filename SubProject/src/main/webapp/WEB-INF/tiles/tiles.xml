@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="no-layout"
+		template="/WEB-INF/views/layout/noLayout.jsp">
+		<put-attribute name="body" value="" />
+	</definition>
+	<definition name="login" extends="no-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/login.jsp" />
+	</definition>
+
+	<!-- main -->
+	<definition name="default-layout"
+		template="/WEB-INF/views/layout/base.jsp" preparer="menuPreparer">
+		<put-attribute name="head"
+			value="/WEB-INF/views/layout/head.jsp" />
+		<put-attribute name="header"
+			value="/WEB-INF/views/layout/header.jsp" />
+		<put-attribute name="gnb"
+			value="/WEB-INF/views/layout/gnb.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="nav"
+			value="/WEB-INF/views/layout/nav.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/views/layout/footer.jsp" />
+	</definition>
+
+	<definition name="error/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/error/{1}.jsp" />
+	</definition>
+
+	<definition name="member/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/member/{1}.jsp" />
+	</definition>
+	
+	<definition name="company/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/company/{1}.jsp" />
+	</definition>
+
+	<definition name="role/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/role/{1}.jsp" />
+	</definition>
+
+	<definition name="code/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/code/{1}.jsp" />
+	</definition>
+
+	<definition name="menu/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/menu/{1}.jsp" />
+	</definition>
+
+	<definition name="holiday/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/holiday/{1}.jsp" />
+	</definition>
+
+	<definition name="system/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/system/{1}.jsp" />
+	</definition>
+
+	<definition name="project/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/project/{1}.jsp" />
+	</definition>
+
+	<definition name="analysis/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/analysis/{1}.jsp" />
+	</definition>
+
+	<definition name="statistics/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/statistics/{1}.jsp" />
+	</definition>
+
+	<definition name="service/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/service/{1}.jsp" />
+	</definition>
+	
+	<definition name="log/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/log/{1}.jsp" />
+	</definition>
+	
+	<definition name="holiday/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/holiday/{1}.jsp" />
+	</definition>
+
+</tiles-definitions>

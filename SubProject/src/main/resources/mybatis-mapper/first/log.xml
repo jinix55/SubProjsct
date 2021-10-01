@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.log.mapper.LogMapper">
+
+    <sql id="paging">
+        limit #{offSet}, #{pageSize}
+    </sql>
+
+    <sql id="order">
+        <if test="sortType != null and sortType != '' and sortDirection != null and sortDirection != ''">
+            order by ${sortType} ${sortDirection}
+        </if>
+        <if test="sortType == null or sortType == '' and sortDirection == null or sortDirection == ''">
+        	order by log_dt DESC
+        </if>
+    </sql>
+
+    <sql id="loginJoin">
+        		and controller_nm in ('LogoutHandler','LoginSuccessLoggingAuthenticationSuccessHandler')
+    </sql>
+    
+    <sql id="loginOut">
+        		and a.controller_nm not in ('LogoutHandler','LoginSuccessLoggingAuthenticationSuccessHandler')
+    </sql>
+    
+    <sql id="searchLog">
+        <where>
+            <if test="searchKey != '' and searchKey == 'ALL'">
+                AND ( UPPER(user_id) LIKE CONCAT('%',UPPER(#{searchValue}),'%') OR UPPER(user_nm) LIKE CONCAT('%',UPPER(#{searchValue}),'%') )
+            </if>
+            <if test="searchKey != '' and searchKey == 'userId' and searchValue != ''">
+                AND UPPER(user_id) LIKE CONCAT('%',UPPER(#{searchValue}),'%')
+            </if>
+            <if test="searchKey != '' and searchKey == 'userNm' and searchValue != ''">
+                AND UPPER(user_nm) LIKE CONCAT('%',UPPER(#{searchValue}),'%') 
+            </if>
+            <if test="startDt != null and endDt != null ">
+                and log_dt between #{startDt} and #{endDt}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectMgrLoginList" resultType="logModel" parameterType="logModel">
+        select
+            row_number() over () as rownum,
+            log_dt,
+            user_id,
+            user_nm,
+            pstn_code,
+            pstn_nm,
+            dept_code,
+            dept_nm,
+            auth_id,
+            auth_nm,
+            client_ip,
+            server_ip,
+            rqst_method,
+            rqst_uri,
+            program_nm,
+            controller_nm,
+            method_nm,
+            msg
+        from
+            t_log_rqst_mgr_sys 
+        <include refid="searchLog"></include>
+        <include refid="loginJoin"></include>
+        <include refid="order"></include>
+        <include refid="paging"></include>
+    </select>
+
+    <select id="selectMgrLoginCount" resultType="int" parameterType="logModel">
+        select count(*)
+        from
+            t_log_rqst_mgr_sys
+        <include refid="searchLog"></include>
+        <include refid="loginJoin"></include>
+    </select>
+    
+    <select id="selectJobLogList" resultType="logModel" parameterType="logModel">
+        SELECT
+			ROW_NUMBER() OVER () AS rownum,
+			log_dt,
+			user_id,
+			user_nm,
+			pstn_code,
+			pstn_nm,
+			dept_code,
+			dept_nm,
+			auth_id,
+			auth_nm,
+			client_ip,
+			server_ip,
+			rqst_method,
+			rqst_uri,
+			b.program_nm,
+			b.controller_nm,
+			b.method_nm,
+			msg
+		FROM
+			t_log_rqst_mgr_sys a
+		LEFT OUTER JOIN t_log_ref_info b ON a.CONTROLLER_NM = b.CONTROLLER_NM AND a.METHOD_NM = b.METHOD_NM 
+        <include refid="searchLog"></include>
+        <include refid="loginOut"></include>
+        <include refid="order"></include>
+        <include refid="paging"></include>
+    </select>
+    
+    <select id="selectJobLogCount" resultType="int" parameterType="logModel">
+        select count(*)
+        from
+            t_log_rqst_mgr_sys a
+        <include refid="searchLog"></include>
+        <include refid="loginOut"></include>
+    </select>
+
+    <insert id="insert" parameterType="logModel">
+        insert into t_log_rqst_mgr_sys (
+              log_dt
+            , user_id
+            , user_nm
+            , pstn_code
+            , pstn_nm
+            , dept_code
+            , dept_nm
+            , auth_id
+            , auth_nm
+            , client_ip
+            , server_ip
+            , rqst_method
+            , rqst_uri
+            , program_nm
+            , controller_nm
+            , method_nm
+            <if test="msg != null and msg != ''">
+            , msg
+            </if>
+        ) values (
+              NOW()
+            , #{userId}
+            , #{userNm}
+            , #{pstnCode}
+            , #{pstnNm}
+            , #{deptCode}
+            , #{deptNm}
+            , #{authId}
+            , #{authNm}
+            , #{clientIp}
+            , #{serverIp}
+            , #{rqstMethod}
+            , #{rqstUri}
+            , #{programNm}
+            , #{controllerNm}
+            , #{methodNm}
+            <if test="msg != null and msg != ''">
+            , #{msg}
+            </if>
+        )
+    </insert>
+    
+    <insert id="insertLogin" parameterType="logModel">
+        insert into T_LOGIN_USER_HIST (
+              LOG_DT
+            , USER_ID
+            , USER_NM
+            , PSTN_CODE
+            , PSTN_NM
+            , DEPT_CODE
+            , DEPT_NM
+            , AUTH_ID
+            , AUTH_NM
+            , CLIENT_IP
+            , SERVER_IP
+        ) values (
+              NOW()
+            , #{userId}
+            , #{userNm}
+            , #{pstnCode}
+            , #{pstnNm}
+            , #{deptCode}
+            , #{deptNm}
+            , #{authId}
+            , #{authNm}
+            , #{clientIp}
+            , #{serverIp}
+        )
+    </insert>
+</mapper>

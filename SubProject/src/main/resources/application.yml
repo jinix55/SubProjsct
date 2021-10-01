@@ -1,0 +1,193 @@
+spring:
+    profiles:
+        active: local    servlet:        multipart:            enabled: true
+            max-file-size: 100MB
+            max-request-size: 100MB
+server:
+    port: 8081
+    error:
+        whitelabel:
+            enabled: false
+        path: /error
+        include-exception: true
+        include-stacktrace: always
+
+--- #local설정
+spring:
+    config:
+        activate:
+            on-profile: local # spring boot 2.4.0 부터 변경된 프로파일 정의 설정
+    session:
+        store-type: jdbc    # spring session 저장타입지정 / spring-session-jdbc를 추가하면 jdbc가 기본으로 동작해서 임시로 동작중지함.de
+        timeout: 12h
+        #jdbc:
+        #    cleanup-cron: 0 0/30 * * * *
+        #store-type: redis
+        #redis:
+        #    flush-mode: on-save        #    namespace: "SPRING:SESSION:MGR"
+    #redis:
+        #host: 192.168.56.11
+        #port: 6379
+    first:
+        datasource:  # mysql
+            jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            type: com.zaxxer.hikari.HikariDataSource
+            username: portal
+            password: Portal@1
+            hikari:
+                minimum-idle: 2
+                maximum-pool-size: 10
+                connection-timeout: 100000
+                connection-test-query: select 1 from dual
+    quartz:
+        auto-startup: true
+        overwrite-existing-jobs: true
+        properties:
+            org:
+                quartz:
+                    threadPool:
+                        threadCount: 10
+    devtools:   # 개발툴 이용 관련, 로컬에 개발시에만 사용
+        livereload:
+            enabled: true
+        restart:
+            enabled: true
+    task:
+        execution:
+            thread-name-prefix:  task-
+            pool:
+                core-size: 8
+                max-size: 10
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+
+debug: false
+logging:
+    level:
+        '[root]': info
+        '[com.portal]': debug
+        '[com.portal.mapper]': info
+        #'[org.springframework]': trace
+    pattern:
+        console:  "%clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%5p]) %clr([%15.15t]){faint} %clr([%-40.40logger{39}]){cyan} [%4L] [NVoiceM] [ADMIN] %m%n%wEx"
+
+
+# menuCheck ignore URL
+menuCheck:
+    ignoreUrls: /, /login, /error/**, /css/**, /js/**, /images/**, /font/**, /webjars/**, /favicon.ico, /test/**
+
+naver-api-props:
+  id:
+  cookieId: 
+  domainId: 
+  uploadPath: C:\rtdata\scenario
+
+
+--- #dev
+spring:
+    config:
+        activate:
+            on-profile: dev # spring boot 2.4.0 부터 변경된 프로파일 정의 설정
+    session:
+        store-type: jdbc # spring session 저장타입지정 / spring-session-jdbc를 추가하면 jdbc가 기본으로 동작해서 임시로 동작중지함.
+        timeout: 8h
+    first:
+        datasource:  # mysql
+            jdbc-url: jdbc:mysql://localhost:3306/aiminer?allowMultiQueries=true
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            type: com.zaxxer.hikari.HikariDataSource
+            username: miner
+            password: Miner@1
+            hikari:
+                minimum-idle: 10
+                maximum-pool-size: 300
+                connection-timeout: 100000
+                connection-test-query: select 1
+    quartz:
+        auto-startup: true
+        overwrite-existing-jobs: true
+        properties:
+            org:
+                quartz:
+                    threadPool:
+                        threadCount: 10
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+    task:
+        execution:
+            thread-name-prefix: task-
+            pool:
+                core-size: 8
+                max-size: 10
+
+debug: false
+logging:
+    level:
+        '[root]': warn
+        '[com.portal]': debug
+        '[com.portal.adm.mapper]': info
+    pattern:
+        console: "%clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%5p]) %clr([%15.15t]){faint} %clr([%-40.40logger{39}]){cyan} [%4L] [PORTAL] [ADMIN] %m%n%wEx"
+
+# menuCheck ignore URL
+menuCheck:
+    ignoreUrls: /, /login, /error, /error/error, /error/notFound, /error/internalServerError, /test
+
+
+--- #prod
+spring:
+    config:
+        activate:
+            on-profile: prod
+    session:
+        store-type: jdbc # spring session 저장타입지정 / spring-session-jdbc를 추가하면 jdbc가 기본으로 동작해서 임시로 동작중지함.
+        timeout: 10m
+    first:
+        datasource:  # mysql
+            jdbc-url: jdbc:mysql://localhost:3306/aiminer?allowMultiQueries=true
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            type: com.zaxxer.hikari.HikariDataSource
+            username: miner
+            password: Miner@1
+            hikari:
+                minimum-idle: 10
+                maximum-pool-size: 300
+                connection-timeout: 100000
+                connection-test-query: select 1
+    quartz:
+        auto-startup: true
+        overwrite-existing-jobs: true
+        properties:
+            org:
+                quartz:
+                    threadPool:
+                        threadCount: 10
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+    task:
+        execution:
+            thread-name-prefix: task-
+            pool:
+                core-size: 8
+                max-size: 10
+
+debug: false
+logging:
+    level:
+        '[root]': error
+        '[com.portal]': info
+        '[com.portal.adm.mapper]': error
+    pattern:
+        console: "%clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%5p]) %clr([%15.15t]){faint} %clr([%-40.40logger{39}]){cyan} [%4L] [PORTAL] [ADMIN] %m%n%wEx"
+
+# menuCheck ignore URL
+menuCheck:
+    ignoreUrls: /, /login, /error, /error/error, /error/notFound, /error/internalServerError, /test
+
