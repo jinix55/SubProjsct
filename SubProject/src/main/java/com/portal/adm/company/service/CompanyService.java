@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.portal.adm.company.mapper.CompanyMapper;
 import com.portal.adm.company.model.CompanyModel;
+import com.portal.common.Constant;
 
 /**
  * 회사 서비스 클래스
@@ -36,6 +37,60 @@ public class CompanyService {
      */
     public int selectCompanyListCount(CompanyModel companyModel) {
     	return companyMapper.selectCompanyListCount(companyModel);
+    }
+    
+    /**
+     * 회사정보를 저장한다.
+     *
+     * @param companyCode
+     * @return
+     */
+    public String save(CompanyModel companyModel) {
+    	CompanyModel existModel = companyMapper.select(companyModel);
+
+        if(existModel != null) {
+            long count = companyMapper.update(companyModel);
+
+            if(count > 0) {
+                return Constant.DB.UPDATE;
+            } else {
+                return Constant.DB.FAIL;
+            }
+        } else {
+            long count = companyMapper.insert(companyModel);
+
+            if(count > 0) {
+                return Constant.DB.INSERT;
+            } else {
+                return Constant.DB.FAIL;
+            }
+        }
+    }
+    
+    /**
+     * 회사정보를 삭제한다.
+     *
+     * @param companyCode
+     * @return
+     */
+    public String delete(CompanyModel companyModel) {
+        long count = companyMapper.delete(companyModel);
+
+        if(count > 0) {
+            return Constant.DB.DELETE;
+        } else {
+            return Constant.DB.FAIL;
+        }
+    }
+    
+    /**
+     * 회사정보를 삭제한다.
+     *
+     * @param companyCode
+     * @return
+     */
+    public CompanyModel selectCompanyId(String companyId) {
+    	return companyMapper.select(companyId);
     }
 
 }

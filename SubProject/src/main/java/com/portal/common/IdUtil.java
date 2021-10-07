@@ -146,4 +146,10 @@ public class IdUtil {
 	public String getScenarioFileId() {
 		return service.getId(Constant.ID.SCENARIOFILE);
 	}
+	/**
+	 * 메뉴 ID : 메뉴
+	 */
+	public String getCompanyId() {
+		return service.getId(Constant.ID.COMPANY);
+	}
 }

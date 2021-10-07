@@ -37,11 +37,12 @@ public class RoleController {
      * @return
      */
     @GetMapping("/role")
-    public String list(@ModelAttribute Criteria criteria, Model model) {
-
-        model.addAttribute("roles", roleService.selectList(criteria));
-        criteria.setTotalCount(roleService.selectListCount(criteria));
-        model.addAttribute("pages", criteria);
+    public String list(@ModelAttribute RoleModel roleModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	roleModel.setAuthId(authUser.getMemberModel().getAuthId());
+        model.addAttribute("roles", roleService.selectList(roleModel));
+        roleModel.setTotalCount(roleService.selectListCount(roleModel));
+        model.addAttribute("pages", roleModel);
 
         return "role/role";
     }
@@ -53,9 +54,9 @@ public class RoleController {
      * @return
      */
     @PostMapping("/role")
-    public String list(@ModelAttribute Criteria criteria, RedirectAttributes attributes) {
+    public String list(@ModelAttribute RoleModel roleModel, RedirectAttributes attributes) {
 
-        attributes.addFlashAttribute("criteria", criteria);
+        attributes.addFlashAttribute("criteria", roleModel);
 
         return "redirect:/admin/role";
     }
@@ -72,6 +73,7 @@ public class RoleController {
         try {
             roleModel.setRgstId(authUser.getMemberModel().getUserId());
             roleModel.setModiId(authUser.getMemberModel().getUserId());
+            roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 
             log.debug(authUser.getMemberModel().toString());
 

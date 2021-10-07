@@ -30,6 +30,15 @@ public class MenuService {
     public List<MenuModel> selectList() {
         return menuMapper.selectList();
     }
+    
+    /**
+     * 메뉴모델 권한별 리스트를 조회한다.
+     *
+     * @return
+     */
+    public List<MenuModel> selectList(String authId) {
+        return menuMapper.selectList(authId);
+    }
 
     /**
      * 메뉴 목록을 조회한다.

@@ -18,6 +18,13 @@ public interface MenuMapper {
      * @return
      */
     List<MenuModel> selectList();
+    
+    /**
+     * 메뉴모델 권한별 리스트를 조회한다.
+     *
+     * @return
+     */
+    List<MenuModel> selectList(String authId);
 
     /**
      * 메뉴모델을 조회한다.

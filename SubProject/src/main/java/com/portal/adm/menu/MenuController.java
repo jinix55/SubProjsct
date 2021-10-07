@@ -44,8 +44,8 @@ public class MenuController {
 	 * @return
 	 */
 	@GetMapping("/menu")
-	public String menu(Model model) {
-		List<MenuModel> list = menuService.selectList();
+	public String menu(Model model, @AuthenticationPrincipal AuthUser authUser) {
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
 		String rootMenuId = null;
 		for (MenuModel menu : list) {
 			if (menu.getLv() == 0) {
@@ -65,8 +65,8 @@ public class MenuController {
 	 * @return
 	 */
 	@PostMapping("/menu")
-	public String menuPost(Model model) {
-		List<MenuModel> list = menuService.selectList();
+	public String menuPost(Model model, @AuthenticationPrincipal AuthUser authUser) {
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
 		String rootMenuId = null;
 		for (MenuModel menu : list) {
 			if (menu.getLv() == 0) {

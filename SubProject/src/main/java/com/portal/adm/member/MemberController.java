@@ -59,7 +59,7 @@ public class MemberController {
      * @return
      */
     @GetMapping("/member")
-    public String list(@ModelAttribute MemberCriteria criteria, Model model) {
+    public String list(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
         // 화면 표시용 코드 셋팅
         // 회사구분 코드
@@ -80,6 +80,9 @@ public class MemberController {
         RoleModel role =  new RoleModel();
         model.addAttribute("mgrRoles", roleService.selectMgrSysAuthAllList(role));
 
+        criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        criteria.setAuthId(authUser.getMemberModel().getAuthId());
+        
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
         model.addAttribute("pages", criteria);
@@ -88,7 +91,7 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String list(@ModelAttribute MemberCriteria criteria, RedirectAttributes attributes, Model model) {
+    public String list(@ModelAttribute MemberCriteria criteria, RedirectAttributes attributes, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
         attributes.addFlashAttribute("criteria", criteria);
 
@@ -110,6 +113,9 @@ public class MemberController {
         // 관리자권한코드 조회
         RoleModel role =  new RoleModel();
         model.addAttribute("mgrRoles", roleService.selectMgrSysAuthAllList(role));
+        
+        criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        criteria.setAuthId(authUser.getMemberModel().getAuthId());
         
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));

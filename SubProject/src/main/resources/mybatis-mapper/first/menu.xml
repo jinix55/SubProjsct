@@ -8,7 +8,7 @@
         limit #{offSet}, #{pageSize}
     </sql>
 
-    <select id="selectList" resultType="com.portal.adm.menu.model.MenuModel">
+    <select id="selectList" resultType="com.portal.adm.menu.model.MenuModel" parameterType="string">
 WITH RECURSIVE R AS (
     SELECT
         M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
@@ -27,6 +27,10 @@ WITH RECURSIVE R AS (
       , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
     FROM R
     JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
+	<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(authId)'>
+	    JOIN t_group_menu_auth A ON	M.MENU_ID = A.MENU_ID 
+		AND A.AUTH_ID = #{authId} AND A.USE_YN = 'Y'
+	</if>
 ) SELECT
     MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
   , LV

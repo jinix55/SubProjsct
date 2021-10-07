@@ -9,21 +9,30 @@
     </sql>
 
     <select id="selectList" resultType="com.portal.adm.role.model.RoleModel" parameterType="com.portal.common.paging.Criteria">
-        select
-            row_number() over (order by auth_nm ASC) as rownum,
-            auth_id,
-            auth_nm,
-            auth_dsc,
-            use_yn,
-            rgst_id,
-            rgst_dt,
-            modi_id,
-            modi_dt,
-            auth_cl 
-        from
-            t_group_auth
-        where
-            use_yn = 'Y'
+        SELECT
+			ROW_NUMBER() OVER (
+			ORDER BY auth_nm ASC) AS rownum,
+			g.auth_id,
+			c.company_code,
+			g.auth_nm,
+			g.auth_dsc,
+			g.use_yn,
+			g.rgst_id,
+			g.rgst_dt,
+			g.modi_id,
+			g.modi_dt,
+			g.auth_cl
+		FROM
+			t_group_auth g
+		JOIN t_company c ON c.company_code = g.company_code
+		WHERE
+			g.use_yn = 'Y'
+		<if test="authId != 'au2000001'">
+			<if test="companyCode != null and companyCode != ''">
+				AND c.company_code = #{companyCode}
+				AND g.auth_id != 'au2000001'
+			</if>
+		</if>
         <if test="authNm != null and authNm != ''">
         	AND UPPER(AUTH_NM) LIKE CONCAT('%',UPPER(#{authNm}),'%')
         </if>    
@@ -34,9 +43,19 @@
     <select id="selectListCount" resultType="int" parameterType="com.portal.common.paging.Criteria">
         select count(*)
         from
-            t_group_auth
+            t_group_auth g
+		JOIN t_company c ON c.company_code = g.company_code
         where
-            use_yn = 'Y'
+            g.use_yn = 'Y'
+		<if test="authId != 'au2000001'">
+			<if test="companyCode != null and companyCode != ''">
+				AND c.company_code = #{companyCode}
+				AND g.auth_id != 'au2000001'
+			</if>
+		</if>
+        <if test="authNm != null and authNm != ''">
+        	AND UPPER(AUTH_NM) LIKE CONCAT('%',UPPER(#{authNm}),'%')
+        </if>    
     </select>
 
 
@@ -79,6 +98,7 @@
     <insert id="insert" parameterType="com.portal.adm.role.model.RoleModel">
         insert into t_group_auth (
             auth_id
+            , company_code
             , auth_nm
             , auth_dsc
             , use_yn
@@ -89,6 +109,7 @@
             , auth_cl 
         ) values (
             #{authId}
+            , #{companyCode}
             , #{authNm}
             , #{authDsc}
             , 'Y'

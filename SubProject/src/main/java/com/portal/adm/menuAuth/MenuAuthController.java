@@ -27,9 +27,12 @@ import com.portal.adm.member.model.MemberCriteria;
 import com.portal.adm.member.service.MemberService;
 import com.portal.adm.menu.model.MenuModel;
 import com.portal.adm.menu.service.MenuService;
+import com.portal.adm.role.RoleController;
 import com.portal.adm.role.service.RoleService;
 import com.portal.common.paging.Criteria;
 import com.portal.config.security.AuthUser;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 시스템관리 / 메뉴관리 컨트롤러
@@ -37,6 +40,7 @@ import com.portal.config.security.AuthUser;
  */
 @RequestMapping("/admin")
 @Controller
+@Slf4j
 public class MenuAuthController {
 
 	@Resource
@@ -61,7 +65,8 @@ public class MenuAuthController {
 	 * @return
 	 */
 	@GetMapping("/menuAuth")
-	public String menu(@ModelAttribute MemberCriteria Mcriteria,@ModelAttribute Criteria criteria ,Model model) {
+	public String menu(@ModelAttribute MemberCriteria Mcriteria,@ModelAttribute Criteria criteria ,Model model, @AuthenticationPrincipal AuthUser authUser) {
+		log.info("============= get menuAuth in ===========");
 		List<MenuModel> list = menuService.selectList();
     	String rootMenuId = null;
     	for (MenuModel menu : list) {
@@ -70,6 +75,7 @@ public class MenuAuthController {
     			break;
     		}
     	}
+    	criteria.setAuthId(rootMenuId);
     	model.addAttribute("roles", roleService.selectList(criteria));
         model.addAttribute("menus", list);
         model.addAttribute("rootMenuId", rootMenuId);
@@ -87,6 +93,9 @@ public class MenuAuthController {
         // 부서 조회
         model.addAttribute("depts", deptService.selectDeptClList());
 
+       log.info("================ : ", authUser.getMemberModel().getAuthId());
+        Mcriteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        Mcriteria.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("members", memberService.selectMemberList(Mcriteria));
         criteria.setTotalCount(memberService.selectMemberListCount(Mcriteria));
         model.addAttribute("pages", Mcriteria);

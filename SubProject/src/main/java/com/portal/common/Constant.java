@@ -148,6 +148,8 @@ public interface Constant {
 		public static final String ID_TY = "idTy";
 		public static final String ID_SE = "idSe";
 		//파일
+		public static final String COMPANY = "cp";
+		//파일
 		public static final String FILE = "fl";
 		//공지사항
 		public static final String NOTICE = "nt";

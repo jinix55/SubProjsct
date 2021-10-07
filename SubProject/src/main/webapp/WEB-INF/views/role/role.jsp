@@ -36,12 +36,11 @@
         <tbody>
         <c:forEach var="role" items="${roles}" varStatus="status">
         <tr onclick="getRoleData('<c:out value="${role.authId}"/>')">
-            <td scope="row" class="this_no"><c:out value="${criteria.totalCount - (status.index + (pages.page -1) * pages.pageSize)}"/></td>
+            <td scope="row" class="this_no"><c:out value="${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}"/></td>
             <td><c:out value="${role.authId}"/></td>
             <td>
             	<c:if test="${role.authCl == 'U' }">참여자</c:if>
             	<c:if test="${role.authCl == 'A' }">담당자</c:if>
-            	<c:if test="${role.authCl == 'D' }">임원</c:if>
             </td>
             <td class="this_auth"><c:out value="${role.authNm}"/></td>
             <td><c:out value="${role.authDsc}"/></td>
@@ -83,7 +82,6 @@
 	                	<select id="authCl" name="authCl">
 	                		<option value="U" >참여자</option>
 	                		<option value="A" >담당자</option>
-	                		<option value="D" >임원</option>
 	                	</select>
 					</div>                
                 </td>
