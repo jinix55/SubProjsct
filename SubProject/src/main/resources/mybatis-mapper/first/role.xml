@@ -59,7 +59,7 @@
     </select>
 
 
-    <select id="selectAllList" resultType="com.portal.adm.role.model.RoleModel">
+    <select id="selectAllList" resultType="com.portal.adm.role.model.RoleModel" parameterType="com.portal.common.paging.Criteria">
         select
             row_number() over (order by auth_id ASC) as rownum,
             auth_id,
@@ -75,6 +75,12 @@
             t_group_auth
         where
             use_yn = 'Y'
+   		<if test="authId != 'au2000001' and authId != '' and authId != null">
+			<if test="companyCode != null and companyCode != ''">
+				AND company_code = #{companyCode}
+				AND auth_id != 'au2000001'
+			</if>
+		</if>
         order by auth_id ASC
     </select>
 

@@ -54,8 +54,17 @@ public class RoleService {
      *
      * @return
      */
+    public List<RoleModel> selectAllList(Criteria criteria) {
+        return roleMapper.selectAllList(criteria);
+    }
+    
+    /**
+     * 모든 권한 목록을 조회한다.
+     *
+     * @return
+     */
     public List<RoleModel> selectAllList() {
-        return roleMapper.selectAllList();
+    	return roleMapper.selectAllList();
     }
 
     /**

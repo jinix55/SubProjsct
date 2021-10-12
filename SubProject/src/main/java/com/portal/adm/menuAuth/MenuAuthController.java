@@ -67,7 +67,7 @@ public class MenuAuthController {
 	@GetMapping("/menuAuth")
 	public String menu(@ModelAttribute MemberCriteria Mcriteria,@ModelAttribute Criteria criteria ,Model model, @AuthenticationPrincipal AuthUser authUser) {
 		log.info("============= get menuAuth in ===========");
-		List<MenuModel> list = menuService.selectList();
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
     	String rootMenuId = null;
     	for (MenuModel menu : list) {
     		if (menu.getLv() == 0) {
@@ -75,7 +75,8 @@ public class MenuAuthController {
     			break;
     		}
     	}
-    	criteria.setAuthId(rootMenuId);
+    	criteria.setAuthId(authUser.getMemberModel().getAuthId());
+    	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	model.addAttribute("roles", roleService.selectList(criteria));
         model.addAttribute("menus", list);
         model.addAttribute("rootMenuId", rootMenuId);
@@ -89,7 +90,7 @@ public class MenuAuthController {
         model.addAttribute("codeMemSearchCdList", codeService.selectGroupIdAllList("USER_SEARCH_CODE"));
 
         // 권한코드 조회
-        model.addAttribute("roles", roleService.selectAllList());
+        model.addAttribute("roles", roleService.selectAllList(criteria));
         // 부서 조회
         model.addAttribute("depts", deptService.selectDeptClList());
 
@@ -119,6 +120,9 @@ public class MenuAuthController {
 	@ResponseBody
 	@RequestMapping(value="/menuAuth/{authId}/popup", method=RequestMethod.POST)
 	public Map<String,Object> menuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId) {
+		
+		log.info("========== in menuAuth popup ==========");
+		
 		Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		

@@ -34,6 +34,13 @@ public interface RoleMapper {
      *
      * @return
      */
+    List<RoleModel> selectAllList(Criteria criteria);
+    
+    /**
+     * 모든 권한 목록을 조회한다. (셀렉트 박스등에서 사용을 위한 조회리스트)
+     *
+     * @return
+     */
     List<RoleModel> selectAllList();
 
     /**

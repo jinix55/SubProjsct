@@ -159,9 +159,6 @@
          if(authCl == 'A'){
          	clValue = '담당자';
          }
-         if(authCl == 'D'){
-         	clValue = '임원';
-         } 
          $("#clValue").val(clValue);
          $("#authCl").val(authCl);
          $("#authNm").val(authNm);
@@ -175,6 +172,7 @@
              dataType: "json",
              data: "",
              success: function (data) {
+            	 console.log(data);
                  if(data.result){
 					$.ui.fancytree.getTree("#tree").selectAll(false);
 					//console.log("data : ", data.menuAuths);
