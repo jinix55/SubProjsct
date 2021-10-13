@@ -16,7 +16,7 @@ public interface Constant {
 	public static final String DEFAULT_USER_PHOTO = "../../images/icon_gnb_user.png";
 	//public static final String DEFAULT_USER_PHOTO = "../../images/icon_top_user.png";
 	public static final String DEFAULT_TABLEAU_PREVIEW = "../../images/img_noimg.png";
-	public static final String LOGIN_MESSAGE ="접근 권한이 없습니다.\\n담당자에게 연락주십시오.";//임시 로그인 메시지
+	public static final String LOGIN_MESSAGE = "접근 권한이 없습니다.\\n담당자에게 연락주십시오.";//임시 로그인 메시지
 	public static final String FAIL_PASSWORD = "비밀번호가 다릅니다.\\n비밀번호를 확인해 주세요.";//임시 로그인 메시지
 	public static final String EMPTY_STRING = "";
 	public static final String UNKNOWN = "unknown";
@@ -183,6 +183,9 @@ public interface Constant {
 		public static final String APPROVAL = "ar";
 		//EAI SOCKET
 		public static final String EAI_SOCKET = "es";
+		//패스워드 초기화
+		public static final String PW_INIT = "pwi";
+		
 	}
 	
 	// JSON KEY
