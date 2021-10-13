@@ -35,4 +35,88 @@
 			count(1)
 		FROM T_COMPANY
 	</select>
+	
+	<insert id="insert" parameterType="com.portal.adm.company.model.CompanyModel">
+		INSERT INTO t_company (
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		) VALUES (
+			#{companyId},
+			#{companyCode},
+			#{companyNo},
+			#{companyNm},
+			#{companyDsc},
+			#{address},
+			#{telephoneNo},
+			#{representativeNm},
+			#{note},
+			#{useYn},
+			#{rgstId},
+			NOW(),
+			#{modiId},
+			NOW()
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.portal.adm.company.model.CompanyModel">
+		UPDATE t_company SET
+			COMPANY_CODE = #{companyCode},
+			COMPANY_NO = #{companyNo},
+			COMPANY_NM = #{companyNm},
+			COMPANY_DSC = #{companyDsc},
+			ADDRESS = #{address},
+			TELEPHONE_NO = #{telephoneNo},
+			REPRESENTATIVE_NM = #{representativeNm},
+			NOTE = #{note},
+			USE_YN = #{useYn},
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			COMPANY_ID = #{companyId}
+	</update>
+	
+	<select id="select" resultType="com.portal.adm.company.model.CompanyModel" parameterType="string">
+		SELECT
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			t_company
+		WHERE
+			COMPANY_ID = #{companyId}
+	</select>
+	
+	<update id="delete" parameterType="com.portal.adm.company.model.CompanyModel">
+		UPDATE t_company SET
+			USE_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			COMPANY_ID = #{companyId} AND COMPANY_CODE = #{companyCode} AND COMPANY_NO = #{companyNo}
+	</update>
+	
+	
 </mapper>
