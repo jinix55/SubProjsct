@@ -83,35 +83,45 @@ public class CompanyController {
     @PostMapping("/company/insert")
     public ResponseEntity<String> companySave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
-            CompanyModel companyModel = new CompanyModel();
-            for (String key : request.getParameterMap().keySet()) {
-            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
-            }
-            String companyId = request.getParameter("companyId");
-            String companyCode = request.getParameter("companyCode");
-            String companyNo = request.getParameter("companyNo");
-            String companyNm = request.getParameter("companyNm");
-            String companyDesc = request.getParameter("companyDsc");
-            String telephoneNo = request.getParameter("telephoneNo");
-            String note = request.getParameter("note");
-            String useYn = request.getParameter("useYn");
-
-            if(StringUtils.equals(companyId, null) || StringUtils.equals(companyId, "")) {
-            	companyId = idUtil.getCompanyId();
-            }
-            companyModel.setCompanyId(companyId);
-            companyModel.setCompanyCode(companyCode);
-            companyModel.setCompanyNo(companyNo);
-            companyModel.setCompanyNm(companyNm);
-            companyModel.setCompanyDsc(companyDesc);
-            companyModel.setTelephoneNo(telephoneNo);
-            companyModel.setNote(note);
-            companyModel.setUseYn(useYn);
-
-            companyModel.setRgstId(authUser.getMemberModel().getUserId());
-            companyModel.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = companyService.save(companyModel);
+    		String result = null;
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    			
+    			CompanyModel companyModel = new CompanyModel();
+    			for (String key : request.getParameterMap().keySet()) {
+    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+    			}
+    			String companyId = request.getParameter("companyId");
+    			String companyCode = request.getParameter("companyCode");
+    			String companyNo = request.getParameter("companyNo");
+    			String companyNm = request.getParameter("companyNm");
+    			String companyDesc = request.getParameter("companyDsc");
+    			String address = request.getParameter("address");
+    			String telephoneNo = request.getParameter("telephoneNo");
+    			String representativeNm = request.getParameter("representativeNm");
+    			String note = request.getParameter("note");
+    			String useYn = request.getParameter("useYn");
+    			
+    			if(StringUtils.equals(companyId, null) || StringUtils.equals(companyId, "")) {
+    				companyId = idUtil.getCompanyId();
+    			}
+    			companyModel.setCompanyId(companyId);
+    			companyModel.setCompanyCode(companyCode);
+    			companyModel.setCompanyNo(companyNo);
+    			companyModel.setCompanyNm(companyNm);
+    			companyModel.setCompanyDsc(companyDesc);
+    			companyModel.setAddress(address);
+    			companyModel.setTelephoneNo(telephoneNo);
+    			companyModel.setRepresentativeNm(representativeNm);
+    			companyModel.setNote(note);
+    			companyModel.setUseYn(useYn);
+    			
+    			companyModel.setRgstId(authUser.getMemberModel().getUserId());
+    			companyModel.setModiId(authUser.getMemberModel().getUserId());
+    			
+    			result = companyService.save(companyModel);
+    		}else {
+    			result = "권한이 없습니다./n관리자에게 문의하세요.";
+    		}
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -128,20 +138,24 @@ public class CompanyController {
     @PostMapping("/company/delete")
     public ResponseEntity<String> companyDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
-            CompanyModel companyModel = new CompanyModel();
-
-            String companyId = request.getParameter("companyId");
-            String companyCode = request.getParameter("companyCode");
-            String companyNo = request.getParameter("companyNo");
-
-            companyModel.setCompanyId(companyId);
-            companyModel.setCompanyCode(companyCode);
-            companyModel.setCompanyNo(companyNo);
-
-            companyModel.setRgstId(authUser.getMemberModel().getUserId());
-            companyModel.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = companyService.delete(companyModel);
+        	 String result = null;
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+	            CompanyModel companyModel = new CompanyModel();
+	
+	            String companyId = request.getParameter("companyId");
+	            String companyCode = request.getParameter("companyCode");
+	            String companyNo = request.getParameter("companyNo");
+	
+	            companyModel.setCompanyId(companyId);
+	            companyModel.setCompanyCode(companyCode);
+	            companyModel.setCompanyNo(companyNo);
+	
+	            companyModel.setModiId(authUser.getMemberModel().getUserId());
+	
+	            result = companyService.delete(companyModel);
+        	} else {
+        		result = "권한이 없습니다./n관리자에게 문의하세요.";
+        	}
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
