@@ -6,14 +6,14 @@
 
     <select id="selectId" parameterType="map" resultType="string">
 SELECT
-  CONCAT(ID_TY,ID_SE,LPAD(ID_SN,9,'0')) AS ID
+  CONCAT(ID_TY,ID_SE,LPAD(ID_SN,5,'0')) AS ID
 FROM T_ID_SN
 WHERE ID_TY = #{idTy} AND ID_SE = #{idSe}
     </select>
 
     <select id="selectTimeSeq" parameterType="map" resultType="string">
 SELECT
-  CONCAT(TO_CHAR(NOW(),'HH24MISS'),LPAD(ID_SN,9,'0')) AS ID
+  CONCAT(DATE_FORMAT(NOW(),'HH24MISS'),LPAD(ID_SN,5,'0')) AS ID
 FROM T_ID_SN
 WHERE ID_TY = #{idTy} AND ID_SE = #{idSe}
     </select>
