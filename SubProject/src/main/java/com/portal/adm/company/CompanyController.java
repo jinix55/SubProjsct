@@ -1,6 +1,5 @@
 package com.portal.adm.company;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -54,7 +53,7 @@ public class CompanyController {
         model.addAttribute("companys", models);
         model.addAttribute("pages", companyModel);
         
-        return "company/company";
+        return "company/companyMgt";
     }
 
     /**
@@ -71,7 +70,7 @@ public class CompanyController {
         attributes.addAttribute("companys", models);
         attributes.addAttribute("pages", companyModel);
         
-        return "company/company";
+        return "company/companyMgt";
     }
 
     /**
