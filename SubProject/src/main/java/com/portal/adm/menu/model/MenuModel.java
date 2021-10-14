@@ -26,6 +26,7 @@ public class MenuModel {
 	private String modiId; // 수정자ID
 	private LocalDateTime modiDt; // 수정일시
 	private String useYn; // 사용 여부(메뉴용)
+	private String iconNm; // 아이콘 명
 	private JSONObject menuAttr; // 메뉴 속성
 	private int lv; // 레벨
 	private JSONArray fullPathId; // 전체 경로 메뉴 ID
