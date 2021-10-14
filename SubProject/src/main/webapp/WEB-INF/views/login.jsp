@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="/css/reset.css">
 <script type="text/javascript" src="/js/plugins/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="/js/plugins/jquery-ui.min.js"></script>
-<script type="text/javascript"
-	src="/js/plugins/datepicker/datepicker.min.js"></script>
+<script type="text/javascript" src="/js/plugins/datepicker/datepicker.min.js"></script>
 <script type="text/javascript" src="/js/plugins/bootstrap.min.js"></script>
 </head>
 
@@ -198,7 +197,7 @@
 		<div class="login">
 			<h2 class="title">PPlus Echo</h2>
 			<div class="login_form">
-				<form>
+				<form id="frm" action="/lgn" method="post">
 					<div class="h_45px id_box">
 						<div class="h_45px">
 							<input type="text" id="userId" name="userId"
@@ -232,23 +231,23 @@
 				<form>
 					<div class="h_45px id_box">
 						<div class="h_45px">
-							<input type="text" id="userId" name="userId"
+							<input type="text" id="pw_companyNm" name="pw_companyNm"
 								placeholder="회사명을 입력하세요.">
 						</div>
 					</div>
 					<div class="h_45px id_box">
 						<div class="h_45px">
-							<input type="text" id="userId" name="userId"
+							<input type="text" id="pw_userNm" name="pw_userNm"
 								placeholder="성명을 입력하세요.">
 						</div>
 					</div>
 					<div class="h_45px id_box">
 						<div class="h_45px">
-							<input type="text" id="userId" name="userId"
+							<input type="text" id="pw_userId" name="pw_userId"
 								placeholder="아이디을 입력하세요.">
 						</div>
 					</div>
-					<dt style="color:red;">한번 신청을 진행하시면 취소가 불가합니다.</dt>
+					<span style="color:red;">한번 신청을 진행하시면 취소가 불가합니다.</span>
 					<div class="stn_btm">
 						<div class="btn_cont center">
 							<button type="button" class="btn_register" style="margin-right:10px"
