@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.report.mapper.ReportMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectReportList" resultType="com.portal.adm.report.mapper.ReportMapper" parameterType="com.portal.adm.report.mapper.ReportMapper">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
+			, REPORT_ID
+			, REPORT_NM
+			, REPORT_URL
+			, COMPANY_ID
+			, REPORT_SIZE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_REPORT
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectCompanyListCount" resultType="int">
+		SELECT
+			count(1)
+		FROM T_REPORT
+	</select>
+	
+	<insert id="insert" parameterType="com.portal.adm.report.mapper.ReportMapper">
+		INSERT INTO t_report (
+			REPORT_ID
+			, REPORT_NM
+			, REPORT_URL
+			, COMPANY_ID
+			, REPORT_SIZE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			#{reportId},
+			#{reportNm},
+			#{reportUrl},
+			#{companyId},
+			#{reportSize},
+			#{useYn},
+			#{rgstId},
+			NOW(),
+			#{modiId},
+			NOW()
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.portal.adm.report.mapper.ReportMapper">
+		UPDATE t_report SET
+			REPORT_NM = #{reportNm},
+			REPORT_URL = #{reportUrl},
+			COMPANY_ID = #{companyId},
+			REPORT_SIZE = #{reportSize},
+			USE_YN = #{useYn},
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			REPORT_ID = #{reportId}
+	</update>
+	
+	<select id="select" resultType="com.portal.adm.report.mapper.ReportMapper" parameterType="string">
+		SELECT
+			REPORT_ID
+			, REPORT_NM
+			, REPORT_URL
+			, COMPANY_ID
+			, REPORT_SIZE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t_report
+		WHERE
+			REPORT_ID = #{reportId}
+	</select>
+	
+	<update id="delete" parameterType="com.portal.adm.report.mapper.ReportMapper">
+		UPDATE t_report SET
+			USE_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			REPORT_ID = #{reportId} AND COMPANY_ID = #{companyId}
+	</update>
+	
+	
+</mapper>

@@ -64,39 +64,14 @@
 			value="/WEB-INF/views/holiday/{1}.jsp" />
 	</definition>
 
-	<definition name="system/*" extends="default-layout">
+	<definition name="report/*" extends="default-layout">
 		<put-attribute name="body"
-			value="/WEB-INF/views/system/{1}.jsp" />
+			value="/WEB-INF/views/report/{1}.jsp" />
 	</definition>
 
-	<definition name="project/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/project/{1}.jsp" />
-	</definition>
-
-	<definition name="analysis/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/analysis/{1}.jsp" />
-	</definition>
-
-	<definition name="statistics/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/statistics/{1}.jsp" />
-	</definition>
-
-	<definition name="service/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/service/{1}.jsp" />
-	</definition>
-	
 	<definition name="log/*" extends="default-layout">
 		<put-attribute name="body"
 			value="/WEB-INF/views/log/{1}.jsp" />
 	</definition>
 	
-	<definition name="holiday/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/holiday/{1}.jsp" />
-	</definition>
-
 </tiles-definitions>

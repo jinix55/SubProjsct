@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.reset.mapper.ResetMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectResetList" resultType="com.portal.adm.reset.model.ResetModel" parameterType="com.portal.adm.reset.model.ResetModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
+			, RESET_ID
+			, COMPANY_NM
+			, USER_NM
+			, USER_ID
+			, RESET_CNT
+			, APPROVAL_YN
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_RESET
+		WHERE USE_YN = 'Y'
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectResetListCount" resultType="int">
+		SELECT
+			count(1)
+		FROM T_RESET
+		WHERE USE_YN = 'Y'
+	</select>
+	
+	<insert id="insert" parameterType="com.portal.adm.reset.model.ResetModel">
+		INSERT INTO t_reset (
+			RESET_ID
+			, COMPANY_NM
+			, USER_NM
+			, USER_ID
+			, RESET_CNT
+			, APPROVAL_YN
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			#{resetId},
+			#{companyNm},
+			#{userNm},
+			#{userId},
+			#{approvalYn},
+			1,
+			#{useYn},
+			#{rgstId},
+			NOW(),
+			#{modiId},
+			NOW()
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.portal.adm.reset.model.ResetModel">
+		UPDATE t_reset SET
+			COMPANY_NM = #{resetCode},
+			USER_NM = #{resetNo},
+			USER_ID = #{resetNm},
+			APPROVAL_YN = #{approvalYn}
+			RESET_CNT = #{resetCnt},
+			USE_YN = #{useYn},
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			RESET_ID = #{resetId}
+	</update>
+	
+	<update id="updateApproval" parameterType="com.portal.adm.reset.model.ResetModel">
+		UPDATE t_reset SET
+			APPROVAL_YN = 'Y'
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			RESET_ID = #{resetId}
+	</update>
+	
+	<select id="select" resultType="com.portal.adm.reset.model.ResetModel" parameterType="string">
+		SELECT
+			RESET_ID
+			, COMPANY_NM
+			, USER_NM
+			, USER_ID
+			, RESET_CNT
+			, APPROVAL_YN
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t_reset
+		WHERE
+			RESET_ID = #{resetId}
+	</select>
+	
+	<update id="delete" parameterType="com.portal.adm.reset.model.ResetModel">
+		UPDATE t_reset SET
+			USE_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			RESET_ID = #{resetId} AND COMPANY_Id = #{resetId}
+	</update>
+	
+	
+</mapper>
