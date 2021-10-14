@@ -369,13 +369,13 @@
 <!-- 			<artifactId>api-extension</artifactId> -->
 <!-- 			<version>0.0.1-SNAPSHOT</version> -->
 <!-- 		</dependency> -->
-		<dependency>
-			<groupId>com.portal.chatbot</groupId>
-			<artifactId>api-extension</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/api-extension-0.0.1.jar</systemPath>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.portal.chatbot</groupId> -->
+<!-- 			<artifactId>api-extension</artifactId> -->
+<!-- 			<version>0.0.1-SNAPSHOT</version> -->
+<!-- 			<scope>system</scope> -->
+<!-- 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/api-extension-0.0.1.jar</systemPath> -->
+<!-- 		</dependency> -->
 		
 	</dependencies>
 
