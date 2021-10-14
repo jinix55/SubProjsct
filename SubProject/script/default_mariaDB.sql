@@ -312,25 +312,26 @@ ALTER TABLE T_GROUP_AUTH ADD CONSTRAINT T_GROUP_AUTH_PK PRIMARY KEY(AUTH_ID);
 -- CREATE INDEX T_GROUP_AUTH_IX1 ON T_GROUP_AUTH();
 
 
--- 관리자    관리자 시스템 메뉴
-DROP TABLE IF EXISTS t_group_menu CASCADE;
-CREATE TABLE IF NOT EXISTS t_group_menu (
+-- 관리자 그룹 메뉴
+DROP TABLE IF EXISTS T_GROUP_MENU CASCADE;
+CREATE TABLE IF NOT EXISTS T_GROUP_MENU (
     MENU_ID VARCHAR(16) NOT NULL COMMENT '메뉴 ID'
   , UP_MENU_ID VARCHAR(16) COMMENT '상위 메뉴 ID'
   , MENU_NM VARCHAR(100) COMMENT '메뉴 명'
   , MENU_URL VARCHAR(256) COMMENT '메뉴 URL'
   , MENU_DSC VARCHAR(1000) COMMENT '메뉴 설명'
   , ORD_SEQ NUMERIC(5,0) COMMENT '정렬 순서'
-  , MENU_SE VARCHAR(32) DEFAULT 'M' COMMENT '메뉴 구분[CODE GROUP_ID: MENU_SE]'
+  , MENU_SE VARCHAR(32) DEFAULT 'M' COMMENT '메뉴 구분 CODE GROUP_ID: MENU_SE'
   , MENU_ATTR JSON COMMENT '메뉴 속성'
   , USE_YN VARCHAR(1) DEFAULT 'N' COMMENT '사용 여부'
+  , ICON_NM VARCHAR(16) COMMENT '아이콘 명'
   , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
   , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
   , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
   , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '관리자 시스템 메뉴[관리자 시스템 메뉴 관리]';
-ALTER TABLE t_group_menu ADD CONSTRAINT t_group_menu_PK PRIMARY KEY(MENU_ID);
--- CREATE INDEX t_group_menu_IX1 ON t_group_menu();
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '그룹 메뉴[그룹 메뉴]';
+ALTER TABLE T_GROUP_MENU ADD CONSTRAINT T_GROUP_MENU_PK PRIMARY KEY();
+-- CREATE INDEX T_GROUP_MENU_IX1 ON T_GROUP_MENU();
 
 
 -- 관리자    관리자 시스템 메뉴 권한
@@ -713,27 +714,35 @@ INSERT INTO T_GROUP_AUTH (AUTH_ID,COMPANY_CODE,AUTH_CL,AUTH_NM,AUTH_DSC,USE_YN,R
 
 
 -- 그룹 메뉴
-TRUNCATE TABLE t_group_menu;
-INSERT INTO t_group_menu (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,MENU_SE,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('mn5000001',NULL,'HOME','/','','1','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000002','mn5000001','Admin','/admin','','2','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000003','mn5000002','메뉴관리','/admin/menu','','3','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000004','mn5000002','메뉴 권한 관리','/admin/menuAuth','','4','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000005','mn5000002','사용자 관리','/admin/member','','5','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000006','mn5000002','사용자 권한 관리','/admin/role','','6','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000007','mn5000002','작업이력 관리','/admin/jobHst','','7','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000008','mn5000002','로그인이력 관리','/admin/loginHst','','8','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000009','mn5000002','공통코드관리','/admin/code','','9','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000010','mn5000002','휴일관리','/admin/holiday','','10','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000011','mn5000002','도메인 관리','/project/domain','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW());
-
+TRUNCATE TABLE T_GROUP_MENU;
+INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,MENU_SE,MENU_ATTR,USE_YN,ICON_NM,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
+('mn5000001',NULL,'HOME','/','','1','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000002','mn5000001','계정관리','/admin/company','','2','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','user','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000003','mn5000001','시스템관리','/admin','','3','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','system','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000004','mn5000003','회사관리','/admin/member','','4','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000005','mn5000003','권한관리','/admin/role','','5','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000006','mn5000003','사용자 권한','/admin/memberAuth','','6','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000007','mn5000003','메뉴 권한','/admin/menuAuth','','7','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000008','mn5000003','공통코드관리','/admin/code','','8','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000009','mn5000003','휴일관리','/admin/holiday','','9','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000010','mn5000001','메뉴','/admin','','10','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000011','mn5000010','메뉴관리','/admin/menu','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000012','mn5000010','레포트관리','/admin/report','','12','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000013','mn5000001','로그관리','/admin','','13','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000014','mn5000013','로그인이력관리','/admin/loginHst','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000015','mn5000013','작업이력관리','/admin/jobHst','','15','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000016','mn5000001','게시판관리','/admin','','16','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','board','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000017','mn5000016','공지사항','/admin/notice','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000018','mn5000016','FAQ','/admin/faq','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000019','mn5000016','QNA','/admin/qna','','19','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000020','mn5000001','알람관리','/admin/alarm','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 
 
 -- 그룹 메뉴 권한
-TRUNCATE TABLE t_group_menu_auth;
-INSERT INTO t_group_menu_auth (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
+TRUNCATE TABLE T_GROUP_MENU_AUTH;
+INSERT INTO T_GROUP_MENU_AUTH (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
 ('au2000001','mn5000001','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000001','mn5000002','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000001','mn5000003','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -745,6 +754,15 @@ INSERT INTO t_group_menu_auth (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,
 ('au2000001','mn5000009','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000001','mn5000010','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000001','mn5000011','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000012','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000013','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000014','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000015','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000016','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000017','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000018','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000019','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','mn5000020','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','mn5000001','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','mn5000002','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','mn5000003','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -756,6 +774,7 @@ INSERT INTO t_group_menu_auth (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,
 ('au2000002','mn5000009','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','mn5000010','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','mn5000011','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','SYSTEM',NOW(),'SYSTEM',NOW());
+
 
 
 
