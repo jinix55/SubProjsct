@@ -23,8 +23,8 @@
 		<put-attribute name="gnb"
 			value="/WEB-INF/views/layout/gnb.jsp" />
 		<put-attribute name="body" value="" />
-		<put-attribute name="nav"
-			value="/WEB-INF/views/layout/nav.jsp" />
+		<put-attribute name="lnb"
+			value="/WEB-INF/views/layout/lnb.jsp" />
 		<put-attribute name="footer"
 			value="/WEB-INF/views/layout/footer.jsp" />
 	</definition>
@@ -33,15 +33,15 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/error/{1}.jsp" />
 	</definition>
-
-	<definition name="member/*" extends="default-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/member/{1}.jsp" />
-	</definition>
 	
 	<definition name="company/*" extends="default-layout">
 		<put-attribute name="body"
 			value="/WEB-INF/views/company/{1}.jsp" />
+	</definition>
+
+	<definition name="member/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/member/{1}.jsp" />
 	</definition>
 
 	<definition name="role/*" extends="default-layout">
