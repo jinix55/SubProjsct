@@ -140,16 +140,32 @@ public class IdUtil {
 	public String getScenarioId() {
 		return service.getId(Constant.ID.SCENARIO);
 	}
+	
 	/**
 	 * 시나리오 파일 ID : 시나리오
 	 */
 	public String getScenarioFileId() {
 		return service.getId(Constant.ID.SCENARIOFILE);
 	}
+	
 	/**
 	 * 메뉴 ID : 메뉴
 	 */
 	public String getCompanyId() {
 		return service.getId(Constant.ID.COMPANY);
+	}
+	
+	/**
+	 * 메뉴 ID : 메뉴
+	 */
+	public String getReporttId() {
+		return service.getId(Constant.ID.REPORT);
+	}
+	
+	/**
+	 * 메뉴 ID : 메뉴
+	 */
+	public String getResetId() {
+		return service.getId(Constant.ID.RESETPASSWORD);
 	}
 }
