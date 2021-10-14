@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import com.portal.adm.menu.model.MenuModel;
 import com.portal.adm.menu.service.MenuService;
+import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
 /**
@@ -36,6 +38,9 @@ public class MenuController {
 
 	@Resource
 	private MenuService menuService;
+	
+	@Resource
+    private IdUtil idUtil;
 
 	/**
 	 * 메뉴관리 페이지로 이동한다.
@@ -92,8 +97,22 @@ public class MenuController {
 		try {
 			menuModel.setRgstId(authUser.getMemberModel().getUserId());
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
-
+			menuModel.setMenuId(idUtil.getMenuId());
 			long count = menuService.save(menuModel);
+			
+			// 메뉴 등록시 담당관리자 권한 자동 등록 
+			menuModel.setAuthUseYn("Y");
+			menuModel.setRgstId(authUser.getUsername());
+			menuModel.setModiId(authUser.getUsername());
+			menuModel.setAuthId(authUser.getMemberModel().getAuthId());
+			
+			long menuAuths = menuService.updateMenuListWithAuth(menuModel);
+			
+			// 담당관리자 권한 등록 성공 이후 등록자가 최고관리자가 아닐경우 최고관리자 등록
+			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000001")) {
+				menuModel.setAuthId("au2000001");
+				menuService.updateMenuListWithAuth(menuModel);	
+			}
 
 			return "redirect:/admin/menu";
 		} catch (Exception e) {
