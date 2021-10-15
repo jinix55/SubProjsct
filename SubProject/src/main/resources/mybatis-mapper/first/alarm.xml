@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.alarm.mapper.AlarmMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectAlarmList" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_ID) ASC) AS ROWNUM
+			, ALARM_ID
+			, SJ
+			, CN
+			, ALARM_SE
+			, SENDER_ID
+			, CHECK_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_ALARM
+		WHERE RECIPIENT_ID = #{recipientId}
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectAlarmListView" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_ID) ASC) AS ROWNUM
+			, ALARM_ID
+			, SJ
+			, CN
+			, ALARM_SE
+			, SENDER_ID
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_ALARM
+		WHERE RECIPIENT_ID = #{recipientId} AND CHECK_YN = 'N'
+		ORDER BY ROWNUM ASC
+	</select>
+	
+	<select id="selectAlarmListCount" resultType="int" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		SELECT
+			count(1)
+		FROM T_ALARM
+		WHERE RECIPIENT_ID = #{recipientId}
+	</select>
+	
+	<select id="selectAlarmListViewCount" resultType="int" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		SELECT
+			count(1)
+		FROM T_ALARM
+		WHERE RECIPIENT_ID = #{recipientId} AND CHECK_YN = 'N'
+	</select>
+	
+	<insert id="insert" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		INSERT INTO t_alarm (
+			ALARM_ID
+			, SJ
+			, CN
+			, ALARM_SE
+			, SENDER_ID
+			, RECIPIENT_ID
+			, CHECK_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			#{alarmId},
+			#{sj},
+			#{cn},
+			#{alarmSe},
+			#{senderId},
+			#{recipientId},
+			#{checkYn},
+			#{rgstId},
+			NOW(),
+			#{modiId},
+			NOW()
+		)
+	</insert>
+	
+	<select id="select" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="string">
+		SELECT
+			ALARM_ID
+			, SJ
+			, CN
+			, ALARM_SE
+			, SENDER_ID
+			, RECIPIENT_ID
+			, CHECK_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t_alarm
+		WHERE
+			ALARM_ID = #{alarmId}
+	</select>
+	
+	<update id="delete" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		UPDATE t_alarm SET
+			CHECK_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			ALARM_ID = #{alarmId}
+	</update>
+	
+	
+</mapper>
