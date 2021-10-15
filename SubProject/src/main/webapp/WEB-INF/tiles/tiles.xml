@@ -4,29 +4,22 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<definition name="no-layout"
-		template="/WEB-INF/views/layout/noLayout.jsp">
+	<definition name="no-layout" template="/WEB-INF/views/layout/noLayout.jsp">
 		<put-attribute name="body" value="" />
 	</definition>
+	
 	<definition name="login" extends="no-layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/login.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
 	</definition>
 
 	<!-- main -->
-	<definition name="default-layout"
-		template="/WEB-INF/views/layout/base.jsp" preparer="menuPreparer">
-		<put-attribute name="head"
-			value="/WEB-INF/views/layout/head.jsp" />
-		<put-attribute name="header"
-			value="/WEB-INF/views/layout/header.jsp" />
-		<put-attribute name="gnb"
-			value="/WEB-INF/views/layout/gnb.jsp" />
+	<definition name="default-layout" template="/WEB-INF/views/layout/base.jsp" preparer="menuPreparer">
+		<put-attribute name="head" value="/WEB-INF/views/layout/head.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+		<put-attribute name="gnb" value="/WEB-INF/views/layout/gnb.jsp" />
+		<put-attribute name="lnb" value="/WEB-INF/views/layout/lnb.jsp" />
 		<put-attribute name="body" value="" />
-		<put-attribute name="lnb"
-			value="/WEB-INF/views/layout/lnb.jsp" />
-		<put-attribute name="footer"
-			value="/WEB-INF/views/layout/footer.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
 	</definition>
 
 	<definition name="error/*" extends="default-layout">
