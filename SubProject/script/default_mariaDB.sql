@@ -38,6 +38,42 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 );
 
 
+
+-- 공휴일 관리 데이터(calendar_lunar_solar_v1.sql 우선 실행)
+TRUNCATE TABLE T_HOLIDAY;
+INSERT INTO T_HOLIDAY (
+	SOLAR_DATE
+	, LUNAR_DATE
+	, GANJI
+	, LEAP_YEAR
+	, HOLI_NM
+	, USE_YN
+	, HOLI_TYPE
+	, MEMO
+) SELECT
+	SOLAR_DATE
+	, LUNAR_DATE
+	, GANJI
+	, CASE WHEN YUN = 1 THEN 'Y' ELSE 'N' END AS LEAP_YEAR
+	, CASE
+		WHEN MEMO = '' THEN
+			CASE 
+				WHEN dayofweek(SOLAR_DATE) = 7 THEN '토요일'
+				ELSE '일요일'
+			END
+		ELSE MEMO END AS HOLI_NM
+	, 'Y' AS USE_YN
+	, CASE
+		WHEN MEMO = '' THEN
+			CASE 
+				WHEN dayofweek(SOLAR_DATE) > 0 THEN 'W'
+			END 
+		ELSE 'C' END AS HOLI_TYPE
+	, '' AS MEMO
+FROM calendar_lunar_solar WHERE (solar_date BETWEEN '1900-01-01' AND '2200-12-31' AND dayofweek(solar_date) IN (1,7)) OR (MEMO != '' AND MEMO IS NOT NULL);
+COMMIT;
+
+
 -- 공통    코드
 DROP TABLE IF EXISTS T_CODE CASCADE;
 CREATE TABLE IF NOT EXISTS T_CODE (
@@ -474,6 +510,7 @@ CREATE TABLE IF NOT EXISTS T_REPORT (
 ALTER TABLE T_REPORT ADD CONSTRAINT T_REPORT_PK PRIMARY KEY(REPORT_ID);
 -- CREATE INDEX T_REPORT_IX1 ON T_REPORT(REPORT_ID);
 
+
 -- 공통 비밀번호 초기화 관리
 DROP TABLE IF EXISTS T_RESET_PASSWORD CASCADE;
 CREATE TABLE IF NOT EXISTS T_RESET_PASSWORD (
@@ -493,10 +530,145 @@ ALTER TABLE T_RESET_PASSWORD ADD CONSTRAINT T_RESET_PASSWORD_PK PRIMARY KEY(RESE
 -- CREATE INDEX T_RESET_PASSWORD_IX1 ON T_RESET_PASSWORD(RESET_ID);
 
 
+-- 관리자 회사
+DROP TABLE IF EXISTS T_COMPANY CASCADE;
+CREATE TABLE IF NOT EXISTS T_COMPANY ( 
+    COMPANY_ID VARCHAR(16) NOT NULL COMMENT '회사 ID'
+  , COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '회사 코드'
+  , COMPANY_NO VARCHAR(16) NOT NULL COMMENT '사업자번호'
+  , COMPANY_NM VARCHAR(100) NOT NULL COMMENT '회사 명'
+  , ADDRESS VARCHAR(4000) NOT NULL COMMENT '주소'
+  , TELEPHONE_NO VARCHAR(16) COMMENT '전화번호'
+  , REPRESENTATIVE_NM VARCHAR(16) COMMENT '대표자명'
+  , NOTE VARCHAR(4000) COMMENT '비고'
+  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
+  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '회사[회사]';
+ALTER TABLE T_COMPANY ADD CONSTRAINT T_COMPANY_PK PRIMARY KEY(COMPANY_ID,COMPANY_NO);
+-- CREATE INDEX T_COMPANY_IX1 ON T_COMPANY(COMPANY_ID,COMPANY_NO);
+
+
+-- 공통 알람
+DROP TABLE IF EXISTS T_ALARM CASCADE;
+CREATE TABLE IF NOT EXISTS T_ALARM (
+    ALARM_ID VARCHAR(16) NOT NULL COMMENT '알람 ID'
+  , SJ VARCHAR(100) COMMENT '제목'
+  , CN TEXT COMMENT '내용'
+  , ALARM_SE VARCHAR(1) COMMENT '알람 구분'
+  , SENDER_ID VARCHAR(16) NOT NULL COMMENT '보내는 사용자 ID'
+  , RECIPIENT_ID VARCHAR(16) NOT NULL COMMENT '받는 사용자 ID'
+  , CHECK_YN VARCHAR(1) DEFAULT 'N' NOT NULL COMMENT '확인 여부'
+  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '알람[알람]';
+ALTER TABLE T_ALARM ADD CONSTRAINT T_ALARM_PK PRIMARY KEY(ALARM_ID);
+-- CREATE INDEX T_ALARM_IX1 ON T_ALARM(ALARM_ID);
+
+
+-- 이력    사용자 이력
+DROP TABLE IF EXISTS T_USER_HIST CASCADE;
+CREATE TABLE IF NOT EXISTS T_USER_HIST (
+    HIST_DT TIMESTAMP NOT NULL COMMENT '이력 일시'
+  , USER_ID VARCHAR(32) NOT NULL COMMENT '사용자 ID'
+  , USER_NM VARCHAR(100) COMMENT '사용자 명'
+  , PSTN_CODE VARCHAR(16) COMMENT '직위 코드'
+  , PSTN_NM VARCHAR(100) COMMENT '직위 명'
+  , DEPT_CODE VARCHAR(16) COMMENT '부서 코드'
+  , DEPT_NM VARCHAR(100) COMMENT '부서 명'
+  , HDEPT_CODE VARCHAR(16) COMMENT '본부 코드'
+  , HDEPT_NM VARCHAR(100) COMMENT '본부 명'
+  , ADOF_DEPT_CODE VARCHAR(16) COMMENT '겸직 부서 코드'
+  , ADOF_DEPT_NM VARCHAR(100) COMMENT '겸직 부서 명'
+  , COMPANY_CODE VARCHAR(16) COMMENT '회사 코드'
+  , COMPANY_NM VARCHAR(100) COMMENT '회사 명'
+  , DUTY_SE VARCHAR(32) COMMENT '직책 구분'
+  , LAST_LOG_DT TIMESTAMP COMMENT '마지막 로그 일시'
+  , START_DT TIMESTAMP COMMENT '시작 일시'
+  , END_DT TIMESTAMP COMMENT '종료 일시'
+  , FILE_URL VARCHAR(256) COMMENT '파일 URL'
+  , MGR_AUTH_ID VARCHAR(32) COMMENT '관리자 권한 ID'
+  , MGR_AUTH_CL VARCHAR(32) COMMENT '관리자 권한 분류'
+  , MGR_AUTH_NM VARCHAR(100) COMMENT '관리자 권한 명'
+  , MGR_AUTH_USE_YN VARCHAR(1) COMMENT '관리자 권한 사용 여부'
+  , USER_AUTH_ID VARCHAR(32) COMMENT '사용자 권한 ID'
+  , USER_AUTH_CL VARCHAR(32) COMMENT '사용자 권한 분류'
+  , USER_AUTH_NM VARCHAR(100) COMMENT '사용자 권한 명'
+  , USER_AUTH_USE_YN VARCHAR(1) COMMENT '사용자 권한 사용 여부'
+  , MGR_SYS_ENV JSON COMMENT '관리자 시스템 환경'
+  , USER_SYS_HOME VARCHAR(32) COMMENT '사용자 시스템 홈'
+  , USER_SYS_ENV JSON COMMENT '사용자 시스템 환경'
+  , BF_DEPT_CODE VARCHAR(16) COMMENT '이전 부서 코드'
+  , DEPT_UPDT_DT TIMESTAMP COMMENT '부서 변경 일시'
+  , USE_YN VARCHAR(1) COMMENT '사용 여부'
+  , MODI_SE VARCHAR(32) COMMENT '수정 구분'
+  , RGST_ID VARCHAR(32) COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP COMMENT '수정 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '사용자 이력[사용자 정보 이력]';
+-- ALTER TABLE T_USER_HIST ADD CONSTRAINT T_USER_HIST_PK PRIMARY KEY();
+CREATE INDEX T_USER_HIST_IX1 ON T_USER_HIST(USER_ID, HIST_DT);
+
+
+-- 공통 공휴일 관리
+DROP TABLE IF EXISTS T_HOLIDAY CASCADE;
+CREATE TABLE IF NOT EXISTS T_HOLIDAY (
+    HOLI_NM VARCHAR(32) COMMENT '휴일명'
+  , SOLAR_DATE VARCHAR(32) DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '양력일'
+  , LUNAR_DATE VARCHAR(32) DEFAULT CURRENT_TIMESTAMP COMMENT '음력일'
+  , GANJI VARCHAR(256) COMMENT '간지'
+  , LEAP_YEAR VARCHAR(1) DEFAULT 'N' COMMENT '윤년'
+  , MEMO VARCHAR(4000) DEFAULT 'N' COMMENT '메모'
+  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
+  , HOLI_TYPE VARCHAR(1) DEFAULT 'C' COMMENT '휴일 타입(C:국가, W: 주말, T: 임시)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '공휴일 관리[공휴일 관리]';
+ALTER TABLE T_HOLIDAY ADD CONSTRAINT T_HOLIDAY_PK PRIMARY KEY(SOLAR_DATE);
+-- CREATE INDEX T_HOLIDAY_IX1 ON T_HOLIDAY(SOLAR_DATE);
+
+
+-- 공통 도메인 관리
+DROP TABLE IF EXISTS T_DOMAIN CASCADE;
+CREATE TABLE IF NOT EXISTS T_DOMAIN (
+    DOMAIN_ID VARCHAR(16) NOT NULL COMMENT '도메인 ID'
+  , DOMAIN_NM VARCHAR(256) NOT NULL COMMENT '도메인명'
+  , DOMAIN_DEC VARCHAR(256) COMMENT '도메인 설명'
+  , DOMAIN_CODE VARCHAR(64) COMMENT '도메인 코드'
+  , PROJECT_ID VARCHAR(16) NOT NULL COMMENT '프로젝트 ID'
+  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
+  , MODI_SE VARCHAR(32) COMMENT '수정 구분(I: 등록 / U: 수정 / D: 삭제 / C: 완료 / R: 삭제완료)'
+  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '도메인 관리[도메인 관리]';
+ALTER TABLE T_DOMAIN ADD CONSTRAINT T_DOMAIN_PK PRIMARY KEY(DOMAIN_ID);
+-- CREATE INDEX T_DOMAIN_IX1 ON T_DOMAIN(DOMAIN_ID);
+
+
+-- 로그 로그 참조 정보
+DROP TABLE IF EXISTS T_LOG_REF_INFO CASCADE;
+CREATE TABLE IF NOT EXISTS T_LOG_REF_INFO (
+    LOG_ID NUMERIC(9,0) NOT NULL COMMENT '로그 참조 ID'
+  , CONTROLLER_NM VARCHAR(256) NOT NULL COMMENT '컨트롤러 명'
+  , METHOD_NM VARCHAR(256) NOT NULL COMMENT '메소드 명'
+  , PROGRAM_NM VARCHAR(256) NOT NULL COMMENT '프로그램 명'
+  , RGST_ID VARCHAR(32) COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP COMMENT '등록 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '로그 참조 정보[접속 로그 참조 정보]';
+ALTER TABLE T_LOG_REF_INFO ADD CONSTRAINT T_LOG_REF_INFO_PK PRIMARY KEY(LOG_ID,CONTROLLER_NM,METHOD_NM);
+-- CREATE INDEX T_LOG_REF_INFO_IX1 ON T_LOG_REF_INFO(LOG_ID,CONTROLLER_NM,METHOD_NM);
 
 
 
-#---------------------------------------------------------------------------------------------------
+
+-- 데이터
+---------------------------------------------------------------------------------------------------
+
 
 -- 공통    코드
 TRUNCATE TABLE T_CODE;
@@ -718,24 +890,24 @@ TRUNCATE TABLE T_GROUP_MENU;
 INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,MENU_SE,MENU_ATTR,USE_YN,ICON_NM,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
 ('mn5000001',NULL,'HOME','/','','1','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000002','mn5000001','계정관리','/admin/company','','2','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','user','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000003','mn5000001','시스템관리','/admin','','3','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','system','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000003','mn5000001','시스템관리','/admin','','3','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','system','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000004','mn5000003','회사관리','/admin/member','','4','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000005','mn5000003','권한관리','/admin/role','','5','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000006','mn5000003','사용자 권한','/admin/memberAuth','','6','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000007','mn5000003','메뉴 권한','/admin/menuAuth','','7','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000008','mn5000003','공통코드관리','/admin/code','','8','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000009','mn5000003','휴일관리','/admin/holiday','','9','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000010','mn5000001','메뉴','/admin','','10','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000011','mn5000010','메뉴관리','/admin/menu','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000012','mn5000010','레포트관리','/admin/report','','12','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000013','mn5000001','로그관리','/admin','','13','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000014','mn5000013','로그인이력관리','/admin/loginHst','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000015','mn5000013','작업이력관리','/admin/jobHst','','15','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000016','mn5000001','게시판관리','/admin','','16','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','board','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000017','mn5000016','공지사항','/admin/notice','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000018','mn5000016','FAQ','/admin/faq','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000019','mn5000016','QNA','/admin/qna','','19','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000020','mn5000001','알람관리','/admin/alarm','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000010','mn5000001','메뉴','/memu','','10','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000011','mn5000010','메뉴관리','/memu/menu','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000012','mn5000010','레포트관리','/memu/report','','12','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000013','mn5000001','로그관리','/log','','13','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000014','mn5000013','로그인이력관리','/log/loginHst','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000015','mn5000013','작업이력관리','/log/jobHst','','15','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000016','mn5000001','게시판관리','/board','','16','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','board','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000017','mn5000016','공지사항','/board/notice','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000018','mn5000016','FAQ','/board/faq','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000019','mn5000016','QNA','/board/qna','','19','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000020','mn5000001','알람관리','/alarm/alarm','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 
@@ -782,114 +954,6 @@ INSERT INTO T_GROUP_MENU_AUTH (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,
 
 -- -------------------------------------------------------- (2021-05-17 추가)
 
--- 이력    사용자 이력
-DROP TABLE IF EXISTS T_USER_HIST CASCADE;
-CREATE TABLE IF NOT EXISTS T_USER_HIST (
-    HIST_DT TIMESTAMP NOT NULL COMMENT '이력 일시'
-  , USER_ID VARCHAR(32) NOT NULL COMMENT '사용자 ID'
-  , USER_NM VARCHAR(100) COMMENT '사용자 명'
-  , PSTN_CODE VARCHAR(16) COMMENT '직위 코드'
-  , PSTN_NM VARCHAR(100) COMMENT '직위 명'
-  , DEPT_CODE VARCHAR(16) COMMENT '부서 코드'
-  , DEPT_NM VARCHAR(100) COMMENT '부서 명'
-  , HDEPT_CODE VARCHAR(16) COMMENT '본부 코드'
-  , HDEPT_NM VARCHAR(100) COMMENT '본부 명'
-  , ADOF_DEPT_CODE VARCHAR(16) COMMENT '겸직 부서 코드'
-  , ADOF_DEPT_NM VARCHAR(100) COMMENT '겸직 부서 명'
-  , COMPANY_CODE VARCHAR(16) COMMENT '회사 코드'
-  , COMPANY_NM VARCHAR(100) COMMENT '회사 명'
-  , DUTY_SE VARCHAR(32) COMMENT '직책 구분'
-  , LAST_LOG_DT TIMESTAMP COMMENT '마지막 로그 일시'
-  , START_DT TIMESTAMP COMMENT '시작 일시'
-  , END_DT TIMESTAMP COMMENT '종료 일시'
-  , FILE_URL VARCHAR(256) COMMENT '파일 URL'
-  , MGR_AUTH_ID VARCHAR(32) COMMENT '관리자 권한 ID'
-  , MGR_AUTH_CL VARCHAR(32) COMMENT '관리자 권한 분류'
-  , MGR_AUTH_NM VARCHAR(100) COMMENT '관리자 권한 명'
-  , MGR_AUTH_USE_YN VARCHAR(1) COMMENT '관리자 권한 사용 여부'
-  , USER_AUTH_ID VARCHAR(32) COMMENT '사용자 권한 ID'
-  , USER_AUTH_CL VARCHAR(32) COMMENT '사용자 권한 분류'
-  , USER_AUTH_NM VARCHAR(100) COMMENT '사용자 권한 명'
-  , USER_AUTH_USE_YN VARCHAR(1) COMMENT '사용자 권한 사용 여부'
-  , MGR_SYS_ENV JSON COMMENT '관리자 시스템 환경'
-  , USER_SYS_HOME VARCHAR(32) COMMENT '사용자 시스템 홈'
-  , USER_SYS_ENV JSON COMMENT '사용자 시스템 환경'
-  , BF_DEPT_CODE VARCHAR(16) COMMENT '이전 부서 코드'
-  , DEPT_UPDT_DT TIMESTAMP COMMENT '부서 변경 일시'
-  , USE_YN VARCHAR(1) COMMENT '사용 여부'
-  , MODI_SE VARCHAR(32) COMMENT '수정 구분'
-  , RGST_ID VARCHAR(32) COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '사용자 이력[사용자 정보 이력]';
--- ALTER TABLE T_USER_HIST ADD CONSTRAINT T_USER_HIST_PK PRIMARY KEY();
-CREATE INDEX T_USER_HIST_IX1 ON T_USER_HIST(USER_ID, HIST_DT);
-
--- 공통 공휴일 관리
-DROP TABLE IF EXISTS T_HOLIDAY CASCADE;
-CREATE TABLE IF NOT EXISTS T_HOLIDAY (
-    HOLI_NM VARCHAR(32) COMMENT '휴일명'
-  , SOLAR_DATE VARCHAR(32) DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '양력일'
-  , LUNAR_DATE VARCHAR(32) DEFAULT CURRENT_TIMESTAMP COMMENT '음력일'
-  , GANJI VARCHAR(256) COMMENT '간지'
-  , LEAP_YEAR VARCHAR(1) DEFAULT 'N' COMMENT '윤년'
-  , MEMO VARCHAR(4000) DEFAULT 'N' COMMENT '메모'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , HOLI_TYPE VARCHAR(1) DEFAULT 'C' COMMENT '휴일 타입(C:국가, W: 주말, T: 임시)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '공휴일 관리[공휴일 관리]';
-ALTER TABLE T_HOLIDAY ADD CONSTRAINT T_HOLIDAY_PK PRIMARY KEY(SOLAR_DATE);
--- CREATE INDEX T_HOLIDAY_IX1 ON T_HOLIDAY(SOLAR_DATE);
-
-
-
--- 공휴일 관리 데이터(calendar_lunar_solar_v1.sql 우선 실행)
-TRUNCATE TABLE T_HOLIDAY;
-INSERT INTO T_HOLIDAY (
-	SOLAR_DATE
-	, LUNAR_DATE
-	, GANJI
-	, LEAP_YEAR
-	, HOLI_NM
-	, USE_YN
-	, HOLI_TYPE
-	, MEMO
-) SELECT
-	SOLAR_DATE
-	, LUNAR_DATE
-	, GANJI
-	, CASE WHEN YUN = 1 THEN 'Y' ELSE 'N' END AS LEAP_YEAR
-	, CASE
-		WHEN MEMO = '' THEN
-			CASE 
-				WHEN dayofweek(SOLAR_DATE) = 7 THEN '토요일'
-				ELSE '일요일'
-			END
-		ELSE MEMO END AS HOLI_NM
-	, 'Y' AS USE_YN
-	, CASE
-		WHEN MEMO = '' THEN
-			CASE 
-				WHEN dayofweek(SOLAR_DATE) > 0 THEN 'W'
-			END 
-		ELSE 'C' END AS HOLI_TYPE
-	, '' AS MEMO
-FROM calendar_lunar_solar WHERE (solar_date BETWEEN '1900-01-01' AND '2200-12-31' AND dayofweek(solar_date) IN (1,7)) OR (MEMO != '' AND MEMO IS NOT NULL);
-COMMIT;
-
-
--- 로그 로그 참조 정보
-DROP TABLE IF EXISTS T_LOG_REF_INFO CASCADE;
-CREATE TABLE IF NOT EXISTS T_LOG_REF_INFO (
-    LOG_ID NUMERIC(9,0) NOT NULL COMMENT '로그 참조 ID'
-  , CONTROLLER_NM VARCHAR(256) NOT NULL COMMENT '컨트롤러 명'
-  , METHOD_NM VARCHAR(256) NOT NULL COMMENT '메소드 명'
-  , PROGRAM_NM VARCHAR(256) NOT NULL COMMENT '프로그램 명'
-  , RGST_ID VARCHAR(32) COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP COMMENT '등록 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '로그 참조 정보[접속 로그 참조 정보]';
-ALTER TABLE T_LOG_REF_INFO ADD CONSTRAINT T_LOG_REF_INFO_PK PRIMARY KEY(LOG_ID,CONTROLLER_NM,METHOD_NM);
--- CREATE INDEX T_LOG_REF_INFO_IX1 ON T_LOG_REF_INFO(LOG_ID,CONTROLLER_NM,METHOD_NM);
 
 -- 로그 로그 참조 정보 초기 데이터
 TRUNCATE TABLE T_LOG_REF_INFO;
@@ -944,95 +1008,9 @@ INSERT INTO T_LOG_REF_INFO (LOG_ID,CONTROLLER_NM,METHOD_NM,PROGRAM_NM,RGST_ID,RG
 ('48','StatisticsController','getKnowledge','지식통계 조회','SYSTEM',NOW());
 
 
--- 관리자 회사
-DROP TABLE IF EXISTS T_COMPANY CASCADE;
-CREATE TABLE IF NOT EXISTS T_COMPANY ( 
-    COMPANY_ID VARCHAR(16) NOT NULL COMMENT '회사 ID'
-  , COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '회사 코드'
-  , COMPANY_NO VARCHAR(16) NOT NULL COMMENT '사업자번호'
-  , COMPANY_NM VARCHAR(100) NOT NULL COMMENT '회사 명'
-  , ADDRESS VARCHAR(4000) NOT NULL COMMENT '주소'
-  , TELEPHONE_NO VARCHAR(16) COMMENT '전화번호'
-  , REPRESENTATIVE_NM VARCHAR(16) COMMENT '대표자명'
-  , NOTE VARCHAR(4000) COMMENT '비고'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '회사[회사]';
-ALTER TABLE T_COMPANY ADD CONSTRAINT T_COMPANY_PK PRIMARY KEY(COMPANY_ID,COMPANY_NO);
--- CREATE INDEX T_COMPANY_IX1 ON T_COMPANY(COMPANY_ID,COMPANY_NO);
 
 
 
 
 
-
-
-
-
-
-
-
--- 공통 프로젝트 관리
-DROP TABLE IF EXISTS T_PROJECT CASCADE;
-CREATE TABLE IF NOT EXISTS T_PROJECT (
-    PROJECT_ID VARCHAR(16) NOT NULL COMMENT '프로젝트 ID'
-  , PROJECT_NM VARCHAR(256) NOT NULL COMMENT '프로젝트명'
-  , PROJECT_DEC VARCHAR(4000) COMMENT '프로젝트 설명'
-  , DEPT_ID VARCHAR(16) NOT NULL COMMENT '부서 ID'
-  , MANAGER_ID VARCHAR(16) NOT NULL COMMENT '관리자'
-  , MEMBER_ID VARCHAR(16) NOT NULL COMMENT '참여자'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , START_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '시작 일시'
-  , END_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '종료 일시'
-  , MODI_SE VARCHAR(32) COMMENT '수정 구분(I: 등록 / U: 수정 / D: 삭제 / C: 완료 / R: 삭제완료)'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '프로젝트 관리[프로젝트 관리]';
-ALTER TABLE T_PROJECT ADD CONSTRAINT T_PROJECT_PK PRIMARY KEY(PROJECT_ID);
--- CREATE INDEX T_PROJECT_IX1 ON T_PROJECT(PROJECT_ID);
-
-
-
--- 공통 도메인 관리
-DROP TABLE IF EXISTS T_DOMAIN CASCADE;
-CREATE TABLE IF NOT EXISTS T_DOMAIN (
-    DOMAIN_ID VARCHAR(16) NOT NULL COMMENT '도메인 ID'
-  , DOMAIN_NM VARCHAR(256) NOT NULL COMMENT '도메인명'
-  , DOMAIN_DEC VARCHAR(256) COMMENT '도메인 설명'
-  , DOMAIN_CODE VARCHAR(64) COMMENT '도메인 코드'
-  , PROJECT_ID VARCHAR(16) NOT NULL COMMENT '프로젝트 ID'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , MODI_SE VARCHAR(32) COMMENT '수정 구분(I: 등록 / U: 수정 / D: 삭제 / C: 완료 / R: 삭제완료)'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '도메인 관리[도메인 관리]';
-ALTER TABLE T_DOMAIN ADD CONSTRAINT T_DOMAIN_PK PRIMARY KEY(DOMAIN_ID);
--- CREATE INDEX T_DOMAIN_IX1 ON T_DOMAIN(DOMAIN_ID);
-
-
-
--- 공통 시나리오 관리
-DROP TABLE IF EXISTS T_SCENARIO CASCADE;
-CREATE TABLE IF NOT EXISTS T_SCENARIO (
-    SCENARIO_ID VARCHAR(16) NOT NULL COMMENT '시나리오 ID'
-  , SCENARIO_NM VARCHAR(256) NOT NULL COMMENT '시나리오명'
-  , SCENARIO_DEC VARCHAR(4000) COMMENT '시나리오 설명'
-  , SCENARIO_CODE VARCHAR(64) COMMENT '시나리오 코드'
-  , DOMAIN_ID VARCHAR(16) NOT NULL COMMENT '도메인 ID'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , MODI_SE VARCHAR(32) COMMENT '수정 구분(I: 등록 / U: 수정 / D: 삭제 / C: 완료 / R: 삭제완료)'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '시나리오 관리[시나리오 관리]';
-ALTER TABLE T_SCENARIO ADD CONSTRAINT T_SCENARIO_PK PRIMARY KEY(SCENARIO_ID);
--- CREATE INDEX T_SCENARIO_IX1 ON T_SCENARIO(SCENARIO_ID);
 
