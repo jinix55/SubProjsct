@@ -185,6 +185,8 @@ public interface Constant {
 		public static final String EAI_SOCKET = "es";
 		//패스워드 초기화
 		public static final String RESETPASSWORD = "rpw";
+		//알람
+		public static final String ALARM = "al";
 		
 	}
 	

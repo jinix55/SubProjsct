@@ -149,23 +149,30 @@ public class IdUtil {
 	}
 	
 	/**
-	 * 메뉴 ID : 메뉴
+	 * 회사 ID : 회사
 	 */
 	public String getCompanyId() {
 		return service.getId(Constant.ID.COMPANY);
 	}
 	
 	/**
-	 * 메뉴 ID : 메뉴
+	 * 레포트 ID : 레포트
 	 */
 	public String getReporttId() {
 		return service.getId(Constant.ID.REPORT);
 	}
 	
 	/**
-	 * 메뉴 ID : 메뉴
+	 * 리셋 ID : 리셋
 	 */
 	public String getResetId() {
 		return service.getId(Constant.ID.RESETPASSWORD);
+	}
+	
+	/**
+	 * 알람 ID : 알람
+	 */
+	public String getAlarmId() {
+		return service.getId(Constant.ID.ALARM);
 	}
 }
