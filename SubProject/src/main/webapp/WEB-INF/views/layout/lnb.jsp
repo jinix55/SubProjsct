@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <script type="text/javascript">
-	function goUrl(){
-		location.href="notice/List.jsp";
-	}
+$(document).ready(function() {
+	var panel = document.querySelector(".accordion_active").nextElementSibling;
+    panel.style.maxHeight = panel.scrollHeight + "px";
+});
+	
 </script>
 <div id="gnb">
 	<div class="gnb_header">
@@ -41,7 +43,9 @@
 			<c:forEach var="subMenu" items="${subMenuList}" varStatus="status">
 			<c:if test="${subMenu.lv eq 1}">
 			<li>
-				<button type="button" name="button" class="icon accordion<c:if test="${subMenu.menuSe eq 'M'}">_none</c:if> <c:if test="${subMenu.menuUrl eq myUri}">accordion_active</c:if>"
+				<button type="button" name="button" class="icon accordion<c:if test="${subMenu.menuSe eq 'M'}">_none</c:if>
+				<c:if test="${subMenu.menuUrl eq myUri}">accordion_active</c:if>
+				${fn:startsWith(myUri,subMenu.menuUrl) ? 'accordion_active' : ''}"
 				<c:if test="${subMenu.menuSe eq 'M'}">onclick="location.href='${subMenu.menuUrl}'"</c:if> >
 					<span class="txt">
 						<span class="txtlmg ${subMenu.iconNm}"></span>${subMenu.menuNm}
@@ -49,75 +53,17 @@
 				<c:if test="${subMenu.menuSe eq 'A'}"><span class="acclcon"><img src="../../images/checkbox_checked.png" alt="화살표"></span></c:if>
 				</button>
 				<div class="panel">
-				<ul>
-					<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status">
-						<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
-							<li class="on"><a href="${subMenu2.menuUrl }"><span class="hexagon"></span>${subMenu2.menuNm }</a></li>
-						</c:if>
-					</c:forEach>
-				</ul>
+					<ul>
+						<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status">
+							<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
+								<li <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl }"><span class="hexagon"></span>${subMenu2.menuNm }</a></li>
+							</c:if>
+						</c:forEach>
+					</ul>
 				</div>
 			</li>
 			</c:if>
 			</c:forEach>
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion"> -->
-<!-- 					<span class="txt"> -->
-<!-- 					 <span class="txtlmg system"></span>시스템관리 -->
-<!-- 					</span> -->
-<!-- 				  <span class="acclcon"><img src="../../images/checkbox_checked.png" alt="화살표"></span> -->
-<!-- 				</button> -->
-<!-- 				<div class="panel"> -->
-<!-- 					<ul> -->
-<!-- 						<li class="on"><a href="user/group/GroupMgt.html"><span class="hexagon"></span>그룹관리</a></li> -->
-<!-- 						<li><a href="auth/AuthMgt.html"><span class="hexagon"></span>권한관리</a></li> -->
-<!-- 						<li><a href="user/auth/AuthByUserMgt.html"><span class="hexagon"></span>사용자권한생성</a></li> -->
-<!-- 						<li><a href="menu/auth/MenuByAuthCreate.html"><span class="hexagon"></span>권한별메뉴생성</a></li> -->
-<!-- 					</ul> -->
-<!-- 				</div> -->
-<!-- 			</li> -->
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion"> -->
-<!-- 					<span class="txt"> -->
-<!-- 					 <span class="txtlmg menu"></span>메뉴관리 -->
-<!-- 					</span> -->
-<!-- 				  <span class="acclcon"><img src="../../images/checkbox_checked.png" alt="화살표"></span> -->
-<!-- 				</button> -->
-<!-- 				<div class="panel"> -->
-<!-- 					<ul> -->
-<!-- 						<li class="on"><a href="menu/menu/MenuMgt.html"><span class="hexagon"></span>메뉴관리</a></li> -->
-<!-- 						<li><a href="report/ReportMgt.html"><span class="hexagon"></span>레포트(프로그램관리)관리</a></li> -->
-<!-- 					</ul> -->
-<!-- 				</div> -->
-<!-- 			</li> -->
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion_none" onclick="location.href='BoardMenu.html'"> -->
-<!-- 					<span class="txt"> -->
-<!-- 						<span class="txtlmg board"></span>게시판관리 -->
-<!-- 				  </span> -->
-<!-- 				</button> -->
-<!-- 			</li> -->
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion_none" onclick="location.href='BachManage.html'"> -->
-<!-- 					<span class="txt"> -->
-<!-- 					 <span class="txtlmg bach"></span>배치작업관리 -->
-<!-- 					</span> -->
-<!-- 				</button> -->
-<!-- 			</li> -->
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion_none" onclick="location.href='UserManageLogList.html'"> -->
-<!-- 					<span class="txt"> -->
-<!-- 					 <span class="txtlmg loglist"></span>로그관리 -->
-<!-- 					</span> -->
-<!-- 				</button> -->
-<!-- 			</li> -->
-<!-- 			<li> -->
-<!-- 				<button type="button" name="button" class="accordion_none" onclick="location.href='Notifiations.html'"> -->
-<!-- 					<span class="txt"> -->
-<!-- 					 <span class="txtlmg alarm"></span>알람기능 -->
-<!-- 					</span> -->
-<!-- 				</button> -->
-<!-- 			</li> -->
 		</ul>
 	</div>
 </div>

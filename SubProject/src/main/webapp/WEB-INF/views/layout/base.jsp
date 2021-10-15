@@ -13,8 +13,8 @@
 <tiles:insertAttribute name="header" />
 <tiles:insertAttribute name="gnb" />
 <div id="wrap">
-<tiles:insertAttribute name="lnb" />
-    <tiles:insertAttribute name="body" />
+	<tiles:insertAttribute name="lnb" />
+	<tiles:insertAttribute name="body" />
 </div>
 <tiles:insertAttribute name="footer"/> <!-- /WEB-INF/views/layout/footer.jsp -->
 </body>
