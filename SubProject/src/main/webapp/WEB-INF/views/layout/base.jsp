@@ -9,12 +9,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <tiles:insertAttribute name="head"/> <!--  /WEB-INF/views/layout/head.jsp -->
-<body>
-<tiles:insertAttribute name="header" />
-<tiles:insertAttribute name="gnb" />
-<div id="wrap">
+<%-- <tiles:insertAttribute name="gnb" /> --%>
+<body class="sub">
+<div class="wrapper">
+	<div id="body">
 	<tiles:insertAttribute name="lnb" />
-	<tiles:insertAttribute name="body" />
+	<section class="container">
+		<tiles:insertAttribute name="header" />
+		<tiles:insertAttribute name="body" />
+	</section>
+	</div>
 </div>
 <tiles:insertAttribute name="footer"/> <!-- /WEB-INF/views/layout/footer.jsp -->
 </body>

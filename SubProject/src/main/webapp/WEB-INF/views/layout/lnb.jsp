@@ -3,67 +3,72 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <script type="text/javascript">
 $(document).ready(function() {
-	var panel = document.querySelector(".accordion_active").nextElementSibling;
-    panel.style.maxHeight = panel.scrollHeight + "px";
+	var intervalTime = 60000;
+// 	callAlarm();
+	setInterval(function() {
+// 		callAlarm();
+	}, intervalTime);
+	
 });
 	
+function callAlarm(){
+	$.ajax({
+		url : '/alarm/alarm/detail',
+		dataType : 'json',
+		success : function(data) {
+			var result = data;
+			console.log(result);
+			if(data.alarmList.length > 0){
+				$('.alarmTxet').html(data.alarmList.length);
+				$('.alarmCnt').show();;
+			}else{
+				$('.alarmTxet').html(0);
+				$('.alarmCnt').hide();;
+			}
+		}
+	});
+}
 </script>
-<div id="gnb">
-	<div class="gnb_header">
-	<h1 class="logo">
-		<a href="javascript:void(0)">
-			<span>로고</span>
-			<img src="../../images/icon-recycling.png" alt="로고">
-		</a>
-		<p>친환경을 최우선으로 생각하는 기업</p>
-	</h1>
-	</div>
-	<div class="gnb_stn">
-		<div class="gnb_user">
-			<button class="btn_gnb_user">
-				<span class="user_left">
-					<a href="login/ChangePswdResetLogin.html" title="정보수정"><img src="../../images/user.png" alt="정보수정"></a>
-					<span class="desc">
-						<span class="depart">PPLUS Echo</span><b class="name">플랫품</b>
-					</span>
-				</span>
-			<span class="acclcon"><img src="../../images/arr-name.png"></span>
-			</button>
-			<div class="user_cont">
-				<div class="inner_usercont">
-					<div class="btn_cont">
-						<button type="button" class="btn_default"><a href="#user-edit" data-toggle="modal">개인정보수정</a></button>
-						<button type="button" class="btn_default"><a href="/logout">로그아웃</a></button>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		<ul class="gnb_menu">
+<section id="lnb">
+	<a href="#" class="menu" title="메뉴 열기/닫기"><img src="/images/arr_menu_left.png" alt="메뉴 열기/닫기"/></a>
+	<div class="btn-lnb_user">
+		<span class="lnb-user">
+			<span class="img"><img src="/images/logo_p.png" alt="회사로고"></span>
+			<span class="desc">
+			<span class="depart">PPlueEco</span><p class="name">PKG Production&Development</p>
+			</span>
+		</span>
+	</div>
+	<nav style="touch-action: none;">
+		<ul style="transform: translate(0px, 0px) translateZ(0px);">
 			<c:forEach var="subMenu" items="${subMenuList}" varStatus="status">
 			<c:if test="${subMenu.lv eq 1}">
-			<li>
-				<button type="button" name="button" class="icon accordion<c:if test="${subMenu.menuSe eq 'M'}">_none</c:if>
-				<c:if test="${subMenu.menuUrl eq myUri}">accordion_active</c:if>
-				${fn:startsWith(myUri,subMenu.menuUrl) ? 'accordion_active' : ''}"
-				<c:if test="${subMenu.menuSe eq 'M'}">onclick="location.href='${subMenu.menuUrl}'"</c:if> >
-					<span class="txt">
-						<span class="txtlmg ${subMenu.iconNm}"></span>${subMenu.menuNm}
-					</span>
-				<c:if test="${subMenu.menuSe eq 'A'}"><span class="acclcon"><img src="../../images/checkbox_checked.png" alt="화살표"></span></c:if>
-				</button>
-				<div class="panel">
-					<ul>
-						<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status">
+				<li data-menu="${subMenu.menuId}M" ${fn:startsWith(myUri,subMenu.menuUrl) ? 'class=open' : ''}>
+					<c:if test="${subMenu.menuSe eq 'A'}">
+						<a href="#" title="${subMenu.menuNm}"><span class="txtlmg ${subMenu.iconNm}"></span>${subMenu.menuNm}</a>
+					</c:if>
+					<c:set var="menuhg" value="0" />
+					<c:set var="menuHginit" value="44" />
+					<c:forEach var="menuGpCnt" items="${menuGpCnt}" varStatus="status2">
+						<c:if test="${menuGpCnt.key eq subMenu.menuId && fn:startsWith(myUri,subMenu.menuUrl)}">
+							<c:set var="menuhg" value="${menuHginit * menuGpCnt.value}" />
+						</c:if>
+					</c:forEach>
+					<ul style="height: ${menuhg}px;">
+						<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status3">
 							<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
-								<li <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl }"><span class="hexagon"></span>${subMenu2.menuNm }</a></li>
+								<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li>
 							</c:if>
 						</c:forEach>
 					</ul>
-				</div>
-			</li>
+				</li>
 			</c:if>
 			</c:forEach>
-		</ul>
-	</div>
-</div>
+     	</ul>
+		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
+			<div class="iScrollIndicator" style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);"></div>
+		</div>
+	</nav>
+</section>
+				

@@ -1,457 +1,734 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<div id="contents">
-		<div class="content">
-			<div id="sub">
-			 <p>PPLUS Echo</p>/<a href="">시스템관리</a>
-			</div>
-			<div class="stn_top">
-				<form action="">
-					<div class="cont">
-					<h2 class="sta"><!--시스템관리--><span>그룹관리</span></h2>
-					<!-- 검색_S-->
-						<div class="search_wrap">
-							<div class="select_box">
-								<div class="custom_select">
-									<select name="">
-										<option value="0">분류</option>
-										<option value="1">그룹ID</option>
-										<option value="2">그룹명</option>
-										<option value="3">사업자번호</option>
-									</select>
-								</div>
-							</div>
-							<div class="search_box">
-								<input type="text" name="" value="" placeholder="">
-								<button type="button" name="button"><img src="../../images/icon-search.png"></button>
-							</div>
-						</div>
-						<div class="top_calendar">
-							<label for="delivery_period" class="delivery_period">기간별조회</label>
-							<div class="input_calendar">
-								<input type="text" name="" value="" class="datapicker" id="datepicker">
-							</div>
-						</div>
-					<!-- 검색_E-->
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<div class="content">
+	<!-- S_검색-->
+	<form id="searchFrm" action="/member/member" method="POST">
+		<input type="hidden" id="page" name="page" value="${pages.page}">
+		<div class="justify-content-between">
+			<div class="form-group">
+				<div class="form-inline">
+					<select class="select-box w150">
+						<option value="userId">사용자 ID</option>
+						<option value="userNm">사용자 명</option>
+					</select>
+				</div>
+				<div class="form-inline">
+					<div class="search-box w250">
+						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
+							class="search-box-append">
+							<button type="button" class="btn-search">
+								<img src="/images/icon_search.png" title="검색">
+							</button>
+						</span>
 					</div>
-				</form>
+				</div>
 			</div>
-
-			<div class="stn_cont">
-				<table>
-				<caption>그룹테이블</caption>
+		</div>
+	</form>
+	<!-- E_검색-->
+	<!-- S_그리드-->
+	<div class="content-table">
+		<div class="buttons-action" style="display: none">
+			<div>
+				<a href="#Alldelete" role="button" data-toggle="modal">
+					<button type="button" class="btn-alldelete">
+						전체삭제<img src="/images/icon_delete.png" title="삭제">
+					</button>
+				</a>
+				<button type="button" class="btn-allcancel">
+					삭제취소<img src="/images/icon_cancel.png" title="취소">
+				</button>
+			</div>
+			<div>
+				<span class="text-action">14 items selected</span>
+			</div>
+		</div>
+		<div class="scroll-auto">
+			<table class="table table-actions">
 				<colgroup>
-					<col width="4%">
-					<col width="5%">
-					<col width="10%">
-					<col width="15%">
-					<col width="auto">
-					<col width="15%">
-					<col width="10%">
-					<col width="15%">
+					<col style="width: 30px;">
+					<col style="width: 40px;">
+					<col style="width: 90px;">
+					<col style="width: 90px;">
+					<col style="width: 100px;">
+					<col style="width: 160px;">
+					<col style="width: 85px;">
+					<col style="width: 85px;">
+					<col style="width: 90px;">
 				</colgroup>
 				<thead>
-					<tr>
-						<th>
-							<input type="checkbox" name="dummy" id="cbAll">
-							<label for="cbAll"></label>
-						</th>
-						<th>
-						 <div><span>NO</span><img src="../../images/icon-sort.png" alt="정렬화살" class="sort"></div>
-						</th>
-						<th>그룹ID</th>
-						<th>그룹명</th>
-						<th>그룹설명</th>
-						<th>
-							<div>
-								<span>사업자번호</span>
-								<img src="../../images/icon-sort.png" alt="" class="sort">
-							</div>
-						</th>
-						<th>등록일</th>
-						<th>Actions</th>
+					<tr class="th-bg">
+						<th><input type="checkbox" name="all" id="checkAll"></th>
+						<th scope="col">번호</th>
+						<th scope="col">사용자 ID</th>
+						<th scope="col">사용자 이름</th>
+						<th scope="col">그룹 ID</th>
+						<th scope="col">사용자 이메일</th>
+						<th scope="col">전화번호</th>
+						<th scope="col">등록일</th>
+						<th scope="col">관리</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><input type="checkbox" name="cb" id="cb1"><label for="cb1"></label></td>
-						<td>1</td>
-						<td><a href="#detail" role="button" data-toggle="modal" class="btn_detailPage">GROUP_RTDATE</a></td>
-						<td>슈퍼관리자</td>
-						<td>모든 관한을 관리하는 관리자(추가/수정/삭제)</td>
-						<td>123-45-67890</td>
-						<td>2021-10-05</td>
-						<td>
-							<a href="#edit" role="button" data-toggle="modal" class="btn_edit"><span>수정</span><img src="../../images/icon-modify2.png" alt="수정하기"></a>
-							<a href="#delete" role="button" data-toggle="modal" class="btn_delete2"><span>삭제</span><img src="../../images/icon-delete2.png" alt="삭제하기"></a>
-						</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox" name="cb" id="cb2"><label for="cb2"></label></td>
-						<td>2</td>
-						<td><a href="javascript:void(0)" class="btn_detailPage">그룹ID그룹ID그룹ID</a></td>
-						<td>그룹명그룹명그룹명그룹명그룹명</td>
-						<td>그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명</td>
-						<td>123-4567-8910</td>
-						<td>2021-10-05</td>
-						<td>
-							<a href="" class="btn_edit"><span>수정</span><img src="../../images/icon-modify2.png" alt="수정하기"></a>
-							<a href="" class="btn_delete2"><span>삭제</span><img src="../../images/icon-delete2.png" alt="삭제하기"></a>
-						</td>
-					</tr>
+					<c:forEach var="member" items="${members}" varStatus="status">
+						<tr>
+							<th><input type="checkbox" name="chk"></th>
+							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
+							<td class="text-point">${member.userId}</td>
+							<td>${member.userNm}</td>
+							<td>${member.authNm}</td>
+							<td>${member.email}</td>
+							<td>${member.phone}</td>
+							<td><spring:eval expression="member.rgstDt" /></td>
+							<td>
+								<div class="btn-group">
+									<a href="#register" onclick="detailView('${member.userId}');" data-id="${member.userId}" role="button" data-toggle="modal" class="btn-tbl_icon">
+										<img src="/images/icon_edit.png" alt="수정하기" class="tbl-icon2">
+									</a>
+									<a href="#delete" role="button" data-toggle="modal" class="btn-tbl_icon">
+										<img src="/images/icon_delete2.png" alt="삭제하기" class="tbl-icon2">
+									</a>
+								</div>
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
-				</table>
-			</div>
+			</table>
+		</div>
+	</div>
+	<!-- E_그리드-->
+	<div class="btn-group pt15 tr">
+		<button type="button" class="button btn-success" id="registView" href="#register"
+			data-toggle="modal">
+			등록
+			<!-- 			<a href="#register" data-toggle="modal">등록</a> -->
+		</button>
+	</div>
+	<!-- S_페이징-->
+	<div class="board-paging">
+	</div>
+	<!-- E_페이징-->
+</div>
 
-			<div class="stn_btm">
-				<div class="btn_cont">
-					<button type="button" name="button" class="btn_delete" disabled>삭제</button>
-					<button type="button" class="btn_register"><a href="#register" data-toggle="modal">등록</a></button>
+<!-- 레이어 팝업 - 등록  -->
+<form id="frm">
+<div id="register" class="modal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-content" style="width: 800px">
+		<div class="modal-header">
+			<h4 class="modal-title">등록</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="../../images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">등록일시</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="rgstDt" name="rgstDt" type="text" class="text-input">
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="paging_cont">
-					<div class="paging">
-						<a href="#" class="btn_paging first"><span class="blind">처믕ㅁ</span></a>
-						<a href="#" class="btn_paging prev disabled"><span class="blind">이전</span></a>
-						<a href="#" class="on">1</a>
-						<a href="#"><span>2</span></a>
-						<a href="#"><span>3</span></a>
-						<a href="#" class="btn_paging next"><span class="blind">다음</span></a>
-						<a href="#" class="btn_paging prev last"><span class="blind">끝</span></a>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">수정일시</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="modiDt" name="modiDt" type="text" class="text-input">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 ID<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="userId" name="userId" type="text" class="text-input" placeholder="ID를 입력해 주세요">
+								<span class="search-box-append">
+									<button type="button" class="btn-search" id="idSearch">
+										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 이름<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="userNm" name="userNm" type="text" class="text-input" placeholder="이름을 입력해 주세요">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사명<em>*</em></label>
+						<div class="col-75">
+							<select id="companyCode" name="companyCode" class="select-box">
+								<option value="none">선택안함</option>
+								<c:forEach items="${companys }" var="company">
+									<option value="${company.companyCode}">${company.companyNm }</option>
+								</c:forEach> 
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">그룹 ID<em>*</em></label>
+						<div class="col-75">
+							<select id="authId" name="authId" class="select-box">
+								<option value="none">선택안함</option>
+								<c:forEach items="${roles }" var="role">
+									<option value="${role.authId}">${role.authNm }</option>
+								</c:forEach> 
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">이메일 주소<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<div class="email-add">
+									<input id="email1" name="email1" type="text" class="text-input email">
+								</div>
+								<div class="email-add">
+									<input id="email2" name="email2" type="text" class="text-input email">
+								</div>
+								<input type="hidden" id="email" name="email" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<input type="hidden" id="phone" name="phone" /> <label
+							class="col-25 form-label">연락처<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<div class="phone-number">
+									<input id="phone1" name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3">
+								</div>
+								<div class="phone-number">
+									<input id="phone2" name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4">
+								</div>
+								<div class="phone-number">
+									<input id="phone3" name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">잠금상태</label>
+						<div class="col-75">
+							<div class="form-input-box">
+<!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
+								<div class="btn-sm di-inblock">
+									<input id="lockY" name="lockYn" type="radio" value="Y">
+									<label for="lockY" class="mr05">활성화</label>
+								</div>
+								<div class="btn-sm di-inblock">
+									<input id="lockN" name="lockYn" type="radio" value="N">
+									<label for="lockN" class="mr05">비활성화</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">기한적용</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-sm di-inblock">
+									<input id="dtLimitY" name="dtLimitYn" type="radio" value="Y">
+									<label for="dtLimitY" class="mr05">적용</label>
+								</div>
+								<div class="btn-sm di-inblock">
+									<input id="dtLimitN" name="dtLimitYn" type="radio" value="N">
+									<label for="dtLimitN" class="mr05">미적용</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용여부</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-sm di-inblock">
+									<input id="useY" name="useYn" type="radio" value="Y">
+									<label for="useY" class="mr05">사용</label>
+								</div>
+								<div class="btn-sm di-inblock">
+									<input id="useN" name="useYn" type="radio" value="N">
+									<label for="useN" class="mr05">미사용</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">기간설정</label>
+						<div class="col-75">
+							<div class="search-date">
+								<input onkeyup="this.value = date_mask(this.value)" type="text"
+									id="startDt" name="dateFrom" class="text-input2">
+							</div>
+							<div class="search-date">
+								<input onkeyup="this.value = date_mask(this.value)" type="text"
+									id="endDt" name="dateTo" class="text-input2">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-<!--내용_E-->
-<!-- 등록 Modal -->
-<div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<!-- Modal content-->
-	<div class="modal_content" style="width:600px">
-		<div class="modal_header">
-			<h4 class="modal_title">그룹등록</h4>
-			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button id="regBtn" type="button" class="button btn-success insert" >저장</button>
+			<button type="button" class="button btn-cancel cancle" data-dismiss="modal">취소</button>
 		</div>
-		<div class="modal_body">
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹명<em>*</em></p>
-				<div class="flex_item row input_group input_btn">
-				<span class="form_control-validation">
-				<input type="text" placeholder="예시 : 슈퍼관리자" class="form_control"></span>
-				<button type="button" class="btn_default"><a href="#overlap" role="button" data-toggle="modal">중복체크</a>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹설명</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">대표자명</p>
-				<div class="flex_item">
-				<span><input type="text" value="" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">사업자번호</p>
-				<div class="flex_item">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='2' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='5' autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">연락처</p>
-				<div class="flex_item">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="stn_btm">
-				<div class="btn_cont center">
-					<button type="button" class="btn_register"><a href="#register" data-toggle="modal">등록</a></button>
+	</div>
+</div>
+</form>
+
+<!-- 레이어 팝업 아이디 중복 확인 -->
+<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<div class="modal-content" style="width: 400px">
+		<div class="modal-header">
+			<h4 class="modal-title">중복확인</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 ID<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="re_userId" name="re_userId" type="text" class="text-input">
+								<span class="search-box-append">
+									<button id="re_idSearch" name="re_idSearch" type="button" class="btn-search">
+										<img src="/images/icon_search.png" title="검색">
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-notice"  style="display:none">* [ww]는 사용가능한 ID입니다</div>
 				</div>
 			</div>
+		</div>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-success idCheck" data-dismiss="modal">확인</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
 
-<!--중복체크 Modal-->
-<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
-<!-- Modal content-->
-	<div class="modal_content" style="width:400px">
-		<div class="modal_header">
-			<h4 class="modal_title">중복체크</h4>
+<!-- 레이어 팝업 - delete -->
+<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<!-- Modal content-->
+	<div class="modal-content" style="width: 400px">
+		<div class="modal-header">
+			<h4 class="modal-title">삭제</h4>
 			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
+				<img src="/images/icon_close.png">
+			</button>
 		</div>
-		<div class="modal_body">
-		 <span class="point">슈퍼관리자</span>는 사용 가능한 그룹입니다.
-		</div>
-		<div class="modal_footer stn_btm">
-			<div class="btn_cont center">
-			 <button type="button" class="btn_register"><a href="#overlap" data-toggle="modal" role="button" data-toggle="modal">확인</a></button>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<div class="tc">
+							(<em class="text-bold">PEuser01</em>)삭제합니다.
+						</div>
+					</div>
+				</div>
 			</div>
+		</div>
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-warning delete" data-dismiss="modal">삭제</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+		</div>
+	</div>
+</div>
+<!-- 레이어 팝업 delete All -->
+<div id="Alldelete" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<!-- Modal content-->
+	<div class="modal-content" style="width: 400px">
+		<div class="modal-header">
+			<h4 class="modal-title">전체삭제</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<div class="tc">
+							<em class="text-bold">14 items selected</em><br />삭제하시겠습니까?
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer btn-tbl_group">
+			<button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
 
-<!-- 수정 Modal-->
-<div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<!-- Modal content-->
-	<div class="modal_content" style="width:600px">
-		<div class="modal_header">
-			<h4 class="modal_title">그룹수정</h4>
-			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
-		</div>
-		<div class="modal_body">
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹명</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="슈퍼관리자" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹설명</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="모든 관한을 관리하는 관리자(추가/수정/삭제)" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">대표자명</p>
-				<div class="flex_item">
-				<span><input type="text" value="김아무개" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">사업자번호</p>
-				<div class="flex_item">
-				<span><input type="text" value="123" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="45" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='2' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="67890" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='5' autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">연락처</p>
-				<div class="flex_item">
-				<span><input type="text" value="123" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="4567" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control"></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="8901" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="stn_btm">
-				<div class="btn_cont center">
-				 <button type="button" class="btn_register"><a href="#edit" data-toggle="modal">수정</a></button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<script>
 
-<!--삭제 Modal-->
-<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
-<!-- Modal content-->
-	<div class="modal_content" style="width:400px">
-		<div class="modal_header">
-			<h4 class="modal_title">삭제</h4>
-			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
-		</div>
-		<div class="modal_body">
-		 <span class="point">슈퍼관리자</span>을 삭제하시겠습니까?
-		</div>
-		<div class="modal_footer stn_btm">
-			<div class="btn_cont center">
-				<button type="button" class="btn_delete"><a href="#delete" data-toggle="modal">취소</a></button>
-				<button type="button" class="btn_register ml_6px"><a href="#delete" data-toggle="modal">삭제하기</a></button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- 상세 Modal-->
-<div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<!-- Modal content-->
-	<div class="modal_content" style="width:600px">
-		<div class="modal_header">
-			<h4 class="modal_title">상세정보</h4>
-			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
-		</div>
-		<div class="modal_body">
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">등록일</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="2010-10-05" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹ID</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="슈퍼관리자" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹명</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="슈퍼관리자" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">그룹설명</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="모든 관한을 관리하는 관리자(추가/수정/삭제)" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">대표자명</p>
-				<div class="flex_item">
-				<span><input type="text" value="김아무개" autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">사업자번호</p>
-				<div class="flex_item">
-				<span><input type="text" value="123" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="45" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='2' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="67890" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='5' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">연락처</p>
-				<div class="flex_item">
-				<span><input type="text" value="123" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='3' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="4567" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				<div class="flex_item ml_6px">
-				<span><input type="text" value="8901" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength='4' autofocus="autofocus" class="form_control" disabled></span>
-				</div>
-				</label>
-			</div>
-			<div class="stn_btm">
-				<div class="btn_cont center">
-					<button type="button" class="btn_delete"><a href="#detail" data-toggle="modal">닫기</a></button>
-					<button type="button" class="btn_register ml_6px"><a href="#detail" data-toggle="modal">수정</a></button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- 개인정보수정 Modal -->
-<div id="user-edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<!-- Modal content-->
-	<div class="modal_content" style="width:600px">
-		<div class="modal_header">
-			<h4 class="modal_title">개인정보수정</h4>
-			<button type="button" class="close" data-dismiss="modal">
-			<a href="javascript:layerPopupClose(layerDeletePopup);"><img src="../../images/icon-close.png"></a></button>
-		</div>
-		<div class="modal_body">
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">ID</p>
-				<div class="flex_item">
-				<span>
-				<input type="text" value="RTDATA" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">비밀번호</p>
-				<div class="flex_item">
-				<span><input type="password" value="1234" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">새 비밀번호</p>
-				<div class="flex_item">
-				<span><input type="password" value="" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="row h_45px">
-				<label class="type_flex align_items-center">
-				<p class="w_100px">새 비밀번호 확인</p>
-				<div class="flex_item">
-				<span><input type="password" value="" autofocus="autofocus" class="form_control"></span>
-				</div>
-				</label>
-			</div>
-			<div class="stn_btm">
-				<div class="btn_cont center">
-				 <button type="button" class="btn_register"><a href="#user-edit" data-toggle="modal">수정</a></button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript" src="/js/ui/global_script.js"></script>
+	var totalPage = ${pages.totalPage};
+	var page = ${pages.page}; 
+	var pageSize = ${pages.pageSize}; 
+	
+	// var totalPage = 10;
+	// var page = 2; 
+	// var pageSize = 10; 
+	
+	$('.board-paging').bootpag({        // 페이징을 표시할 div의 클래스
+		total: totalPage,  // 페이징모델의 전체페이지수
+	    page: page,        // 페이징모델의 현재페이지번호
+	    maxVisible: pageSize,  // 보여질 최대 페이지수
+	    firstLastUse: true,             // first와 last사용유무
+	    wrapClass: 'paging',              // 페이징을 감싼 클래스명
+	    activeClass: 'on',              // 현재페이지의 클래스명
+	    disabledClass: 'disabled',      // 각 항목별 클래스 지정
+	    nextClass: 'next',
+	    prevClass: 'prev',
+	    lastClass: 'last',
+	    firstClass: 'first',
+	}).on("page", function(event, num){
+	    $("#page").val(num);
+	    $("#searchFrm").submit();
+	});
+	
+	function detailView(id){
+		resetView();
+		$('#rgstDt').attr('disabled',true);
+		$('#rgstDt').parents('.col-50').show();
+		$('#modiDt').attr('disabled',true);
+		$('#modiDt').parents('.col-50').show();
+		$('#register input').attr('disabled',true);
+		
+		$.ajax({
+			url : '/member/member/detail/'+id,
+			dataType : 'json',
+			type : "POST",
+			async: false,
+			success : function(data) {
+				var result = data;
+				console.log(result);
+				setView(data);
+			}
+		});
+	}
+	
+	function setView(data){
+		var phone1 = '';
+		var phone2 = '';
+		var email1 = '';
+		var email2 = '';
+		var companyCd = 'none';
+		var authId = 'none';
+		
+		if(data.phone){
+			phone1 = data.phone.split("-")[0];
+			phone2 = data.phone.split("-")[1];
+			phone3 = data.phone.split("-")[2];
+		}
+		
+		if(data.email){
+			email1 = data.email.split("@")[0];
+			email2 = data.email.split("@")[1];
+		}
+		
+		if(data.companyCode){
+			companyCd = data.companyCode;
+		}
+		
+		if(data.authId){
+			authId = data.authId;
+		}
+		
+		$('#userId').val(data.userId);
+		$('#userNm').val(data.userNm);
+		$('#email1').val(email1);
+		$('#email2').val(email2);
+		$('#email').val(data.email);
+		$('#phone1').val(phone1);
+		$('#phone2').val(phone2);
+		$('#phone3').val(phone3);
+		$('#phone').val(data.phone);
+		$('#companyCode').val(companyCd);
+		$('#authId').val(authId);
+		$('#use'+data.useYn).prop('checked',true);
+// 		if(data.lockYn == 'Y'){
+// 			$('#lockYn').addClass('btn-yes');
+// 			$('#lockYn').text('Yes');
+// 			$('#lockYn').css('background','red');
+// 			$('#lockYn').css('cursor',' pointer');
+// 		}else{
+// 			$('#lockYn').addClass('btn-no');
+// 			$('#lockYn').text('No');
+// 			$('#lockYn').css('background','darkgray');
+// 			$('#lockYn').css('background','darkgray');
+// 			$('#lockYn').css('cursor',' unset');
+// 		}
+		$('#lock'+data.lockYn).prop('checked',true);
+		$('#dtLimit'+data.dtLimitYn).prop('checked',true);
+		$('#startDt').val(data.startDt);
+		$('#endDt').val(data.endDt);
+		$('#rgstDt').val(data.rgstDt);
+		$('#modiDt').val(data.modiDt);
+	}
+	
+	function date_mask(objValue) {
+		var v = objValue.replace("--", "-");
+	    if (v.match(/^\d{4}$/) !== null) {
+	        v = v + '-';
+	    } else if (v.match(/^\d{4}\-\d{2}$/) !== null) {
+	        v = v + '-';
+	    }
+	    return v;
+	}
+	
+	function resetInput(){
+		$('#register input').attr('disabled',false);
+		$('#register select').attr('disabled',false);
+		$('.search-box-append').show();
+		$('#register input').val('');
+		$('#lockY').val('Y');
+		$('#lockN').val('N');
+		$('#dtLimitY').val('Y');
+		$('#dtLimitN').val('N');
+		$('#useY').val('Y');
+		$('#useN').val('N');
+		$('#companyCode').val('none');
+		$('#authId').val('none');
+		$('#lockN').prop('checked',true);
+		$('#dtLimitY').prop('checked',true);
+		$('#useY').prop('checked',true);
+		$('#regBtn').removeClass('edit');
+		$('#regBtn').removeClass('save');
+		$('#regBtn').addClass('insert');
+	}
+	
+	function resetView(){
+		$('.search-box-append').hide();
+		$('#rgstDt').attr('disabled',true);
+		$('#rgstDt').parents('.col-50').show();
+		$('#modiDt').attr('disabled',true);
+		$('#modiDt').parents('.col-50').show();
+		$('#register .modal-title').text('상세');
+		$('#register input').attr('disabled',true);
+		$('#register select').attr('disabled',true);
+		$('#regBtn').removeClass('insert');
+		$('#regBtn').addClass('edit');
+		$('#regBtn').text('수정');
+	}
+	
+	function idSearch(){
+		var idSearch = $('#userId').val();
+		if(idSearch){
+			$('#re_userId').val(idSearch);
+			searchIdAction(idSearch);
+		}else{
+			$('#re_userId').val('');
+			$('.form-notice').text("확인이 필요합니다.");
+			$('.form-notice').hide();
+		}
+	}
+	
+	function re_idSearch(){
+		var re_idSearch = $('#re_userId').val();
+		if(re_idSearch){
+			searchIdAction(re_idSearch);
+		}
+	}
+	
+	function searchIdAction(idSearch){
+		$.ajax({
+		    type : 'post',
+		    url : '/member/member/detail/popup/'+idSearch,
+		    data : {memberId:idSearch},
+		    dataType : 'text',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+		    	console.log(result)
+		    	if(result == 'none'){
+		    		$('.form-notice').text("이미 사용중인 아이디 입니다.");
+		    		$('.form-notice').addClass("colorRed");
+		    		$('#idSearch').removeClass('search-Success');
+		    	}else{
+		    		$('.form-notice').text("사용 가능한 아이디 입니다.");
+		    		$('.form-notice').addClass("fontColorGreen");
+		    		$('#userId').val(result);
+		    		$('#re_userId').val(result);
+		    		$('#idSearch').addClass('search-Success');
+		    	}
+		    		$('.form-notice').show();
+		    }
+		});
+	}
+	
+	function idCheckReset(){
+		$('.form-notice').text("확인이 필요합니다.");
+		$('.form-notice').hide();
+		$('.form-notice').hide();
+		if($('#re_userId').val() == ''){
+			$('#idSearch').removeClass('search-Success');
+		}
+	}
+	
+	function setEdit(){
+		$('#register input').attr('disabled',false);
+		$('#register select').attr('disabled',false);
+		$('#userId').attr('disabled',true);
+		$('#userNm').attr('disabled',true);
+		$('#rgstDt').attr('disabled',true);
+		$('#modiDt').attr('disabled',true);
+		$('#regBtn').text('저장');
+		$('#regBtn').removeClass('edit');
+		$('#regBtn').addClass('save');
+	}
+	
+	function userInsert(){
+		var has = $('#idSearch').hasClass('search-Success');
+		if(!has && $('#regBtn').hasClass('save')){
+			alert('아이디 중복 학인이 필요합니다.');
+			return false;
+		}
+		
+		var param =  $('#frm').serialize();
+		insertAjax(param,'insert');
+	}
+	
+	function userUpdate(){
+		var param =  $('#frm').serialize();
+		
+		insertAjax(param,'update');
+	}
+	
+	function insertAjax(param,action){
+		$.ajax({
+		    type : 'post',
+		    url : '/member/member/'+action,
+		    data : param,
+		    dataType : 'text',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+		    	if(result == 'Update' || result == 'Insert'){
+		    		location.href = '/member/member';
+		    	}
+		    }
+		});
+	}
+	
+	function setPhoneNo(){
+		var phone = $('#phone1').val()+'-'+$('#phone2').val()+'-'+$('#phone3').val(); 
+		$('#phone').val(phone);
+	}
+	
+	function setEmail(){
+		var email = $('#email1').val()+'@'+$('#email2').val(); 
+		$('#email').val(email);
+	}
+	
+	function setNumber(objValue){
+		str = objValue.replace(/[^0-9]/gi,"").toUpperCase();
+	    return str;
+	}
+	
+	$(document).ready(function() {
+		$('#registView').click(function(){
+			resetInput();
+			$('#register .modal-title').text('등록');
+			$('#register .insert').text('저장');
+			$('#rgstDt').attr('disabled',true);
+			$('#rgstDt').parents('.col-50').hide();
+			$('#modiDt').attr('disabled',true);
+			$('#modiDt').parents('.col-50').hide();
+		});
+		
+		$("#idSearch").keyup(function(e) {
+	        if(e.keyCode == '13'){
+	        	$("#idSearchCheck").click();
+	        	idSearch();
+	        }
+	    });
+		
+		$("#idSearch, #idSearchCheck").mouseup(function(e) {
+			$("#idSearchCheck").click();
+			idSearch();
+	    });
+		
+		$('#re_idSearch').click(function(){
+			re_idSearch();
+		});
+		
+		$('.idCheck').click(function(){
+			idCheckReset();
+		});
+		
+		$('.close, .cancle').click(function(){
+			resetInput();
+		});
+		
+		$('#regBtn').click(function(){
+			if($('#regBtn').hasClass('insert')){
+				userInsert();
+			}
+			if($('#regBtn').hasClass('save')){
+				userUpdate();
+			}
+			if($('#regBtn').hasClass('edit')){
+				setEdit();
+			}
+		});
+		
+		$('.email').keyup(function(){
+			setEmail();
+		});
+		
+		$('.phone').keyup(function(){
+			setPhoneNo();
+		});
+	});
+</script>

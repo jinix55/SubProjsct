@@ -1,8 +1,10 @@
 package com.portal.adm.alarm.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.portal.adm.alarm.model.AlarmModel;
+import com.portal.adm.member.model.MemberModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
 /**
@@ -58,5 +60,17 @@ public interface AlarmMapper {
     * @return  알람 삭제
     */
    AlarmModel select(String alarmId);
+   
+   /**
+    * 알람정보를 삭제한다.
+    *
+    * @param alarmModel
+    * @return  알람 삭제
+    */
+   List<AlarmModel> selectAlarmListView(String userId);
+   
+   MemberModel selectAlarmAuth(MemberModel model);
+   
+   AlarmModel selectAlarmCheck(AlarmModel model);
 
 }

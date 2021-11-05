@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.company.model.CompanyModel;
 import com.portal.adm.company.service.CompanyService;
+import com.portal.adm.member.model.MemberModel;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -29,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * 시스템관리 / 회사관리 컨트롤러
  */
 @Slf4j
-@RequestMapping("/admin")
+@RequestMapping("/system")
 @Controller
 public class CompanyController {
 
@@ -48,6 +50,7 @@ public class CompanyController {
     @GetMapping("/company")
     public String company(@ModelAttribute CompanyModel companyModel, Model model) {
     	log.info(" =============== company get in ==============");
+    	log.info(" ====== company get companyModel =======> {} ",companyModel);
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
         model.addAttribute("companys", models);
@@ -63,12 +66,13 @@ public class CompanyController {
      * @return
      */
     @PostMapping("/company")
-    public String company(@ModelAttribute CompanyModel companyModel, RedirectAttributes attributes) {
-    	log.info(" =============== company get in ==============");
+    public String companyPost(@ModelAttribute CompanyModel companyModel, Model model) {
+    	log.info(" =============== company post in ==============");
+    	log.info(" ====== company post companyModel =======> {} ",companyModel);
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
-        attributes.addAttribute("companys", models);
-        attributes.addAttribute("pages", companyModel);
+        model.addAttribute("companys", models);
+        model.addAttribute("pages", companyModel);
         
         return "company/companyMgt";
     }
@@ -80,8 +84,8 @@ public class CompanyController {
      * @return
      */
     @PostMapping("/company/insert")
-    public ResponseEntity<String> companySave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	try {
+    @ResponseBody
+    public String companySave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     		String result = null;
     		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
@@ -122,10 +126,39 @@ public class CompanyController {
     			result = "권한이 없습니다./n관리자에게 문의하세요.";
     		}
 
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
+    		return result;
+    }
+    
+    /**
+     * 회사그룹을 삭제한다.
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/company/popup")
+    @ResponseBody
+    public String companySelect(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    	try {
+    		String result = null;
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    			
+    			String searchCode = request.getParameter("search");
+    			log.info("============== searchCode => "+searchCode);
+    			
+    			String comapnyCdoe = companyService.selectCode(searchCode);
+				if( comapnyCdoe == null || StringUtils.equals(comapnyCdoe, "")) {
+					return searchCode.toUpperCase();
+				}else {
+					return "none";
+				}
+    		} else {
+    			result = "권한이 없습니다./n관리자에게 문의하세요.";
+    		}
+    		
+    		return result;
+    	} catch (Exception e) {
+    		return "권한이 없습니다./n관리자에게 문의하세요.";
+    	}
     }
     
     /**
@@ -135,19 +168,16 @@ public class CompanyController {
      * @return
      */
     @PostMapping("/company/delete")
-    public ResponseEntity<String> companyDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @ResponseBody
+    public String companyDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
         	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
 	            CompanyModel companyModel = new CompanyModel();
 	
 	            String companyId = request.getParameter("companyId");
-	            String companyCode = request.getParameter("companyCode");
-	            String companyNo = request.getParameter("companyNo");
-	
+	            log.info("============== companyId => "+companyId);
 	            companyModel.setCompanyId(companyId);
-	            companyModel.setCompanyCode(companyCode);
-	            companyModel.setCompanyNo(companyNo);
 	
 	            companyModel.setModiId(authUser.getMemberModel().getUserId());
 	
@@ -156,11 +186,11 @@ public class CompanyController {
         		result = "권한이 없습니다./n관리자에게 문의하세요.";
         	}
 
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return result;
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+            return "권한이 없습니다./n관리자에게 문의하세요.";
         }
-    }    
+    }
     
     /**
      * 회사 정보를 조회한다.
@@ -168,11 +198,12 @@ public class CompanyController {
      * @param companyId
      * @return
      */
-    @GetMapping("/company/detail/{companyId}")
-    public ResponseEntity<CompanyModel> getCompanysForCompanyId(@PathVariable("companyId") String companyId) {
+    @PostMapping("/company/detail/{companyId}")
+    @ResponseBody
+    public CompanyModel getCompanysForCompanyId(@PathVariable("companyId") String companyId) {
 		CompanyModel companyModels = companyService.selectCompanyId(companyId);
 
-        return new ResponseEntity<>(companyModels, HttpStatus.OK);
+        return companyService.selectCompanyId(companyId);
     }
     
 }

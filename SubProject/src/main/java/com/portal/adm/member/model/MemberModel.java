@@ -22,6 +22,8 @@ public class MemberModel implements Serializable {
     private String pstnCode;           // 직위코드
     private String pstnNm;           // 직위명
     private String deptCode;           // 부서코드
+    private String email;           // 부서코드
+    private String phone;           // 부서코드
     private String deptNm;           // 부서명
     private String hdeptCode;           // 상위부서코드
     private String companyCode;       // 회사코드

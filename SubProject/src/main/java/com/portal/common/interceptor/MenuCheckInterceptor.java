@@ -1,12 +1,15 @@
 package com.portal.common.interceptor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.binding.BindingException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -54,10 +57,28 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 					}
 					
 					try {
+						Map<String,Object> menuGpCnt = new  HashMap<String,Object>();
 						String upperMenuId = menuService.selectUpperMenuIdForMenuUrl(uri);
 						List<MenuModel> subMenuList = menuService.selectLeftMenuListWithAuth(upperMenuId,authUser.getMemberModel().getAuthId());
-						log.info("subMenuList : {}",subMenuList.toArray());
+						String id = "";
+						int cnt = 0;
+						for(int i = 0 ; i < subMenuList.size() ; i++){
+							if(StringUtils.equals(subMenuList.get(i).getMenuSe(),"A")) {
+								id = subMenuList.get(i).getMenuId();
+							} else {
+								if(!StringUtils.equals(subMenuList.get(i).getUpMenuId(),id)) {
+									id = "";
+								}
+							}
+							if(StringUtils.equals(subMenuList.get(i).getUpMenuId(),id)) {
+								cnt++;
+								menuGpCnt.put(subMenuList.get(i).getUpMenuId(), cnt);
+							}else {
+								cnt = 0;
+							}
+						}
 						modelAndView.addObject("subMenuList", subMenuList);
+						modelAndView.addObject("menuGpCnt", menuGpCnt);
 						modelAndView.addObject("myUri", request.getRequestURI());
 					} catch (BindingException e) {
 						log.warn("urlCheck Error {}", e.getMessage());

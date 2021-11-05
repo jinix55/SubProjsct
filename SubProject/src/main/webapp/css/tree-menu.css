@@ -1,0 +1,37 @@
+ul.checktree, ul.checktree ul {
+ list-style-type: none;
+ padding: 0;
+ margin: 0;
+ font-size:  13px;
+}
+
+ul.checktree li {
+ background: url(../../images/node.gif) no-repeat;
+ margin: 0;
+ padding: 4px 0 0 16px;
+ cursor: default;
+}
+ul.checktree li.last {
+ background-image: url(../../images/node-last.gif);
+}
+ul.checktree li.plus {
+ background-image: url(../../images/plus.gif);
+}
+ul.checktree li.plus-last {
+ background-image: url(../../images/plus-last.gif);
+}
+ul.checktree li.minus {
+ background-image: url(../../images/minus.gif);
+}
+ul.checktree li.minus-last {
+ background-image: url(../../images/minus-last.gif);
+}
+
+ul.checktree span.count {
+ text-indent: 5pt;
+ color: #999;
+}
+.checktree input[type="checkbox"]{vertical-align:middle;width:20px;height:20px;margin-left: 10px;}
+.checktree label{font-size:14px; color:#333;display:inline-block;margin-left: 4px; }
+.checktree input[type="checkbox"] + label{}
+.checktree ul li{padding-right: 10px;font-size: 13px;}

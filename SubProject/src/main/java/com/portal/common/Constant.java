@@ -28,6 +28,10 @@ public interface Constant {
 	public static final String YES = "Y";
 	public static final String NO = "N";
 	
+	public interface ApiKey {
+		public static final String KAKAO_REST_API_KEY = "1de7a7ba13af6e8eae7035efa4e9cbb1";
+	}
+	
 	//File
 	public interface File {
 		public static final String AWS_S3 = "S3";

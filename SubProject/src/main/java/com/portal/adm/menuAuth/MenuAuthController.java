@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  * 시스템관리 / 메뉴관리 컨트롤러
  *
  */
-@RequestMapping("/admin")
+@RequestMapping("/menu")
 @Controller
 @Slf4j
 public class MenuAuthController {
@@ -100,7 +100,7 @@ public class MenuAuthController {
         model.addAttribute("members", memberService.selectMemberList(Mcriteria));
         criteria.setTotalCount(memberService.selectMemberListCount(Mcriteria));
         model.addAttribute("pages", Mcriteria);
-        return "menu/menuAuth";
+        return "menu/menuAuthMgt";
 	}
 
 	@PostMapping("/menuAuth")

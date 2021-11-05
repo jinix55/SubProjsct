@@ -7,14 +7,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>SIGN IN | PPlus</title>
 <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/reset.css">
 <script type="text/javascript" src="/js/plugins/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="/js/plugins/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/js/plugins/datepicker/datepicker.min.js"></script>
 <script type="text/javascript" src="/js/plugins/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/plugins/iscroll.js"></script><!-- lnb메뉴스크롤-->
+<script type="text/javascript" src="/js/ui/global_script.js"></script><!-- lnb-->
+<title>'PPLUS Echo'(친환경 통합관리 서비스)</title>
 </head>
 
 <script>
@@ -26,24 +26,48 @@
 		// 		$("#sso").val("Y");
 		// 		$("#frm").submit();
 		// 	}
-
+		$('.pass_reset').hide();
+		$('.pass_change').hide();
 		let msgs = '${result}'.split("|")[1];
 		let init = '${result}'.split("|")[0];
+		let resetRes = '${resetRes}';
+		let changeRes = '${changeRes}';
 		let msg;
 		if (msgs) {
 			msg = msgs.split("\n");
 		}
 		if (msg) {
 			msg.forEach(function(text, index) {
-				$('.login_info li.msg' + index).text(msg[index]);
+				$('.error_text li.msg' + index).text(msg[index]);
 			});
-			$('.login_info').show();
-			if (init == 2) {
-				$('.init').show();
+			$('.error_text').show();
+			$('.last.init').hide();
+			if(init == 2){
+				$('.last.change').show();
 			}
-			if (init == 3) {
-				$('.init_a').show();
-			}
+		}
+		
+		if (!msg && init) {
+			$('.error_text li.msg0').text(init);
+			$('.error_text').show();
+		}
+		
+		if(resetRes != '' && resetRes != undefined){
+			$('#re_companyNm').val('');
+			$('#re_userId').val('');
+			$('#re_userNm').val('');
+			alert(reset);
+			location.href = "/login";
+		}
+		
+		if(changeRes != '' && changeRes != undefined){
+			$('.login').hide();
+			$('.pass_reset').hide();
+			$("#ch_userId").val("");
+			$("#ch_pwdOld").val("");
+			$("#ch_pwdNew").val("");
+			$('.pass_change').show();
+			$('.chMsg').text(changeRes);
 		}
 
 		//엔터키
@@ -54,23 +78,16 @@
 		});
 
 		//엔터키
-		$('#userPwdNew').on('keyup', function(e) {
+		$('#ch_pwdNew').on('keyup', function(e) {
 			if (e.which == 13) {
 				pwdChange();
 			}
 		});
 
 		//엔터키
-		$('#userPwdOld').on('keyup', function(e) {
+		$('#re_userNm').on('keyup', function(e) {
 			if (e.which == 13) {
-				pwdChange();
-			}
-		});
-
-		//엔터키
-		$('#userIdInit').on('keyup', function(e) {
-			if (e.which == 13) {
-				pwdChangeInit();
+				resetPassword();
 			}
 		});
 
@@ -101,164 +118,175 @@
 
 	function pwdChangeInitView() {
 		$('.login').hide();
+		$('.pass_reset').show();
+		$('.pass_change').hide();
+	}
+	
+	function pwdChangeView() {
+		$('.login').hide();
+		$('.pass_reset').hide();
+		$("#ch_userId").val("");
+		$("#ch_pwdOld").val("");
+		$("#ch_pwdNew").val("");
 		$('.pass_change').show();
 	}
 	
 	function cancle() {
 		$('.login').show();
+		$('.pass_reset').hide();
 		$('.pass_change').hide();
 	}
 
-	function pwdChange() {
+	function resetPassword() {
 		if (dbclick != 'Y') {
 			return;
 		}
 		dbclick = 'N';
-		var userId = document.getElementById("userIdChange").value;
-		var userPwdOld = document.getElementById("userPwdOld").value;
-		var userPwdNew = document.getElementById("userPwdNew").value;
-		if (userId == null || userId == '') {
-			alert("사번을 입력해 주세요.");
-			document.getElementById("userIdChange").focus();
-			dbclick = 'Y';
-			return;
-		}
-		if (userPwdOld == null || userPwdOld == '') {
-			alert("현재 비밀번호를 입력해 주세요.");
-			document.getElementById("userPwdOld").focus();
-			dbclick = 'Y';
-			return;
-		}
-
-		if (userPwdNew == null || userPwdNew == '') {
-			alert("변경할 비밀번호를 입력해 주세요.");
-			document.getElementById("userPwdNew").focus();
-			dbclick = 'Y';
-			return;
-		}
-		var form = document.createElement("form");
-		form.setAttribute("charset", "UTF-8");
-		form.setAttribute("method", "Post");
-		form.setAttribute("action", "/login/pwdChange");
-
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "userId");
-		hiddenField.setAttribute("value", userId);
-		form.appendChild(hiddenField);
-
-		hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "userPwdOld");
-		hiddenField.setAttribute("value", userPwdOld);
-		form.appendChild(hiddenField);
-
-		hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "userPwdNew");
-		hiddenField.setAttribute("value", userPwdNew);
-		form.appendChild(hiddenField);
-
-		document.body.appendChild(form);
-		alert('변경 완료되었습니다.');
-		form.submit();
-	}
-
-	function pwdChangeInit() {
-		if (dbclick != 'Y') {
-			return;
-		}
-		dbclick = 'N';
-		var userId = document.getElementById("userIdInit").value;
-		if (userId == null || userId == '') {
-			alert("사번을 입력해 주세요.");
+		var re_companyNm = document.getElementById("re_companyNm").value;
+		var re_userId = document.getElementById("re_userId").value;
+		var re_userNm = document.getElementById("re_userNm").value;
+		
+		if (re_companyNm == null || re_companyNm == '') {
+			alert("회사명을 입력해 주세요.");
 			document.getElementById("userIdInit").focus();
 			dbclick = 'Y';
 			return;
 		}
-		var form = document.createElement("form");
-		form.setAttribute("charset", "UTF-8");
-		form.setAttribute("method", "Post");
-		form.setAttribute("action", "/login/pwdChangeInit");
-
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "userId");
-		hiddenField.setAttribute("value", userId);
-		form.appendChild(hiddenField);
-
-		document.body.appendChild(form);
-
-		form.submit();
+		
+		if (re_userId == null || re_userId == '') {
+			alert("아이디을 입력해 주세요.");
+			document.getElementById("userIdInit").focus();
+			dbclick = 'Y';
+			return;
+		}
+		
+		if (re_userNm == null || re_userNm == '') {
+			alert("성명을 입력해 주세요.");
+			document.getElementById("userIdInit").focus();
+			dbclick = 'Y';
+			return;
+		}
+		
+		document.getElementById('resetForm').submit();
+	}
+	
+	function changePassword(){
+		if (dbclick != 'Y') {
+			return;
+		}
+		dbclick = 'N';
+		var userId = document.getElementById("ch_userId").value;
+		var userPwdOld = document.getElementById("ch_pwdOld").value;
+		var userPwdNew = document.getElementById("ch_pwdNew").value;
+		if(userId == null || userId == ''){
+			alert("아이디을 입력해 주세요.");
+			document.getElementById("ch_userId").focus();
+			dbclick = 'Y';
+			return;
+		}
+		if(userPwdOld == null || userPwdOld == ''){
+			alert("현재 비밀번호를 입력해 주세요.");
+			document.getElementById("ch_pwdOld").focus();
+			dbclick = 'Y';
+			return;
+		}
+		
+		if(userPwdNew == null || userPwdNew == ''){
+			alert("변경할 비밀번호를 입력해 주세요.");
+			document.getElementById("ch_pwdNew").focus();
+			dbclick = 'Y';
+			return;
+		}
+		document.getElementById('changeForm').submit();
 	}
 </script>
 <body>
-	<div id="wrap">
-		<div class="login">
-			<h2 class="title">PPlus Echo</h2>
-			<div class="login_form">
-				<form id="frm" action="/lgn" method="post">
-					<div class="h_45px id_box">
-						<div class="h_45px">
-							<input type="text" id="userId" name="userId"
-								placeholder="아이디을 입력하세요.">
+	<div class="wrapper">
+		<!-- S_본문-->
+		<section class="container">
+			<h2>PPlus Echo</h2>
+			<div class="login-tltle login">로그인</div>
+			<div class="login-tltle pass_reset">비밀번호 초기화</div>
+			<div class="login-tltle pass_change">비밀번호 변경</div>
+			<div class="login-content login">
+				<div class="login-form">
+					<form id="frm" action="/lgn" method="post">
+						<div class="login-id h45">
+							 <input type="text" class="text-input pl35" id="userId" name="userId" placeholder="아이디을 입력하세요.">
 						</div>
-					</div>
-					<div class="pw_box">
-						<div>
-							<input type="password" id="userPwd" name="userPwd"
-								placeholder="비밀번호을 입력하세요.">
+						<div class="login-pw h45">
+							 <input type="password" class="text-input pl35" id="userPwd" name="userPwd" placeholder="비밀번호을 입력하세요.">
 						</div>
-					</div>
-					<div class="stn_btm">
-						<div class="btn_cont center">
-							<button type="button" class="btn_register"
-								onclick="loginAction();">들어가기</button>
+						<div class="error_text" style="margin-top:10px; margin-bottom:10px;">
+							<span style="color:red;"></span>
+							<ul>
+								<li class="msg0" style="color:red;"></li>
+								<li class="msg1" style="color:red;"></li>
+								<li class="msg2" style="color:red;"></li>
+							</ul>
 						</div>
-					</div>
-					<div class="stn_btm">
-						<div class="btn_cont center">
-							<button type="button" class="btn_default ml_6px"
-								onclick="pwdChangeInitView();">패스워드 초기화 신청</button>
+						<div class="btn-group">
+							<button type="button" class="button btn-success w100" onclick="loginAction();">확인</button>
+							<ul>
+								<li class="last init" onclick="pwdChangeInitView();"><a href="javascript:void(0);">비밀번호 초기화 신청</a></li>
+								<li class="last change" onclick="pwdChangeView();" style="display:none;" ><a href="javascript:void(0);">비밀번호 변경</a></li>
+							</ul>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="login pass_change" style="display: none;">
-			<h2 class="title">초기화 신청</h2>
-			<div class="login_form">
-				<form>
-					<div class="h_45px id_box">
-						<div class="h_45px">
-							<input type="text" id="pw_companyNm" name="pw_companyNm"
-								placeholder="회사명을 입력하세요.">
+			
+			<div class="login-content pass_reset" style="display: none;">
+				<div class="login-form">
+					<form id="resetForm" action="/login/pwdChangeInit" method="post">
+						<div class="login-id h45">
+							 <input type="text" class="text-input pl35" id="re_companyNm" name="re_companyNm" placeholder="회사명을 입력하세요.">
 						</div>
-					</div>
-					<div class="h_45px id_box">
-						<div class="h_45px">
-							<input type="text" id="pw_userNm" name="pw_userNm"
-								placeholder="성명을 입력하세요.">
+						<div class="login-pw h45">
+							 <input type="text" class="text-input pl35" id="re_userId" name="re_userId" placeholder="아이디을 입력하세요.">
 						</div>
-					</div>
-					<div class="h_45px id_box">
-						<div class="h_45px">
-							<input type="text" id="pw_userId" name="pw_userId"
-								placeholder="아이디을 입력하세요.">
+						<div class="login-pw h45">
+							 <input type="text" class="text-input pl35" id="re_userNm" name="re_userNm" placeholder="비밀번호을 입력하세요.">
 						</div>
-					</div>
-					<span style="color:red;">한번 신청을 진행하시면 취소가 불가합니다.</span>
-					<div class="stn_btm">
-						<div class="btn_cont center">
-							<button type="button" class="btn_register" style="margin-right:10px"
-								onclick="resetPassword();">신청하기</button>
-							<button type="button" class="btn_register"
-								onclick="cancle();">취소</button>
+						<div style="margin-top:10px; margin-bottom:10px;">
+							<span style="color:red;">한번 신청을 진행하시면 취소가 불가합니다.</span>
 						</div>
-					</div>
-				</form>
+						<div class="btn-group">
+							<button type="button" class="button btn-success w100" onclick="resetPassword();">신청하기</button>
+							<ul>
+								<li class="last change" onclick="cancle();"><a href="javascript:void(0)">취소</a></li>
+							</ul>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
+			
+			<div class="login-content pass_change" style="display: none;">
+				<div class="login-form">
+					<form id="changeForm" action="/login/pwdChange" method="post">
+						<div class="login-id h45">
+							 <input type="text" class="text-input pl35" id="ch_userId" name="ch_userId" placeholder="아이디을 입력하세요.">
+						</div>
+						<div class="login-pw h45">
+							 <input type="password" class="text-input pl35" id="ch_pwdOld" name="ch_pwdOld" placeholder="현재 비밀번호을 입력하세요.">
+						</div>
+						<div class="login-pw h45">
+							 <input type="password" class="text-input pl35" id="ch_pwdNew" name="ch_pwdNew" placeholder="현경하실 비밀번호을 입력하세요.">
+						</div>
+						<div style="margin-top:10px; margin-bottom:10px;">
+							<span class="chMsg" style="color:red;"></span>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="button btn-success w100" onclick="changePassword();">변경하기</button>
+							<ul>
+								<li class="last change" onclick="cancle();"><a href="javascript:void(0)">취소</a></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	  <!-- E_본문-->
 	</div>
 </body>
 </html>

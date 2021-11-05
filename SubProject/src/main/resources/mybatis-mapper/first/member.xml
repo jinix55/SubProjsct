@@ -28,7 +28,7 @@
 				and u.company_code = #{searchCompanyCode}
 			</if>
 			<if test="searchRoleCode != null and searchRoleCode != ''">
-				and r.auth_id = #{searchRoleCode}
+				and tga.auth_id = #{searchRoleCode}
 			</if>			
 			<if test="deptCode != null and deptCode != ''">
 				and (upper(u.dept_code) = upper(#{deptCode}))
@@ -62,16 +62,18 @@
 			u.user_id,
 			u.user_nm,
 			u.pstn_code,
+			u.email,
+			u.phone,
 			p.pstn_nm,
 			u.dept_code,
 			d.dept_nm,
 			u.company_code,
-			(select code_nm from t_code where group_id = 'COMPANY_CODE' and code_id = u.company_code) company_nm,
+			c.company_nm,
 			u.adof_dept_code,
 			ad.dept_nm as adof_dept_nm,
-			r.auth_id,
-			r.use_yn as auth_use_yn,
-			a.auth_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
 			u.use_yn,
 			u.last_log_dt,
 			case
@@ -85,9 +87,6 @@
 			u.modi_id,
 			u.modi_dt,
 			u.file_url,
-			COALESCE(tgm.USE_YN,'N') AS MGR_YN,
-			tga.AUTH_ID AS MGR_AUTH_ID,
-			tga.AUTH_NM AS MGR_AUTH_NM,
 			u.dt_limit_yn
 		from
 			t_user u
@@ -95,8 +94,6 @@
 			left outer join t_dept d on u.dept_code = d.dept_code
 			left outer join t_hdept h on u.hdept_code = h.hdept_code
 			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
-			left outer join t_user_auth r on u.user_id = r.user_id
-			left outer join t_user_sys_auth a on r.auth_id = a.auth_id
 			left outer join t_group tgm on u.user_id = tgm.user_id
 			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
@@ -108,7 +105,7 @@
 			</if>
 		</if>
 		<include refid="searchMember"></include>
-		<include refid="order"></include>
+		order by user_nm ASC
 		<include refid="paging"></include>
 	</select>
 
@@ -121,8 +118,6 @@
 			left outer join t_dept d on u.dept_code = d.dept_code
 			left outer join t_hdept h on u.hdept_code = h.hdept_code
 			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
-			left outer join t_user_auth r on u.user_id = r.user_id
-			left outer join t_user_sys_auth a on r.auth_id = a.auth_id
 			left outer join t_group tgm on u.user_id = tgm.user_id
 			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
@@ -142,16 +137,18 @@
 			u.user_id,
 			u.user_nm,
 			u.pstn_code,
+			u.email,
+			u.phone,
 			p.pstn_nm,
 			u.dept_code,
 			d.dept_nm,
 			u.company_code,
-			(select code_nm from t_code where group_id = 'COMPANY_CODE' and code_id = u.company_code) company_nm,
+			c.company_nm,
 			u.adof_dept_code,
 			ad.dept_nm as adof_dept_nm,
-			r.auth_id,
-			r.use_yn as auth_use_yn,
-			a.auth_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
 			u.use_yn,
 			u.last_log_dt,
 			case
@@ -165,20 +162,17 @@
 			u.modi_id,
 			u.modi_dt,
 			u.file_url,
-			COALESCE(tgm.USE_YN,'N') AS MGR_YN,
-			tga.AUTH_ID AS MGR_AUTH_ID,
-			tga.AUTH_NM AS MGR_AUTH_NM,
-			u.dt_limit_yn
+			u.dt_limit_yn,
+			tga.AUTH_CL 
 		from
 			t_user u
 			left outer join t_pstn p on u.pstn_code = p.pstn_code
 			left outer join t_dept d on u.dept_code = d.dept_code
 			left outer join t_hdept h on u.hdept_code = h.hdept_code
 			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
-			left outer join t_user_auth r on u.user_id = r.user_id
-			left outer join t_user_sys_auth a on r.auth_id = a.auth_id
 			left outer join t_group tgm on u.user_id = tgm.user_id
 			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
+			left outer join t_company c ON c.company_code = u.company_code
 		<include refid="searchMember"></include>
 		ORDER BY U.USER_NM
 	</select>
@@ -188,16 +182,18 @@
 			u.user_id,
 			u.user_nm,
 			u.pstn_code,
+			u.email,
+			u.phone,
 			p.pstn_nm,
 			u.dept_code,
 			d.dept_nm,
 			u.company_code,
-			(select code_nm from t_code where group_id = 'COMPANY_CODE' and code_id = u.company_code) company_nm,
+			c.company_nm,
 			u.adof_dept_code,
 			ad.dept_nm as adof_dept_nm,
-			r.auth_id,
-			r.use_yn as auth_use_yn,
-			a.auth_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
 			u.use_yn,
 			u.last_log_dt,
 			case
@@ -210,24 +206,22 @@
 			u.rgst_dt,
 			u.modi_id,
 			u.modi_dt,
-			COALESCE(tgm.USE_YN,'N') AS MGR_YN,
-			tga.AUTH_ID AS MGR_AUTH_ID,
-			tga.AUTH_NM AS MGR_AUTH_NM,
-			u.dt_limit_yn
+			u.file_url,
+			u.dt_limit_yn,
+			tga.AUTH_CL 
 		from
 			t_user u
 			left outer join t_pstn p on u.pstn_code = p.pstn_code
 			left outer join t_dept d on u.dept_code = d.dept_code
 			left outer join t_hdept h on u.hdept_code = h.hdept_code
 			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
-			left outer join t_user_auth r on u.user_id = r.user_id
-			left outer join t_user_sys_auth a on r.auth_id = a.auth_id
 			left outer join t_group tgm on u.user_id = tgm.user_id
 			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
+			left outer join t_company c ON c.company_code = u.company_code
 		where
-			u.user_id = #{userId}
+			upper(u.user_id) = upper(#{userId})
 	</select>
-
+	
 	<select id="selectMemberListCountForRoleId" resultType="int" parameterType="String">
 		select
 			count(*)
@@ -259,10 +253,24 @@
 		  , modi_id = #{modiId}
 	</insert>
 	
+	<insert id="updateUsertAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		INSERT INTO t_group (user_id, auth_id, use_yn, rgst_id, rgst_dt, modi_id, modi_dt)
+		values (#{userId}, #{authId}, #{useYn}, #{rgstId}, now(), #{modiId}, now())
+		ON DUPLICATE KEY UPDATE
+			use_yn = #{useYn}
+		  , auth_id = #{authId}
+		  , modi_dt = now()
+		  , modi_id = #{modiId}
+	</insert>
+	
 	 <update id="update" parameterType="com.portal.adm.member.model.MemberModel">
 		update t_user
 		set
-			use_yn = #{useYn}
+		  company_code = #{companyCode}
+		  , email = #{email}
+		  , phone = #{phone}
+		  , dtLimitYn = #{dtLimitYn}
+		  , use_yn = #{useYn}
 		  , start_dt = #{startDt}
 		  , end_dt = #{endDt}
 		  , modi_dt = now()
@@ -275,6 +283,8 @@
 		INSERT INTO T_USER (
 			USER_ID,
 			USER_NM,
+			EMAIL,
+			PHONE,
 			PASSWORD,
 			PSTN_CODE,
 			DEPT_CODE,
@@ -302,6 +312,8 @@
 		VALUES(
 			#{userId}
 			, #{userNm}
+			, #{email}
+			, #{phone}
 			, <![CDATA[SHA2('rt12#$',256)]]>
 			, #{pstnCode}
 			, #{deptCode}

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -25,19 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.code.service.CodeService;
-import com.portal.adm.dept.service.DeptService;
+import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.member.model.MemberCriteria;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
-import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
 import com.portal.config.security.AuthUser;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 사용자관리/사용자관리 컨트롤러
  */
-@RequestMapping("/admin")
+@RequestMapping("/member")
 @Controller
+@Slf4j
 public class MemberController {
 
     @Resource
@@ -50,7 +53,7 @@ public class MemberController {
     private RoleService roleService;
     
     @Resource
-    private DeptService deptService;
+    private CompanyService companyService;
     
     /**
      * 사용자관리 페이지로 이동한다.
@@ -59,26 +62,13 @@ public class MemberController {
      * @return
      */
     @GetMapping("/member")
-    public String list(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
-        // 화면 표시용 코드 셋팅
-        // 회사구분 코드
-        model.addAttribute("codeCompanyCdList", codeService.selectGroupIdAllList("COMPANY_CODE"));
-        // 사용여부 코드
-        model.addAttribute("codeUseYnList", codeService.selectGroupIdAllList("USE_YN"));
-        
-        // 기간 사용 적용 여부 코드
-        model.addAttribute("dateLimitYnList", codeService.selectGroupIdAllList("DATE_LIMIT_YN"));    
-        
-        // 검색구분 코드
-        model.addAttribute("codeMemSearchCdList", codeService.selectGroupIdAllList("USER_SEARCH_CODE"));
-
-        // 권한코드 조회
+        // 모든 권한 조회
         model.addAttribute("roles", roleService.selectAllList());
-
-        // 관리자권한코드 조회
-        RoleModel role =  new RoleModel();
-        model.addAttribute("mgrRoles", roleService.selectMgrSysAuthAllList(role));
+        
+        // 모든 회사 조회
+        model.addAttribute("companys", companyService.selectListAll());
 
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
         criteria.setAuthId(authUser.getMemberModel().getAuthId());
@@ -91,29 +81,19 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String list(@ModelAttribute MemberCriteria criteria, RedirectAttributes attributes, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, RedirectAttributes attributes, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
+    	log.info(" member post memberModel ==>  {} ",memberModel.toString());
+    	log.info(" member post criteria ==>  {} ",criteria.toString());
+    	log.info(" member post model ==>  {} ",model.toString());
         attributes.addFlashAttribute("criteria", criteria);
 
-        // 화면 표시용 코드 셋팅
-        // 회사구분 코드
-        model.addAttribute("codeCompanyCdList", codeService.selectGroupIdAllList("COMPANY_CODE"));
-        // 사용여부 코드
-        model.addAttribute("codeUseYnList", codeService.selectGroupIdAllList("USE_YN"));
-        
-        // 기간 사용 적용 여부 코드
-        model.addAttribute("dateLimitYnList", codeService.selectGroupIdAllList("DATE_LIMIT_YN"));   
-        
-        // 검색구분 코드
-        model.addAttribute("codeMemSearchCdList", codeService.selectGroupIdAllList("USER_SEARCH_CODE"));
-
-        // 권한코드 조회
+        // 모든 권한 조회
         model.addAttribute("roles", roleService.selectAllList());
-
-        // 관리자권한코드 조회
-        RoleModel role =  new RoleModel();
-        model.addAttribute("mgrRoles", roleService.selectMgrSysAuthAllList(role));
         
+        // 모든 회사 조회
+        model.addAttribute("companys", companyService.selectListAll());
+
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
         criteria.setAuthId(authUser.getMemberModel().getAuthId());
         
@@ -127,25 +107,42 @@ public class MemberController {
 
     @PostMapping("/member/detail/{memberId}")
     @ResponseBody
-    public MemberModel select(@PathVariable String memberId) {
-
+    public MemberModel selectPopup(@PathVariable String memberId, Model model) {
+    	log.info("================== select memberId ================");
+    	MemberModel memberModel = new MemberModel();
+    	memberModel.setUserId(memberId);
+    	return memberService.selectMember(memberModel);
+    }
+    
+    @PostMapping("/member/detail/popup/{memberId}")
+    @ResponseBody
+    public String select(@PathVariable String memberId, Model model) {
+    	log.info("================== select memberId ================");
         MemberModel memberModel = new MemberModel();
-        memberModel.setUserId(memberId);
-
-        return memberService.selectMember(memberModel);
+        if(!StringUtils.equals(memberId, "")) {
+        	memberModel.setUserId(memberId);
+        	memberModel = memberService.selectMember(memberModel);
+        }
+        
+        if(memberModel == null) {
+        	return memberId;
+        }else {
+        	return "none";
+        }
+        
     }
 
     @PostMapping("/member/update")
-    public ResponseEntity<String> update(@RequestParam String startDate, @RequestParam String endDate,
+    public ResponseEntity<String> update(HttpServletRequest request,
                                        @ModelAttribute MemberModel memberModel,
                                        @AuthenticationPrincipal AuthUser authUser) {
 
         try {
-            if(!StringUtils.isEmpty(startDate)) {
-                memberModel.setStartDt(LocalDateTime.parse(startDate + "T" + LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("startDate"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("startDate") + "T" + LocalTime.now().toString()));
             }
-            if(!StringUtils.isEmpty(endDate)) {
-                memberModel.setEndDt(LocalDateTime.parse(endDate+"T"+LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("endDate"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("endDate")+"T"+LocalTime.now().toString()));
             }
 
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -160,16 +157,18 @@ public class MemberController {
     }
     
     @PostMapping("/member/insert")
-    public ResponseEntity<String> insert(@RequestParam String startDate, @RequestParam String endDate,
+    public ResponseEntity<String> insert(HttpServletRequest request,
                                        @ModelAttribute MemberModel memberModel,
                                        @AuthenticationPrincipal AuthUser authUser) {
-
+		for (String key : request.getParameterMap().keySet()) {
+			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+		}
         try {
-            if(!StringUtils.isEmpty(startDate)) {
-                memberModel.setStartDt(LocalDateTime.parse(startDate + "T" + LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("startDate"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("startDate") + "T" + LocalTime.now().toString()));
             }
-            if(!StringUtils.isEmpty(endDate)) {
-                memberModel.setEndDt(LocalDateTime.parse(endDate+"T"+LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("endDate"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("endDate")+"T"+LocalTime.now().toString()));
             }
 
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -196,8 +195,6 @@ public class MemberController {
 
         // 권한코드 조회
         model.addAttribute("roles", roleService.selectAllList());
-        // 부서 조회
-        model.addAttribute("depts", deptService.selectDeptClList());
 
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
@@ -244,4 +241,17 @@ public class MemberController {
 
         return memberService.unlockAccount(memberModel);
     }    
+    
+    /**
+     * 사용자관리 페이지로 이동한다.
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/pwdChange")
+    public String pwdChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	log.info("==================== pwdChange in ===================");
+
+        return "user/pwdChange";
+    }
 }

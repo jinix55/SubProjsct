@@ -1,9 +1,9 @@
 package com.portal.config.security;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.portal.adm.menu.mapper.MenuMapper;
 import com.portal.adm.menu.model.MenuModel;
 import com.portal.common.Constant;
 import com.portal.config.security.mapper.SecurityMapper;
@@ -31,6 +32,10 @@ public class AuthChecker {
 	@Resource(name="securityMapper")
 	private SecurityMapper mapper;
 	
+    @Resource
+    private MenuMapper menuMapper;
+
+	
 	public boolean check(HttpServletRequest request, Authentication authentication) {
 		boolean result = false;
 		
@@ -44,6 +49,35 @@ public class AuthChecker {
 			if (StringUtils.isNotBlank(authId) && StringUtils.equals(Constant.YES, user.getMemberModel().getAuthUseYn())) {
 				
 				String uri = request.getRequestURI();
+				
+		        log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info START =========");
+		        
+		        System.out.println("request.getServerName() : " + request.getRequestURI());
+		        System.out.println("request.getServerName() : " + request.getServerName());
+		        System.out.println("request.getProtocol() : " + request.getProtocol());
+		        System.out.println("request.getServerPort() : " + request.getServerPort());
+		        System.out.println("request.getMethod() : " + request.getMethod());
+		        System.out.println("request.getPathInfo() : " + request.getPathInfo());
+		        System.out.println("request.getPathTranslated() : " + request.getPathTranslated());
+		        System.out.println("request.getServletPath() : " + request.getServletPath());
+		        System.out.println("request.getRealPath(\"/\") : " + request.getRealPath("/"));
+		        System.out.println("request.getQueryString() : " + request.getQueryString());
+		        System.out.println("request.getRemoteHost() : " + request.getRemoteHost());
+		        System.out.println("request.getRemoteAddr() : " + request.getRemoteAddr());
+		        System.out.println("request.getAuthType() : " + request.getAuthType());
+		        System.out.println("request.getRemoteUser() : " + request.getRemoteUser());
+		        System.out.println("request.getContentType() : " + request.getContentType());
+		        System.out.println("request.getContentLength() : " + request.getContentLength());
+		        System.out.println("request.getServerPort() : " + request.getServerPort());
+		        
+		        log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info END =========\n");
+			
+//				if(uri.equals("") || uri == null) {
+//			    	Map<String,String> param = new HashMap<>();
+//			    	param.put("authId", authId);
+//			    	uri = menuMapper.selectFirstMenuUrl(param);
+//				}
+				
 				Matcher ignoreMatcher = Constant.UrlPattern.AUTH_IGNORE_PATTERN.matcher(uri);
 				if (ignoreMatcher.find()) {
 					// 인증 사용자 모두 요청 가능한 경우
@@ -52,12 +86,15 @@ public class AuthChecker {
 					// 인증 사용자의 권한에 따른 요청 가능 확인
 					// detail, regist, modify : 화면
 					// insert, update, delete : 동작
-					
 					String type = null;
 					Matcher matcher = Constant.UrlPattern.AUTH_CHECK_PATTERN.matcher(uri);
 					if (matcher.find()) {
 						uri = uri.substring(0, matcher.start());
 						type = matcher.group(0).replaceAll("^/|/$","");
+//					}else {
+//				    	Map<String,String> param = new HashMap<>();
+//				    	param.put("authId", authId);
+//				    	uri = menuMapper.selectFirstMenuUrl(param);
 					}
 					
 					/* url 패턴은 아래 참조 (총 7개)
@@ -94,7 +131,6 @@ public class AuthChecker {
 			//익명 사용자
 			log.debug("user : {}",principal.toString());
 		}
-		
 		return result;
 	}
 }

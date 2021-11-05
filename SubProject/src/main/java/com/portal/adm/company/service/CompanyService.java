@@ -39,6 +39,10 @@ public class CompanyService {
     	return companyMapper.selectCompanyListCount(companyModel);
     }
     
+    public List<CompanyModel> selectListAll() {
+    	return companyMapper.selectListAll();
+    }
+    
     /**
      * 회사정보를 저장한다.
      *
@@ -81,6 +85,16 @@ public class CompanyService {
         } else {
             return Constant.DB.FAIL;
         }
+    }
+    
+    /**
+     * 회사정보를 조회한다.
+     *
+     * @param companyCode
+     * @return
+     */
+    public String selectCode(String companyCode) {
+    	return companyMapper.selectCode(companyCode);
     }
     
     /**

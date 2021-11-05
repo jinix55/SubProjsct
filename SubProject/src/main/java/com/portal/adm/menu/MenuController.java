@@ -32,7 +32,7 @@ import com.portal.config.security.AuthUser;
  * 시스템관리 / 메뉴관리 컨트롤러
  *
  */
-@RequestMapping("/admin")
+@RequestMapping("/menu")
 @Controller
 public class MenuController {
 
@@ -60,7 +60,7 @@ public class MenuController {
 		}
 		model.addAttribute("menus", list);
 		model.addAttribute("rootMenuId", rootMenuId);
-		return "menu/menu";
+		return "menu/menuMgt";
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class MenuController {
 		}
 		model.addAttribute("menus", list);
 		model.addAttribute("rootMenuId", rootMenuId);
-		return "menu/menu";
+		return "menu/menuMgt";
 	}
 
 	/**
@@ -109,14 +109,14 @@ public class MenuController {
 			long menuAuths = menuService.updateMenuListWithAuth(menuModel);
 			
 			// 담당관리자 권한 등록 성공 이후 등록자가 최고관리자가 아닐경우 최고관리자 등록
-			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000001")) {
-				menuModel.setAuthId("au2000001");
+			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000000")) {
+				menuModel.setAuthId("au2000000");
 				menuService.updateMenuListWithAuth(menuModel);	
 			}
 
-			return "redirect:/admin/menu";
+			return "redirect:/menu/menuMgt";
 		} catch (Exception e) {
-			return "forward:/admin/menu";
+			return "forward:/menu/menuMgt";
 		}
 	}
 
@@ -136,9 +136,9 @@ public class MenuController {
 
 			long count = menuService.save(menuModel);
 
-			return "redirect:/admin/menu";
+			return "redirect:/menu/menuMgt";
 		} catch (Exception e) {
-			return "forward:/admin/menu";
+			return "forward:/menu/menuMgt";
 		}
 	}
 

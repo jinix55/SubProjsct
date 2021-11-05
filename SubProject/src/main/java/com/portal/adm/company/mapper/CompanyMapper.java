@@ -52,12 +52,28 @@ public interface CompanyMapper {
    CompanyModel select(CompanyModel companyModel);
    
    /**
+    * 모든 회사정보를 조회한다.
+    *
+    * @param companyModel
+    * @return  회사 조회
+    */
+   List<CompanyModel> selectListAll();
+   
+   /**
     * 회사정보를 삭제한다.
     *
     * @param companyModel
     * @return  회사 삭제
     */
    long delete(CompanyModel companyModel);
+   
+   /**
+    * 회사정보를 삭제한다.
+    *
+    * @param companyModel
+    * @return  회사 삭제
+    */
+   String selectCode(String companyCode);
    
    /**
     * 회사정보를 삭제한다.

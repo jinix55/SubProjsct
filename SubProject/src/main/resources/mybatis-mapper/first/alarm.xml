@@ -27,6 +27,29 @@
 		<include refid="paging"></include>
 	</select>
 	
+	<select id="selectAlarmCheck" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
+		SELECT 			
+			ALARM_ID
+			, SJ
+			, CN
+			, ALARM_SE
+			, SENDER_ID
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_ALARM
+		WHERE RECIPIENT_ID = #{recipientId} AND CHECK_YN = 'N'
+	</select>
+	
+	<select id="selectAlarmAuth" resultType="com.portal.adm.member.model.MemberModel" parameterType="com.portal.adm.member.model.MemberModel">
+		SELECT u.USER_ID, u.COMPANY_CODE, c.COMPANY_NM, ga.AUTH_CL FROM t_user u
+		JOIN t_company c ON u.COMPANY_CODE = c.COMPANY_CODE 
+		JOIN t_group g ON u.USER_ID = g.USER_ID 
+		JOIN t_group_auth ga ON g.AUTH_ID = ga.AUTH_ID AND ga.AUTH_CL = 'A'
+		WHERE c.COMPANY_NM = #{companyNm}
+	</select>
+	
 	<select id="selectAlarmListView" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_ID) ASC) AS ROWNUM
@@ -113,6 +136,5 @@
 		WHERE
 			ALARM_ID = #{alarmId}
 	</update>
-	
 	
 </mapper>

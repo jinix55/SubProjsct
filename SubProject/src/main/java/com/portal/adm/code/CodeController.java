@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * 시스템관리 / 코드관리 컨트롤러
  */
 @Slf4j
-@RequestMapping("/admin")
+@RequestMapping("/system")
 @Controller
 public class CodeController {
 

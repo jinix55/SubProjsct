@@ -30,7 +30,7 @@ spring:
         #port: 6379
     first:
         datasource:  # mysql
-            jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC
+            jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
             driver-class-name: com.mysql.cj.jdbc.Driver
             type: com.zaxxer.hikari.HikariDataSource
             username: portal
@@ -70,7 +70,6 @@ logging:
         '[root]': info
         '[com.portal]': debug
         '[com.portal.mapper]': info
-        #'[org.springframework]': trace
     pattern:
         console:  "%clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%5p]) %clr([%15.15t]){faint} %clr([%-40.40logger{39}]){cyan} [%4L] [NVoiceM] [ADMIN] %m%n%wEx"
 

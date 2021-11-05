@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,6 @@ public class ApiRequestUtil {
 	@Resource(name="apiProps")
 	private ApiProps props; 
 
-	
 	/**
 	 * HTTP timeout 설정
 	 */
@@ -327,6 +327,151 @@ public class ApiRequestUtil {
 			log.warn(e.getMessage());
 		}
 		log.debug("APIREQUESTUTILL test: {}", result);
+		return result;
+	}
+	
+	public String requesKakaoAdressGet(String url, Map<String, String> param) {
+		String result = StringUtils.EMPTY;
+		url = "https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&page=1&size=10&query=%EB%B6%88%EA%B4%91%EB%8F%99";
+		try {
+			//url 생성
+			String urlWithParam = buildGetUrl(url, param);
+
+			// 요청 객체 생성
+			HttpClient client = HttpClients.createDefault();
+			HttpGet request = new HttpGet(urlWithParam);
+			// request config
+			request.setConfig(getRequestConfig());
+			
+			String cookie = props.getCookieId();
+			 
+			request.addHeader("Authorization","KakaoAK "+Constant.ApiKey.KAKAO_REST_API_KEY);
+
+			
+			// 요청 후 응답 변환
+			HttpResponse response = client.execute(request);
+			HttpEntity entity = response.getEntity();
+			result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+			log.debug(result);
+		} catch (IOException ioException) {
+			log.warn("외부 API GET - param 요청 중 IOException 발생");
+			log.warn(ioException.getMessage());
+		} catch (ParseException parseException) {
+			log.warn("외부 API GET - param 요청 중 ParseException 발생");
+			log.warn(parseException.getMessage());
+		} catch (Exception e) {
+			log.warn("외부 API GET - param 요청 중 Exception 발생");
+			log.warn(e.getMessage());
+		}
+		log.debug("APIREQUESTUTILL requesKakaoAdressGet test: {}", result);
+		return result;
+	}
+	
+	public String requesGetWeather(String url, Map<String, String> param) {
+		String result = StringUtils.EMPTY;
+		
+    	String apiKey = "P2U/o5nc8LA8bshLYK2RfTx5d3IrnLlfqJZW57JooVetMMGiTrXdHo43HEhsD/WFiC50Y9IJkEXXuAmlLcMYaQ==";
+    	
+    	//단기예보
+    	String weatherUrl1 = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+    	Map<String, String> weatherParam1 = new HashMap<String, String>();
+    	weatherParam1.put("serviceKey", apiKey);
+    	weatherParam1.put("pageNo", "1");			// 페이지번호
+    	weatherParam1.put("numOfRows", "50");		// 한 페이지 결과 수
+    	weatherParam1.put("dataType", "JSON");	// 요청자료형식(XML/JSON)Default: XML
+    	weatherParam1.put("base_date", "20211026");	//'21년 10월 21일발표
+    	weatherParam1.put("base_time", "0500");		// 05시 발표
+    	weatherParam1.put("nx", "55");				// 예보지점의 X 좌표값
+    	weatherParam1.put("ny", "127");				// 예보지점의 Y 좌표값
+		
+    	//중기예보
+    	String weatherUrl2 = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidFcst";
+    	Map<String, String> weatherParam2 = new HashMap<String, String>();
+    	weatherParam2.put("serviceKey", apiKey);
+    	weatherParam2.put("pageNo", "1");	// 페이지번호
+    	weatherParam2.put("numOfRows", "10");	// 한 페이지 결과 수
+    	weatherParam2.put("dataType", "JSON");	// 요청자료형식(XML/JSON)Default: XML
+    	weatherParam2.put("stnId", "109");	// 108 전국, 109 서울, 인천, 경기도 등 (활용가이드 하단 참고자료 참조)
+    	weatherParam2.put("tmFc", "202110261800");	//	-일 2회(06:00,18:00)회 생성 되며 발표시각을 입력 YYYYMMDD0600 (1800)-최근 24시간 자료만 제공
+    	
+    	url = weatherUrl2;
+    	param = weatherParam2;
+    	
+		try {
+			//url 생성
+			String urlWithParam = buildGetUrl(url, param);
+
+			// 요청 객체 생성
+			HttpClient client = HttpClients.createDefault();
+			HttpGet request = new HttpGet(urlWithParam);
+			// request config
+			request.setConfig(getRequestConfig());
+			
+			// 요청 후 응답 변환
+			HttpResponse response = client.execute(request);
+			HttpEntity entity = response.getEntity();
+			result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+			log.debug(result);
+		} catch (IOException ioException) {
+			log.warn("외부 API GET - param 요청 중 IOException 발생");
+			log.warn(ioException.getMessage());
+		} catch (ParseException parseException) {
+			log.warn("외부 API GET - param 요청 중 ParseException 발생");
+			log.warn(parseException.getMessage());
+		} catch (Exception e) {
+			log.warn("외부 API GET - param 요청 중 Exception 발생");
+			log.warn(e.getMessage());
+		}
+		log.debug("APIREQUESTUTILL requesGetWeather test: {}", result);
+		return result;
+	}
+	
+	
+	public String requesGetDust(String url, Map<String, String> param) {
+		String apiKey = "P2U/o5nc8LA8bshLYK2RfTx5d3IrnLlfqJZW57JooVetMMGiTrXdHo43HEhsD/WFiC50Y9IJkEXXuAmlLcMYaQ==";
+		String result = StringUtils.EMPTY;
+		String dustUrl = "http://apis.data.go.kr/B552584/ArpltnStatsSvc/getCtprvnMesureLIst";
+    	Map<String, String> dustParam = new HashMap<String, String>();
+    	dustParam.put("serviceKey", apiKey);
+    	dustParam.put("returnType", "JSON");
+    	dustParam.put("numOfRows", "100");
+    	dustParam.put("pageNo", "1");
+    	dustParam.put("itemCode", "PM10");
+    	dustParam.put("dataGubun", "DAILY");
+    	dustParam.put("searchCondition", "WEEK");
+    	
+    	url = dustUrl;
+    	param = dustParam;
+    	
+		try {
+			//url 생성
+			String urlWithParam = buildGetUrl(url, param);
+
+			// 요청 객체 생성
+			HttpClient client = HttpClients.createDefault();
+			HttpGet request = new HttpGet(urlWithParam);
+			// request config
+			request.setConfig(getRequestConfig());
+			
+//			request.addHeader("Authorization","KakaoAK "+Constant.ApiKey.KAKAO_REST_API_KEY);
+
+			
+			// 요청 후 응답 변환
+			HttpResponse response = client.execute(request);
+			HttpEntity entity = response.getEntity();
+			result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+			log.debug(result);
+		} catch (IOException ioException) {
+			log.warn("외부 API GET - param 요청 중 IOException 발생");
+			log.warn(ioException.getMessage());
+		} catch (ParseException parseException) {
+			log.warn("외부 API GET - param 요청 중 ParseException 발생");
+			log.warn(parseException.getMessage());
+		} catch (Exception e) {
+			log.warn("외부 API GET - param 요청 중 Exception 발생");
+			log.warn(e.getMessage());
+		}
+		log.debug("APIREQUESTUTILL requesGetDust test: {}", result);
 		return result;
 	}
 }

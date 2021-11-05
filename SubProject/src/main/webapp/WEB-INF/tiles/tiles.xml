@@ -67,4 +67,29 @@
 			value="/WEB-INF/views/log/{1}.jsp" />
 	</definition>
 	
+	<definition name="alarm/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/alarm/{1}.jsp" />
+	</definition>
+	
+	<definition name="board/notice/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/board/notice/{1}.jsp" />
+	</definition>
+	
+	<definition name="board/faq/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/board/faq/{1}.jsp" />
+	</definition>
+	
+	<definition name="board/qna/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/board/qna/{1}.jsp" />
+	</definition>
+	
+	<definition name="user/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/{1}.jsp" />
+	</definition>
+	
 </tiles-definitions>

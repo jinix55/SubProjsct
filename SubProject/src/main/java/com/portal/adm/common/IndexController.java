@@ -10,83 +10,106 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.portal.adm.alarm.AlarmController;
 import com.portal.adm.menu.service.MenuService;
 import com.portal.common.annotation.NoLogging;
 import com.portal.config.security.AuthUser;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class IndexController {
 	
 	@Resource(name="menuService")
 	private MenuService menuService;
 
-	@NoLogging
+//	@NoLogging
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
+    		log.info("=============== index ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl(null, authUser.getMemberModel().getAuthId());
     	}
         return result;
     }
     
-    @NoLogging
+//    @NoLogging
     @GetMapping("/admin")
-    public String system(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+    public String admin(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
+    		log.info("=============== admin ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/admin",authUser.getMemberModel().getAuthId());
     	}
         return result;
     }
     
-    @NoLogging
-    @GetMapping("/external")
-    public String external(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+//    @NoLogging
+    @GetMapping("/member")
+    public String member(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/external", authUser.getMemberModel().getAuthId());
+    		log.info("=============== member ===============");
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/member",authUser.getMemberModel().getAuthId());
     	}
-        return result;
+    	return result;
     }
     
-    @NoLogging
+//    @NoLogging
+    @GetMapping("/system")
+    public String system(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+    	String result = "redirect:/login";
+    	if (authUser != null) {
+    		log.info("=============== system ===============");
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/system",authUser.getMemberModel().getAuthId());
+    	}
+    	return result;
+    }
+    
+//    @NoLogging
     @GetMapping("/board")
     public String board(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
+    		log.info("=============== board ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/board",authUser.getMemberModel().getAuthId());
     	}
         return result;
     }
     
-    @NoLogging
-    @GetMapping("/project")
-    public String project(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+//    @NoLogging
+    @GetMapping("/menu")
+    public String menu(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/project",authUser.getMemberModel().getAuthId());
+    		log.info("=============== menu ===============");
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/menu",authUser.getMemberModel().getAuthId());
     	}
         return result;
     }
     
-    @NoLogging
-    @GetMapping("/monitor")
-    public String resource(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+//    @NoLogging
+    @GetMapping("/log")
+    public String log(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/monitor",authUser.getMemberModel().getAuthId());
+    		log.info("=============== system ===============");
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/log",authUser.getMemberModel().getAuthId());
     	}
         return result;
     }
     
-    @NoLogging
-    @GetMapping("/audit")
-    public String audit(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
+//    @NoLogging
+    @GetMapping("/alarm")
+    public String alarm(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/audit",authUser.getMemberModel().getAuthId());
+    		log.info("=============== alarm ===============");
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/alarm",authUser.getMemberModel().getAuthId());
     	}
-        return result;
+    	return result;
     }
+    
 }

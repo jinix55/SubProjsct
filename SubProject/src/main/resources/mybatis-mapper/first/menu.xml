@@ -234,7 +234,7 @@ WITH RECURSIVE R AS (
     MENU_URL
 FROM R
 <![CDATA[
-WHERE LV > 0
+WHERE LV > 1
 ]]>
 		<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(menuUrl)'>
   AND MENU_URL LIKE concat(#{menuUrl},'%')

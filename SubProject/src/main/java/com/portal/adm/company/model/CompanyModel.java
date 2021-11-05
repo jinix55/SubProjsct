@@ -1,12 +1,12 @@
 package com.portal.adm.company.model;
 
-import lombok.Data;
+import java.time.LocalDateTime;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.portal.common.paging.Criteria;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import lombok.Data;
 
 /**
  * 회사관리 모델
@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class CompanyModel extends Criteria{
 
     private String rownum;          					// 순번
-    private String companyCode;     				    // 회사회사
+    private String companyCode;     				    // 회사 코드
     private String companyId;							// 회사ID
     private String companyNo;							// 회사 사업자번호
     private String companyNm;							// 회사이름
@@ -31,5 +31,6 @@ public class CompanyModel extends Criteria{
     private String modiId;								// 수정자ID
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")	// spring eval taglib를 사용하여 annotation 패턴으로 출력 가능
     private LocalDateTime modiDt;						// 수정일시
-    
+    private String searchKey;       // 검색키
+    private String searchValue;     // 검색값
 }

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
@@ -46,7 +47,7 @@ public class LoginSuccessLoggingAuthenticationSuccessHandler extends SavedReques
 		Map<String,Object> params = new HashMap<>();
 		AuthUser customAuthUser = null;
 		Object token = null;
-		
+		HttpSession session = request.getSession();
 		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AuthUser) {
 			customAuthUser = (AuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		} else {
@@ -87,7 +88,7 @@ public class LoginSuccessLoggingAuthenticationSuccessHandler extends SavedReques
 			params.put(Constant.LOG.USER_INFO, token.toString());
 		}
 		
-		
+//		response.sendRedirect("/");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 	

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.portal.adm.alarm.mapper.AlarmMapper;
 import com.portal.adm.alarm.model.AlarmModel;
+import com.portal.adm.member.model.MemberModel;
 import com.portal.common.Constant;
 
 /**
@@ -72,13 +73,43 @@ public class AlarmService {
     }
     
     /**
-     * 알람 정보를 조회한다.
+     * 알람 단일 정보를 조회한다.
      *
      * @param alarmCode
      * @return
      */
     public AlarmModel selectAlarmId(String alarmId) {
     	return alarmMapper.select(alarmId);
+    }
+    
+    /**
+     * 알람 정보를 ajax로 조회한다.
+     *
+     * @param alarmCode
+     * @return
+     */
+    public List<AlarmModel> selectAlarmUserId(String userId) {
+    	return alarmMapper.selectAlarmListView(userId);
+    }
+    
+    /**
+     * 등록된 알람이 있는지 조회한다.1~
+     *
+     * @param alarmCode
+     * @return
+     */
+    public AlarmModel selectAlarmCheck(AlarmModel model) {
+    	return alarmMapper.selectAlarmCheck(model);
+    }
+    
+    /**
+     * 알람을 등록한다.
+     *
+     * @param alarmCode
+     * @return
+     */
+    public MemberModel selectAlarmAuth(MemberModel memberModel) {
+    	return alarmMapper.selectAlarmAuth(memberModel);
     }
 
 }

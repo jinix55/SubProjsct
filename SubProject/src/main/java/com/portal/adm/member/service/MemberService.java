@@ -6,6 +6,7 @@ import com.portal.adm.role.model.RoleModel;
 import com.portal.common.Constant;
 import com.portal.common.paging.Criteria;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,7 +101,9 @@ public class MemberService {
 			memberMapper.upsertMgrAuth(m);
 		}
 		long count = memberMapper.insertUser(model);
+		memberMapper.updateUsertAuth(model);
 		memberMapper.insertUserHst(model);
+		
 		if (count > 0) {
 			return Constant.DB.INSERT;
 		} else {
@@ -137,6 +140,10 @@ public class MemberService {
 		}
 		
 		long count = memberMapper.update(model);
+		memberMapper.updateUsertAuth(model);
+		if(StringUtils.equals(model.getLockYn(),"Y")) {
+			memberMapper.unlockAccount(model);
+		}
 		memberMapper.insertUserHst(model);
 		if (count > 0) {
 			return Constant.DB.UPDATE;

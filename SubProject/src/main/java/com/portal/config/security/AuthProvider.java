@@ -75,7 +75,13 @@ public class AuthProvider extends DaoAuthenticationProvider {
 			if (StringUtils.equals("R", authUser.getMemberModel().getModiSe())) {
 				log.info("=개발 및 로컬 security 2==== : {}",authentication.getCredentials().toString());
 				if (!StringUtils.equals(authentication.getCredentials().toString(), "test")) {
-					throw new BadCredentialsException(mapper.selectLoginMessage(Constant.LoginMessage.LOGIN_FAIL));
+					if (checkDB(authentication.getName(), authentication.getCredentials().toString())) {
+						//DB 인증 성공
+					} else {
+						//DB 인증 실패
+						throw new LockedException(mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_FAIL));
+					}
+//					throw new BadCredentialsException(mapper.selectLoginMessage(Constant.LoginMessage.LOGIN_FAIL));
 				}
 			} else {
 				log.info("=authUser.isSso()====");
@@ -137,29 +143,34 @@ public class AuthProvider extends DaoAuthenticationProvider {
 					result = true;
 				} else {
 					if(StringUtils.equals(init, "Y")) {
+						log.warn("비밇번호 초기화");
 						errorCode = 2;
 						msg = mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_INIT);
 					}
 					
 					if(errorNo > 4) {
+						log.warn("로그인 잠금");
 						errorCode = 3;
 						msg = mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_LOCK);
 					}
 				}
 			}else {
-				log.warn("사용자 또는 비밀번호 불일치");
 				errorCode = 1;
 				model = mapper.selectUserCheck(map);
 				if(model.getUserId() != null) {
 					int no = model.getPassError();
 					if(model.getPassError() >= 5) {
+						log.warn("비밀번호 5회이상 불일치");
 						no = 5;
 					}else {
+						log.warn("비밀번호 5회미만 불일치");
 						no++ ;
 					}
 					errorCode = 1;
 					map.put("passError", String.valueOf(no));
 					mapper.updatePasswordFail(map);
+				}else {
+					log.warn("사용자 불일치");
 				}
 				msg = mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_NOT_MATCH);
 			}

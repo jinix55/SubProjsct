@@ -31,7 +31,7 @@ import com.portal.config.security.AuthUser;
 /**
  * 사용자관리/사용자관리 컨트롤러
  */
-@RequestMapping("/admin")
+@RequestMapping("/system")
 @Controller
 public class HolidayController {
 
@@ -52,7 +52,7 @@ public class HolidayController {
     	
     		criteria.setTotalCount(service.selectHolidayListCount(criteria));
     		model.addAttribute("pages", criteria);
-        return "holiday/holiday";
+        return "holiday/holidayMgt";
     }
 
     @PostMapping("/holiday")
@@ -61,7 +61,7 @@ public class HolidayController {
 		model.addAttribute("list", service.selectHolidayList(criteria));
 		criteria.setTotalCount(service.selectHolidayListCount(criteria));
 		model.addAttribute("pages", criteria);
-        return "holiday/holiday";
+        return "holiday/holidayMgt";
     }
     
 

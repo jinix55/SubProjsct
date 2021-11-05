@@ -21,7 +21,7 @@ import com.portal.common.paging.Criteria;
 /**
  * 사용자관리/로그관리 컨트롤러
  */
-@RequestMapping("/admin")
+@RequestMapping("/log")
 @Controller
 public class LogController {
 

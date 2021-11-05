@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * 시스템관리 / 회사관리 컨트롤러
  */
 @Slf4j
-@RequestMapping("/admin")
+@RequestMapping("/menu")
 @Controller
 public class ReportController {
 
@@ -54,7 +54,7 @@ public class ReportController {
         model.addAttribute("reports", models);
         model.addAttribute("pages", reportModel);
         
-        return "report/report";
+        return "report/reportMgt";
     }
 
     /**
@@ -71,7 +71,7 @@ public class ReportController {
         attributes.addAttribute("reports", models);
         attributes.addAttribute("pages", reportModel);
         
-        return "report/report";
+        return "report/reportMgt";
     }
 
     /**

@@ -70,8 +70,7 @@
     <update id="updatePasswordInit" parameterType="map">
 		update T_USER SET PASSWORD = <![CDATA[SHA2(#{newPassword},256)]]>, PASS_ERROR = 0, PASS_INIT = 'Y' WHERE USER_ID = #{userId}
     </update>
-
-
+    
 	<update id="updateLastLogDt" parameterType="string">
 		UPDATE T_USER SET LAST_LOG_DT = NOW(), PASS_ERROR = 0 WHERE USER_ID = #{userId}
 	</update>

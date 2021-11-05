@@ -1,6 +1,8 @@
 package com.portal.adm.alarm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.alarm.model.AlarmModel;
 import com.portal.adm.alarm.service.AlarmService;
+import com.portal.common.ApiRequestUtil;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -38,6 +42,9 @@ public class AlarmController {
     
     @Resource
     private IdUtil idUtil;
+    
+    @Resource
+    private ApiRequestUtil apiRequestUtil;
     
     /**
      * 알람관리 페이지로 이동
@@ -151,6 +158,27 @@ public class AlarmController {
 		AlarmModel alarmModels = alarmService.selectAlarmId(alarmId);
 
         return new ResponseEntity<>(alarmModels, HttpStatus.OK);
+    }
+    
+    /**
+     * 알람 정보를 ajax 조회한다.
+     *
+     * @param alarmId
+     * @return
+     */
+    @GetMapping("/alarm/detail")
+    @ResponseBody
+    public Map<String,Object> getAjaxAlarmsForUserId(@AuthenticationPrincipal AuthUser authUser) {
+    	log.info(" =============== getAjaxAlarmsForUserId ajax in ==============");
+    	Map<String,Object> result = new HashMap<String, Object>();
+    	List<AlarmModel> alarmList = alarmService.selectAlarmUserId(authUser.getMemberModel().getUserId());
+    	
+//    	apiRequestUtil.requesKakaoAdressGet(null, null);
+//    	apiRequestUtil.requesGetDust(null, null);
+//    	apiRequestUtil.requesGetWeather(null, null);
+    	
+    	result.put("alarmList", alarmList);
+        return result;
     }
     
 }

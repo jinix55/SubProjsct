@@ -21,7 +21,7 @@ import java.security.Principal;
 /**
  * 사용자관리 / 권한관리 컨트롤러
  */
-@RequestMapping("/admin")
+@RequestMapping("/system")
 @Controller
 @Slf4j
 public class RoleController {
@@ -44,7 +44,7 @@ public class RoleController {
         roleModel.setTotalCount(roleService.selectListCount(roleModel));
         model.addAttribute("pages", roleModel);
 
-        return "role/role";
+        return "role/groupMgt";
     }
 
     /**
@@ -58,7 +58,7 @@ public class RoleController {
 
         attributes.addFlashAttribute("criteria", roleModel);
 
-        return "redirect:/admin/role";
+        return "redirect:/system/role";
     }
 
     /**

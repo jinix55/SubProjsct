@@ -46,7 +46,7 @@ public class WebSecurityConfig<S extends Session> extends WebSecurityConfigurerA
 	@Override
 	public void configure(WebSecurity web) {
 		// 리소스 파일 관련 패턴은 무시하도록 시큐리티 설정
-		web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/font/**", "/webjars/**","/favicon.ico","/dispatch/**","/summernote/**","/down/**");
+		web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/font/**", "/fonts/**", "/webjars/**","/favicon.ico","/dispatch/**","/summernote/**","/down/**");
 	}
 
 	@Override
