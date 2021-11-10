@@ -8,7 +8,7 @@
 		<div class="justify-content-between">
 			<div class="form-group">
 				<div class="form-inline">
-					<select class="select-box w150">
+					<select class="select-box w150" id="searchKey" name ="searchKey">
 						<option value="userId">사용자 ID</option>
 						<option value="userNm">사용자 명</option>
 					</select>
@@ -18,7 +18,7 @@
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
 							class="search-box-append">
 							<button type="button" class="btn-search">
-								<img src="/images/icon_search.png" title="검색">
+								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
 					</div>
@@ -29,44 +29,44 @@
 	<!-- E_검색-->
 	<!-- S_그리드-->
 	<div class="content-table">
-		<div class="buttons-action" style="display: none">
-			<div>
-				<a href="#Alldelete" role="button" data-toggle="modal">
-					<button type="button" class="btn-alldelete">
-						전체삭제<img src="/images/icon_delete.png" title="삭제">
-					</button>
-				</a>
-				<button type="button" class="btn-allcancel">
-					삭제취소<img src="/images/icon_cancel.png" title="취소">
-				</button>
-			</div>
-			<div>
-				<span class="text-action">14 items selected</span>
-			</div>
-		</div>
+<!-- 		<div class="buttons-action" style="display: none"> -->
+<!-- 			<div> -->
+<!-- 				<a href="#Alldelete" role="button" data-toggle="modal"> -->
+<!-- 					<button type="button" class="btn-alldelete"> -->
+<!-- 						전체삭제<img src="/images/icon_delete.png" title="삭제"> -->
+<!-- 					</button> -->
+<!-- 				</a> -->
+<!-- 				<button type="button" class="btn-allcancel"> -->
+<!-- 					삭제취소<img src="/images/icon_cancel.png" title="취소"> -->
+<!-- 				</button> -->
+<!-- 			</div> -->
+<!-- 			<div> -->
+<!-- 				<span class="text-action">14 items selected</span> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<div class="scroll-auto">
 			<table class="table table-actions">
 				<colgroup>
-					<col style="width: 30px;">
-					<col style="width: 40px;">
-					<col style="width: 90px;">
-					<col style="width: 90px;">
-					<col style="width: 100px;">
-					<col style="width: 160px;">
-					<col style="width: 85px;">
-					<col style="width: 85px;">
-					<col style="width: 90px;">
+					<col style="width: 5%;">
+					<col style="width: 6%;">
+					<col style="width: 12%;">
+					<col style="width: 15%;">
+					<col style="width: *%;">
+					<col style="width: 14%;">
+					<col style="width: 8%;">
+					<col style="width: 8%;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
-						<th><input type="checkbox" name="all" id="checkAll"></th>
+						<th>
+<!-- 							<input type="checkbox" name="all" id="checkAll"> -->
+						</th>
 						<th scope="col">번호</th>
 						<th scope="col">사용자 ID</th>
 						<th scope="col">사용자 이름</th>
 						<th scope="col">그룹 ID</th>
-						<th scope="col">사용자 이메일</th>
-						<th scope="col">전화번호</th>
 						<th scope="col">등록일</th>
+						<th scope="col">사용유무</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -78,15 +78,30 @@
 							<td class="text-point">${member.userId}</td>
 							<td>${member.userNm}</td>
 							<td>${member.authNm}</td>
-							<td>${member.email}</td>
-							<td>${member.phone}</td>
 							<td><spring:eval expression="member.rgstDt" /></td>
 							<td>
+							<c:choose>
+								<c:when test="${member.useYn eq 'Y' }">
+									<button type="button" class="btn-yes">YES</button>
+								</c:when>
+								<c:otherwise>
+									<c:choose>
+									<c:when test="${member.lockYn eq 'Y' }">
+										<button type="button" class="btn-no backColorRed">Lock</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn-no">NO</button>
+									</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>
+							</td>
+							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${member.userId}');" data-id="${member.userId}" role="button" data-toggle="modal" class="btn-tbl_icon">
+									<a href="#register" onclick="detailView('${member.userId}');" role="button" data-toggle="modal" class="btn-tbl_icon">
 										<img src="/images/icon_edit.png" alt="수정하기" class="tbl-icon2">
 									</a>
-									<a href="#delete" role="button" data-toggle="modal" class="btn-tbl_icon">
+									<a href="#delete" onclick="deleteSet('${member.userId}');" role="button" data-toggle="modal" class="btn-tbl_icon">
 										<img src="/images/icon_delete2.png" alt="삭제하기" class="tbl-icon2">
 									</a>
 								</div>
@@ -350,10 +365,12 @@
 </div>
 
 <!-- 레이어 팝업 - delete -->
+<form action="/member/member/delete" method="POST">
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 	data-modal-parent="#myModal">
 	<!-- Modal content-->
+	<input type="hidden" id="del_userId" name="del_userId">
 	<div class="modal-content" style="width: 400px">
 		<div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
@@ -366,7 +383,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							(<em class="text-bold">PEuser01</em>)삭제합니다.
+							<em class="text-bold delName">PEuser01</em> 삭제하시겠습니까?
 						</div>
 					</div>
 				</div>
@@ -378,6 +395,7 @@
 		</div>
 	</div>
 </div>
+</form>
 <!-- 레이어 팝업 delete All -->
 <div id="Alldelete" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -434,6 +452,11 @@
 	    $("#page").val(num);
 	    $("#searchFrm").submit();
 	});
+	
+	function deleteSet(userId){
+		$('#del_userId').val(userId);
+		$('.delName').text(userId);
+	}
 	
 	function detailView(id){
 		resetView();
@@ -661,6 +684,26 @@
 		});
 	}
 	
+	function deleteAjax(param,action){
+		param = {
+				userId : $('#del_userId').val()
+		}
+		$.ajax({
+		    type : 'post',
+		    url : '/member/member/delete',
+		    data : param,
+		    dataType : 'text',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+		    	if(result == 'Delete'){
+		    		location.href = '/member/member';
+		    	}
+		    }
+		});
+	}
+	
 	function setPhoneNo(){
 		var phone = $('#phone1').val()+'-'+$('#phone2').val()+'-'+$('#phone3').val(); 
 		$('#phone').val(phone);
@@ -729,6 +772,14 @@
 		
 		$('.phone').keyup(function(){
 			setPhoneNo();
+		});
+		
+		$('.delete').click(function(){
+			deleteAjax();
+		});
+		
+		$('.search-box-append').click(function(){
+			$('#searchFrm').submit();
 		});
 	});
 </script>

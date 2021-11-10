@@ -64,6 +64,9 @@ public class MemberController {
     @GetMapping("/member")
     public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
+    	log.info("============= > "+criteria.getSearchKey());
+    	log.info("============= > "+criteria.getSearchValue());
+    	
         // 모든 권한 조회
         model.addAttribute("roles", roleService.selectAllList());
         
@@ -72,7 +75,6 @@ public class MemberController {
 
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
         criteria.setAuthId(authUser.getMemberModel().getAuthId());
-        
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
         model.addAttribute("pages", criteria);
@@ -86,6 +88,8 @@ public class MemberController {
     	log.info(" member post memberModel ==>  {} ",memberModel.toString());
     	log.info(" member post criteria ==>  {} ",criteria.toString());
     	log.info(" member post model ==>  {} ",model.toString());
+        log.info("============= > "+criteria.getSearchKey());
+        log.info("============= > "+criteria.getSearchValue());
         attributes.addFlashAttribute("criteria", criteria);
 
         // 모든 권한 조회
@@ -175,6 +179,25 @@ public class MemberController {
             memberModel.setModiId(authUser.getMemberModel().getUserId());
 
             String result = memberService.insert(memberModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+    @PostMapping("/member/delete")
+    public ResponseEntity<String> delete(HttpServletRequest request,
+                                       @ModelAttribute MemberModel memberModel,
+                                       @AuthenticationPrincipal AuthUser authUser) {
+		for (String key : request.getParameterMap().keySet()) {
+			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+		}
+        try {
+
+            memberModel.setModiId(authUser.getMemberModel().getUserId());
+
+            String result = memberService.delete(memberModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

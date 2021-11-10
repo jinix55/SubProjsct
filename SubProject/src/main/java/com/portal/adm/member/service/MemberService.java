@@ -151,6 +151,23 @@ public class MemberService {
 			return Constant.DB.FAIL;
 		}
 	}
+	
+	/**
+	 * 사용자 정보를 수정(삭제,미사용)한다.
+	 *
+	 * @param model 사번을 사용
+	 * @return
+	 */
+	@Transactional
+	public String delete(MemberModel model) {
+		long count = memberMapper.delete(model);
+		memberMapper.insertUserHst(model);
+		if (count > 0) {
+			return Constant.DB.DELETE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
 
 	/**
 	 * 관리자 권한ID를 사용하는 사용자의 카운트를 조회한다.

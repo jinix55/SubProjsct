@@ -109,6 +109,7 @@ em {color:#4288ca;}
 .col-100 {-ms-flex: 0 0 100%;flex: 0 0 100%;max-width: 100%;}
 .colorGray{color:#b0b0b0 !important;}
 .colorRed{color:red !important;}
+.backColorRed{background-color:red !important;}
 .fontColorGreen{color:forestgreen !important;}
 .btnEdit{background-color:#ca4242 !important;}
 .eInput { ime-mode: active }

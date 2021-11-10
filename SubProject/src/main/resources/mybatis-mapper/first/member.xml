@@ -7,16 +7,16 @@
 	<sql id="searchMember">
 		<where>
 			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-				and (upper(u.user_id) like upper('%'||#{searchValue}||'%') or upper(u.user_nm) like upper('%'||#{searchValue}||'%')) or (upper(d.dept_nm) like upper('%'||#{searchValue}||'%'))
+				and (upper(u.user_id) like concat('%',upper(#{searchValue}),'%') or upper(u.user_nm) like concat('%',upper(#{searchValue}),'%') or (upper(d.dept_nm) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'userId' and searchValue != ''">
-				and (upper(u.user_id) like upper('%'||#{searchValue}||'%'))
+				and (upper(u.user_id) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'userNm' and searchValue != ''">
-				and (upper(u.user_nm) like upper('%'||#{searchValue}||'%'))
+				and (upper(u.user_nm) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'deptNm' and searchValue != ''">
-				and (upper(d.dept_nm) like upper('%'||#{searchValue}||'%'))
+				and (upper(d.dept_nm) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'deptCode' and searchValue != ''">
 				and (upper(u.dept_code) = upper(#{searchValue}))
@@ -273,6 +273,16 @@
 		  , use_yn = #{useYn}
 		  , start_dt = #{startDt}
 		  , end_dt = #{endDt}
+		  , modi_dt = now()
+		  , modi_id = #{modiId}
+		where
+			user_id = #{userId}
+	</update>
+	
+	 <update id="delete" parameterType="com.portal.adm.member.model.MemberModel">
+		update t_user
+		set
+		  use_yn = 'N'
 		  , modi_dt = now()
 		  , modi_id = #{modiId}
 		where

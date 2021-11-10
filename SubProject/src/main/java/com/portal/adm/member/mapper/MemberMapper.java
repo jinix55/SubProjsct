@@ -74,6 +74,13 @@ public interface MemberMapper {
     long update(MemberModel model);
     
     /**
+     * 사용자 모델을 미사용으로 업데이트 한다.
+     * @param model 사번을 사용
+     * @return
+     */
+    long delete(MemberModel model);
+    
+    /**
      * 사용자 권한을 업데이트 한다.
      * @param model 사번을 사용
      * @return
