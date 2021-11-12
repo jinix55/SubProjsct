@@ -1,5 +1,6 @@
 package com.portal.adm.role;
 
+import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
 import com.portal.common.paging.Criteria;
@@ -28,6 +29,9 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
+    
+    @Resource
+    private CompanyService companyService;
 
     /**
      * 권한 관리 페이지로 이동한다.
@@ -38,8 +42,13 @@ public class RoleController {
      */
     @GetMapping("/role")
     public String list(@ModelAttribute RoleModel roleModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	
+    	// 모든 회사 조회
+        model.addAttribute("companys", companyService.selectListAll());
+    	
     	roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	roleModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	
         model.addAttribute("roles", roleService.selectList(roleModel));
         roleModel.setTotalCount(roleService.selectListCount(roleModel));
         model.addAttribute("pages", roleModel);

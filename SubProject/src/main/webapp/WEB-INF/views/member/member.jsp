@@ -78,7 +78,7 @@
 							<td class="text-point">${member.userId}</td>
 							<td>${member.userNm}</td>
 							<td>${member.authNm}</td>
-							<td><spring:eval expression="member.rgstDt" /></td>
+							<td><spring:eval expression="member.rgstDt.toString().substring(0,10)" /></td>
 							<td>
 							<c:choose>
 								<c:when test="${member.useYn eq 'Y' }">
