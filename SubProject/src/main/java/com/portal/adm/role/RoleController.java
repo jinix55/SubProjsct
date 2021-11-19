@@ -3,6 +3,7 @@ package com.portal.adm.role;
 import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
+import com.portal.common.IdUtil;
 import com.portal.common.paging.Criteria;
 import com.portal.config.security.AuthUser;
 
@@ -32,6 +33,9 @@ public class RoleController {
     
     @Resource
     private CompanyService companyService;
+    
+    @Resource
+    private IdUtil idUtil;
 
     /**
      * 권한 관리 페이지로 이동한다.
@@ -77,8 +81,11 @@ public class RoleController {
      * @return      Insert/Update/Fail을 페이지로 리턴하며 alert메시지 처리
      */
     @PostMapping("/role/insert")
-    public ResponseEntity<String> insert(@ModelAttribute RoleModel roleModel, @AuthenticationPrincipal AuthUser authUser) {
-
+    @ResponseBody
+    public String insert(@ModelAttribute RoleModel roleModel, @AuthenticationPrincipal AuthUser authUser) {
+    	if(roleModel.getAuthId().equals("") || roleModel.getAuthId() == null) {
+    		roleModel.setAuthId(idUtil.getAuthId());
+    	}
         try {
             roleModel.setRgstId(authUser.getMemberModel().getUserId());
             roleModel.setModiId(authUser.getMemberModel().getUserId());
@@ -92,11 +99,9 @@ public class RoleController {
                 log.debug(customAuthUser.getMemberModel().toString());
             }
 
-            String result = roleService.save(roleModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return roleService.save(roleModel);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+            return "fail";
         }
     }
 
@@ -107,17 +112,16 @@ public class RoleController {
      * @return      Delete/Fail을 페이지로 리턴하며 alert메시지 처리
      */
     @PostMapping("/role/delete")
-    public ResponseEntity<String> delete(@ModelAttribute RoleModel roleModel, @AuthenticationPrincipal AuthUser authUser) {
+    @ResponseBody
+    public String delete(@ModelAttribute RoleModel roleModel, @AuthenticationPrincipal AuthUser authUser) {
 
         try {
             roleModel.setRgstId(authUser.getMemberModel().getUserId());
             roleModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = roleService.delete(roleModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return roleService.delete(roleModel);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+            return "fail";
         }
     }
 

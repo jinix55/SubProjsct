@@ -77,6 +77,7 @@ public class HolidayController {
     }
     
     @PostMapping("/holiday/update")
+    @ResponseBody
     public ResponseEntity<String> update(@ModelAttribute HolidayModel holidayModel){
         try {
         	holidayModel.setSolarDate(holidayModel.getSolarDateView());
@@ -95,6 +96,7 @@ public class HolidayController {
     }
     
     @PostMapping("/holiday/insert")
+    @ResponseBody
     public ResponseEntity<String> insert(@ModelAttribute HolidayModel holidayModel){
 
     	 try {

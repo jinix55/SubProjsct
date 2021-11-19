@@ -486,6 +486,9 @@
 		var email2 = '';
 		var companyCd = 'none';
 		var authId = 'none';
+		var useYn = 'N';
+		var lockYn = 'N';
+		var dtLimitYn = 'N';
 		
 		if(data.phone){
 			phone1 = data.phone.split("-")[0];
@@ -496,6 +499,18 @@
 		if(data.email){
 			email1 = data.email.split("@")[0];
 			email2 = data.email.split("@")[1];
+		}
+		
+		if(data.useYn != ''){
+			useYn = data.useYn;
+		}
+		
+		if(data.lockYn != ''){
+			lockYn = data.lockYn;
+		}
+		
+		if(data.dtLimitYn != ''){
+			dtLimitYn = data.dtLimitYn;
 		}
 		
 		if(data.companyCode){
@@ -517,7 +532,7 @@
 		$('#phone').val(data.phone);
 		$('#companyCode').val(companyCd);
 		$('#authId').val(authId);
-		$('#use'+data.useYn).prop('checked',true);
+		$('#use'+useYn).prop('checked',true);
 // 		if(data.lockYn == 'Y'){
 // 			$('#lockYn').addClass('btn-yes');
 // 			$('#lockYn').text('Yes');
@@ -530,8 +545,8 @@
 // 			$('#lockYn').css('background','darkgray');
 // 			$('#lockYn').css('cursor',' unset');
 // 		}
-		$('#lock'+data.lockYn).prop('checked',true);
-		$('#dtLimit'+data.dtLimitYn).prop('checked',true);
+		$('#lock'+lockYn).prop('checked',true);
+		$('#dtLimit'+dtLimitYn).prop('checked',true);
 		$('#startDt').val(data.startDt);
 		$('#endDt').val(data.endDt);
 		$('#rgstDt').val(data.rgstDt);

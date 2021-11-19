@@ -187,7 +187,7 @@ function layerPopup(IdName){
    $(IdName).center();
   };
   //레이어 팝업 스크롤
- //$(document).ready(function () {
+  //$(document).ready(function () {
   //$('#register,#overlap,#detail,#edit,#delete,#Alldelete').append('<style type="text/css">.modal .modal-body {max-height: ' + ($('body').height() * .5) + 'px;overflow-y: auto;}.modal-open .modal{overflow-y: hidden !important;}</style>');
   //});
   //레이어 팝업 닫기
@@ -400,7 +400,7 @@ function layerPopupClose(IdInfo){
    (jQuery);
    $(function(){
        // 달력 하나짜리 세팅
-       $("[name=date1]").calendar();
+       $("[name=solarDate]").calendar();
 
        // 기간( from~to ) 달력 세팅
        $("[name=dateFrom]").calendar( $("[name=dateTo]") );

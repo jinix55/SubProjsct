@@ -25,8 +25,8 @@
 		FROM
 			t_group_auth g
 		JOIN t_company c ON c.company_code = g.company_code
-		WHERE
-			g.use_yn = 'Y'
+		WHERE 1 = 1
+<!-- 			and g.use_yn = 'Y' -->
 		<if test="authId != 'au2000001'">
 			<if test="companyCode != null and companyCode != ''">
 				AND c.company_code = #{companyCode}
@@ -94,7 +94,8 @@
             rgst_dt,
             modi_id,
             modi_dt,
-            auth_cl 
+            auth_cl, 
+            company_code
         from
             t_group_auth
         where

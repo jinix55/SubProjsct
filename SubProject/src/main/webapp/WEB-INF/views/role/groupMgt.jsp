@@ -85,14 +85,7 @@
 									<button type="button" class="btn-yes">YES</button>
 								</c:when>
 								<c:otherwise>
-									<c:choose>
-									<c:when test="${role.lockYn eq 'Y' }">
-										<button type="button" class="btn-no backColorRed">Lock</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" class="btn-no">NO</button>
-									</c:otherwise>
-									</c:choose>
+									<button type="button" class="btn-no">NO</button>
 								</c:otherwise>
 							</c:choose>
 							</td>
@@ -128,8 +121,7 @@
 
 <!-- 레이어 팝업 - 등록  -->
 <form id="frm">
-<div id="register" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 800px">
 		<div class="modal-header">
 			<h4 class="modal-title">수정</h4>
@@ -144,8 +136,7 @@
 						<label class="col-25 form-label">등록일</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="2010-10-01"
-									disabled>
+								<input id="rgstDt" name="rgstDt" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -155,8 +146,7 @@
 						<label class="col-25 form-label">수정일</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="2010-10-21"
-									disabled>
+								<input id="modiDt" name="modiDt" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -166,7 +156,7 @@
 						<label class="col-25 form-label">그룹 ID</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="GROUP_01" disabled>
+								<input id="authId" name="authId" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -188,7 +178,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">그룹분류</label>
 						<div class="col-75">
-							<select class="select-box">
+							<select id="authCl" name="authCl" class="select-box">
 								<option value="none">선택안함</option>
 								<option value="A">시스템 관리자</option>
 								<option value="P">관리자</option>
@@ -202,7 +192,7 @@
 						<label class="col-25 form-label">그룹명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="알티데이타랩">
+								<input id="authNm" name="authNm" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -231,7 +221,7 @@
 						<label class="col-25 form-label-textarea">그룹 설명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<textarea class="textarea"></textarea>
+								<textarea id="authDsc" name="authDsc" class="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -247,45 +237,6 @@
 	</div>
 </div>
 </form>
-
-<!-- 레이어 팝업 아이디 중복 확인 -->
-<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-	data-modal-parent="#myModal">
-	<div class="modal-content" style="width: 400px">
-		<div class="modal-header">
-			<h4 class="modal-title">중복확인</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label">사용자 ID<em>*</em></label>
-						<div class="col-75">
-							<div class="search-box">
-								<input id="re_authId" name="re_authId" type="text" class="text-input">
-								<span class="search-box-append">
-									<button id="re_idSearch" name="re_idSearch" type="button" class="btn-search">
-										<img src="/images/icon_search.png" title="검색">
-									</button>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="form-notice"  style="display:none">* [ww]는 사용가능한 ID입니다</div>
-				</div>
-			</div>
-		</div>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success idCheck" data-dismiss="modal">확인</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-		</div>
-	</div>
-</div>
 
 <!-- 레이어 팝업 - delete -->
 <form action="/role/role/delete" method="POST">
@@ -388,7 +339,8 @@
 		$('#modiDt').attr('disabled',true);
 		$('#modiDt').parents('.col-50').show();
 		$('#register input').attr('disabled',true);
-		$('.grpidDiv').show();
+		$('#register textarea').attr('disabled',true);
+		$('.grpIdDiv').show();
 		
 		$.ajax({
 			url : '/system/role/detail/'+id,
@@ -404,60 +356,20 @@
 	}
 	
 	function setView(data){
-		var phone1 = '';
-		var phone2 = '';
-		var email1 = '';
-		var email2 = '';
 		var companyCd = 'none';
-		var authId = 'none';
-		
-		if(data.phone){
-			phone1 = data.phone.split("-")[0];
-			phone2 = data.phone.split("-")[1];
-			phone3 = data.phone.split("-")[2];
-		}
-		
-		if(data.email){
-			email1 = data.email.split("@")[0];
-			email2 = data.email.split("@")[1];
-		}
-		
+		var authCl = 'none';
 		if(data.companyCode){
 			companyCd = data.companyCode;
 		}
-		
-		if(data.authId){
-			authId = data.authId;
+		if(data.authCl){
+			authCl = data.authCl;
 		}
-		
+		$('#authCl').val(authCl);
 		$('#authId').val(data.authId);
 		$('#authNm').val(data.authNm);
-		$('#email1').val(email1);
-		$('#email2').val(email2);
-		$('#email').val(data.email);
-		$('#phone1').val(phone1);
-		$('#phone2').val(phone2);
-		$('#phone3').val(phone3);
-		$('#phone').val(data.phone);
+		$('#authDsc').val(data.authDsc);
 		$('#companyCode').val(companyCd);
-		$('#authId').val(authId);
 		$('#use'+data.useYn).prop('checked',true);
-// 		if(data.lockYn == 'Y'){
-// 			$('#lockYn').addClass('btn-yes');
-// 			$('#lockYn').text('Yes');
-// 			$('#lockYn').css('background','red');
-// 			$('#lockYn').css('cursor',' pointer');
-// 		}else{
-// 			$('#lockYn').addClass('btn-no');
-// 			$('#lockYn').text('No');
-// 			$('#lockYn').css('background','darkgray');
-// 			$('#lockYn').css('background','darkgray');
-// 			$('#lockYn').css('cursor',' unset');
-// 		}
-		$('#lock'+data.lockYn).prop('checked',true);
-		$('#dtLimit'+data.dtLimitYn).prop('checked',true);
-		$('#startDt').val(data.startDt);
-		$('#endDt').val(data.endDt);
 		$('#rgstDt').val(data.rgstDt);
 		$('#modiDt').val(data.modiDt);
 	}
@@ -475,6 +387,7 @@
 	function resetInput(){
 		$('#register input').attr('disabled',false);
 		$('#register select').attr('disabled',false);
+		$('#register textarea').attr('disabled',false);
 		$('.search-box-append').show();
 		$('#register input').val('');
 		$('#lockY').val('Y');
@@ -484,7 +397,7 @@
 		$('#useY').val('Y');
 		$('#useN').val('N');
 		$('#companyCode').val('none');
-		$('#authId').val('none');
+		$('#authCl').val('none');
 		$('#lockN').prop('checked',true);
 		$('#dtLimitY').prop('checked',true);
 		$('#useY').prop('checked',true);
@@ -507,66 +420,16 @@
 		$('#regBtn').text('수정');
 	}
 	
-	function idSearch(){
-		var idSearch = $('#authId').val();
-		if(idSearch){
-			$('#re_authId').val(idSearch);
-			searchIdAction(idSearch);
-		}else{
-			$('#re_authId').val('');
-			$('.form-notice').text("확인이 필요합니다.");
-			$('.form-notice').hide();
-		}
-	}
 	
-	function re_idSearch(){
-		var re_idSearch = $('#re_authId').val();
-		if(re_idSearch){
-			searchIdAction(re_idSearch);
-		}
-	}
-	
-	function searchIdAction(idSearch){
-		$.ajax({
-		    type : 'post',
-		    url : '/system/role/detail/popup/'+idSearch,
-		    data : {roleId:idSearch},
-		    dataType : 'text',
-		    error: function(xhr, status, error){
-		        console.log(error);
-		    },
-		    success : function(result){
-		    	console.log(result)
-		    	if(result == 'none'){
-		    		$('.form-notice').text("이미 사용중인 아이디 입니다.");
-		    		$('.form-notice').addClass("colorRed");
-		    		$('#idSearch').removeClass('search-Success');
-		    	}else{
-		    		$('.form-notice').text("사용 가능한 아이디 입니다.");
-		    		$('.form-notice').addClass("fontColorGreen");
-		    		$('#authId').val(result);
-		    		$('#re_authId').val(result);
-		    		$('#idSearch').addClass('search-Success');
-		    	}
-		    		$('.form-notice').show();
-		    }
-		});
-	}
-	
-	function idCheckReset(){
-		$('.form-notice').text("확인이 필요합니다.");
-		$('.form-notice').hide();
-		$('.form-notice').hide();
-		if($('#re_authId').val() == ''){
-			$('#idSearch').removeClass('search-Success');
-		}
-	}
 	
 	function setEdit(){
 		$('#register input').attr('disabled',false);
 		$('#register select').attr('disabled',false);
+		$('#register textarea').attr('disabled',false);
+		$('#authNm').attr('disabled',false);
+		$('#authCl').attr('disabled',false);
+		$('#authDsc').attr('disabled',false);
 		$('#authId').attr('disabled',true);
-		$('#authNm').attr('disabled',true);
 		$('#rgstDt').attr('disabled',true);
 		$('#modiDt').attr('disabled',true);
 		$('#regBtn').text('저장');
@@ -574,20 +437,13 @@
 		$('#regBtn').addClass('save');
 	}
 	
-	function userInsert(){
-		var has = $('#idSearch').hasClass('search-Success');
-		if(!has && $('#regBtn').hasClass('save')){
-			alert('아이디 중복 학인이 필요합니다.');
-			return false;
-		}
-		
+	function authInsert(){
 		var param =  $('#frm').serialize();
 		insertAjax(param,'insert');
 	}
 	
-	function userUpdate(){
+	function authUpdate(){
 		var param =  $('#frm').serialize();
-		
 		insertAjax(param,'update');
 	}
 	
@@ -602,7 +458,7 @@
 		    },
 		    success : function(result){
 		    	if(result == 'Update' || result == 'Insert'){
-		    		location.href = '/role/role';
+		    		location.href = '/system/role';
 		    	}
 		    }
 		});
@@ -614,28 +470,19 @@
 		}
 		$.ajax({
 		    type : 'post',
-		    url : '/role/role/delete',
+		    url : '/system/role/delete',
 		    data : param,
 		    dataType : 'text',
 		    error: function(xhr, status, error){
 		        console.log(error);
 		    },
 		    success : function(result){
+		    	console.log(result);
 		    	if(result == 'Delete'){
-		    		location.href = '/role/role';
+		    		location.href = '/system/role';
 		    	}
 		    }
 		});
-	}
-	
-	function setPhoneNo(){
-		var phone = $('#phone1').val()+'-'+$('#phone2').val()+'-'+$('#phone3').val(); 
-		$('#phone').val(phone);
-	}
-	
-	function setEmail(){
-		var email = $('#email1').val()+'@'+$('#email2').val(); 
-		$('#email').val(email);
 	}
 	
 	function setNumber(objValue){
@@ -648,6 +495,7 @@
 			resetInput();
 			$('#register .modal-title').text('등록');
 			$('#register .insert').text('저장');
+			$('#register .textarea').val('');
 			
 			$('.grpIdDiv').hide();
 			$('#rgstDt').attr('disabled',true);
@@ -656,25 +504,6 @@
 			$('#modiDt').parents('.col-50').hide();
 		});
 		
-		$("#idSearch").keyup(function(e) {
-	        if(e.keyCode == '13'){
-	        	$("#idSearchCheck").click();
-	        	idSearch();
-	        }
-	    });
-		
-		$("#idSearch, #idSearchCheck").mouseup(function(e) {
-			$("#idSearchCheck").click();
-			idSearch();
-	    });
-		
-		$('#re_idSearch').click(function(){
-			re_idSearch();
-		});
-		
-		$('.idCheck').click(function(){
-			idCheckReset();
-		});
 		
 		$('.close, .cancle').click(function(){
 			resetInput();
@@ -682,22 +511,14 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				userInsert();
+				authInsert();
 			}
 			if($('#regBtn').hasClass('save')){
-				userUpdate();
+				authUpdate();
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
 			}
-		});
-		
-		$('.email').keyup(function(){
-			setEmail();
-		});
-		
-		$('.phone').keyup(function(){
-			setPhoneNo();
 		});
 		
 		$('.delete').click(function(){

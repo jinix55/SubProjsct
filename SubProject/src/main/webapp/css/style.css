@@ -114,6 +114,8 @@ em {color:#4288ca;}
 .btnEdit{background-color:#ca4242 !important;}
 .eInput { ime-mode: active }
 .search-Success{background-color: forestgreen !important;}
+.btn-yes, .btn-yes{cursor: default;}
+
 
 /* common */
 body.sub {display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;min-height: 100vh;}

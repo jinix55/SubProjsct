@@ -3,6 +3,7 @@ package com.portal.adm.role.model;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.portal.common.paging.Criteria;
 
 import java.time.LocalDateTime;
@@ -23,8 +24,11 @@ public class RoleModel extends Criteria{
     private String useYn;               // 사용여부
     private String rgstId;              // 등록자 ID
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rgstDt;     // 등록일시
     private String modiId;              // 수정자 ID
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modiDt;     // 수정일시
     
     private String userId;
