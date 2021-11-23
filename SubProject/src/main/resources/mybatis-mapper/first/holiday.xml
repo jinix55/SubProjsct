@@ -7,6 +7,18 @@
 	<sql id="paging">
 		limit #{offSet}, #{pageSize}
 	</sql>
+	
+	<sql id="searchHoliday">
+		<if test="holiType != null and holiType != ''">
+			and holi_type = #{holiType}
+		</if>
+		<if test="useYn != null and useYn != ''">
+			and use_yn = #{useYn} 
+		</if>
+		<if test="searchValue != null and searchValue != ''">
+			and ((upper(HOLI_NM) like concat('%',upper(#{searchValue}),'%')) or (upper(HOLI_TYPE) like concat('%',upper(#{searchValue}),'%')))
+		</if>
+	</sql>
 
 	<select id="selectHolidayList" parameterType="com.portal.adm.holiday.model.HolidayModel" resultType="com.portal.adm.holiday.model.HolidayModel">
 		select
@@ -20,6 +32,7 @@
 			, USE_YN
 		from T_HOLIDAY
 		WHERE date_format(solar_date,'%Y') = date_format(now(),'%Y')
+		<include refid="searchHoliday"></include>
 		order by SOLAR_DATE asc
 		<include refid="paging"></include>
 	</select>
@@ -75,6 +88,11 @@
 			, MEMO = #{memo}
 		where SOLAR_DATE = #{solarDate}
 	</update>
+	
+	<delete id="deleteHolidayOne" parameterType="com.portal.adm.holiday.model.HolidayModel" >
+		DELETE FROM t_holiday
+		WHERE SOLAR_DATE = #{solarDate}
+	</delete>
 	
 	<update id="updatetHolidayActive" parameterType="com.portal.adm.holiday.model.HolidayModel" >
 		update T_HOLIDAY set

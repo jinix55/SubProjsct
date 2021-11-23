@@ -63,14 +63,7 @@ public class HolidayService {
 	 *@param criteria
 	 */
 	public String insert(HolidayModel model){
-		HolidayModel h = new HolidayModel();
-		h.setSolarDate(model.getSolarDate());
-		h.setHoliNm(model.getHoliNm());
-		h.setHoliType(model.getHoliType());
-		h.setUseYn(model.getUseYn());
-		
-		long count = mapper.insertHolidayOne(h);
-
+		long count = mapper.insertHolidayOne(model);
 		if (count > 0) {
 			return Constant.DB.INSERT;
 		} else {
@@ -81,23 +74,32 @@ public class HolidayService {
 	/**
 	 * 휴일 정보를 수정한다.
 	 *
-	 * @param model 사번을 사용
+	 * @param model 날짜을 사용
 	 * @return
 	 */
 	@Transactional
 	public String save(HolidayModel model) {
-		HolidayModel h = new HolidayModel();
-		h.setSolarDate(model.getSolarDate());
-		h.setHoliNm(model.getHoliNm());
-		h.setHoliType(model.getHoliType());   
-		h.setUseYn(model.getUseYn());
-		System.out.println("----------"+h);
-		
-	
-		long count = mapper.updatetHolidayOne(h);
+		long count = mapper.updatetHolidayOne(model);
 		
 		if (count > 0) {
 			return Constant.DB.UPDATE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
+	
+	/**
+	 * 휴일 정보를 삭제한다.
+	 *
+	 * @param model 날짜을 사용
+	 * @return
+	 */
+	@Transactional
+	public String delete(HolidayModel model) {
+		long count = mapper.deleteHolidayOne(model);
+		
+		if (count > 0) {
+			return Constant.DB.DELETE;
 		} else {
 			return Constant.DB.FAIL;
 		}

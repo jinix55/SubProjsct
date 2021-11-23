@@ -328,9 +328,11 @@ input[type="radio"]{width:18px;height:18px;vertical-align:top;/*margin-right: 4p
 .search-box-append {white-space: nowrap;vertical-align: middle;display: -ms-flexbox;display: flex;}
 
 .search-date {position: relative;/*width: 210px;*/display: inline-block;float: left;}
+.search-date2 {width: 262px;}
 .search-date1:before {position: absolute;top: 50%;right: 10px;width: 18px;height: 18px;margin-top: -9px;background: url("/images/icon_calendar.png") no-repeat;pointer-events: none;content: '';}
 .search-date:first-child{margin-right: 20px;}
 .search-date:nth-last-child(1):before {position: absolute;top: 0;left: -25px;width: 30px;line-height: 40px;text-align: center;content: '~';}
+.search-date2:nth-last-child(1):before {content: '' !important;}
 .search-date>.text-input {width: 144px;height: 36px;padding: 0 10px;border: 2px solid #4288ca;border-radius: 0;-webkit-box-sizing: border-box;box-sizing: border-box;background: #fff;}
 
 /*검색영역 분할*/

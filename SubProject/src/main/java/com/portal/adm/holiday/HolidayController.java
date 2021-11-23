@@ -25,14 +25,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.holiday.model.HolidayModel;
 import com.portal.adm.holiday.service.HolidayService;
+import com.portal.adm.member.MemberController;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.config.security.AuthUser;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 사용자관리/사용자관리 컨트롤러
  */
 @RequestMapping("/system")
 @Controller
+@Slf4j
 public class HolidayController {
 
     @Resource
@@ -48,7 +52,10 @@ public class HolidayController {
     @GetMapping("/holiday")
     public String list(@ModelAttribute HolidayModel criteria, Model model) {
     		System.out.println("get totalCount : "+service.selectHolidayListCount(criteria));
+    		System.out.println("get criteria : "+criteria.toString());
     		model.addAttribute("list", service.selectHolidayList(criteria));
+//    		model.addAttribute("holiType", criteria.getHoliType());
+//    		model.addAttribute("useYn", criteria.getUseYn());
     	
     		criteria.setTotalCount(service.selectHolidayListCount(criteria));
     		model.addAttribute("pages", criteria);
@@ -58,7 +65,10 @@ public class HolidayController {
     @PostMapping("/holiday")
     public String list(@ModelAttribute HolidayModel criteria, RedirectAttributes attributes, Model model) {
     	System.out.println("post totalCount : "+service.selectHolidayListCount(criteria));
+    	System.out.println("post criteria : "+criteria.toString());
 		model.addAttribute("list", service.selectHolidayList(criteria));
+//		model.addAttribute("holiType", criteria.getHoliType());
+//		model.addAttribute("useYn", criteria.getUseYn());
 		criteria.setTotalCount(service.selectHolidayListCount(criteria));
 		model.addAttribute("pages", criteria);
         return "holiday/holidayMgt";
@@ -78,40 +88,37 @@ public class HolidayController {
     
     @PostMapping("/holiday/update")
     @ResponseBody
-    public ResponseEntity<String> update(@ModelAttribute HolidayModel holidayModel){
+    public String update(@ModelAttribute HolidayModel holidayModel){
         try {
-        	holidayModel.setSolarDate(holidayModel.getSolarDateView());
-        	holidayModel.setHoliType(holidayModel.getHoliTypeView());
-            holidayModel.setHoliNm(holidayModel.getHoliNmView());
-            holidayModel.setUseYn(holidayModel.getUseYnView());
-            holidayModel.setMemo(holidayModel.getMemo());
-            
-
             String result = service.save(holidayModel);
 
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return result;
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+            return "fail";
         }
     }
     
     @PostMapping("/holiday/insert")
     @ResponseBody
-    public ResponseEntity<String> insert(@ModelAttribute HolidayModel holidayModel){
-
+    public String insert(@ModelAttribute HolidayModel holidayModel){
     	 try {
-    		 holidayModel.setSolarDate(holidayModel.getSolarDateView());
-         	 holidayModel.setHoliType(holidayModel.getHoliTypeView());
-             holidayModel.setHoliNm(holidayModel.getHoliNmView());
-             holidayModel.setUseYn(holidayModel.getUseYnView());
-             holidayModel.setMemo(holidayModel.getMemo());
-             
-
              String result = service.insert(holidayModel);
 
-             return new ResponseEntity<>(result, HttpStatus.OK);
+             return result;
          } catch (Exception e) {
-             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+             return "fail";
+         }
+     }
+    
+    @PostMapping("/holiday/delete")
+    @ResponseBody
+    public String delete(@ModelAttribute HolidayModel holidayModel){
+    	 try {
+             String result = service.delete(holidayModel);
+
+             return result;
+         } catch (Exception e) {
+             return "fail";
          }
      }
     

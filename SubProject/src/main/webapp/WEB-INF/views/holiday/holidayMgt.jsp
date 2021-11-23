@@ -8,7 +8,7 @@
 		<div class="justify-content-between">
 			<div class="form-group">
 				<div class="form-inline">
-					<select class="select-box w150" id="searchKey" name ="searchKey">
+					<select class="select-box w150" id="holiType" name ="holiType">
 						<option value="">전체</option>
 						<option value="C">국가공휴일</option>
 						<option value="W">주말</option>
@@ -16,7 +16,7 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<select class="select-box w150" id="uesYn" name ="uesYn">
+					<select class="select-box w150" id="useYn" name ="useYn">
 						<option value="">전체</option>
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
@@ -134,8 +134,7 @@
 
 <!-- 레이어 팝업 - 등록  -->
 <form id="frm">
-<div id="register" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 800px">
 		<div class="modal-header">
 			<h4 class="modal-title">신규휴일등록</h4>
@@ -148,9 +147,9 @@
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">휴일일자</label>
-						<div class="search-date">
-							<div class="col-75">
-								<input id="solarDate" name="solarDate" type="text" class="text-input2">
+						<div class="col-75">
+							<div class="search-date search-date2">
+								<input id="solarDate" name="solarDate" onkeyup="this.value = date_mask(this.value)" type="text" class="text-input2">
 							</div>
 						</div>
 					</div>
@@ -159,7 +158,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">휴일명</label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<input id="holiNm" name="holiNm" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -167,7 +166,12 @@
 					<div class="form-group">
 						<label class="col-25 form-label">휴일타입</label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+						<select class="select-box" id="holiType" name="holiType">
+							<option value="">전체</option>
+							<option value="C">국가공휴일</option>
+							<option value="W">주말</option>
+							<option value="T">임시공휴일</option>
+						</select>
 						</div>
 					</div>
 				</div>
@@ -195,7 +199,7 @@
 						<label class="col-25 form-label-textarea">설명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<textarea class="textarea"></textarea>
+								<textarea id="memo" name="memo" class="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -204,8 +208,8 @@
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">저장</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+			<button id="regBtn" type="button" class="button btn-success insert">저장</button>
+			<button type="button" class="button btn-cancel cancle" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
@@ -213,7 +217,6 @@
 
 
 <!-- 레이어 팝업 - delete -->
-<form action="/system/holiday/delete" method="POST">
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 	data-modal-parent="#myModal">
@@ -243,7 +246,6 @@
 		</div>
 	</div>
 </div>
-</form>
 
 <script>
 
@@ -279,11 +281,9 @@
 	
 	function detailView(id){
 		resetView();
-		$('#rgstDt').attr('disabled',true);
-		$('#rgstDt').parents('.col-50').show();
-		$('#modiDt').attr('disabled',true);
-		$('#modiDt').parents('.col-50').show();
 		$('#register input').attr('disabled',true);
+		$('#register .ui-datepicker-trigger').attr('disabled',true);
+		$('#register textarea').attr('disabled',true);
 		
 		$.ajax({
 			url : '/system/holiday/detail/'+id,
@@ -300,24 +300,12 @@
 	
 	function setView(data){
 		$('#solarDate').val(data.solarDate);
+		$('#memo').val(data.memo);
+		$('#holiNm').val(data.holiNm);
+		$('#holiType').val(data.holiType);
 		$('#userNm').val(data.userNm);
 		$('#use'+data.useYn).prop('checked',true);
-// 		if(data.lockYn == 'Y'){
-// 			$('#lockYn').addClass('btn-yes');
-// 			$('#lockYn').text('Yes');
-// 			$('#lockYn').css('background','red');
-// 			$('#lockYn').css('cursor',' pointer');
-// 		}else{
-// 			$('#lockYn').addClass('btn-no');
-// 			$('#lockYn').text('No');
-// 			$('#lockYn').css('background','darkgray');
-// 			$('#lockYn').css('background','darkgray');
-// 			$('#lockYn').css('cursor',' unset');
-// 		}
-		$('#startDt').val(data.startDt);
-		$('#endDt').val(data.endDt);
-		$('#rgstDt').val(data.rgstDt);
-		$('#modiDt').val(data.modiDt);
+		
 	}
 	
 	function date_mask(objValue) {
@@ -333,18 +321,13 @@
 	function resetInput(){
 		$('#register input').attr('disabled',false);
 		$('#register select').attr('disabled',false);
-		$('.search-box-append').show();
+		$('#register textarea').attr('disabled',false);
+		$('#register .ui-datepicker-trigger').attr('disabled',false);
 		$('#register input').val('');
-		$('#lockY').val('Y');
-		$('#lockN').val('N');
-		$('#dtLimitY').val('Y');
-		$('#dtLimitN').val('N');
+		$('#register textarea').val('');
+		$('#holiType').val('');
 		$('#useY').val('Y');
 		$('#useN').val('N');
-		$('#companyCode').val('none');
-		$('#authId').val('none');
-		$('#lockN').prop('checked',true);
-		$('#dtLimitY').prop('checked',true);
 		$('#useY').prop('checked',true);
 		$('#regBtn').removeClass('edit');
 		$('#regBtn').removeClass('save');
@@ -352,11 +335,6 @@
 	}
 	
 	function resetView(){
-		$('.search-box-append').hide();
-		$('#rgstDt').attr('disabled',true);
-		$('#rgstDt').parents('.col-50').show();
-		$('#modiDt').attr('disabled',true);
-		$('#modiDt').parents('.col-50').show();
 		$('#register .modal-title').text('상세');
 		$('#register input').attr('disabled',true);
 		$('#register select').attr('disabled',true);
@@ -368,23 +346,47 @@
 	function setEdit(){
 		$('#register input').attr('disabled',false);
 		$('#register select').attr('disabled',false);
+		$('#register textarea').attr('disabled',false);
+		$('#register #solarDate').attr('disabled',true);
+		$('#register .ui-datepicker-trigger').attr('disabled',true);
 		$('#solarDate').attr('disabled',true);
-		$('#userNm').attr('disabled',true);
-		$('#rgstDt').attr('disabled',true);
-		$('#modiDt').attr('disabled',true);
 		$('#regBtn').text('저장');
 		$('#regBtn').removeClass('edit');
 		$('#regBtn').addClass('save');
 	}
 	
+	function valyCheck(){
+		if($('#solarDate').val() == ''){
+			alert('일자를 입력되지 않았습니다.');
+			$('#solarDate').focus();
+			return false;
+		}
+		if($('#holiNm').val() == ''){
+			alert('휴일명이 입력되지 않았습니다.');
+			$('#holiNm').focus();
+			return false;
+		}
+		if($('#holiType').val() == ''){
+			alert('휴일타입이 입력되지 않았습니다.');
+			$('#holiType').click();
+			return false;
+		}
+		return true;
+	}
+	
 	function dateInsert(){
-		var param =  $('#frm').serialize();
-		insertAjax(param,'insert');
+		if(valyCheck()){
+			var param =  $('#frm').serialize();
+			insertAjax(param,'insert');
+		}
 	}
 	
 	function dateUpdate(){
-		var param =  $('#frm').serialize();
-		insertAjax(param,'update');
+		if(valyCheck()){
+			$('#solarDate').attr('disabled',false);
+			var param =  $('#frm').serialize();
+			insertAjax(param,'update');
+		}
 	}
 	
 	function insertAjax(param,action){
@@ -404,7 +406,7 @@
 		});
 	}
 	
-	function deleteAjax(param,action){
+	function deleteAjax(){
 		param = {
 				solarDate : $('#del_data').val()
 		}
@@ -430,14 +432,19 @@
 	}
 	
 	$(document).ready(function() {
+		var useYn = '${pages.useYn}';
+		var holiType = '${pages.holiType}';
+		if(useYn){
+			$('.content #useYn').val('${pages.useYn}');
+		}
+		if(holiType){
+			$('.content #holiType').val('${pages.holiType}');
+		}
+		
 		$('#registView').click(function(){
 			resetInput();
 			$('#register .modal-title').text('등록');
 			$('#register .insert').text('저장');
-			$('#rgstDt').attr('disabled',true);
-			$('#rgstDt').parents('.col-50').hide();
-			$('#modiDt').attr('disabled',true);
-			$('#modiDt').parents('.col-50').hide();
 		});
 		
 		$('.close, .cancle').click(function(){
@@ -463,5 +470,6 @@
 		$('.search-box-append').click(function(){
 			$('#searchFrm').submit();
 		});
+		
 	});
 </script>

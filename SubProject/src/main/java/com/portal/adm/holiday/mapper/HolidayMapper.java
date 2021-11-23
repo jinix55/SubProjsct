@@ -48,6 +48,13 @@ public interface HolidayMapper {
 	long updatetHolidayOne(HolidayModel model);
 	
 	/**
+	 * 휴일을 삭제한다.
+	 * 
+	 *@param criteria
+	 */
+	long deleteHolidayOne(HolidayModel model);
+	
+	/**
 	 * 서비스 ON/OFF를 수정한다.
 	 * 
 	 *@param criteria

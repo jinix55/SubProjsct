@@ -72,7 +72,7 @@ public interface Constant {
 	//URL Pattern : 메뉴 조회 및 권한 확인 시 사용
 	public interface UrlPattern {
 		public static final Pattern MENU_CHECK_PATTERN = Pattern.compile("(/detail$|/detail/|/regist$|/regist/|/modify$|/modify/|/select$|/select/)");
-		public static final Pattern AUTH_CHECK_PATTERN = Pattern.compile("(/detail$|/detail/|/regist$|/regist/|/modify$|/modify/|/insert$|/insert/|/update$|/update/|/delete$|/delete/select$|/select/)");
+		public static final Pattern AUTH_CHECK_PATTERN = Pattern.compile("(/detail$|/detail/|/regist$|/regist/|/modify$|/modify/|/insert$|/insert/|/update$|/update/|/delete$|/delete/|/select$|/select/)");
 		public static final Pattern AUTH_IGNORE_PATTERN = Pattern.compile("(^/error/|^/file/|^/cmm/|^/popup/|/popup$)");
 		public static final Map<String,String> AUTH_CHECK_TYPE = new HashMap<String,String>() {
 			private static final long serialVersionUID = -1145562349837093088L;
