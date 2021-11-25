@@ -8,6 +8,21 @@
 		limit #{offSet}, #{pageSize}
 	</sql>
 
+	<sql id="searchAlarm">
+		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+			and ((upper(sj) like concat('%',upper(#{searchValue}),'%')) or (upper(cn) like concat('%',upper(#{searchValue}),'%')) or (upper(sender_id) like concat('%',upper(#{searchValue}),'%')))
+		</if>
+		<if test="searchKey != '' and searchKey == 'sj' and searchValue != ''">
+			and (upper(sj) like concat('%',upper(#{searchValue}),'%'))
+		</if>
+		<if test="searchKey != '' and searchKey == 'cn' and searchValue != ''">
+			and (upper(cn) like concat('%',upper(#{searchValue}),'%')) 
+		</if>
+		<if test="searchKey != '' and searchKey == 'senderId' and searchValue != ''">
+			and (upper(sender_id) like concat('%',upper(#{searchValue}),'%'))
+		</if>
+	</sql>
+	
 	<select id="selectAlarmList" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_ID) ASC) AS ROWNUM
@@ -23,6 +38,7 @@
 			, MODI_DT
 		FROM T_ALARM
 		WHERE RECIPIENT_ID = #{recipientId}
+		<include refid="searchAlarm"></include>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
@@ -109,7 +125,7 @@
 		)
 	</insert>
 	
-	<select id="select" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="string">
+	<select id="select" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
 		SELECT
 			ALARM_ID
 			, SJ
@@ -130,7 +146,7 @@
 	
 	<update id="delete" parameterType="com.portal.adm.alarm.model.AlarmModel">
 		UPDATE t_alarm SET
-			CHECK_YN = 'N',
+			CHECK_YN = 'Y',
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE

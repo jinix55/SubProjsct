@@ -305,7 +305,6 @@
 		$('#holiType').val(data.holiType);
 		$('#userNm').val(data.userNm);
 		$('#use'+data.useYn).prop('checked',true);
-		
 	}
 	
 	function date_mask(objValue) {

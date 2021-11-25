@@ -78,8 +78,9 @@ public class AlarmService {
      * @param alarmCode
      * @return
      */
-    public AlarmModel selectAlarmId(String alarmId) {
-    	return alarmMapper.select(alarmId);
+    public AlarmModel selectAlarmId(AlarmModel alarmModel) {
+    	delete(alarmModel);
+    	return alarmMapper.select(alarmModel);
     }
     
     /**

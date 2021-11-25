@@ -53,10 +53,11 @@ public class AlarmController {
      * @return
      */
     @GetMapping("/alarm")
-    public String alarm(@ModelAttribute AlarmModel alarmModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String alarmGet(@ModelAttribute AlarmModel alarmModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info(" =============== alarm get in ==============");
+    	List<AlarmModel> models = null;
     	alarmModel.setRecipientId(authUser.getMemberModel().getUserId());
-        List<AlarmModel> models = alarmService.selectAlarmList(alarmModel);
+        models = alarmService.selectAlarmList(alarmModel);
         alarmModel.setTotalCount(alarmService.selectAlarmListCount(alarmModel));
         model.addAttribute("alarms", models);
         model.addAttribute("pages", alarmModel);
@@ -71,13 +72,14 @@ public class AlarmController {
      * @return
      */
     @PostMapping("/alarm")
-    public String alarm(@ModelAttribute AlarmModel alarmModel, RedirectAttributes attributes, @AuthenticationPrincipal AuthUser authUser) {
+    public String alarmPost(@ModelAttribute AlarmModel alarmModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info(" =============== alarm get in ==============");
+    	List<AlarmModel> models = null;
     	alarmModel.setRecipientId(authUser.getMemberModel().getUserId());
-        List<AlarmModel> models = alarmService.selectAlarmList(alarmModel);
+        models = alarmService.selectAlarmList(alarmModel);
         alarmModel.setTotalCount(alarmService.selectAlarmListCount(alarmModel));
-        attributes.addAttribute("alarms", models);
-        attributes.addAttribute("pages", alarmModel);
+        model.addAttribute("alarms", models);
+        model.addAttribute("pages", alarmModel);
         
         return "alarm/alarmMgt";
     }
@@ -153,9 +155,12 @@ public class AlarmController {
      * @param alarmId
      * @return
      */
-    @GetMapping("/alarm/detail/{alarmId}")
-    public ResponseEntity<AlarmModel> getAlarmsForAlarmId(@PathVariable("alarmId") String alarmId) {
-		AlarmModel alarmModels = alarmService.selectAlarmId(alarmId);
+    @PostMapping("/alarm/detail/{alarmId}")
+    public ResponseEntity<AlarmModel> getAlarmsForAlarmId(@PathVariable("alarmId") String alarmId, @AuthenticationPrincipal AuthUser authUser) {
+    	AlarmModel alarmModels = new AlarmModel();
+    	alarmModels.setAlarmId(alarmId);
+    	alarmModels.setModiId(authUser.getMemberModel().getUserId());
+		alarmModels = alarmService.selectAlarmId(alarmModels);
 
         return new ResponseEntity<>(alarmModels, HttpStatus.OK);
     }
@@ -172,7 +177,6 @@ public class AlarmController {
     	log.info(" =============== getAjaxAlarmsForUserId ajax in ==============");
     	Map<String,Object> result = new HashMap<String, Object>();
     	List<AlarmModel> alarmList = alarmService.selectAlarmUserId(authUser.getMemberModel().getUserId());
-    	
 //    	apiRequestUtil.requesKakaoAdressGet(null, null);
 //    	apiRequestUtil.requesGetDust(null, null);
 //    	apiRequestUtil.requesGetWeather(null, null);

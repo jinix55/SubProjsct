@@ -2,32 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <script type="text/javascript">
-$(document).ready(function() {
-	var intervalTime = 60000;
-// 	callAlarm();
-	setInterval(function() {
-// 		callAlarm();
-	}, intervalTime);
-	
-});
-	
-function callAlarm(){
-	$.ajax({
-		url : '/alarm/alarm/detail',
-		dataType : 'json',
-		success : function(data) {
-			var result = data;
-			console.log(result);
-			if(data.alarmList.length > 0){
-				$('.alarmTxet').html(data.alarmList.length);
-				$('.alarmCnt').show();;
-			}else{
-				$('.alarmTxet').html(0);
-				$('.alarmCnt').hide();;
-			}
-		}
-	});
-}
+
 </script>
 
 <section id="lnb">
