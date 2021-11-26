@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/style.css">
 	<link href="/css/tree-menu.css" rel="stylesheet">
+	<link href="/js/plugins/fancytree/ui.fancytree.min.css" rel="stylesheet">
 	<link href="/js/plugins/datepicker-ui.css" rel="stylesheet">
     <script type="text/javascript" src="/js/plugins/jquery-3.5.1.js"></script>
 	<script type="text/javascript" src="/js/plugins/jquery-ui.min.js"></script>
@@ -19,5 +20,6 @@
 	<script type="text/javascript" src="/js/plugins/tree-menu.js"></script>
 	<script type="text/javascript" src="/js/plugins/datepicker-ko.js"></script>
 	<script type="text/javascript" src="/js/plugins/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="/js/plugins/fancytree/jquery.fancytree-all-deps.min.js"></script>
     <title>'PPLUSEco'(PKG Production&Development)</title>
 </head>

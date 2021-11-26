@@ -1,24 +1,34 @@
 package com.portal.adm.role;
 
-import com.portal.adm.company.service.CompanyService;
-import com.portal.adm.role.model.RoleModel;
-import com.portal.adm.role.service.RoleService;
-import com.portal.common.IdUtil;
-import com.portal.common.paging.Criteria;
-import com.portal.config.security.AuthUser;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
-import java.security.Principal;
+import com.portal.adm.company.service.CompanyService;
+import com.portal.adm.menu.model.MenuModel;
+import com.portal.adm.menu.service.MenuService;
+import com.portal.adm.role.model.RoleModel;
+import com.portal.adm.role.service.RoleService;
+import com.portal.common.IdUtil;
+import com.portal.config.security.AuthUser;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 사용자관리 / 권한관리 컨트롤러
@@ -33,6 +43,9 @@ public class RoleController {
     
     @Resource
     private CompanyService companyService;
+    
+    @Resource
+    private MenuService menuService;
     
     @Resource
     private IdUtil idUtil;
@@ -56,6 +69,18 @@ public class RoleController {
         model.addAttribute("roles", roleService.selectList(roleModel));
         roleModel.setTotalCount(roleService.selectListCount(roleModel));
         model.addAttribute("pages", roleModel);
+        
+        
+        List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
+    	String rootMenuId = null;
+    	for (MenuModel menu : list) {
+    		if (menu.getLv() == 0) {
+    			rootMenuId = menu.getMenuId();
+    			break;
+    		}
+    	}
+        model.addAttribute("menus", list);
+        model.addAttribute("rootMenuId", rootMenuId);
 
         return "role/groupMgt";
     }
@@ -134,4 +159,29 @@ public class RoleController {
 
         return roleService.select(roleModel);
     }
+    
+	/**
+	 * 권한별 메뉴 조회
+	 * @param request
+	 * @param 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/role/{authId}/popup", method=RequestMethod.POST)
+	public Map<String,Object> menuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId) {
+		
+		log.info("========== in role popup ==========");
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		boolean res = false;
+		
+		List<MenuModel> menuAuths = menuService.selectMenuListWithAuth(authId);
+		
+		if(menuAuths != null) {
+			res = true;
+			result.put("menuAuths", menuAuths);
+		}
+		result.put("result", res);
+		return result;
+	}
 }

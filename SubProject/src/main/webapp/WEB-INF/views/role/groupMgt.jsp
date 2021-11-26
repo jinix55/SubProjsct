@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<c:forEach var="menu" items="${menus}" varStatus="status">
+    <input type="hidden" name="tmp_menuNmVal" value="${menu.menuId}|${menu.upMenuId}|${menu.menuNm}|${menu.menuUrl}|${menu.menuId}|${menu.upMenuId}|${menu.menuNm}|${menu.menuUrl}|${menu.menuDsc}|${menu.ordSeq}|${menu.menuSe}|${menu.menuAttr}|${menu.useYn}|${menu.lv}|${menu.fullPathId}|${menu.fullPathNm}|${menu.fullOrdSeq}|" />
+</c:forEach>
 <div class="content">
 	<!-- S_검색-->
 	<form id="searchFrm" action="/role/role" method="POST">
@@ -55,6 +58,7 @@
 					<col style="width: 14%;">
 					<col style="width: 8%;">
 					<col style="width: 8%;">
+					<col style="width: 8%;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
@@ -67,6 +71,7 @@
 						<th scope="col">그룹 ID</th>
 						<th scope="col">등록일</th>
 						<th scope="col">사용유무</th>
+						<th scope="col">메뉴생성</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -88,6 +93,13 @@
 									<button type="button" class="btn-no">NO</button>
 								</c:otherwise>
 							</c:choose>
+							</td>
+							<td>
+								<div class="btn-group">
+									<a href="" onclick="sidebar_open('${role.authId}')" role="button" data-toggle="modal" class="btn-tbl_icon menuAuthOpen">
+										<img src="/images/icon_genemenu.png" title="메뉴생성" class="tbl-icon">
+									</a>
+								</div>
 							</td>
 							<td>
 								<div class="btn-group">
@@ -118,6 +130,86 @@
 	</div>
 	<!-- E_페이징-->
 </div>
+
+<section class="menu-chat sidebar-animate" id="Sidebar">
+	<div class="modal-header">
+		<h4 class="modal-title">권한별 메뉴 변경</h4>
+		<a href="javascript:layerPopupClose(sidebar_close);"><img
+			src="/images/icon_close.png"></a>
+	</div>
+	<div class="modal-body">
+		<!-- 버튼 -->
+		<div class="modal-title">ROLE_SITE_ADMIN</div>
+		<div class="btn-group line-item">
+			<button type="button" class="button-small btn-success">초기화</button>
+			<button type="button" class="button-small btn-warning">적용</button>
+			<button type="button" class="button-small btn-cancel"
+				onclick="sidebar_close()">취소</button>
+		</div>
+		<form action="javascript:void(0)">
+			<div class="nav_tree">      
+				<div>
+					<span id="tree">
+					</span>
+					<span id="fancytreeKey" style="display:none;">
+					
+					</span>
+					<span id="fancytreeRootKey" style="display:none;">
+					
+					</span>
+				</div>
+			</div>
+<!-- 			<ul id="tree-checkmenu" class="checktree"> -->
+<!-- 				<li id="show-explorer"> -->
+<!-- 					<input id="check-explorer" type="checkbox" /> Administrator <span id="count-explorer" class="count"></span> -->
+<!-- 					<ul id="tree-explorer"> -->
+<!-- 						<li id="show-iewin">
+								<input id="check-iewin" type="checkbox" />프로젝트관리 -->
+<!-- 							<span id="count-iewin" class="count"></span> -->
+<!-- 							<ul id="tree-iewin"> -->
+<!-- 								<li><input type="checkbox" />프로젝트관리</li> -->
+<!-- 								<li><input type="checkbox" />그룹등록</li> -->
+<!-- 								<li><input type="checkbox" />사용자등록</li> -->
+<!-- 							</ul></li> -->
+<!-- 						<li id="show-iemac"><input id="check-iemac" type="checkbox" />시스템관리 -->
+<!-- 							<span id="count-iemac" class="count"></span> -->
+<!-- 							<ul id="tree-iemac"> -->
+<!-- 								<li><input type="checkbox" />권한목록등록</li> -->
+<!-- 								<li><input type="checkbox" />계정권한부여</li> -->
+<!-- 								<li class="last"><input type="checkbox" />권한별메뉴적용</li> -->
+<!-- 							</ul></li> -->
+<!-- 						<li id="show-iemac2"><input id="check-iemac2" type="checkbox" />메뉴관리 -->
+<!-- 							<span id="count-iemac2" class="count"></span> -->
+<!-- 							<ul id="tree-iemac2"> -->
+<!-- 								<li><input type="checkbox" />관리자메뉴관리</li> -->
+<!-- 							</ul></li> -->
+<!-- 						<li id="show-iemac3"><input id="check-iemac3" type="checkbox" />로그관리 -->
+<!-- 							<span id="count-iemac3" class="count"></span> -->
+<!-- 							<ul id="tree-iemac3"> -->
+<!-- 								<li><input type="checkbox" />계정권한정보</li> -->
+<!-- 								<li><input type="checkbox" />레포트</li> -->
+<!-- 							</ul></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+<!-- 				<li id="show-netscape"><input id="check-netscape" -->
+<!-- 					type="checkbox" />Data Visualization <span id="count-netscape" -->
+<!-- 					class="count"></span> -->
+<!-- 					<ul id="tree-netscape"> -->
+<!-- 						<li id="show-iemac4"><input id="check-iemac4" type="checkbox" />데이터분석 -->
+<!-- 							<span id="count-iemac4" class="count"></span> -->
+<!-- 							<ul id="tree-iemac4"> -->
+<!-- 								<li><input type="checkbox" />대여소 현황</li> -->
+<!-- 								<li><input type="checkbox" />이용현황 분석</li> -->
+<!-- 								<li><input type="checkbox" />회원 분석</li> -->
+<!-- 								<li><input type="checkbox" />수요예측 모델 분석</li> -->
+<!-- 							</ul></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+<!-- 				<li class="last"><input type="checkbox" />기타</li> -->
+<!-- 			</ul> -->
+		</form>
+	</div>
+</section>
 
 <!-- 레이어 팝업 - 등록  -->
 <form id="frm">
@@ -327,6 +419,15 @@
 	    $("#searchFrm").submit();
 	});
 	
+	function sidebar_open(authId) {
+		document.getElementById("Sidebar").style.display = "block";
+		selectMenuAuth(authId);
+	}
+
+	function sidebar_close() {
+		document.getElementById("Sidebar").style.display = "none";
+	}
+	
 	function deleteSet(authId){
 		$('#del_authId').val(authId);
 		$('.delName').text(authId);
@@ -489,6 +590,147 @@
 		str = objValue.replace(/[^0-9]/gi,"").toUpperCase();
 	    return str;
 	}
+	
+	
+	function selectMenuAuth(authId){
+		$.ajax({
+		    type : 'post',
+		    url : '/system/role/'+authId+'/popup',
+		    dataType : 'json',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(data){
+		    	if(data.result){
+					$.ui.fancytree.getTree("#tree").selectAll(false);
+					for(var i=0;i < data.menuAuths.length;i++){
+						var item = data.menuAuths[i];
+						if(item.useYn == "Y"){
+							var _tree = $.ui.fancytree.getTree("#tree"); 
+
+							var rootnode = _tree.getRootNode().children[0]; 
+							if(rootnode.children != null){
+								nodeLoopCheck(rootnode.children, item.menuId);
+							}
+						}
+					}
+                 }
+		    }
+		});
+	}
+	
+	function nodeLoop(nodes){
+		$.map(nodes, function(node){
+			treeJson.push(JSON.parse('{ "menuId" : "'+node.data.menuId+'", "checked" : "'+node.partsel+'", "authId" : "'+$("#authId").val()+'" }'));
+			if(node.children != null){
+				nodeLoop(node.children);
+			}
+		});
+	}
+	
+	function nodeLoopCheck(nodes, menuId){
+		$.map(nodes, function(node){
+			if(menuId == node.data.menuId && node.folder == false){
+				node.setSelected(true);
+			}			
+			if(node.children != null){
+				nodeLoopCheck(node.children, menuId);
+			}
+		});
+	}
+	
+	let tree = [];
+	$(function() {
+		<c:forEach var='menus' items='${menus }'>
+			createTree(${menus.fullPathId}, ${menus.fullPathNm});
+		</c:forEach>
+
+
+		/**
+		*	노드 생성 함수
+		*/		
+		function createTree(fullPathId, fullPathNm) {
+			tree.push({title: fullPathNm[fullPathNm.length - 1], checkbox:true, selected : true, expanded: true, children: [], data: { menuId: fullPathId[fullPathId.length - 1], upMenuId: fullPathId[fullPathId.length - 2]}});
+		}
+
+		/**
+		*	트리 구성 함수
+		*/
+		function setTree(nodes) {
+			for (let index = nodes.length - 1; index > -1; index--) {
+				const parent = nodes.find(n => n.data.menuId == nodes[index].data.upMenuId);
+				if (parent) parent.children.unshift(nodes.pop(index));
+			}
+		};
+
+		/**
+		*	트리 이미지 변경 함수
+		*/
+		function checkNodesForChildren(nodes) {
+			$.each(nodes, function(index, node) {
+				if (node.children && node.children.length > 0) {
+					node.folder = true;
+					checkNodesForChildren(node.children);
+				} else {
+					node.folder = false;
+				}
+			});
+		}
+
+		$(document).ready(function() {
+			$('#tree').fancytree({
+				checkbox: true,
+				selectMode: 3,
+				source: tree,
+				init: function(e, d){
+					d.tree.visit(function(n){
+						n.key = n.data.menuId;
+						n.expanded = true;
+					});
+				},
+				loadChildren : function(e, d){
+					d.node.fixSelection3AfterClick();
+
+				},
+				laztLoad : function(e, d){
+					d.result = tree;
+				},
+				activate: function(e, d) {
+					var selKeys = $.map(d.tree.getSelectedNodes(), function(node){
+						return node.key;
+					});
+					$("#fancytreeKey").text(selKeys.join(", "));
+
+					var selRootNodes = d.tree.getSelectedNodes(true);
+					var selRootKeys = $.map(selRootNodes, function(node){
+						return node.key;
+					});
+				},
+				select: function(e, d){
+					var selKeys = $.map(d.tree.getSelectedNodes(), function(node){
+						//console.log(node.parent);
+						//console.log(node.data);
+						//console.log(node);
+						//console.log(node.getLevel());
+						var parents = "";
+						for(var i =0;i < node.getLevel()-1;i++){
+							//parents += ".parent";
+							//console.log(node+parents+".menuId");
+							//console.log("menuId : ",node.parent.data.menuId);
+						}
+						return node.key;
+					});
+					//$("#fancytreeKey").text(selKeys.join(","));
+				},
+	 			postProcess: function(e, d) { setTree(d.response); checkNodesForChildren(d.response); }
+			});
+
+			$('#pageSize').val('${pages.pageSize}');
+			$('#searchKey').val('${pages.searchKey}');
+			$('#searchValue').val('${pages.searchValue}');
+		});
+	});
+	
 	
 	$(document).ready(function() {
 		$('#registView').click(function(){

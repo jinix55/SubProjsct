@@ -38,6 +38,7 @@ WITH RECURSIVE R AS (
   , R.FULL_PATH_NM
   , R.FULL_ORD_SEQ
 FROM R
+WHERE MENU_SE != 'F'
 ORDER BY FULL_ORD_SEQ, MENU_NM
     </select>
 
@@ -263,33 +264,34 @@ LIMIT 1
     </select>
     
     <select id="selectMenuListWithAuth" resultType="com.portal.adm.menu.model.MenuModel" parameterType="string">
-WITH RECURSIVE R AS (
-    SELECT
-        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
-      , 0 AS LV
-      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
-      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
-      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
-    FROM t_group_menu M
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
-    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
-    UNION ALL
-    SELECT
-        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
-      , R.LV + 1 AS LV
-      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
-      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
-      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
-    FROM R
-    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
-) SELECT
-    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
-  , LV
-  , R.FULL_PATH_ID
-  , R.FULL_PATH_NM
-  , R.FULL_ORD_SEQ
-FROM R
+		WITH RECURSIVE R AS (
+		    SELECT
+		        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+		      , 0 AS LV
+		      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
+		      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
+		      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+		    FROM t_group_menu M
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+		    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
+		    UNION ALL
+		    SELECT
+		        M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, A.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
+		      , R.LV + 1 AS LV
+		      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
+		      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
+		      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+		    FROM R
+		    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+		) SELECT
+		    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
+		  , LV
+		  , R.FULL_PATH_ID
+		  , R.FULL_PATH_NM
+		  , R.FULL_ORD_SEQ
+		FROM R
+		WHERE MENU_SE != 'F'
     </select>
     
     <update id="updateMenuListWithAuth" parameterType="com.portal.adm.menu.model.MenuModel">

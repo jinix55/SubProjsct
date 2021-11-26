@@ -6,9 +6,9 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	var intervalTime = 10000;
-	callAlarm();
+// 	callAlarm();
 	setInterval(function() {
-		callAlarm();
+// 		callAlarm();
 	}, intervalTime);
 	
 	$(".dropdown-notification").on("click", function(){

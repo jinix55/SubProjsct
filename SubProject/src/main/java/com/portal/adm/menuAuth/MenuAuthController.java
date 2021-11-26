@@ -118,7 +118,7 @@ public class MenuAuthController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/menuAuth/{authId}/popup", method=RequestMethod.POST)
+	@PostMapping(value="/menuAuth/{authId}/popup")
 	public Map<String,Object> menuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId) {
 		
 		log.info("========== in menuAuth popup ==========");
