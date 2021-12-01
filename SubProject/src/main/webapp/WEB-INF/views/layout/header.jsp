@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication var="user" property="principal" />
@@ -75,8 +76,14 @@ function intervalTime(t){
 <header class="header">
 	<div class="top-location">
 		<ul class="location">
-			<li><a href="#">홈</a></li>
-			<li><em>계정관리</em></li>
+			<c:forEach items="${menuNavi}" var="navi" varStatus="status">
+				<c:if test="${status.last == false}">
+					<li>${navi }</li>
+				</c:if>
+				<c:if test="${status.last == true}">
+					<li><em>${navi }</em></li>
+				</c:if>
+			</c:forEach>
 		</ul>
 	</div>
 	<ul class="top-nav">

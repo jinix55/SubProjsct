@@ -1,5 +1,6 @@
 package com.portal.common.interceptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.binding.BindingException;
+import org.json.JSONArray;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,6 +63,7 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 						String upperMenuId = menuService.selectUpperMenuIdForMenuUrl(uri);
 						List<MenuModel> subMenuList = menuService.selectLeftMenuListWithAuth(upperMenuId,authUser.getMemberModel().getAuthId());
 						String id = "";
+						
 						int cnt = 0;
 						for(int i = 0 ; i < subMenuList.size() ; i++){
 							if(StringUtils.equals(subMenuList.get(i).getMenuSe(),"A")) {
@@ -75,6 +78,15 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 								menuGpCnt.put(subMenuList.get(i).getUpMenuId(), cnt);
 							}else {
 								cnt = 0;
+							}
+							if(StringUtils.equals(subMenuList.get(i).getMenuUrl(),request.getRequestURI()) && StringUtils.equals(subMenuList.get(i).getMenuSe(),("M"))) {
+								JSONArray arr = subMenuList.get(i).getFullPathNm();
+								ArrayList<String> list = new ArrayList<String>(); 
+								int len = arr.length();
+								for (int j = 0 ; j < len ; j++){ 
+									list.add(arr.get(j).toString());
+								} 
+								modelAndView.addObject("menuNavi", list);
 							}
 						}
 						modelAndView.addObject("subMenuList", subMenuList);
