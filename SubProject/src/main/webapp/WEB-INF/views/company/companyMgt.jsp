@@ -9,6 +9,7 @@
 			<div class="form-group">
 				<div class="form-inline">
 					<select id="searchKey" name="searchKey" class="select-box w150">
+						<option value="ALL">전체</option>
 						<option value="companyCode">회사 코드</option>
 						<option value="companyNm">회사 명</option>
 					</select>

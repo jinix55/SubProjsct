@@ -6,6 +6,9 @@
 
 	<sql id="searchCompany">
 		<where>
+			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+				and ((upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%')) OR (upper(COMPANY_NM) like concat('%',upper(#{searchValue}),'%')))
+			</if>
 			<if test="searchKey != '' and searchKey == 'companyCode' and searchValue != ''">
 				and (upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%'))
 			</if>
