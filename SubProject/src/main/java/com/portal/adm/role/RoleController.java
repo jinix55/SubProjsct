@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -94,7 +96,7 @@ public class RoleController {
     @PostMapping("/role")
     public String list(@ModelAttribute RoleModel roleModel, RedirectAttributes attributes) {
 
-        attributes.addFlashAttribute("criteria", roleModel);
+        attributes.addFlashAttribute("roleModel", roleModel);
 
         return "redirect:/system/role";
     }
@@ -180,6 +182,43 @@ public class RoleController {
 		if(menuAuths != null) {
 			res = true;
 			result.put("menuAuths", menuAuths);
+		}
+		result.put("result", res);
+		return result;
+	}
+	
+	/**
+	 * 권한별 메뉴 저장
+	 * @param request
+	 * @param 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/role/update/{authId}/popup", method=RequestMethod.POST)
+	public Map<String,Object> updateMenuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId, @ModelAttribute MenuModel menuModel) {
+		Map<String,Object> result = new HashMap<String, Object>();
+		boolean res = false;
+		
+		JSONArray jsons = menuModel.getTreeJson();
+		
+		for(int i=0; i < jsons.length();i++) {
+			JSONObject json = jsons.getJSONObject(i);
+			MenuModel model = new MenuModel();
+			model.setAuthId(authId);
+			model.setMenuId(json.getString("menuId"));
+			String authUseYn = "N";
+			if("true".equals(json.getString("checked"))) {
+				authUseYn = "Y";
+			}
+			model.setAuthUseYn(authUseYn);
+			model.setRgstId(authUser.getUsername());
+			model.setModiId(authUser.getUsername());
+			long menuAuths = menuService.updateMenuListWithAuth(model);
+			if(menuAuths > 0) {
+				res = true;
+			}else {
+				res = false;
+			}
 		}
 		result.put("result", res);
 		return result;

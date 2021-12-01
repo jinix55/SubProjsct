@@ -7,6 +7,18 @@
     <sql id="paging">
         limit #{offSet}, #{pageSize}
     </sql>
+	
+	<sql id="searchGroup">
+		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+			and ((upper(auth_id) like concat('%',upper(#{searchValue}),'%')) or (upper(auth_nm) like concat('%',upper(#{searchValue}),'%')))
+		</if>
+		<if test="searchKey != '' and searchKey == 'authId' and searchValue != ''">
+			and (upper(auth_id) like concat('%',upper(#{searchValue}),'%'))
+		</if>
+		<if test="searchKey != '' and searchKey == 'authNm' and searchValue != ''">
+			and (upper(auth_nm) like concat('%',upper(#{searchValue}),'%')) 
+		</if>
+	</sql>
 
     <select id="selectList" resultType="com.portal.adm.role.model.RoleModel" parameterType="com.portal.common.paging.Criteria">
         SELECT
@@ -33,9 +45,7 @@
 				AND g.auth_id != 'au2000001'
 			</if>
 		</if>
-        <if test="authNm != null and authNm != ''">
-        	AND UPPER(AUTH_NM) LIKE CONCAT('%',UPPER(#{authNm}),'%')
-        </if>    
+        <include refid="searchGroup"></include>
         order by auth_id ASC
         <include refid="paging"></include>
     </select>
@@ -45,17 +55,15 @@
         from
             t_group_auth g
 		JOIN t_company c ON c.company_code = g.company_code
-        where
-            g.use_yn = 'Y'
+        where 1 = 1
+<!--             g.use_yn = 'Y' -->
 		<if test="authId != 'au2000001'">
 			<if test="companyCode != null and companyCode != ''">
 				AND c.company_code = #{companyCode}
 				AND g.auth_id != 'au2000001'
 			</if>
 		</if>
-        <if test="authNm != null and authNm != ''">
-        	AND UPPER(AUTH_NM) LIKE CONCAT('%',UPPER(#{authNm}),'%')
-        </if>    
+		<include refid="searchGroup"></include>
     </select>
 
 

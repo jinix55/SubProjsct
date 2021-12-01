@@ -29,7 +29,7 @@ WITH RECURSIVE R AS (
     JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
 	<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(authId)'>
 	    JOIN t_group_menu_auth A ON	M.MENU_ID = A.MENU_ID 
-		AND A.AUTH_ID = #{authId} AND A.USE_YN = 'Y'
+		AND A.AUTH_ID = #{authId}
 	</if>
 ) SELECT
     MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT

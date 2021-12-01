@@ -115,7 +115,7 @@ em {color:#4288ca;}
 .eInput { ime-mode: active }
 .search-Success{background-color: forestgreen !important;}
 .btn-yes, .btn-yes{cursor: default;}
-
+.rolsId{font-weight: bold; font-size: 16px;}
 
 /* common */
 body.sub {display: -ms-flexbox;display: flex;-ms-flex-direction: row;flex-direction: row;min-height: 100vh;}

@@ -6,14 +6,16 @@
 </c:forEach>
 <div class="content">
 	<!-- S_검색-->
-	<form id="searchFrm" action="/role/role" method="POST">
+	<form id="searchFrm" action="/system/role" method="POST">
 		<input type="hidden" id="page" name="page" value="${pages.page}">
+		<input type="hidden" id="pageSize" name="pageSize" value="${pages.pageSize}">
 		<div class="justify-content-between">
 			<div class="form-group">
 				<div class="form-inline">
 					<select class="select-box w150" id="searchKey" name ="searchKey">
-						<option value="authId">사용자 ID</option>
-						<option value="authNm">사용자 명</option>
+						<option value="ALL">전체</option>
+						<option value="authId">그룹 ID</option>
+						<option value="authNm">그룹 명</option>
 					</select>
 				</div>
 				<div class="form-inline">
@@ -50,7 +52,7 @@
 		<div class="scroll-auto">
 			<table class="table table-actions">
 				<colgroup>
-					<col style="width: 5%;">
+<%-- 					<col style="width: 5%;"> --%>
 					<col style="width: 6%;">
 					<col style="width: 12%;">
 					<col style="width: 15%;">
@@ -65,7 +67,7 @@
 						<th>
 <!-- 							<input type="checkbox" name="all" id="checkAll"> -->
 						</th>
-						<th scope="col">번호</th>
+<!-- 						<th scope="col">번호</th> -->
 						<th scope="col">사용자 ID</th>
 						<th scope="col">사용자 이름</th>
 						<th scope="col">그룹 ID</th>
@@ -78,11 +80,11 @@
 				<tbody>
 					<c:forEach var="role" items="${roles}" varStatus="status">
 						<tr>
-							<th><input type="checkbox" name="chk"></th>
+<!-- 							<th><input type="checkbox" name="chk"></th> -->
 							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 							<td class="text-point">${role.authId}</td>
 							<td>${role.authNm}</td>
-							<td>${role.authNm}</td>
+							<td>${role.authDsc}</td>
 							<td><spring:eval expression="role.rgstDt" /></td>
 							<td>
 							<c:choose>
@@ -139,10 +141,10 @@
 	</div>
 	<div class="modal-body">
 		<!-- 버튼 -->
-		<div class="modal-title">ROLE_SITE_ADMIN</div>
+		<div class="modal-title rolsId">ROLE_SITE_ADMIN</div>
 		<div class="btn-group line-item">
-			<button type="button" class="button-small btn-success">초기화</button>
-			<button type="button" class="button-small btn-warning">적용</button>
+<!-- 			<button type="button" class="button-small btn-success">초기화</button> -->
+			<button type="button" id="saveMenu" class="button-small btn-warning">적용</button>
 			<button type="button" class="button-small btn-cancel"
 				onclick="sidebar_close()">취소</button>
 		</div>
@@ -421,6 +423,8 @@
 	
 	function sidebar_open(authId) {
 		document.getElementById("Sidebar").style.display = "block";
+		$('.rolsId').text(authId);
+		$("#authId").val(authId);
 		selectMenuAuth(authId);
 	}
 
@@ -730,6 +734,34 @@
 			$('#searchValue').val('${pages.searchValue}');
 		});
 	});
+	
+	$("#saveMenu").click(function () {
+        if($("#authId").val() == ""){
+			alert("권한을 선택하세요.");
+			return;
+		}
+        treeJson = new Array();
+		var _tree = $.ui.fancytree.getTree("#tree"); 
+
+		var rootnode = _tree.getRootNode().children[0];
+		treeJson.push(JSON.parse('{ "menuId" : "'+rootnode.data.menuId+'", "checked" : "'+rootnode.partsel+'", "authId" : "'+$("#authId").val()+'" }'));
+		if(rootnode.children != null){ 
+			nodeLoop(rootnode.children);
+		}
+		
+		$.ajax({
+            type: "post",
+            url: "/system/role/update/" + $("#authId").val() + "/popup",
+            dataType: "json",
+            data: "treeJson="+JSON.stringify(treeJson),
+            success: function (data) {
+                if(data.result){
+                    alert("메뉴 권한을 저장하였습니다.");
+                    location.reload();
+                }
+            }
+        });
+    });
 	
 	
 	$(document).ready(function() {
