@@ -68,13 +68,13 @@
 <!-- 							<input type="checkbox" name="all" id="checkAll"> -->
 						</th>
 <!-- 						<th scope="col">번호</th> -->
-						<th scope="col">사용자 ID</th>
-						<th scope="col">사용자 이름</th>
 						<th scope="col">그룹 ID</th>
-						<th scope="col">등록일</th>
+						<th scope="col">그룹 명</th>
+						<th scope="col">그룹 설명</th>
+						<th scope="col">등록일시</th>
 						<th scope="col">사용유무</th>
-						<th scope="col">메뉴생성</th>
-						<th scope="col">관리</th>
+						<th scope="col">메뉴관리</th>
+						<th scope="col">그룹관리</th>
 					</tr>
 				</thead>
 				<tbody>
