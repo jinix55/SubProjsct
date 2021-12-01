@@ -9,6 +9,7 @@
 			<div class="form-group">
 				<div class="form-inline">
 					<select class="select-box w150" id="searchKey" name ="searchKey">
+						<option value="ALL">전체</option>
 						<option value="userId">사용자 ID</option>
 						<option value="userNm">사용자 명</option>
 					</select>
