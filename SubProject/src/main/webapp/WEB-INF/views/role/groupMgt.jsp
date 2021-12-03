@@ -325,7 +325,7 @@
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
 			<button id="regBtn" type="button" class="button btn-success insert" >저장</button>
-			<button type="button" class="button btn-cancel cancle" data-dismiss="modal">취소</button>
+			<button type="button" class="button btn-cancel cancel" data-dismiss="modal">취소</button>
 <!-- 			<button type="button" class="button btn-success" data-dismiss="modal">확인</button> -->
 		</div>
 	</div>
@@ -779,7 +779,7 @@
 		});
 		
 		
-		$('.close, .cancle').click(function(){
+		$('.close, .cancel').click(function(){
 			resetInput();
 		});
 		

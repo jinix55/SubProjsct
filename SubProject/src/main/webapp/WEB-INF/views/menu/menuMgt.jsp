@@ -220,9 +220,9 @@
 <input type="hidden" name="tmp_CheckVal" />
 <!-- menu.menuAttr Json 형태 못받음. -->
 <c:forEach var="menu" items="${menus}" varStatus="status">
-<c:set var = "string1" value='${fn:replace(menu.menuAttr,\'\"\',\'`\')}' />
-<c:set var = "string2" value='${fn:replace(menu.fullPathId,\'\"\',\'`\')}' />
-<c:set var = "string3" value='${fn:replace(menu.fullPathNm,\'\"\',\'`\')}' />
+<c:set var="string1" value='${fn:replace(menu.menuAttr,\'\"\',\'`\')}' />
+<c:set var="string2" value='${fn:replace(menu.fullPathId,\'\"\',\'`\')}' />
+<c:set var="string3" value='${fn:replace(menu.fullPathNm,\'\"\',\'`\')}' />
 <input type="hidden" name="tmp_menuNmVal" value="${menu.menuId}|${menu.upMenuId}|${menu.menuNm}|${menu.menuUrl}|${menu.menuDsc}|${menu.ordSeq}|${menu.menuSe}|${menu.useYn}|${string1}|${menu.lv}|${string2}|${string3}|${menu.fullOrdSeq}" />
 </c:forEach>
 
@@ -345,7 +345,7 @@
 							<label class="col-25 form-label">메뉴ID</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" ame="menuId" id="menuId" readonly disabled>
+									<input type="text" class="text-input" name="menuId" id="menuId" readonly disabled>
 								</div>
 							</div>
 						</div>
@@ -353,7 +353,7 @@
 							<label class="col-25 form-label">메뉴명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" name="menuNm" id="menuNm">
+									<input type="text" class="text-input" name="menuNm" id="menuNm" readonly disabled>
 								</div>
 							</div>
 						</div>
@@ -362,19 +362,19 @@
 							<div class="col-75">
 								<div class="form-input-box">
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="radioA" name="menuSe">
+										<input type="radio" id="radioA" name="menuSe" value="A" disabled>
 										<label for="radioA" class="mr05">폴더(A)</label> 
 									</div>
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="radioM" name="menuSe">
+										<input type="radio" id="radioM" name="menuSe" value="M" disabled>
 										<label for="radioM" class="mr05">메뉴(M)</label> 
 									</div>
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="radioF" name="menuSe">
+										<input type="radio" id="radioF" name="menuSe" value="F" disabled>
 										<label for="radioF" class="mr05">기능(F)</label>
 									</div>
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="radioL" name="menuSe">
+										<input type="radio" id="radioL" name="menuSe" value="L" disabled>
 										<label for="radioL" class="mr05">링크(L)</label>
 									</div>
 								</div>
@@ -384,24 +384,46 @@
 							<label class="col-25 form-label">메뉴URL</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" name="menuUrl" id="menuUrl" readonly disabled>
+									<input type="text" class="text-input" name="menuUrl" id="menuUrl" disabled>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-25 form-label">메뉴속성</label>
 							<div class="col-75">
-								<div class="form-input">
-									<input type="text" class="text-input" name="menuAttr" id="menuAttr" readonly>
+								<input type="hidden" class="text-input" name="menuAttr" id="menuAttr" readonly>
+								<div class="form-input-box">
+									<div class="btn-sm di-inblock">
+										<input type="checkbox" name="menuAttrIns" id="menuAttrIns" disabled>
+										<label for="menuAttrIns" class="mr05 pt1">Insert</label>
+									</div>
+									<div class="btn-sm di-inblock">
+										<input type="checkbox" name="menuAttrUpd" id="menuAttrUpd" disabled>
+										<label for="menuAttrUpd" class="mr05 pt1">Update</label>
+									</div>
+									<div class="btn-sm di-inblock">
+										<input type="checkbox" name="menuAttrDet" id="menuAttrDet" disabled>
+										<label for="menuAttrDet" class="mr05 pt1">Detail</label>
+									</div>
+									<div class="btn-sm di-inblock">
+										<input type="checkbox" name="menuAttrDel" id="menuAttrDel" disabled>
+										<label for="menuAttrDel" class="mr05 pt1">Delete</label>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-25 form-label">메뉴순서</label>
 							<div class="col-75">
-								<div class="form-input">
-									<input type="text" class="text-input" name="ordSeq" id="ordSeq">
-								</div>
+<!-- 								<div class="form-input"> -->
+<!-- 									<input type="text" class="text-input" name="ordSeq" id="ordSeq"> -->
+<!-- 								</div> -->
+								<select id="ordSeq" name="ordSeq" class="select-box" style="width:15%;" disabled>
+								<option value="none" >선택</option>
+								<c:forEach items="${menus}" var="menu">
+									<option value="${menu.ordSeq}">${menu.ordSeq }</option>
+								</c:forEach> 
+							</select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -409,12 +431,12 @@
 							<div class="col-75">
 								<div class="form-input-box">
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="useY" name="useYn">
+										<input type="radio" id="useY" name="useYn" value="Y" disabled>
 										<label for="useY" class="mr05">사용(Y)</label>
 										
 									</div>
 									<div class="btn-sm di-inblock">
-										<input type="radio" id="useN" name="useYn">
+										<input type="radio" id="useN" name="useYn" value="N" disabled>
 										<label for="useN" class="mr05">미사용(N)</label> 
 									</div>
 								</div>
@@ -424,7 +446,7 @@
 							<label class="col-25 form-label-textarea">설명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<textarea class="textarea" id="menuDsc" name="menuDsc"></textarea>
+									<textarea class="textarea" id="menuDsc" name="menuDsc" disabled></textarea>
 								</div>
 							</div>
 						</div>
@@ -432,10 +454,10 @@
 				</div>
 
 				<div class="btn-group tr">
-					<button type="button" class="button-small btn-success">저장</button>
-					<button type="button" class="button-small btn-warning"
-						onclick=javascript:layerPopup(layerDeletePopup);>삭제</button>
-					<button type="button" class="button-small btn-cancel" onclick="">취소</button>
+					<button type="button" class="button-small btn-success newMenu">신규</button>
+					<button type="button" class="button-small btn-success saveMenu">저장</button>
+					<button type="button" class="button-small btn-warning delMenu">삭제</button>
+					<button type="button" class="button-small btn-cancel cancel">취소</button>
 				</div>
 			</div>
 		</div>
@@ -479,9 +501,134 @@ $('.paging_cont').bootpag({        // 페이징을 표시할 div의 클래스
 
 
 /* ********************************************************
+ * 메뉴 등록 처리 함수
+ ******************************************************** */
+function insertMenuList() {
+    if(!fn_validatorMenuList()){return;}
+    //if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다. 추가하신 후 등록하세요."); return;} //상세조회시는 수정혹은 삭제만 가능합니다. 초기화 하신 후 등록하세요.
+    document.menuForm.action = "/admin/menu/insert";
+    document.menuForm.upMenuId.disabled=false;
+    document.menuForm.menuId.disabled=false;
+    document.menuForm.menuUrl.disabled=false;
+    document.menuForm.submit();
+}
+
+/* ********************************************************
+ * 메뉴 수정 처리 함수
+ ******************************************************** */
+function updateMenuList() {
+    if(!fn_validatorMenuList()){return;}
+    //if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다. 추가하신 후 등록하세요."); return;} //상세조회시는 수정혹은 삭제만 가능합니다. 초기화 하신 후 등록하세요.
+    document.menuForm.action = "/menu/menu/update";
+    document.menuForm.upMenuId.disabled=false;
+    document.menuForm.menuId.disabled=false;
+    document.menuForm.actionType = 'I'
+    document.menuForm.submit();
+}
+
+/* ********************************************************
+ * 메뉴삭제 처리 함수
+ ******************************************************** */
+function deleteMenuList() {
+    if(!fn_validatorMenuList()){return;}
+    if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다."); return;} //상세조회시는 수정혹은 삭제만 가능합니다.
+    document.menuForm.action = "/admin/menu/delete";
+    document.menuForm.submit();
+}
+
+/* ********************************************************
+ * 입력값 validator 함수
+ ******************************************************** */
+function fn_validatorMenuList() {
+
+    if(document.menuForm.menuId.value.replace('mn','') == ""){alert("메뉴번호는 Not Null 항목입니다"); return false;} //메뉴번호는 Not Null 항목입니다.
+    if(document.menuForm.ordSeq.value == ""){alert("메뉴순서는 Not Null 항목입니다."); return false;} //메뉴순서는 Not Null 항목입니다.
+    if(document.menuForm.upMenuId.value == ""){alert("상위메뉴번호는 Not Null 항목입니다."); return false;} //상위메뉴번호는 Not Null 항목입니다.
+    if(document.menuForm.menuUrl.value == ""){alert("메뉴URL은 Not Null 항목입니다."); return false;} //프로그램파일명은 Not Null 항목입니다.
+    if(document.menuForm.menuNm.value == ""){alert("메뉴명은 Not Null 항목입니다."); return false;} //메뉴명은 Not Null 항목입니다.
+
+    return true;
+}
+
+/* ********************************************************
+ * 초기화 함수
+ ******************************************************** */
+function initlMenuList() {
+    document.menuForm.upMenuId.value="";
+    document.menuForm.menuId.value="";
+    document.menuForm.menuNm.value="";
+    document.menuForm.menuUrl.value="";
+    document.menuForm.menuDsc.value="";
+    document.menuForm.ordSeq.value="";
+    document.menuForm.tmp_CheckVal.value = "";
+    document.menuForm.useYn.value="";
+    document.menuForm.menuSe.value="";
+    document.menuForm.menuAttr.value="";
+    document.menuForm.menuUrl.readOnly=true;
+    document.menuForm.menuUrl.disabled=true;
+    document.menuForm.menuId.readOnly=true;
+    document.menuForm.menuId.disabled=true;
+	$('select').attr('disabled',true);
+	$('radio').attr('disabled',true);
+	$('checkbox').attr('disabled',true);
+	$('select').attr('readOnly',true);
+	$('radio').attr('readOnly',true);
+	$('checkbox').attr('readOnly',true);
+	if(!$('.saveMenu').hasClass('modiMode')){
+	    $('#ordSeq option:last').remove();
+	}
+    $('#ordSeq').val('none');
+    $('.newMenu').show();
+    $('.saveMenu').hide();
+    $('.delMenu').hide();
+    $('.cancel').hide();
+}
+
+
+/* ********************************************************
+ * 신규 등록 함수
+ ******************************************************** */
+function newMenuList() {
+    document.menuForm.upMenuId.value="";
+    document.menuForm.menuId.value="mn";
+    document.menuForm.menuNm.value="";
+    document.menuForm.menuUrl.value="";
+    document.menuForm.menuDsc.value="";
+    document.menuForm.ordSeq.value="";
+    document.menuForm.tmp_CheckVal.value = "";
+    document.menuForm.useYn.value="Y";
+    document.menuForm.menuSe.value="M";
+    document.menuForm.menuAttr.value='{"attr": {"delete": true, "detail": true, "insert": true, "update": true}}';
+    $('#menuAttrIns').prop('checked',true);    
+    $('#menuAttrUpd').prop('checked',true);    
+    $('#menuAttrDet').prop('checked',true);    
+    $('#menuAttrDel').prop('checked',true); 
+    document.menuForm.menuUrl.readOnly=false;
+    document.menuForm.menuUrl.disabled=false;
+    document.menuForm.menuId.readOnly=false;
+    document.menuForm.menuId.disabled=false;
+    $('#ordSeq option:eq('+($('#ordSeq option').length-1)+')').after('<option value="'+$('#ordSeq option').length+'">'+$('#ordSeq option').length+'</option>');
+    $('#ordSeq').val($('#ordSeq option').length-1);
+    $('.newMenu').hide();
+    $('.saveMenu').show();
+    $('.cancel').show();
+}
+
+/* ********************************************************
  * 상세내역조회 함수
  ******************************************************** */
 function choiceNodes(nodeNum) {
+	$('input').attr('disabled',true);
+	$('textarea').attr('disabled',true);
+	$('select').attr('disabled',true);
+	$('radio').attr('disabled',true);
+	$('checkbox').attr('disabled',true);
+	
+	$('input').attr('readOnly',true);
+	$('textarea').attr('readOnly',true);
+	$('select').attr('readOnly',true);
+	$('radio').attr('readOnly',true);
+	$('checkbox').attr('readOnly',true);
     var nodeValues = treeNodes[nodeNum].split("|");
     console.log(nodeValues);
     document.menuForm.upMenuId.value = nodeValues[1];
@@ -495,14 +642,71 @@ function choiceNodes(nodeNum) {
     $('#use'+nodeValues[7]).prop('checked',true);
     $('#radio'+nodeValues[6]).prop('checked',true);
     document.menuForm.menuAttr.value = nodeValues[8].replace(/`/gi,'"');
+    var attrPerson = JSON.parse(document.menuForm.menuAttr.value);
+    $('#menuAttrIns').prop('checked',attrPerson.attr.insert);
+    $('#menuAttrUpd').prop('checked',attrPerson.attr.update);
+    $('#menuAttrDet').prop('checked',attrPerson.attr.detail);
+    $('#menuAttrDel').prop('checked',attrPerson.attr.delete);
+    document.menuForm.ordSeq.disabled=true;
     document.menuForm.menuUrl.readOnly=true;
     document.menuForm.menuUrl.disabled=true;
     document.menuForm.menuId.readOnly=true;
     document.menuForm.menuId.disabled=true;
+    
     document.menuForm.tmp_CheckVal.value = "U";
-    $('#newMenu').hide();
-    $('#addMenu').hide();
-    $('#saveMenu').show();
-    $('#cancle').show();
+    $('.newMenu').hide();
+    $('.saveMenu').text('수정');
+    $('.saveMenu').addClass('modiMode');
+    $('.saveMenu').show();
+    $('.cancel').show();
 }
+
+/*메뉴 수정
+ * 모든 인풋태그 에이블 처리
+ */
+function modiModeMenu(){
+	$('input').attr('disabled',false);
+	$('textarea').attr('disabled',false);
+	$('select').attr('disabled',false);
+	$('radio').attr('disabled',false);
+	$('checkbox').attr('disabled',false);
+	
+	$('input').attr('readOnly',false);
+	$('textarea').attr('readOnly',false);
+	$('select').attr('readOnly',false);
+	$('radio').attr('readOnly',false);
+	$('checkbox').attr('readOnly',false);
+	
+    document.menuForm.menuId.readOnly=true;
+    document.menuForm.upMenuId.readOnly=true;
+    document.menuForm.menuId.disabled=true;
+    document.menuForm.upMenuId.disabled=true;
+    
+    $('.saveMenu').text('저장');
+    $('.saveMenu').removeClass('modiMode');
+    $('.cancel').show();
+}
+
+
+$(document).ready(function () {
+	$('.saveMenu').hide();
+	$('.delMenu').hide();
+	$('.cancel').hide();
+	
+	$('.newMenu').click(function(){
+		newMenuList();
+	});
+	
+	$('.saveMenu').click(function(){
+		if($('.saveMenu').hasClass('modiMode')){
+			modiModeMenu();
+		}else{
+			updateMenuList();
+		}
+	});
+	
+	$('.cancel').click(function(){
+		initlMenuList();
+	});
+});
 </script>
