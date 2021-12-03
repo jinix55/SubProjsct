@@ -131,7 +131,7 @@
 		$('.pass_change').show();
 	}
 	
-	function cancle() {
+	function cancel() {
 		$('.login').show();
 		$('.pass_reset').hide();
 		$('.pass_change').hide();
@@ -254,7 +254,7 @@
 						<div class="btn-group">
 							<button type="button" class="button btn-success w100" onclick="resetPassword();">신청하기</button>
 							<ul>
-								<li class="last change" onclick="cancle();"><a href="javascript:void(0)">취소</a></li>
+								<li class="last change" onclick="cancel();"><a href="javascript:void(0)">취소</a></li>
 							</ul>
 						</div>
 					</form>
@@ -279,7 +279,7 @@
 						<div class="btn-group">
 							<button type="button" class="button btn-success w100" onclick="changePassword();">변경하기</button>
 							<ul>
-								<li class="last change" onclick="cancle();"><a href="javascript:void(0)">취소</a></li>
+								<li class="last change" onclick="cancel();"><a href="javascript:void(0)">취소</a></li>
 							</ul>
 						</div>
 					</form>
