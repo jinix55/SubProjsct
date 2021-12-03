@@ -136,9 +136,9 @@ public class MenuController {
 
 			long count = menuService.save(menuModel);
 
-			return "redirect:/menu/menuMgt";
+			return "redirect:/menu/menu";
 		} catch (Exception e) {
-			return "forward:/menu/menuMgt";
+			return "forward:/menu/menu";
 		}
 	}
 
