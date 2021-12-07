@@ -17,11 +17,17 @@
 	</div>
 	<nav style="touch-action: none;">
 		<ul style="transform: translate(0px, 0px) translateZ(0px);">
+			<c:set var="downMenuYn" value="Y" />
 			<c:forEach var="subMenu" items="${subMenuList}" varStatus="status">
 			<c:if test="${subMenu.lv eq 1}">
 				<li data-menu="${subMenu.menuId}M" ${fn:startsWith(myUri,subMenu.menuUrl) ? 'class=open' : ''}>
 					<c:if test="${subMenu.menuSe eq 'A'}">
+						<c:set var="downMenuYn" value="Y" />
 						<a href="#" title="${subMenu.menuNm}"><span class="txtlmg ${subMenu.iconNm}"></span>${subMenu.menuNm}</a>
+					</c:if>
+					<c:if test="${subMenu.menuSe eq 'M'}">
+						<c:set var="downMenuYn" value="N" />
+						<li data-menu="UserMgt" <c:if test="${subMenu.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu.menuUrl}" title="${subMenu.menuNm}"><span class="hexagon"></span>${subMenu.menuNm}</a></li>
 					</c:if>
 					<c:set var="menuhg" value="0" />
 					<c:set var="menuHginit" value="44" />
@@ -30,6 +36,7 @@
 							<c:set var="menuhg" value="${menuHginit * menuGpCnt.value}" />
 						</c:if>
 					</c:forEach>
+					<c:if test="${downMenuYn eq 'Y' }">
 					<ul style="height: ${menuhg}px;">
 						<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status3">
 							<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
@@ -37,6 +44,7 @@
 							</c:if>
 						</c:forEach>
 					</ul>
+					</c:if>
 				</li>
 			</c:if>
 			</c:forEach>

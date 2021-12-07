@@ -98,6 +98,7 @@ public class MenuController {
 			menuModel.setRgstId(authUser.getMemberModel().getUserId());
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
 			menuModel.setMenuId(idUtil.getMenuId());
+			System.out.println("getMenuId : "+menuModel.getMenuId());
 			long count = menuService.save(menuModel);
 			
 			// 메뉴 등록시 담당관리자 권한 자동 등록 
@@ -109,14 +110,14 @@ public class MenuController {
 			long menuAuths = menuService.updateMenuListWithAuth(menuModel);
 			
 			// 담당관리자 권한 등록 성공 이후 등록자가 최고관리자가 아닐경우 최고관리자 등록
-			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000000")) {
-				menuModel.setAuthId("au2000000");
+			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000001")) {
+				menuModel.setAuthId("au2000001");
 				menuService.updateMenuListWithAuth(menuModel);	
 			}
 
-			return "redirect:/menu/menuMgt";
+			return "redirect:/menu/menu";
 		} catch (Exception e) {
-			return "forward:/menu/menuMgt";
+			return "forward:/menu/menu";
 		}
 	}
 
@@ -135,6 +136,7 @@ public class MenuController {
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
 
 			long count = menuService.save(menuModel);
+			long menuAuths = menuService.updateMenuAuth(menuModel);
 
 			return "redirect:/menu/menu";
 		} catch (Exception e) {
@@ -158,9 +160,9 @@ public class MenuController {
 
 			long count = menuService.delete(menuModel);
 
-			return "redirect:/menu";
+			return "redirect:/menu/menu";
 		} catch (Exception e) {
-			return "forward:/menu";
+			return "forward:/menu/menu";
 		}
 	}
 

@@ -58,6 +58,7 @@ public class MenuService {
      */
     @Transactional
     public long delete(MenuModel model) {
+    	menuMapper.deleteAuth(model);
         return menuMapper.delete(model);
     }
 
@@ -144,5 +145,16 @@ public class MenuService {
     @Transactional
     public long updateMenuListWithAuth(MenuModel model) {
     	return menuMapper.updateMenuListWithAuth(model);
+    }
+    
+    /**
+     * 권한별 메뉴를 업데이트 한다.
+     *
+     * @param model
+     * @return
+     */
+    @Transactional
+    public long updateMenuAuth(MenuModel model) {
+    	return menuMapper.updateMenuAuth(model);
     }
 }

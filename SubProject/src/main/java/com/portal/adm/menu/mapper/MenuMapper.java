@@ -40,6 +40,13 @@ public interface MenuMapper {
      * @return
      */
     long delete(MenuModel model);
+    
+    /**
+     * 메뉴모델을 삭제한다.
+     * @param model
+     * @return
+     */
+    long deleteAuth(MenuModel model);
 
     /**
      * 메뉴모델을 업데이트 한다.
@@ -95,4 +102,12 @@ public interface MenuMapper {
      * @return
      */
     long updateMenuListWithAuth(MenuModel model);
+    
+    /**
+     * 권한별 메뉴를 업데이트 한다.
+     *
+     * @param model
+     * @return
+     */
+    long updateMenuAuth(MenuModel model);
 }

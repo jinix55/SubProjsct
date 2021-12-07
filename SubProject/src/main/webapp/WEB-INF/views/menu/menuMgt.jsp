@@ -341,14 +341,15 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="col-25 form-label">메뉴ID</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input type="text" class="text-input" name="menuId" id="menuId" readonly disabled>
-								</div>
-							</div>
-						</div>
+						<input type="hidden" class="text-input" name="menuId" id="menuId">
+<!-- 						<div class="form-group mnIdView"> -->
+<!-- 							<label class="col-25 form-label">메뉴ID</label> -->
+<!-- 							<div class="col-75"> -->
+<!-- 								<div class="form-input"> -->
+<!-- 									<input type="text" class="text-input" name="menuId" id="menuId" readonly disabled> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 						<div class="form-group">
 							<label class="col-25 form-label">메뉴명</label>
 							<div class="col-75">
@@ -506,10 +507,10 @@ $('.paging_cont').bootpag({        // 페이징을 표시할 div의 클래스
 function insertMenuList() {
     if(!fn_validatorMenuList()){return;}
     //if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다. 추가하신 후 등록하세요."); return;} //상세조회시는 수정혹은 삭제만 가능합니다. 초기화 하신 후 등록하세요.
-    document.menuForm.action = "/admin/menu/insert";
+    document.menuForm.action = "/menu/menu/insert";
     document.menuForm.upMenuId.disabled=false;
-    document.menuForm.menuId.disabled=false;
     document.menuForm.menuUrl.disabled=false;
+    btnCheck()
     document.menuForm.submit();
 }
 
@@ -521,7 +522,7 @@ function updateMenuList() {
     //if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다. 추가하신 후 등록하세요."); return;} //상세조회시는 수정혹은 삭제만 가능합니다. 초기화 하신 후 등록하세요.
     document.menuForm.action = "/menu/menu/update";
     document.menuForm.upMenuId.disabled=false;
-    document.menuForm.menuId.disabled=false;
+    btnCheck();
     document.menuForm.actionType = 'I'
     document.menuForm.submit();
 }
@@ -532,8 +533,12 @@ function updateMenuList() {
 function deleteMenuList() {
     if(!fn_validatorMenuList()){return;}
     if(document.menuForm.tmp_CheckVal.value != "U"){alert("상세조회시는 수정혹은 삭제만 가능합니다."); return;} //상세조회시는 수정혹은 삭제만 가능합니다.
-    document.menuForm.action = "/admin/menu/delete";
-    document.menuForm.submit();
+    if(confirm('삭제할 경우 복구할수 없습니다.\n진행하시겠습니까?')){
+	    document.menuForm.menuId.disabled=false;
+	    document.menuForm.menuId.readOnly=false;
+	    document.menuForm.action = "/menu/menu/delete";
+	    document.menuForm.submit();
+    }
 }
 
 /* ********************************************************
@@ -541,13 +546,17 @@ function deleteMenuList() {
  ******************************************************** */
 function fn_validatorMenuList() {
 
-    if(document.menuForm.menuId.value.replace('mn','') == ""){alert("메뉴번호는 Not Null 항목입니다"); return false;} //메뉴번호는 Not Null 항목입니다.
+//     if(document.menuForm.menuId.value.replace('mn','') == ""){alert("메뉴번호는 Not Null 항목입니다"); return false;} //메뉴번호는 Not Null 항목입니다.
     if(document.menuForm.ordSeq.value == ""){alert("메뉴순서는 Not Null 항목입니다."); return false;} //메뉴순서는 Not Null 항목입니다.
     if(document.menuForm.upMenuId.value == ""){alert("상위메뉴번호는 Not Null 항목입니다."); return false;} //상위메뉴번호는 Not Null 항목입니다.
     if(document.menuForm.menuUrl.value == ""){alert("메뉴URL은 Not Null 항목입니다."); return false;} //프로그램파일명은 Not Null 항목입니다.
     if(document.menuForm.menuNm.value == ""){alert("메뉴명은 Not Null 항목입니다."); return false;} //메뉴명은 Not Null 항목입니다.
 
     return true;
+}
+
+function btnCheck(){
+    document.menuForm.menuAttr.value = '{"attr": {"insert": '+$('#menuAttrIns').prop('checked')+', "update": '+$('#menuAttrUpd').prop('checked')+',  "detail": '+$('#menuAttrDet').prop('checked')+', "delete": '+$('#menuAttrDel').prop('checked')+'}}';
 }
 
 /* ********************************************************
@@ -566,17 +575,18 @@ function initlMenuList() {
     document.menuForm.menuAttr.value="";
     document.menuForm.menuUrl.readOnly=true;
     document.menuForm.menuUrl.disabled=true;
-    document.menuForm.menuId.readOnly=true;
-    document.menuForm.menuId.disabled=true;
 	$('select').attr('disabled',true);
 	$('radio').attr('disabled',true);
 	$('checkbox').attr('disabled',true);
 	$('select').attr('readOnly',true);
 	$('radio').attr('readOnly',true);
 	$('checkbox').attr('readOnly',true);
-	if(!$('.saveMenu').hasClass('modiMode')){
+	if(!$('.saveMenu').hasClass('modiMode') || $('.newMenu').hasClass('new')){
 	    $('#ordSeq option:last').remove();
 	}
+	$('.saveMenu').text('저장');
+	$('.saveMenu').removeClass('modiMode');
+	$('.newMenu').removeClass('new');
     $('#ordSeq').val('none');
     $('.newMenu').show();
     $('.saveMenu').hide();
@@ -589,8 +599,16 @@ function initlMenuList() {
  * 신규 등록 함수
  ******************************************************** */
 function newMenuList() {
+	$('input').attr('disabled',false);
+	$('textarea').attr('disabled',false);
+	$('select').attr('disabled',false);
+	
+	$('input').attr('readOnly',false);
+	$('textarea').attr('readOnly',false);
+	$('select').attr('readOnly',false);
+	
     document.menuForm.upMenuId.value="";
-    document.menuForm.menuId.value="mn";
+    document.menuForm.menuId.value="NEW";
     document.menuForm.menuNm.value="";
     document.menuForm.menuUrl.value="";
     document.menuForm.menuDsc.value="";
@@ -599,19 +617,19 @@ function newMenuList() {
     document.menuForm.useYn.value="Y";
     document.menuForm.menuSe.value="M";
     document.menuForm.menuAttr.value='{"attr": {"delete": true, "detail": true, "insert": true, "update": true}}';
-    $('#menuAttrIns').prop('checked',true);    
-    $('#menuAttrUpd').prop('checked',true);    
-    $('#menuAttrDet').prop('checked',true);    
-    $('#menuAttrDel').prop('checked',true); 
+    $('#menuAttrIns').prop('checked',true);
+    $('#menuAttrUpd').prop('checked',true);
+    $('#menuAttrDet').prop('checked',true);
+    $('#menuAttrDel').prop('checked',true);
     document.menuForm.menuUrl.readOnly=false;
     document.menuForm.menuUrl.disabled=false;
-    document.menuForm.menuId.readOnly=false;
-    document.menuForm.menuId.disabled=false;
     $('#ordSeq option:eq('+($('#ordSeq option').length-1)+')').after('<option value="'+$('#ordSeq option').length+'">'+$('#ordSeq option').length+'</option>');
     $('#ordSeq').val($('#ordSeq option').length-1);
+    $('.mnIdView').hide();
     $('.newMenu').hide();
     $('.saveMenu').show();
     $('.cancel').show();
+    $('.newMenu').addClass('new');
 }
 
 /* ********************************************************
@@ -630,7 +648,6 @@ function choiceNodes(nodeNum) {
 	$('radio').attr('readOnly',true);
 	$('checkbox').attr('readOnly',true);
     var nodeValues = treeNodes[nodeNum].split("|");
-    console.log(nodeValues);
     document.menuForm.upMenuId.value = nodeValues[1];
     document.menuForm.menuId.value = nodeValues[0];
     document.menuForm.ordSeq.value = nodeValues[5];
@@ -650,14 +667,13 @@ function choiceNodes(nodeNum) {
     document.menuForm.ordSeq.disabled=true;
     document.menuForm.menuUrl.readOnly=true;
     document.menuForm.menuUrl.disabled=true;
-    document.menuForm.menuId.readOnly=true;
-    document.menuForm.menuId.disabled=true;
     
     document.menuForm.tmp_CheckVal.value = "U";
     $('.newMenu').hide();
     $('.saveMenu').text('수정');
     $('.saveMenu').addClass('modiMode');
     $('.saveMenu').show();
+    $('.delMenu').show();
     $('.cancel').show();
 }
 
@@ -677,15 +693,13 @@ function modiModeMenu(){
 	$('radio').attr('readOnly',false);
 	$('checkbox').attr('readOnly',false);
 	
-    document.menuForm.menuId.readOnly=true;
-    document.menuForm.upMenuId.readOnly=true;
-    document.menuForm.menuId.disabled=true;
     document.menuForm.upMenuId.disabled=true;
     
     $('.saveMenu').text('저장');
     $('.saveMenu').removeClass('modiMode');
     $('.cancel').show();
 }
+
 
 
 $(document).ready(function () {
@@ -701,12 +715,20 @@ $(document).ready(function () {
 		if($('.saveMenu').hasClass('modiMode')){
 			modiModeMenu();
 		}else{
-			updateMenuList();
+			if($('.newMenu').hasClass('new')){
+				insertMenuList();
+			}else{
+				updateMenuList();
+			}
 		}
 	});
 	
 	$('.cancel').click(function(){
 		initlMenuList();
+	});
+	
+	$('.delMenu').click(function(){
+		deleteMenuList();
 	});
 });
 </script>

@@ -114,13 +114,24 @@ UPDATE t_group_menu SET
 WHERE MENU_ID = #{menuId}
     </update>
 
+<!--     <delete id="delete" parameterType="com.portal.adm.menu.model.MenuModel"> -->
+<!-- UPDATE t_group_menu SET -->
+<!--     use_yn = 'N' -->
+<!--   , modi_id = #{modiId} -->
+<!--   , modi_dt = NOW() -->
+<!-- WHERE MENU_ID = #{menuId} -->
+<!--     </delete> -->
+    
     <delete id="delete" parameterType="com.portal.adm.menu.model.MenuModel">
-UPDATE t_group_menu SET
-    use_yn = 'N'
-  , modi_id = #{modiId}
-  , modi_dt = NOW()
-WHERE MENU_ID = #{menuId}
+		DELETE FROM t_group_menu
+		WHERE MENU_ID = #{menuId}
     </delete>
+    
+    <delete id="deleteAuth" parameterType="com.portal.adm.menu.model.MenuModel">
+		DELETE FROM t_group_menu_auth
+		WHERE MENU_ID = #{menuId}
+    </delete>
+    
 
     <select id="selectUpperMenuIdForMenuUrl" resultType="string" parameterType="com.portal.adm.menu.model.MenuModel">
 <!-- <![CDATA[ -->
@@ -297,7 +308,7 @@ LIMIT 1
     <update id="updateMenuListWithAuth" parameterType="com.portal.adm.menu.model.MenuModel">
 		INSERT INTO t_group_menu_auth
 		(AUTH_ID, MENU_ID, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT)
-		VALUES(#{authId}, #{menuId}, #{menuAuthAttr}, #{authUseYn}, #{rgstId}, now(), #{modiId}, now())
+		VALUES(#{authId}, #{menuId}, #{menuAttr}, #{authUseYn}, #{rgstId}, now(), #{modiId}, now())
 		ON DUPLICATE KEY UPDATE
 		AUTH_ID = #{authId}
 		, MENU_ID =  #{menuId}
@@ -305,5 +316,14 @@ LIMIT 1
 		, USE_YN = #{authUseYn}
 		, MODI_ID = #{modiId}
 		, MODI_DT = NOW()
+    </update>
+    
+       <update id="updateMenuAuth" parameterType="com.portal.adm.menu.model.MenuModel">
+		UPDATE t_group_menu_auth SET
+			MENU_ATTR = (SELECT MENU_ATTR FROM t_group_menu WHERE MENU_ID = #{menuId})
+			, USE_YN = #{useYn}
+			, MODI_ID = #{modiId}
+			, MODI_DT = NOW()
+		WHERE MENU_ID =  #{menuId}
     </update>
 </mapper>

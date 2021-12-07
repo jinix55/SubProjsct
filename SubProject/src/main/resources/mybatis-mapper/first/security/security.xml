@@ -108,7 +108,7 @@
 		  , R.FULL_ORD_SEQ
 		FROM R
 		WHERE MENU_URL = #{menuUrl}
-		ORDER BY FULL_ORD_SEQ, MENU_NM
+		ORDER BY FULL_ORD_SEQ, MENU_NM LIMIT 1
     </select>
 
 </mapper>
