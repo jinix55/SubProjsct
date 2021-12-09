@@ -26,7 +26,7 @@
 					<div class="search-box w250">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="btn-search">
+							<button type="button" class="button-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -95,20 +95,20 @@
 							<td>
 							<c:choose>
 								<c:when test="${list.useYn eq 'Y' }">
-									<button type="button" class="btn-yes">YES</button>
+									<button type="button" class="button-yes">YES</button>
 								</c:when>
 								<c:otherwise>
-										<button type="button" class="btn-no">NO</button>
+										<button type="button" class="button-no">NO</button>
 								</c:otherwise>
 							</c:choose>
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${list.solarDate}');" role="button" data-toggle="modal" class="btn-tbl_icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="tbl-icon2">
+									<a href="#register" onclick="detailView('${list.solarDate}');" role="button" data-toggle="modal" class="btn-Ticon02">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
 									</a>
-									<a href="#delete" onclick="deleteSet('${list.solarDate}');" role="button" data-toggle="modal" class="btn-tbl_icon">
-										<img src="/images/icon_delete2.png" alt="삭제하기" class="tbl-icon2">
+									<a href="#delete" onclick="deleteSet('${list.solarDate}');" role="button" data-toggle="modal" class="btn-Ticon02">
+										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
 									</a>
 								</div>
 							</td>
@@ -139,7 +139,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">신규휴일등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="../images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">

@@ -15,7 +15,7 @@
 					<div class="search-box w250">
 						<input type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="btn-search">
+							<button type="button" class="button-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -73,12 +73,12 @@
 						<td>SITE별 관리자</td>
 						<td>SITE별 관리자</td>
 						<td>
-							<button type="button" class="btn-yes">YES</button>
+							<button type="button" class="button-yes">YES</button>
 						</td>
 						<td>
 							<div class="btn-group">
 								<a href="" onclick="sidebar_open()" role="button"
-									data-toggle="modal" class="btn-tbl_icon"><img
+									data-toggle="modal" class="btn-Ticon02"><img
 									src="/images/icon_genemenu.png" title="메뉴생성" class="tbl-icon"></a>
 							</div>
 						</td>

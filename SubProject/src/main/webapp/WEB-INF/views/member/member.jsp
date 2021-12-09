@@ -18,7 +18,7 @@
 					<div class="search-box w250">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="btn-search">
+							<button type="button" class="button-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -83,15 +83,15 @@
 							<td>
 							<c:choose>
 								<c:when test="${member.useYn eq 'Y' }">
-									<button type="button" class="btn-yes">YES</button>
+									<button type="button" class="button-yes">YES</button>
 								</c:when>
 								<c:otherwise>
 									<c:choose>
 									<c:when test="${member.lockYn eq 'Y' }">
-										<button type="button" class="btn-no backColorRed">Lock</button>
+										<button type="button" class="button-no backColorRed">Lock</button>
 									</c:when>
 									<c:otherwise>
-										<button type="button" class="btn-no">NO</button>
+										<button type="button" class="button-no">NO</button>
 									</c:otherwise>
 									</c:choose>
 								</c:otherwise>
@@ -99,11 +99,11 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${member.userId}');" role="button" data-toggle="modal" class="btn-tbl_icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="tbl-icon2">
+									<a href="#register" onclick="detailView('${member.userId}');" role="button" data-toggle="modal" class="btn-Ticon02">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
 									</a>
-									<a href="#delete" onclick="deleteSet('${member.userId}');" role="button" data-toggle="modal" class="btn-tbl_icon">
-										<img src="/images/icon_delete2.png" alt="삭제하기" class="tbl-icon2">
+									<a href="#delete" onclick="deleteSet('${member.userId}');" role="button" data-toggle="modal" class="btn-Ticon02">
+										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
 									</a>
 								</div>
 							</td>
@@ -135,7 +135,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="../../images/icon_close.png">
+				<img src="..//images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -167,7 +167,7 @@
 							<div class="search-box">
 								<input id="userId" name="userId" type="text" class="text-input" placeholder="ID를 입력해 주세요">
 								<span class="search-box-append">
-									<button type="button" class="btn-search" id="idSearch">
+									<button type="button" class="button-search" id="idSearch">
 										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
 									</button>
 								</span>
@@ -251,7 +251,7 @@
 						<label class="col-25 form-label">잠금상태</label>
 						<div class="col-75">
 							<div class="form-input-box">
-<!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
+<!-- 								<button type="button" id="lockYn" name ="lockYn" class="button-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
 								<div class="btn-sm di-inblock">
 									<input id="lockY" name="lockYn" type="radio" value="Y">
 									<label for="lockY" class="mr05">활성화</label>
@@ -346,7 +346,7 @@
 							<div class="search-box">
 								<input id="re_userId" name="re_userId" type="text" class="text-input">
 								<span class="search-box-append">
-									<button id="re_idSearch" name="re_idSearch" type="button" class="btn-search">
+									<button id="re_idSearch" name="re_idSearch" type="button" class="button-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
@@ -535,12 +535,12 @@
 		$('#authId').val(authId);
 		$('#use'+useYn).prop('checked',true);
 // 		if(data.lockYn == 'Y'){
-// 			$('#lockYn').addClass('btn-yes');
+// 			$('#lockYn').addClass('button-yes');
 // 			$('#lockYn').text('Yes');
 // 			$('#lockYn').css('background','red');
 // 			$('#lockYn').css('cursor',' pointer');
 // 		}else{
-// 			$('#lockYn').addClass('btn-no');
+// 			$('#lockYn').addClass('button-no');
 // 			$('#lockYn').text('No');
 // 			$('#lockYn').css('background','darkgray');
 // 			$('#lockYn').css('background','darkgray');

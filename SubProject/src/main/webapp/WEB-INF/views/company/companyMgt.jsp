@@ -18,7 +18,7 @@
 					<div class="search-box w250">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input">
 						 <span class="search-box-append">
-							<button type="submit" class="btn-search">
+							<button type="submit" class="button-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -81,17 +81,17 @@
 							<td>${company.companyNo }</td>
 							<td><spring:eval expression="company.rgstDt" /></td>
 							<td>
-								<button type="button" class="btn-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
+								<button type="button" class="button-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal" class="btn-tbl_icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="tbl-icon2">
+									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal" class="btn-Ticon02">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
 									</a>
 									<c:if test="${company.useYn eq 'Y'}">
 										<a href="#delete" data-nm="${company.companyNm }" data-id="${company.companyId }" data-code="${company.companyCode }" data-no="${company.companyNo }" role="button" data-toggle="modal"
-											class="btn-tbl_icon deleteBtnAction"><img src="/images/icon_delete2.png"
-											alt="삭제하기" class="tbl-icon2">
+											class="btn-Ticon02 deleteBtnAction"><img src="/images/icon_delete2.png"
+											alt="삭제하기" class="btn-Ticon02">
 										</a>
 									</c:if>
 								</div>
@@ -143,7 +143,7 @@
 									<input id="reg_companyCode" name="reg_companyCode" type="text"
 										class="text-input eInput">
 									<span class="search-box-append">
-									<button id="codeSearch" name="codeSearch" type="button" class="btn-search codeSearch">
+									<button id="codeSearch" name="codeSearch" type="button" class="button-search codeSearch">
 										<a href="#overlap" class="codeSearchBtn" role="button" data-toggle="modal">중복확인</a>
 									</button>
 								</span>
@@ -278,7 +278,7 @@
 							<div class="search-box">
 								<input type="text" class="text-input" id="re_reg_companyCode" name="re_reg_companyCode">
 								<span class="search-box-append">
-									<button id="re_codeSearch" name="re_codeSearch" type="button" class="btn-search">
+									<button id="re_codeSearch" name="re_codeSearch" type="button" class="button-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
