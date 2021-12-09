@@ -18,7 +18,7 @@
 					<div class="search-box w250">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="btn-search">
+							<button type="button" class="button-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -76,16 +76,16 @@
 							<td>
 								<c:choose>
 									<c:when test="${alarm.checkYn eq 'Y' }">
-										<button type="button" class="btn-yes alarmNo${alarm.alarmId }">YES</button>
+										<button type="button" class="button-yes alarmNo${alarm.alarmId }">YES</button>
 									</c:when>
 									<c:otherwise>
-											<button type="button" class="btn-no backColorRed alarmNo${alarm.alarmId }">NO</button>
+											<button type="button" class="button-no backColorRed alarmNo${alarm.alarmId }">NO</button>
 									</c:otherwise>
 								</c:choose>
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#detail" onclick="detailView('${alarm.alarmId}');" role="button" data-toggle="modal" class="btn-tbl_icon"><img src="/images/icon_detail.png" alt="상세보기" class="tbl-icon"></a>
+									<a href="#detail" onclick="detailView('${alarm.alarmId}');" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon02"></a>
 								</div>
 							</td>
 						</tr>
@@ -228,8 +228,8 @@
 	
 	function setView(data){
 		$('.alarmNo'+data.alarmId).text('YES');
-		$('.alarmNo'+data.alarmId).addClass('btn-yes');
-		$('.alarmNo'+data.alarmId).removeClass('btn-no');
+		$('.alarmNo'+data.alarmId).addClass('button-yes');
+		$('.alarmNo'+data.alarmId).removeClass('button-no');
 		$('.alarmNo'+data.alarmId).removeClass('backColorRed');
 		$('#sj').val(data.sj);
 		$('#cn').val(data.cn);
