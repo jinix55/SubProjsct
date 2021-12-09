@@ -1,6 +1,5 @@
 package com.portal.adm.report;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,10 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.report.model.ReportModel;
 import com.portal.adm.report.service.ReportService;
+import com.portal.adm.role.model.RoleModel;
+import com.portal.adm.role.service.RoleService;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -38,6 +40,9 @@ public class ReportController {
     private ReportService reportService;
     
     @Resource
+    private RoleService roleService;
+    
+    @Resource
     private IdUtil idUtil;
     
     /**
@@ -47,10 +52,14 @@ public class ReportController {
      * @return
      */
     @GetMapping("/report")
-    public String report(@ModelAttribute ReportModel reportModel, Model model) {
+    public String reportGet(@ModelAttribute ReportModel reportModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info(" =============== report get in ==============");
         List<ReportModel> models = reportService.selectReportList(reportModel);
         reportModel.setTotalCount(reportService.selectReportListCount(reportModel));
+        RoleModel roleModel = new RoleModel();
+        roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        roleModel.setAuthId(authUser.getMemberModel().getAuthId());
+        model.addAttribute("roles", roleService.selectList(roleModel));
         model.addAttribute("reports", models);
         model.addAttribute("pages", reportModel);
         
@@ -64,12 +73,16 @@ public class ReportController {
      * @return
      */
     @PostMapping("/report")
-    public String report(@ModelAttribute ReportModel reportModel, RedirectAttributes attributes) {
-    	log.info(" =============== report get in ==============");
+    public String reportPost(@ModelAttribute ReportModel reportModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	log.info(" =============== report Post in ==============");
         List<ReportModel> models = reportService.selectReportList(reportModel);
         reportModel.setTotalCount(reportService.selectReportListCount(reportModel));
-        attributes.addAttribute("reports", models);
-        attributes.addAttribute("pages", reportModel);
+        RoleModel roleModel = new RoleModel();
+        roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        roleModel.setAuthId(authUser.getMemberModel().getAuthId());
+        model.addAttribute("roles", roleService.selectList(roleModel));
+        model.addAttribute("reports", models);
+        model.addAttribute("pages", reportModel);
         
         return "report/reportMgt";
     }
@@ -81,6 +94,7 @@ public class ReportController {
      * @return
      */
     @PostMapping("/report/insert")
+    @ResponseBody
     public ResponseEntity<String> reportSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		String result = null;
@@ -93,7 +107,10 @@ public class ReportController {
     			String reportId = request.getParameter("reportId");
     			String reportNm = request.getParameter("reportNm");
     			String reportUrl = request.getParameter("reportUrl");
-    			String companyId = request.getParameter("companyId");
+    			String groupId = request.getParameter("groupId");
+    			String reportDsc = request.getParameter("reportDsc");
+    			String reportType = request.getParameter("reportType");
+    			String companyId = authUser.getMemberModel().getCompanyCode();
     			String reportSize = request.getParameter("reportSize");
     			String useYn = request.getParameter("useYn");
     			
@@ -103,6 +120,9 @@ public class ReportController {
     			reportModel.setReportId(reportId);
     			reportModel.setReportNm(reportNm);
     			reportModel.setReportUrl(reportUrl);
+    			reportModel.setGroupId(groupId);
+    			reportModel.setReportType(reportType);
+    			reportModel.setReportDsc(reportDsc);
     			reportModel.setCompanyId(companyId);
     			reportModel.setReportSize(reportSize);
     			reportModel.setUseYn(useYn);
@@ -128,6 +148,7 @@ public class ReportController {
      * @return
      */
     @PostMapping("/report/delete")
+    @ResponseBody
     public ResponseEntity<String> reportDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
@@ -137,7 +158,7 @@ public class ReportController {
 	            String reportId = request.getParameter("reportId");
     			String reportNm = request.getParameter("reportNm");
     			String reportUrl = request.getParameter("reportUrl");
-    			String companyId = request.getParameter("companyId");
+    			String companyId = authUser.getMemberModel().getCompanyCode();
 	
 	            reportModel.setReportId(reportId);
     			reportModel.setReportNm(reportNm);
@@ -163,11 +184,13 @@ public class ReportController {
      * @param reportId
      * @return
      */
-    @GetMapping("/report/detail/{reportId}")
+    @PostMapping("/report/detail/{reportId}")
     public ResponseEntity<ReportModel> getReportsForReportId(@PathVariable("reportId") String reportId) {
-		ReportModel reportModels = reportService.selectReportId(reportId);
+    	ReportModel reportModel = new ReportModel();
+    	reportModel.setReportId(reportId);
+		reportModel = reportService.selectReportId(reportModel);
 
-        return new ResponseEntity<>(reportModels, HttpStatus.OK);
+        return new ResponseEntity<>(reportModel, HttpStatus.OK);
     }
     
 }

@@ -59,12 +59,4 @@ public interface ReportMapper {
     */
    long delete(ReportModel reportModel);
    
-   /**
-    * 레포트정보를 삭제한다.
-    *
-    * @param reportModel
-    * @return  레포트 삭제
-    */
-   ReportModel select(String reportId);
-
 }
