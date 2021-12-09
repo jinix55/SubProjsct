@@ -187,7 +187,7 @@ function layerPopup(IdName){
    $(IdName).center();
   };
   //레이어 팝업 스크롤
-  //$(document).ready(function () {
+ //$(document).ready(function () {
   //$('#register,#overlap,#detail,#edit,#delete,#Alldelete').append('<style type="text/css">.modal .modal-body {max-height: ' + ($('body').height() * .5) + 'px;overflow-y: auto;}.modal-open .modal{overflow-y: hidden !important;}</style>');
   //});
   //레이어 팝업 닫기
@@ -196,46 +196,57 @@ function layerPopupClose(IdInfo){
    $(".mask-box").remove();
   }
 
-// 숨기기보이기
-  $(function(){
-      $('.form-view').attr('disabled', true);
-      $(".btnEdit").click(function(){
-          if($(".form-view").attr('disabled')!=""){
-                $(".form-view").attr("disabled", false);
-                //$(".btnEdit").text('저장');
-                //$(".btn-warning").hide();
-            }else{
-                $(".form-view").attr("disabled", true);
-                //$(".btnEdit").text('수정');
+  // 숨기기보이기
+    $(function(){
+        var article = (".table-actions .tr-show");
+        $(".table-actions .tr-item").click(function() {
+            var taArticle =$(this).parents().next("tr");
+            if($(taArticle).hasClass('tr-hide')) {
+                $(article).removeClass('tr-show').addClass('tr-hide');
+                $(taArticle).removeClass('tr-hide').addClass('tr-show');
             }
-      });
-      //체크박스 클릭
-       $("#checkAll").click(function(){
-           //클릭되었으면
-           if($("#checkAll").prop("checked")){
-               //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 true로 정의
-               $("input[name=chk]").prop("checked",true);
-               $(".buttons-action").show();
-               $(".btn-round").attr('disabled', true);
-               $(".btn-group").attr('disabled', true);
+            else {
+                $(taArticle).addClass('tr-hide').removeClass('tr-show');
+            }
+        });
+        $('.form-view').attr('disabled', true);
+        $(".btnEdit").click(function(){
+            if($(".form-view").attr('disabled')!=""){
+                  $(".form-view").attr("disabled", false);
+                  $(".btnEdit").text('저장');
+                  $(".btn-warning").hide();
+              }else{
+                  $(".form-view").attr("disabled", true);
+                  $(".btnEdit").text('수정');
+              }
+        });
+        //체크박스 클릭
+         $("#checkAll").click(function(){
+             //클릭되었으면
+             if($("#checkAll").prop("checked")){
+                 //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 true로 정의
+                 $("input[name=chk]").prop("checked",true);
+                 $(".buttons-action").show();
+                 $(".btn-round").attr('disabled', true);
+                 $(".btn-group").attr('disabled', true);
 
-           }else{
-               //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 false로 정의
-               $("input[name=chk]").prop("checked",false);
-               $(".buttons-action").hide();
-               $(".btn-round").attr('disabled', false);
-               $(".btn-group").attr('disabled', false);
-           }
-       })
-       $(".btn-allcancel").click(function(){
-           //클릭되었으면
-           $(".buttons-action").hide();
-           $("input[name=chk]").prop("checked",false);
-           $("input[name=all]").prop("checked",false);
-           $(".btn-round").attr('disabled', false);
-           $(".btn-group").attr('disabled', false);
-       })
-  });
+             }else{
+                 //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 false로 정의
+                 $("input[name=chk]").prop("checked",false);
+                 $(".buttons-action").hide();
+                 $(".btn-round").attr('disabled', false);
+                 $(".btn-group").attr('disabled', false);
+             }
+         })
+         $(".btn-allcancel").click(function(){
+             //클릭되었으면
+             $(".buttons-action").hide();
+             $("input[name=chk]").prop("checked",false);
+             $("input[name=all]").prop("checked",false);
+             $(".btn-round").attr('disabled', false);
+             $(".btn-group").attr('disabled', false);
+         })
+    });
 
 
  //리사이징
@@ -405,3 +416,86 @@ function layerPopupClose(IdInfo){
        // 기간( from~to ) 달력 세팅
        $("[name=dateFrom]").calendar( $("[name=dateTo]") );
    });
+// 탭추가
+  $(function(){
+    $('.tab-in-content > div').hide();
+    $('.tab-in-nav a').click(function () {
+      $('.tab-in-content > div').hide().filter(this.hash).fadeIn();
+      $('.tab-in-nav a').removeClass('active');
+      $(this).addClass('active');
+      return false;
+    }).filter(':eq(0)').click();
+  });
+
+  //체크박스//
+     function customSelectBox(){
+       var customSelectEle, i, j, selElmnt, divEle, divEleSelected, c;
+       customSelectEle = document.querySelector(".custom_select");
+       selElmnt = customSelectEle.getElementsByTagName("select")[0];
+       divEle = document.createElement("DIV");
+       divEle.setAttribute("class","select_selected");
+       divSpan = document.createElement("span");
+       divSpan = divEle.appendChild(divSpan)
+       divSpan.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+       customSelectEle.appendChild(divEle);
+       divEle.children[0].classList.add("color_lightGray");
+       divEleSelected = document.createElement("ul");
+       divEleSelected.setAttribute("class","select_items select_hide");
+       Array.from(selElmnt).forEach((item, index) => {
+         c = document.createElement("li");
+         cSpan = document.createElement("span");
+         cSpan = c.appendChild(cSpan);
+         cSpan.innerHTML = selElmnt.options[index].innerHTML;
+         c.addEventListener("click", function(e){
+           var y, i, k, selEleParent, selEleSibling;
+           selEleParent = this.parentNode.parentNode.getElementsByTagName("select")[0];
+           selEleSibling = this.parentNode.previousSibling;
+           for ( i = 0; i < selEleParent.length; i++){
+             if (selEleParent.options[i].innerHTML == this.children[0].innerHTML){
+                 selEleParent.selectedIndex = i;
+                 selEleSibling.innerHTML = this.innerHTML;
+                 y = this.parentNode.getElementsByClassName("sameSelected");
+                 for (k = 0; k < y.length; k++){
+                   y[k].removeArribute("class");
+                 }
+                 this.setAttribute("class","sameSelected");
+                 break;
+             }
+           }
+           selEleSibling.click();
+         });
+         divEleSelected.appendChild(c);
+           c.children[0].classList.add("color_lightGray")
+       });
+       customSelectEle.appendChild(divEleSelected);
+       divEle.addEventListener("click", function(e){
+         e.stopPropagation();
+         closeSelect(this);
+         this.nextSibling.classList.toggle("select_hide");
+         this.classList.toggle("select_arrow_active");
+       });
+       var text = document.getElementsByClassName("");
+       function closeSelect(elmnt){
+         var customSelectEle, y, i,
+         arrNo = [];
+         customSelectEle = document.getElementsByClassName("select_items");
+         y = document.getElementsByClassName("select_selected");
+         for ( i = 0; i < y.length; i++){
+           if (elmnt == y[i]){
+             arrNo.push(i);
+           }
+           else {
+             y[i].classList.remove("select_arrow_active");
+           }
+         }
+         for ( i = 0; i < customSelectEle.length; i++){
+           if (arrNo.indexOf(i)){
+             customSelectEle[i].classList.add("select_hide");
+           }
+         }
+       }
+       document.addEventListener("click", closeSelect);
+     }
+     window.onload = function(){
+       customSelectBox();
+     };
