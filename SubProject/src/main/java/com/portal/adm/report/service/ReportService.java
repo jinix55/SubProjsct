@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.portal.adm.report.mapper.ReportMapper;
 import com.portal.adm.report.model.ReportModel;
+import com.portal.adm.role.service.RoleService;
 import com.portal.common.Constant;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 회사 서비스 클래스
  */
+@Slf4j
 @Service
 public class ReportService {
 
@@ -89,8 +93,8 @@ public class ReportService {
      * @param reportCode
      * @return
      */
-    public ReportModel selectReportId(String reportId) {
-    	return reportMapper.select(reportId);
+    public ReportModel selectReportId(ReportModel reportModel) {
+    	return reportMapper.select(reportModel);
     }
 
 }
