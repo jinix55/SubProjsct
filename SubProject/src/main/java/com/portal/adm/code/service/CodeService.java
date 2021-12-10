@@ -26,13 +26,12 @@ public class CodeService {
      * @param groupId
      * @return
      */
-    public List<CodeModel> selectGroupIdList(String groupId, Criteria criteria) {
-        criteria.setGroupId(groupId);       // 그룹코드 추가
-        return codeMapper.selectGroupIdList(criteria);
+    public List<CodeModel> selectGroupIdList(CodeModel codeModel) {
+        return codeMapper.selectGroupIdList(codeModel);
     }
 
-    public int selectGroupIdListCount(String groupId) {
-        return codeMapper.selectGroupIdListCount(groupId);
+    public int selectGroupIdListCount(CodeModel codeModel) {
+        return codeMapper.selectGroupIdListCount(codeModel);
     }
 
 

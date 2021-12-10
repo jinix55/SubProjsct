@@ -18,7 +18,7 @@ public interface CodeMapper {
      * @param criteria   그룹 ID가 "GROUP_ID"이면 코드 그룹이고 그룹ID가 코드ID이면 세부코드를 리턴한다
      * @return          그룹ID의 하위 코드모델 리스트
      */
-    List<CodeModel> selectGroupIdList(Criteria criteria);
+    List<CodeModel> selectGroupIdList(CodeModel codeModel);
 
     /**
      * 그룹 ID 리스트 카운트를 가져온다
@@ -26,7 +26,7 @@ public interface CodeMapper {
      * @param groupCd
      * @return
      */
-    int selectGroupIdListCount(String groupCd);
+    int selectGroupIdListCount(CodeModel codeModel);
 
     /**
      * 그룹 ID 리스트 카운트를 가져온다. 페이징(X)

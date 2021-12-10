@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.code.model.CodeModel;
@@ -43,18 +45,22 @@ public class CodeController {
      * @return
      */
     @GetMapping("/code")
-    public String code(@ModelAttribute Criteria criteria, Model model) {
-        List<CodeModel> models = codeService.selectGroupIdList("GROUP_ID", criteria);
-        criteria.setTotalCount(codeService.selectGroupIdListCount("GROUP_ID"));
+    public String code(@ModelAttribute CodeModel codeModel, Model model) {
+    	String codeKey = "";
+    	if(codeModel.getGroupId() == null) {
+    		codeModel.setGroupId("GROUP_ID");
+    	}
+        List<CodeModel> models = codeService.selectGroupIdList(codeModel);
+        codeModel.setTotalCount(codeService.selectGroupIdListCount(codeModel));
         model.addAttribute("codes", models);
-        model.addAttribute("pages", criteria);
+        model.addAttribute("pages", codeModel);
 
-        if(models.size() > 0) {
-            model.addAttribute("firstCodeId", models.get(0).getCodeId());
-            model.addAttribute("firstCodeNm", models.get(0).getCodeNm());
-            model.addAttribute("firstCodeDsc", models.get(0).getCodeDsc());
-            model.addAttribute("firstCodeUseYn", models.get(0).getUseYn());
-        }
+//        if(models.size() > 0) {
+//            model.addAttribute("firstCodeId", models.get(0).getCodeId());
+//            model.addAttribute("firstCodeNm", models.get(0).getCodeNm());
+//            model.addAttribute("firstCodeDsc", models.get(0).getCodeDsc());
+//            model.addAttribute("firstCodeUseYn", models.get(0).getUseYn());
+//        }
 
         return "code/code";
     }
@@ -66,11 +72,14 @@ public class CodeController {
      * @return
      */
     @PostMapping("/code")
-    public String code(@ModelAttribute Criteria criteria, RedirectAttributes attributes) {
-        List<CodeModel> models = codeService.selectGroupIdList("GROUP_ID", criteria);
-        criteria.setTotalCount(codeService.selectGroupIdListCount("GROUP_ID"));
-        attributes.addAttribute("codes", models);
-        attributes.addAttribute("criteria", criteria);
+    public String codePost(@ModelAttribute CodeModel codeModel, Model model) {
+    	if(codeModel.getGroupId() == null) {
+    		codeModel.setGroupId("GROUP_ID");
+    	}
+        List<CodeModel> models = codeService.selectGroupIdList(codeModel);
+        codeModel.setTotalCount(codeService.selectGroupIdListCount(codeModel));
+        model.addAttribute("codes", models);
+        model.addAttribute("pages", codeModel);
 
         return "code/code";
     }
@@ -88,10 +97,10 @@ public class CodeController {
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
-            String codeId = request.getParameter("groupCodeId");
-            String codeNm = request.getParameter("groupCodeNm");
-            String codeDesc = request.getParameter("groupCodeDsc");
-            String codeUseYn = request.getParameter("groupCodeUseYn");
+            String codeId = request.getParameter("codeId");
+            String codeNm = request.getParameter("codeNm");
+            String codeDesc = request.getParameter("codeDsc");
+            String codeUseYn = request.getParameter("useYn");
 
             codeModel.setCodeId(codeId);
             codeModel.setCodeNm(codeNm);
@@ -150,14 +159,14 @@ public class CodeController {
      * @param groupCd
      * @return
      */
-    @GetMapping("/code/detail/{groupCd}")
-    public ResponseEntity<List<CodeModel>> codesForGroupCd(@PathVariable("groupCd") String groupId) {
-        List<CodeModel> codeModels = codeService.selectGroupIdAllList(groupId);
+    @RequestMapping(value="/code/detail/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<CodeModel> codesForGroupCd(@ModelAttribute CodeModel codeModel, @PathVariable("codeId") String codeId) {
+    	codeModel.setCodeId(codeId);
+    	codeModel.setGroupId("GROUP_ID");
+        codeModel = codeService.select(codeModel);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        codeModels.stream().forEach(code -> code.setRgstDtStr(formatter.format(code.getRgstDt())));
-
-        return new ResponseEntity<>(codeModels, HttpStatus.OK);
+        return new ResponseEntity<>(codeModel, HttpStatus.OK);
     }
     
     
@@ -167,8 +176,8 @@ public class CodeController {
      * @param groupCd
      * @return
      */
-    @PostMapping("/code/detail/{groupCd}")
-    public ResponseEntity<List<CodeModel>> postCodesForGroupCd(@PathVariable("groupCd") String groupId) {
+    @RequestMapping("/code/detail/code/{groupCd}")
+    public ResponseEntity<List<CodeModel>> codesForCodeCd(@PathVariable("groupCd") String groupId) {
     	List<CodeModel> codeModels = codeService.selectGroupIdAllList(groupId);
     	
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
