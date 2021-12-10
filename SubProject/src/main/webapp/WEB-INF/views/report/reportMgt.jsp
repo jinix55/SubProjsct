@@ -106,10 +106,10 @@
 										</td>
 										<td>
 											<div class="btn-group">
-												<a href="#register" role="button" data-toggle="modal" onclick="detailView('${list.reportId}');" class="btn-Ticon02">
+												<a href="#register" role="button" data-toggle="modal" onclick="detailView('${list.reportId}');" class="btn-icon">
 													<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon02">
 												</a>
-												<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${list.reportId}');" class="btn-Ticon02 del_data">
+												<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${list.reportId}');" class="btn-icon del_data">
 													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
 												</a>
 											</div>
@@ -371,7 +371,6 @@
 		$('#register textarea').attr('disabled',false);
 		$('#register input').val('');
 		$('#register textarea').val('');
-		$('#holiType').val('');
 		$('#useY').val('Y');
 		$('#useN').val('N');
 		$('#useY').prop('checked',true);
@@ -410,22 +409,22 @@
 	function valyCheck(){
 		if($('#reportNm').val() == ''){
 			alert('레포트 이름을 입력해 주세요.');
-			$('#solarDate').focus();
+			$('#reportNm').focus();
 			return false;
 		}
 		if($('#reportUrl').val() == ''){
 			alert('레포트 URL을 입력해 주세요.');
-			$('#holiNm').focus();
+			$('#reportUrl').focus();
 			return false;
 		}
 		if($('#reportSize').val() == ''){
 			alert('레포트 사이즈를 설정해 주세요.');
-			$('#holiType').focus();
+			$('#reportSize').focus();
 			return false;
 		}
 		if($('#reportType').val() == ''){
 			alert('레포트 타입을 선택해 주세요.');
-			$('#holiType').click();
+			$('#reportType').click();
 			return false;
 		}
 		return true;
