@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.report.model.ReportModel;
 import com.portal.adm.report.service.ReportService;
@@ -29,7 +28,7 @@ import com.portal.config.security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 시스템관리 / 회사관리 컨트롤러
+ * 시스템관리 / 레포트관리 컨트롤러
  */
 @Slf4j
 @RequestMapping("/menu")
@@ -46,7 +45,7 @@ public class ReportController {
     private IdUtil idUtil;
     
     /**
-     * 회사관리 페이지로 이동
+     * 레포트관리 페이지로 이동
      *
      * @param model
      * @return
@@ -67,7 +66,7 @@ public class ReportController {
     }
 
     /**
-     * 회사관리 페이지로 이동
+     * 레포트관리 페이지로 이동
      *
      * @param criteria
      * @return
@@ -88,7 +87,7 @@ public class ReportController {
     }
 
     /**
-     * 회사그룹을 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
+     * 레포트그룹을 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
      *
      * @param request
      * @return
@@ -142,7 +141,7 @@ public class ReportController {
     }
     
     /**
-     * 회사그룹을 삭제한다.
+     * 레포트그룹을 삭제한다.
      *
      * @param request
      * @return
@@ -179,7 +178,7 @@ public class ReportController {
     }    
     
     /**
-     * 회사 정보를 조회한다.
+     * 레포트 정보를 조회한다.
      *
      * @param reportId
      * @return
