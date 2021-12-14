@@ -376,7 +376,7 @@
 									</div>
 									<div class="btn-sm di-inblock">
 										<input type="radio" id="radioL" name="menuSe" value="L" disabled>
-										<label for="radioL" class="mr05">링크(L)</label>
+										<label for="radioL" class="mr05">레포트 링크(L)</label>
 									</div>
 								</div>
 							</div>
@@ -729,6 +729,14 @@ $(document).ready(function () {
 	
 	$('.delMenu').click(function(){
 		deleteMenuList();
+	});
+	
+	$('#radioL').click(function(){
+		$('#menuUrl').val('/report/reportView/');
+	});
+	
+	$('#radioF, #radioM, #radioA').click(function(){
+		$('#menuUrl').val('');
 	});
 });
 </script>

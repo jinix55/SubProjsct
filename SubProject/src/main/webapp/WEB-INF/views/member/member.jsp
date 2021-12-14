@@ -48,7 +48,7 @@
 		<div class="scroll-auto">
 			<table class="table table-actions">
 				<colgroup>
-					<col style="width: 5%;">
+<%-- 					<col style="width: 5%;"> --%>
 					<col style="width: 6%;">
 					<col style="width: 12%;">
 					<col style="width: 15%;">
@@ -59,9 +59,7 @@
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
-						<th>
-<!-- 							<input type="checkbox" name="all" id="checkAll"> -->
-						</th>
+<!-- 						<th><input type="checkbox" name="all" id="checkAll"></th> -->
 						<th scope="col">번호</th>
 						<th scope="col">사용자 ID</th>
 						<th scope="col">사용자 이름</th>
@@ -74,7 +72,7 @@
 				<tbody>
 					<c:forEach var="member" items="${members}" varStatus="status">
 						<tr>
-							<th><input type="checkbox" name="chk"></th>
+<!-- 							<th><input type="checkbox" name="chk"></th> -->
 							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 							<td class="text-point">${member.userId}</td>
 							<td>${member.userNm}</td>
@@ -135,7 +133,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="..//images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">

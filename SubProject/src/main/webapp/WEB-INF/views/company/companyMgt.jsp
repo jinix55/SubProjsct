@@ -30,25 +30,25 @@
 	<!-- E_검색-->
 	<!-- S_그리드-->
 	<div class="content-table">
-		<div class="buttons-action" style="display: none">
-			<div>
-				<a href="#Alldelete" role="button" data-toggle="modal">
-					<button type="button" class="btn-alldelete">
-						전체삭제<img src="/images/icon_delete.png" title="삭제">
-					</button>
-				</a>
-				<button type="button" class="btn-allcancel">
-					삭제취소<img src="/images/icon_cancel.png" title="취소">
-				</button>
-			</div>
-			<div>
-				<span class="text-action">14 items selected</span>
-			</div>
-		</div>
+<!-- 		<div class="buttons-action" style="display: none"> -->
+<!-- 			<div> -->
+<!-- 				<a href="#Alldelete" role="button" data-toggle="modal"> -->
+<!-- 					<button type="button" class="btn-alldelete"> -->
+<!-- 						전체삭제<img src="/images/icon_delete.png" title="삭제"> -->
+<!-- 					</button> -->
+<!-- 				</a> -->
+<!-- 				<button type="button" class="btn-allcancel"> -->
+<!-- 					삭제취소<img src="/images/icon_cancel.png" title="취소"> -->
+<!-- 				</button> -->
+<!-- 			</div> -->
+<!-- 			<div> -->
+<!-- 				<span class="text-action">14 items selected</span> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<div class="scroll-auto">
 			<table class="table table-actions">
 				<colgroup>
-					<col style="width: 30px;">
+<%-- 					<col style="width: 30px;"> --%>
 					<col style="width: 40px;">
 					<col style="width: 135px;">
 					<col style="width: 180px;">
@@ -59,7 +59,7 @@
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
-						<th><input type="checkbox" name="all" id="checkAll"></th>
+<!-- 						<th><input type="checkbox" name="all" id="checkAll"></th> -->
 						<th scope="col">번호</th>
 						<th scope="col">회사 코드</th>
 						<th scope="col">회사명</th>
@@ -74,7 +74,7 @@
 					<c:when test="${companys.size() > 0}" >
 						<c:forEach items="${companys }" var="company" varStatus="status">
 						<tr id="tr_${company.companyId}" >
-							<th><input type="checkbox" name="chk"></th>
+<!-- 							<th><input type="checkbox" name="chk"></th> -->
 							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 							<td class="text-point <c:if test="${company.useYn eq 'N'}">colorGray</c:if>">${company.companyCode }</td>
 							<td>${company.companyNm }</td>
