@@ -676,6 +676,7 @@
 	}
 	
 	function userUpdate(){
+		$('#userId').prop('disabled',false);
 		var param =  $('#frm').serialize();
 		
 		insertAjax(param,'update');

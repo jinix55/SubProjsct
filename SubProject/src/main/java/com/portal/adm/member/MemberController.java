@@ -142,11 +142,11 @@ public class MemberController {
                                        @AuthenticationPrincipal AuthUser authUser) {
 
         try {
-            if(!StringUtils.isEmpty(request.getParameter("startDate"))) {
-                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("startDate") + "T" + LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("dateFrom") + "T" + LocalTime.now().toString()));
             }
-            if(!StringUtils.isEmpty(request.getParameter("endDate"))) {
-                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("endDate")+"T"+LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("dateTo"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("dateTo")+"T"+LocalTime.now().toString()));
             }
 
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -168,11 +168,11 @@ public class MemberController {
 			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
 		}
         try {
-            if(!StringUtils.isEmpty(request.getParameter("startDate"))) {
-                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("startDate") + "T" + LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("dateFrom") + "T" + LocalTime.now().toString()));
             }
-            if(!StringUtils.isEmpty(request.getParameter("endDate"))) {
-                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("endDate")+"T"+LocalTime.now().toString()));
+            if(!StringUtils.isEmpty(request.getParameter("dateTo"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("dateTo")+"T"+LocalTime.now().toString()));
             }
 
             memberModel.setRgstId(authUser.getMemberModel().getUserId());

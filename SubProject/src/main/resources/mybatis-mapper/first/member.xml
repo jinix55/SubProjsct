@@ -269,7 +269,7 @@
 		  company_code = #{companyCode}
 		  , email = #{email}
 		  , phone = #{phone}
-		  , dtLimitYn = #{dtLimitYn}
+		  , dt_limit_yn = #{dtLimitYn}
 		  , use_yn = #{useYn}
 		  , start_dt = #{startDt}
 		  , end_dt = #{endDt}
