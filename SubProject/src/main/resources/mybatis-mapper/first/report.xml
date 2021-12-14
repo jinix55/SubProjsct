@@ -28,7 +28,7 @@
 			, REPORT_URL
 			, REPORT_DSC
 			, COMPANY_ID
-			, GROUP_ID
+<!-- 			, GROUP_ID -->
 			, REPORT_TYPE
 			, REPORT_SIZE
 			, USE_YN
@@ -58,7 +58,7 @@
 			, REPORT_URL
 			, REPORT_DSC
 			, COMPANY_ID
-			, GROUP_ID
+<!-- 			, GROUP_ID -->
 			, REPORT_TYPE
 			, REPORT_SIZE
 			, USE_YN
@@ -72,7 +72,7 @@
 			, #{reportUrl}
 			, #{reportDsc}
 			, #{companyId}
-			, #{groupId}
+<!-- 			, #{groupId} -->
 			, #{reportType}
 			, #{reportSize}
 			, #{useYn}
@@ -85,8 +85,8 @@
 	
 	<update id="update" parameterType="com.portal.adm.report.model.ReportModel">
 		UPDATE t_report SET
-			GROUP_ID = #{groupId}
-			, REPORT_TYPE = #{reportType}
+			REPORT_TYPE = #{reportType}
+<!-- 			, GROUP_ID = #{groupId} -->
 			, REPORT_DSC = #{reportDsc}
 			, REPORT_NM = #{reportNm}
 			, REPORT_URL = #{reportUrl}
@@ -106,7 +106,7 @@
 			, REPORT_URL
 			, REPORT_DSC
 			, COMPANY_ID
-			, GROUP_ID
+<!-- 			, GROUP_ID -->
 			, REPORT_TYPE
 			, REPORT_SIZE
 			, USE_YN

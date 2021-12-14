@@ -201,17 +201,17 @@
 					</div>
 				</div>
 				<div class="col-100">
-					<div class="form-group">
-						<input type="hidden" id="groupId" name="groupId" />
-						<label class="col-25 form-label h60">사용자 그룹</label>
-						<div class="col-75 h60">
-							<div class="form-input-box h60">
-								<c:forEach items="${roles}" var="role">
-									<label>${role.authNm}<input type="checkbox" id="${role.authId}" name="roleCheck"></label>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<input type="hidden" id="groupId" name="groupId" /> -->
+<!-- 						<label class="col-25 form-label h60">사용자 그룹</label> -->
+<!-- 						<div class="col-75 h60"> -->
+<!-- 							<div class="form-input-box h60"> -->
+<%-- 								<c:forEach items="${roles}" var="role"> --%>
+<%-- 									<label>${role.authNm}<input type="checkbox" id="${role.authId}" name="roleCheck"></label> --%>
+<%-- 								</c:forEach> --%>
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="form-group">
 						<label class="col-25 form-label">디바이스 사이즈</label>
 						<div class="col-75 row">
