@@ -3,28 +3,28 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="content">
 	<!-- S_검색-->
-	<form id="searchFrm" action="system/code" method="POST">
+	<form id="searchFrm" action="/system/code" method="POST">
 		<div class="justify-content-between">
 			<input type="hidden" id="page" name="page" value="${pages.page}">
-			<div class="form-group">
-				<div class="form-inline">
-					<select class="select-box w150" id="searchKey" name ="searchKey">
-						<option value="ALL">전체</option>
-						<option value="groupId">코드그룹 ID</option>
-						<option value="groupNm">코드그룹명</option>
-					</select>
-				</div>
-				<div class="form-inline">
-					<div class="search-box w250">
-						<input type="text" class="text-input" id="searchValue" name="searchValue" value="${pages.searchValue }">
-						<span class="search-box-append">
-							<button type="button" class="button-search">
-								<img src="/images/icon_search.png" title="검색">
-							</button>
-						</span>
-					</div>
-				</div>
-			</div>
+<!-- 			<div class="form-group"> -->
+<!-- 				<div class="form-inline"> -->
+<!-- 					<select class="select-box w150" id="searchKey" name ="searchKey"> -->
+<!-- 						<option value="ALL">전체</option> -->
+<!-- 						<option value="groupId">코드그룹 ID</option> -->
+<!-- 						<option value="groupNm">코드그룹명</option> -->
+<!-- 					</select> -->
+<!-- 				</div> -->
+<!-- 				<div class="form-inline"> -->
+<!-- 					<div class="search-box w250"> -->
+<%-- 						<input type="text" class="text-input" id="searchValue" name="searchValue" value="${pages.searchValue }"> --%>
+<!-- 						<span class="search-box-append"> -->
+<!-- 							<button type="button" class="button-search"> -->
+<!-- 								<img src="/images/icon_search.png" title="검색"> -->
+<!-- 							</button> -->
+<!-- 						</span> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 		</div>
 	</form>
 	<!-- E_검색-->
@@ -55,7 +55,7 @@
 				<tbody>
 					<c:forEach items="${codes}" var="code" varStatus="status">
 						<c:if test="${code.groupId eq 'GROUP_ID' }">
-							<tr>
+							<tr id="${code.codeId}" nm="${code.codeNm}">
 								<td class="tr-item">${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 								<td class="text-point tr-item">${code.codeId}</td>
 								<td class="tr-item">${code.codeNm}</td>
@@ -85,7 +85,7 @@
 						</c:if>
 						
 						<!-- S_히든테이블 -->
-						<tr class="tr-hide">
+						<tr class="tr_${code.codeId} tr-hide">
 							<td colspan="7">
 								<div class="tab-box">
 									<h4 class="tl">
@@ -112,130 +112,18 @@
 												<th scope="col">사용여부</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td class="text-point tr-item">MANUAL</td>
-												<td>사용문의</td>
-												<td>2021-07-15 16:55:53</td>
-												<td>2</td>
-												<td></td>
-												<td>
-													<button type="button" class="button-no">NO</button>
-												</td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td class="text-point tr-item">PROJECT</td>
-												<td>프로젝트</td>
-												<td>2021-07-15 16:55:53</td>
-												<td>2</td>
-												<td></td>
-												<td>
-													<button type="button" class="button-yes">Yes</button>
-												</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td class="text-point tr-item">ETC</td>
-												<td>기타</td>
-												<td>2021-07-15 16:55:53</td>
-												<td>3</td>
-												<td></td>
-												<td>
-													<button type="button" class="button-no">NO</button>
-												</td>
-											</tr>
+										<tbody id="tr_${code.codeId}_tb">
 										</tbody>
 									</table>
 									<!-- 코트등록 -->
 									<h4 class="tl pt30">
 										<span class="title-point">[상세코드 등록]</span>
 									</h4>
-									<div class="row">
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">코드그룹 ID</label>
-												<div class="col-75">
-													<div class="form-input">
-														<input type="text" class="text-input" value="FAQ_CAT"
-															disabled>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">코드그룹명</label>
-												<div class="col-75">
-													<div class="form-input">
-														<input type="text" class="text-input" value="FAQ 카테고리">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">코드 ID</label>
-												<div class="col-75">
-													<div class="form-input">
-														<input type="text" class="text-input" value="MANUAL">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">코드명</label>
-												<div class="col-75">
-													<div class="form-input">
-														<input type="text" class="text-input" value="사용문의">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">정렬순서</label>
-												<div class="col-75">
-													<div class="form-input">
-														<input type="text" class="text-input" value="2">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-50">
-											<div class="form-group">
-												<label class="col-25 form-label">사용여부</label>
-												<div class="col-75">
-													<div class="form-input-box tl">
-														<div class="button-Rsmall d-inblock">
-															<input type="radio" id="radio1" name="radio"
-																checked="checked"> <label for="radio1"
-																class="mr05">Yes</label>
-														</div>
-														<div class="button-Rsmall d-inblock">
-															<input type="radio" id="radio2" name="radio"> <label
-																for="radio2" class="mr05">No</label>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-100">
-											<div class="form-group">
-												<label class="col-25 form-label-textarea">비고</label>
-												<div class="col-75">
-													<div class="form-input">
-														<textarea class="textarea"></textarea>
-													</div>
-												</div>
-											</div>
-										</div>
+									<form id="inputFrm">
+									<div class="row row-grp" id="tr_${code.codeId}_input">
 									</div>
-									<div class="btn-group pt15">
-										<button type="button" class="button btn-success" data-dismiss="modal">저장</button>
-										<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+									</form>
+									<div class="btn-group btn-grp pt15" id="tr_${code.codeId}_btn">
 									</div>
 								</div>
 							</td>
@@ -385,7 +273,8 @@
 	var totalPage = ${pages.totalPage};
 	var page = ${pages.page};
 	var pageSize = ${pages.pageSize};
-
+	var setGrpId;
+	var setCodeId;
 	// var totalPageCnt = 10;
 	// var pageCnt = 2; 
 	// var pageSizeCnt = 10; 
@@ -508,18 +397,26 @@
 		}
 	}
 	
+	function insertCode(id){
+		$('#tr_'+id+'_input #groupId').attr('disabled',false);
+		if(valyCheck()){
+			var param =  $('#inputFrm').serialize();
+			insertAjax(param,'insert/code');
+		}
+	}
+	
 	function update(){
 		$('#register #codeId').attr('disabled',false);
 		if(valyCheck()){
 			var param =  $('#frm').serialize();
-			insertAjax(param,'update');
+			insertAjax(param,'insert');
 		}
 	}
 	
 	function insertAjax(param,action){
 		$.ajax({
 		    type : 'post',
-		    url : '/system/code/insert',
+		    url : '/system/code/'+action,
 		    data : param,
 		    dataType : 'text',
 		    error: function(xhr, status, error){
@@ -534,9 +431,240 @@
 	}
 	
 	/*삭제를 눌렀을때*/
-	function deleteSet(reportId){
-		$('.delName').text(reportId);
-		$('#reportId').val(reportId);
+	function deleteSet(codeId){
+		$('.delName').text(codeId);
+		$('#codeId').val(codeId);
+	}
+	
+	/*상세를 눌렀을때*/
+	function upCodeList(id,nm){
+		$.ajax({
+			url : '/system/code/detail/code/'+id,
+			dataType : 'json',
+			type : "POST",
+			async: false,
+			success : function(data) {
+				var result = data;
+				console.log(result);
+				makeUpCodeList(data,id,nm);
+			}
+		});
+	}
+	
+	function makeUpCodeList(data,id,nm){
+		$('#tr_'+id+'_tb').empty();
+		var html = '';
+		if(data.length > 0){
+			data.forEach(function(item, index) {
+				var ordSeq = '';
+				var codeDsc = '';
+				html += '<tr onclick="selectTr(\''+item.groupId+'\',\''+item.codeId+'\',\''+item.codeNm+'\',\''+item.useYn+'\',\''+item.codeDsc+'\',\''+item.ordSeq+'\');">';
+				html += '	<td>'+(index+1)+'</td>';
+				html += '	<td class="text-point tr-item">'+item.codeId+'</td>';
+				html += '	<td>'+item.codeNm+'</td>';
+				html += '	<td>'+item.rgstDt+'</td>';
+				if(item.ordSeq == null){
+					ordSeq = '-';
+				}else{
+					ordSeq = item.ordSeq;
+				}
+				
+				if(item.codeDsc == null){
+					codeDsc = '-';
+				}else{
+					codeDsc = item.codeDsc;
+				}
+				
+				html += '	<td>'+ordSeq+'</td>';
+				html += '	<td>'+codeDsc+'</td>';
+				html += '	<td>';
+				if(item.useYn == 'Y'){
+					html += '		<button type="button" class="button-yes">YES</button>';
+				}else{
+					html += '		<button type="button" class="button-no">NO</button>';
+				}
+				html += '	</td>';
+				html += '</tr>';
+			});
+			$('#tr_'+id+'_tb').append(html);
+		}else{
+			html += '<tr>';
+			html += '	<td colspan="7">';
+			html += '		등록된 코드가 없습니다.';
+			html += '	</td>';
+			html += '</tr>';
+			$('#tr_'+id+'_tb').append(html);
+		}
+		makeInputList(data,id,nm);
+	}
+	
+	function makeInputList(data,groupId,grpNm){
+		$('.row-grp').empty();
+		$('.btn-grp').empty();
+		var html = '';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">코드그룹 ID</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<input id="groupId" name="groupId" type="text" class="text-input" value="'+groupId+'" disabled>';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">코드그룹명</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<input id="grpNm" name="grpNm" type="text" class="text-input" value="'+grpNm+'" disabled>';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">코드 ID</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<input id="codeId" name="codeId" type="text" class="text-input" value="">';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">코드명</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<input id="codeNm" name="codeNm" type="text" class="text-input" value="">';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">정렬순서</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<input id="ordSeq" name="ordSeq" type="text" class="text-input" value="">';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-50">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label">사용여부</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input-box tl">';
+		html += '					<div class="button-Rsmall d-inblock">';
+		html += '						<input type="radio" id="code_useY" name="code_useYn" value="Y" checked="checked">';
+		html += '						<label for="code_useY" class="mr05">Yes</label>';
+		html += '					</div>';
+		html += '					<div class="button-Rsmall d-inblock">';
+		html += '						<input type="radio" id="code_useN" name="code_useYn" value="N">';
+		html += '						<label for="code_useN" class="mr05">No</label>';
+		html += '					</div>';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		html += '	<div class="col-100">';
+		html += '		<div class="form-group">';
+		html += '			<label class="col-25 form-label-textarea">비고</label>';
+		html += '			<div class="col-75">';
+		html += '				<div class="form-input">';
+		html += '					<textarea id="codeDsc" name="codeDsc" class="textarea"></textarea>';
+		html += '				</div>';
+		html += '			</div>';
+		html += '		</div>';
+		html += '	</div>';
+		$('#tr_'+groupId+'_input').append(html);
+		$('#code_useY').prop('checked',true);
+		makeBtn(groupId,grpNm,data.codeId);
+	}
+	
+	function makeBtn(groupId,grpNm,codeId){
+		var html = '';
+		html += '<button type="button" class="button btn-success" id="insertBtn" onclick="insertBtn('+groupId+','+grpNm+');" data-dismiss="modal">신규</button>';
+		html += '<button type="button" class="button btn-success" id="modifyBtn" onclick="insertCode('+groupId+');" data-dismiss="modal">저장</button>';
+		html += '<button type="button" class="button btn-cancel" id="deleteBtn" onclick="deleteBtn('+groupId+');" data-dismiss="modal">삭제</button>';
+		html += '<button type="button" class="button btn-cancel" id="cancelBtn" onclick="cancelBtn();" data-dismiss="modal">취소</button>';
+		$('#tr_'+groupId+'_btn').append(html);
+		$('#insertBtn').hide();
+		$('#deleteBtn').hide();
+	}
+	
+	function selectTr(grp,id,nm,yn,dsc,seq){
+		setCodeId = id;
+		setGrpId = grp;
+		var orSeq = '';
+		var codeDsc = '';
+		var useYn = '';
+		if(seq == 'null'){
+			orSeq = '';
+		}else{
+			orSeq = seq;
+		}
+		if(dsc == 'null'){
+			codeDsc = '';
+		}else{
+			codeDsc = dsc;
+		}
+		if(yn == 'null'){
+			useYn = 'N';
+		}else{
+			useYn = 'Y';
+		}
+		$('#tr_'+grp+'_input #groupId').val(grp);
+		$('#tr_'+grp+'_input #codeId').val(id);
+		$('#tr_'+grp+'_input #codeNm').val(nm);
+		$('#tr_'+grp+'_input #code_use'+useYn).prop('checked',true);
+		$('#tr_'+grp+'_input #codeDsc').val(dsc);
+		$('#tr_'+grp+'_input #ordSeq').val(orSeq);
+		$('#insertBtn').show();
+		$('#deleteBtn').show();
+	}
+	
+	function insertBtn(groupId,grpNm){
+		$('#tr_'+groupId+'_input #groupId').val(groupId);
+		$('#tr_'+groupId+'_input #groupNm').val(grpNm);
+		$('#tr_'+groupId+'_input #codeId').val('');
+		$('#tr_'+groupId+'_input #codeNm').val('');
+		$('#tr_'+groupId+'_input #code_useY').prop('checked',true);
+		$('#tr_'+groupId+'_input #codeDsc').val('');
+		$('#tr_'+groupId+'_input #ordSeq').val('');
+		$('#insertBtn').hide();
+		$('#deleteBtn').hide();
+	}
+	
+	function deleteBtn(groupId){
+		param = {
+				groupId : groupId,
+				codeId : setCodeId
+		}
+		
+		$.ajax({
+		    type : 'post',
+		    url : '/system/code/delete/code',
+		    data : param,
+		    dataType : 'text',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+		    	if(result == 'Delete'){
+		    		location.href = '/system/code';
+		    	}
+		    }
+		});
+	}
+	
+	function cancelBtn(groupId){
+		$('#insertBtn').hide();
+		$('#deleteBtn').hide();
+		$('.tr-show').addClass('tr-hide');
+		$('.tr-hide').removeClass('tr-show');
 	}
 	
 	/*상세를 눌렀을때*/
@@ -566,11 +694,11 @@
 	
 	function deleteAjax(){
 		param = {
-				reportId : $('#reportId').val()
+				codeId : $('#codeId').val()
 		}
 		$.ajax({
 		    type : 'post',
-		    url : '/menu/report/delete',
+		    url : '/system/code/delete',
 		    data : param,
 		    dataType : 'text',
 		    error: function(xhr, status, error){
@@ -578,7 +706,7 @@
 		    },
 		    success : function(result){
 		    	if(result == 'Delete'){
-		    		location.href = '/menu/report';
+		    		location.href = '/system/code';
 		    	}
 		    }
 		});
@@ -586,11 +714,13 @@
 	
 	function valyCheck(){
 		if($('#codeId').val() == ''){
+			$('#groupId').attr('disabled',true);
 			alert('코드 ID을 입력해 주세요.');
 			$('#codeId').focus();
 			return false;
 		}
 		if($('#codeNm').val() == ''){
+			$('#groupId').attr('disabled',true);
 			alert('코드 명을 입력해 주세요.');
 			$('#codeNm').focus();
 			return false;
@@ -603,6 +733,9 @@
 		if(searchKey){
 			$('#searchKey').val('${pages.searchKey}');
 		}
+		
+		$('#insertBtn').hide();
+		$('#deleteBtn').hide();
 		
 		$('#registView').click(function(){
 			resetInput();
@@ -629,7 +762,15 @@
 		});
 		
 		$('.delete').click(function(){
-			deleteAjax();
+			insert();
+		});
+		
+		$('#insertCode').click(function(){
+			insertCode();
+		});
+		
+		$('.tr-item').click(function(){
+			upCodeList($(this).parent().attr('id'),$(this).parent().attr('nm'));
 		});
 		
 		$('.search-box-append').click(function(){

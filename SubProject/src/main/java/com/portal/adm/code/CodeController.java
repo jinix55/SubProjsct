@@ -1,6 +1,5 @@
 package com.portal.adm.code;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.code.service.CodeService;
-import com.portal.common.paging.Criteria;
 import com.portal.config.security.AuthUser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +94,7 @@ public class CodeController {
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
+            String groupId = request.getParameter("groupId");
             String codeId = request.getParameter("codeId");
             String codeNm = request.getParameter("codeNm");
             String codeDesc = request.getParameter("codeDsc");
@@ -106,7 +104,11 @@ public class CodeController {
             codeModel.setCodeNm(codeNm);
             codeModel.setCodeDsc(codeDesc);
             codeModel.setUseYn(codeUseYn);
-            codeModel.setGroupId("GROUP_ID");
+            if(groupId != null) {
+            	 codeModel.setGroupId(groupId);
+            }else {
+            	codeModel.setGroupId("GROUP_ID");
+            }
 
             codeModel.setRgstId(authUser.getMemberModel().getUserId());
             codeModel.setModiId(authUser.getMemberModel().getUserId());
@@ -130,13 +132,9 @@ public class CodeController {
         try {
             CodeModel codeModel = new CodeModel();
 
-            String codeId = request.getParameter("groupCodeId");
-            String codeNm = request.getParameter("groupCodeNm");
-            String codeDesc = request.getParameter("groupCodeDsc");
+            String codeId = request.getParameter("codeId");
 
             codeModel.setCodeId(codeId);
-            codeModel.setCodeNm(codeNm);
-            codeModel.setCodeDsc(codeDesc);
             codeModel.setGroupId("GROUP_ID");
 
             codeModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -180,9 +178,6 @@ public class CodeController {
     public ResponseEntity<List<CodeModel>> codesForCodeCd(@PathVariable("groupCd") String groupId) {
     	List<CodeModel> codeModels = codeService.selectGroupIdAllList(groupId);
     	
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    	codeModels.stream().forEach(code -> code.setRgstDtStr(formatter.format(code.getRgstDt())));
-    	
     	return new ResponseEntity<>(codeModels, HttpStatus.OK);
     }
 
@@ -193,8 +188,27 @@ public class CodeController {
      * @return
      */
     @PostMapping("/code/insert/code")
-    public ResponseEntity<String> save(@ModelAttribute CodeModel codeModel, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> save(@ModelAttribute CodeModel codeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
+            for (String key : request.getParameterMap().keySet()) {
+            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+            }
+            String groupId = request.getParameter("groupId");
+            String codeId = request.getParameter("codeId");
+            String codeNm = request.getParameter("codeNm");
+            String codeDesc = request.getParameter("codeDsc");
+            String codeUseYn = request.getParameter("code_useYn");
+
+            codeModel.setCodeId(codeId);
+            codeModel.setCodeNm(codeNm);
+            codeModel.setCodeDsc(codeDesc);
+            codeModel.setUseYn(codeUseYn);
+            if(groupId != null) {
+            	 codeModel.setGroupId(groupId);
+            }else {
+            	codeModel.setGroupId("GROUP_ID");
+            }
+
             codeModel.setRgstId(authUser.getMemberModel().getUserId());
             codeModel.setModiId(authUser.getMemberModel().getUserId());
 
