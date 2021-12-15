@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:choose>
-<c:when test="${empty report && report.useYn eq 'Y'}" >
+<c:when test="${!empty report && report.useYn eq 'Y'}" >
 <div class="content">
 	<!-- S_아이프레임-->
 	<div class="countsort">
