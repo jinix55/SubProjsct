@@ -26,11 +26,11 @@ function callAlarm(){
 			console.log(result);
 			if(result.length > 0){
 				$('.nav-mark').html(result.length);
-				$('.nav-mark').show();;
+				$('.nav-mark').show();
 				setAlarm(result);
 			}else{
 				$('.nav-mark').html(0);
-				$('.nav-mark').hide();;
+				$('.nav-mark').hide();
 				var html = '';
 				$('.notification').append(html);
 			}
@@ -88,7 +88,11 @@ function intervalTime(t){
 	</div>
 	<ul class="top-nav">
 <!-- 		<li><span class="top-nav-bi top-nav-bilink"><a href="/BIChat.html" title="BI분석플랫품">BI분석플랫품</a></span></li> -->
-       <li class="dropdown-notification"><a href="#" title="알림" style="position:relative;"><img src="/images/icon_bell.png" alt="알림"><span class="nav-mark">2</span></a>
+		<li class="dropdown-notification">
+			<a href="#" title="알림" style="position:relative;">
+				<img src="/images/icon_bell.png" alt="알림">
+				<span class="nav-mark" style="display:none"></span>
+			</a>
 			<div class="dropdown-no-content">
 				<span class="arrow"></span>
 				<div class="notification"></div>
