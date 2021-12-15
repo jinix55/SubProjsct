@@ -38,7 +38,6 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 );
 
 
-
 -- 공휴일 관리 데이터(calendar_lunar_solar_v1.sql 우선 실행)
 TRUNCATE TABLE T_HOLIDAY;
 INSERT INTO T_HOLIDAY (
@@ -137,6 +136,7 @@ CREATE TABLE IF NOT EXISTS T_PSTN (
 ALTER TABLE T_PSTN ADD CONSTRAINT T_PSTN_PK PRIMARY KEY(PSTN_CODE);
 -- CREATE INDEX T_PSTN_IX1 ON T_PSTN();
 
+-- 공통    사용자
 DROP TABLE IF EXISTS T_USER CASCADE;
 CREATE TABLE IF NOT EXISTS T_USER (
     USER_ID VARCHAR(32) NOT NULL COMMENT '사용자 ID'
@@ -315,7 +315,7 @@ ALTER TABLE T_BBS_QNA ADD CONSTRAINT T_BBS_QNA_PK PRIMARY KEY(QNA_ID);
 -- CREATE INDEX T_BBS_QNA_IX1 ON T_BBS_QNA();
 
 
--- 관리자    관리자 권한
+-- 관리자    그룹 관리
 DROP TABLE IF EXISTS T_GROUP CASCADE;
 CREATE TABLE IF NOT EXISTS T_GROUP (
     USER_ID VARCHAR(32) NOT NULL COMMENT '사용자 ID'
@@ -330,7 +330,7 @@ ALTER TABLE T_GROUP ADD CONSTRAINT T_GROUP_PK PRIMARY KEY(USER_ID);
 -- CREATE INDEX T_GROUP_IX1 ON T_GROUP();
 
 
--- 관리자    관리자 시스템 권한
+-- 관리자    그룹 권한 관리
 DROP TABLE IF EXISTS T_GROUP_AUTH CASCADE;
 CREATE TABLE IF NOT EXISTS T_GROUP_AUTH (
     AUTH_ID VARCHAR(32) NOT NULL COMMENT '권한 ID'
@@ -348,7 +348,7 @@ ALTER TABLE T_GROUP_AUTH ADD CONSTRAINT T_GROUP_AUTH_PK PRIMARY KEY(AUTH_ID);
 -- CREATE INDEX T_GROUP_AUTH_IX1 ON T_GROUP_AUTH();
 
 
--- 관리자 그룹 메뉴
+-- 관리자 그룹 메뉴 관리
 DROP TABLE IF EXISTS T_GROUP_MENU CASCADE;
 CREATE TABLE IF NOT EXISTS T_GROUP_MENU (
     MENU_ID VARCHAR(16) NOT NULL COMMENT '메뉴 ID'
@@ -370,7 +370,7 @@ ALTER TABLE T_GROUP_MENU ADD CONSTRAINT T_GROUP_MENU_PK PRIMARY KEY();
 -- CREATE INDEX T_GROUP_MENU_IX1 ON T_GROUP_MENU();
 
 
--- 관리자    관리자 시스템 메뉴 권한
+-- 관리자    그룹 메뉴 권한 관리
 DROP TABLE IF EXISTS t_group_menu_auth CASCADE;
 CREATE TABLE IF NOT EXISTS t_group_menu_auth (
     AUTH_ID VARCHAR(32) NOT NULL COMMENT '권한 ID'
@@ -384,69 +384,6 @@ CREATE TABLE IF NOT EXISTS t_group_menu_auth (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '관리자 시스템 메뉴 권한[관리자 시스템 메뉴 권한 관리]';
 ALTER TABLE t_group_menu_auth ADD CONSTRAINT t_group_menu_auth_PK PRIMARY KEY(AUTH_ID, MENU_ID);
 -- CREATE INDEX t_group_menu_auth_IX1 ON t_group_menu_auth();
-
-
--- 사용자    사용자 권한
-DROP TABLE IF EXISTS T_USER_AUTH CASCADE;
-CREATE TABLE IF NOT EXISTS T_USER_AUTH (
-    USER_ID VARCHAR(32) NOT NULL COMMENT '사용자 ID'
-  , AUTH_ID VARCHAR(32) NOT NULL COMMENT '권한 ID'
-  , USE_YN VARCHAR(1) DEFAULT 'N' COMMENT '사용 여부'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '사용자 권한[사용자 권한 관리]';
-ALTER TABLE T_USER_AUTH ADD CONSTRAINT T_USER_AUTH_PK PRIMARY KEY(USER_ID);
--- CREATE INDEX T_USER_AUTH_IX1 ON T_USER_AUTH();
-
-
--- 사용자    사용자 시스템 권한
-DROP TABLE IF EXISTS T_USER_SYS_AUTH CASCADE;
-CREATE TABLE IF NOT EXISTS T_USER_SYS_AUTH (
-    AUTH_ID VARCHAR(32) NOT NULL COMMENT '권한 ID'
-  , AUTH_CL VARCHAR(32) COMMENT '권한 분류[CODE GROUP_ID: USER_AUTH_CL]'
-  , AUTH_NM VARCHAR(100) COMMENT '권한 명'
-  , AUTH_DSC VARCHAR(1000) COMMENT '권한 설명'
-  , USE_YN VARCHAR(1) DEFAULT 'N' COMMENT '사용 여부'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '사용자 시스템 권한[사용자 시스템 권한 관리]';
-ALTER TABLE T_USER_SYS_AUTH ADD CONSTRAINT T_USER_SYS_AUTH_PK PRIMARY KEY(AUTH_ID);
--- CREATE INDEX T_USER_SYS_AUTH_IX1 ON T_USER_SYS_AUTH();
-
-
--- 업무    역할 그룹
-DROP TABLE IF EXISTS T_ROLE_GROUP CASCADE;
-CREATE TABLE IF NOT EXISTS T_ROLE_GROUP (
-    GROUP_ID VARCHAR(32) NOT NULL COMMENT '그룹 ID'
-  , GROUP_NM VARCHAR(200) COMMENT '그룹 명'
-  , USE_YN VARCHAR(1) DEFAULT 'N' COMMENT '사용 여부'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT '역할 그룹[역할 그룹 정보]';
-ALTER TABLE T_ROLE_GROUP ADD CONSTRAINT T_ROLE_GROUP_PK PRIMARY KEY(GROUP_ID);
--- CREATE INDEX T_ROLE_GROUP_IX1 ON T_ROLE_GROUP();
-
-
--- 업무    역할 그룹 상세
-DROP TABLE IF EXISTS T_ROLE_GROUP_DTL CASCADE;
-CREATE TABLE IF NOT EXISTS T_ROLE_GROUP_DTL (
-    GROUP_ID VARCHAR(32) NOT NULL COMMENT '그룹 ID'
-  , REF_TY VARCHAR(16) NOT NULL COMMENT '참조 타입'
-  , REF_ID VARCHAR(64) NOT NULL COMMENT '참조 ID'
-  , USE_YN VARCHAR(1) DEFAULT 'N' COMMENT '사용 여부'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT '역할 그룹 상세[역할 그룹 상세 정보]';
-ALTER TABLE T_ROLE_GROUP_DTL ADD CONSTRAINT T_ROLE_GROUP_DTL_PK PRIMARY KEY(GROUP_ID, REF_TY, REF_ID);
--- CREATE INDEX T_ROLE_GROUP_DTL_IX1 ON T_ROLE_GROUP_DTL();
 
 
 -- 로그 로그 요청 사용자 시스템
@@ -633,26 +570,6 @@ CREATE TABLE IF NOT EXISTS T_HOLIDAY (
 ALTER TABLE T_HOLIDAY ADD CONSTRAINT T_HOLIDAY_PK PRIMARY KEY(SOLAR_DATE);
 -- CREATE INDEX T_HOLIDAY_IX1 ON T_HOLIDAY(SOLAR_DATE);
 
-
--- 공통 도메인 관리
-DROP TABLE IF EXISTS T_DOMAIN CASCADE;
-CREATE TABLE IF NOT EXISTS T_DOMAIN (
-    DOMAIN_ID VARCHAR(16) NOT NULL COMMENT '도메인 ID'
-  , DOMAIN_NM VARCHAR(256) NOT NULL COMMENT '도메인명'
-  , DOMAIN_DEC VARCHAR(256) COMMENT '도메인 설명'
-  , DOMAIN_CODE VARCHAR(64) COMMENT '도메인 코드'
-  , PROJECT_ID VARCHAR(16) NOT NULL COMMENT '프로젝트 ID'
-  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
-  , MODI_SE VARCHAR(32) COMMENT '수정 구분(I: 등록 / U: 수정 / D: 삭제 / C: 완료 / R: 삭제완료)'
-  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
-  , RGST_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '등록 일시'
-  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
-  , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '도메인 관리[도메인 관리]';
-ALTER TABLE T_DOMAIN ADD CONSTRAINT T_DOMAIN_PK PRIMARY KEY(DOMAIN_ID);
--- CREATE INDEX T_DOMAIN_IX1 ON T_DOMAIN(DOMAIN_ID);
-
-
 -- 로그 로그 참조 정보
 DROP TABLE IF EXISTS T_LOG_REF_INFO CASCADE;
 CREATE TABLE IF NOT EXISTS T_LOG_REF_INFO (
@@ -665,7 +582,6 @@ CREATE TABLE IF NOT EXISTS T_LOG_REF_INFO (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '로그 참조 정보[접속 로그 참조 정보]';
 ALTER TABLE T_LOG_REF_INFO ADD CONSTRAINT T_LOG_REF_INFO_PK PRIMARY KEY(LOG_ID,CONTROLLER_NM,METHOD_NM);
 -- CREATE INDEX T_LOG_REF_INFO_IX1 ON T_LOG_REF_INFO(LOG_ID,CONTROLLER_NM,METHOD_NM);
-
 
 
 
@@ -791,25 +707,26 @@ INSERT INTO T_PSTN (PSTN_CODE,PSTN_NM,USE_YN,MODI_SE,RGST_ID,RGST_DT,MODI_ID,MOD
 -- 공통    사용자
 TRUNCATE TABLE T_USER;
 INSERT INTO T_USER (USER_ID,USER_NM,PASSWORD,PSTN_CODE,DEPT_CODE,HDEPT_CODE,ADOF_DEPT_CODE,COMPANY_CODE,DUTY_SE,LAST_LOG_DT,START_DT,END_DT,DT_LIMIT_YN,FILE_URL,MGR_SYS_ENV,USER_SYS_HOME,USER_SYS_ENV,BF_DEPT_CODE,DEPT_UPDT_DT,USE_YN,PASS_INIT,PASS_ERROR,MODI_SE,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('SYSTEM','시스템',SHA2('rtdata12#$',256),'P2','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'N',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('admin','관리자',SHA2('1',256),'P2','D1','S1',NULL,'10','Y',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'N',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test11','테스트11',SHA2('rt12#$',256),'P2','D1','S1','D2','10','Y',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test12','테스트12',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','Y',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test13','테스트13',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test14','테스트14',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test15','테스트15',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test21','테스트21',SHA2('rt12#$',256),'P1','D2','S1','D1','10','Y',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test22','테스트22',SHA2('rt12#$',256),'P1','D2','S1',NULL,'10','Y',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test23','테스트23',SHA2('rt12#$',256),'P1','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test24','테스트24',SHA2('rt12#$',256),'P2','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test25','테스트25',SHA2('rt12#$',256),'P2','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test26','테스트26',SHA2('rt12#$',256),'P2','D2','S1','D1','10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test27','테스트27',SHA2('rt12#$',256),'P2','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test28','테스트28',SHA2('rt12#$',256),'P2','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test29','테스트29',SHA2('rt12#$',256),'P2','D2','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('fail11','실패11',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('fail12','실패12',SHA2('rt12#$',256),'P1','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
-('fail13','실패13',SHA2('rt12#$',256),'P2','D1','S1',NULL,'10','N',DATE_FORMAT('2020-12-31 12:32:12','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW());
+('SYSTEM','시스템',SHA2('pplus12#$',256),'system@pplus.com','02-000-0000','P2','D1','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'N',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('admin','관리자',SHA2('pplus12#$',256),'admin@pplus.com','010-9999-0000','P2','D1','S1',NULL,'PPLUS','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'N',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('jinix55','관리자',SHA2('1',256),'jinix55@gmail.com','010-5327-3000','P2','D1','S1',NULL,'PPLUS','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'N',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test11','테스트11',SHA2('rt12#$',256),'test11@pplus.com','010-9999-0001','P2','D1','S1','D2','PPLUS','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test12','테스트12',SHA2('rt12#$',256),'test12@pplus.com','010-9999-0002','P1','D1','S1',NULL,'DTCOMPANY','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test13','테스트13',SHA2('rt12#$',256),'test13@pplus.com','010-9999-0003','P1','D1','S1',NULL,'PCT','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test14','테스트14',SHA2('rt12#$',256),'test14@pplus.com','010-9999-0004','P1','D1','S1',NULL,'PCT','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test15','테스트15',SHA2('rt12#$',256),'test15@pplus.com','010-9999-0005','P1','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test21','테스트21',SHA2('rt12#$',256),'test21@pplus.com','010-9999-0006','P1','D2','S1','D1','PPLUS','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test22','테스트22',SHA2('rt12#$',256),'test22@pplus.com','010-9999-0007','P1','D2','S1',NULL,'PPLUS','Y',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test23','테스트23',SHA2('rt12#$',256),'test23@pplus.com','010-9999-0008','P1','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test24','테스트24',SHA2('rt12#$',256),'test24@pplus.com','010-9999-0009','P2','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test25','테스트25',SHA2('rt12#$',256),'test25@pplus.com','010-9999-0010','P2','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test26','테스트26',SHA2('rt12#$',256),'test26@pplus.com','010-9999-0011','P2','D2','S1','D1','PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test27','테스트27',SHA2('rt12#$',256),'test27@pplus.com','010-9999-0012','P2','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test28','테스트28',SHA2('rt12#$',256),'test28@pplus.com','010-9999-0013','P2','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test29','테스트29',SHA2('rt12#$',256),'test29@pplus.com','010-9999-0014','P2','D2','S1',NULL,'PPLUS','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'Y','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('fail11','실패11',SHA2('rt12#$',256),'fail11@pplus.com','010-9999-0015','P1','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('fail12','실패12',SHA2('rt12#$',256),'fail12@pplus.com','010-9999-0016','P1','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
+('fail13','실패13',SHA2('rt12#$',256),'fail13@pplus.com','010-9999-0017','P2','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('NOW()','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 -- 공통    사용자 테스트
@@ -870,6 +787,7 @@ INSERT INTO T_BBS_FAQ (FAQ_ID,CL_CODE,QSTN,ANSW,ORD_SEQ,FILE_ID,USE_YN,RGST_ID,R
 TRUNCATE TABLE T_GROUP;
 INSERT INTO T_GROUP (USER_ID,AUTH_ID,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
 ('admin','au2000001','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('jinix55','au2000001','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('test11','au2000001','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('test12','au2000001','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('test13','au2000001','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -881,36 +799,36 @@ INSERT INTO T_GROUP (USER_ID,AUTH_ID,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VAL
 -- 그룹 권한
 TRUNCATE TABLE T_GROUP_AUTH;
 INSERT INTO T_GROUP_AUTH (AUTH_ID,COMPANY_CODE,AUTH_CL,AUTH_NM,AUTH_DSC,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('au2000001','RTDATALAB','M','최고관리자','최고관리자','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('au2000001','PPLUS','P','최고관리자','최고관리자','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000002','DTCOMPANY','A','A사이트 관리자','A사이트 관리자','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000003','PCT','A','B사이트 관리자','B사이트 관리자','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('au2000004','DTCOMPANY','U','A사이트 직원','A사이트 직원','Y','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
-
 -- 그룹 메뉴
 TRUNCATE TABLE T_GROUP_MENU;
 INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,MENU_SE,MENU_ATTR,USE_YN,ICON_NM,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('mn5000001',NULL,'HOME','/','','1','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000002','mn5000001','계정관리','/admin/company','','2','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','user','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000003','mn5000001','시스템관리','/admin','','3','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','system','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000004','mn5000003','회사관리','/admin/member','','4','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000005','mn5000003','권한관리','/admin/role','','5','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000006','mn5000003','사용자 권한','/admin/memberAuth','','6','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000007','mn5000003','메뉴 권한','/admin/menuAuth','','7','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000008','mn5000003','공통코드관리','/admin/code','','8','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000009','mn5000003','휴일관리','/admin/holiday','','9','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000010','mn5000001','메뉴','/memu','','10','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000011','mn5000010','메뉴관리','/memu/menu','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000012','mn5000010','레포트관리','/memu/report','','12','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000013','mn5000001','로그관리','/log','','13','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000014','mn5000013','로그인이력관리','/log/loginHst','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000015','mn5000013','작업이력관리','/log/jobHst','','15','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000016','mn5000001','게시판관리','/board','','16','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','board','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000017','mn5000016','공지사항','/board/notice','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000018','mn5000016','FAQ','/board/faq','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000019','mn5000016','QNA','/board/qna','','19','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000020','mn5000001','알람관리','/alarm/alarm','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000000','mn5000001','비밀번호변경','/member/pwdChange','','0','F','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000001',NULL,'HOME','/','','1','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000002','mn5000001','계정관리','/member','','2','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','user','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000003','mn5000002','계정관리','/member/member','','3','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000004','mn5000001','시스템관리','/system','','4','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','system','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000005','mn5000004','회사관리','/system/company','','5','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000006','mn5000004','그룹관리','/system/role','','6','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000007','mn5000004','공통코드관리','/system/code','','7','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000008','mn5000004','휴일관리','/system/holiday','','8','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000009','mn5000001','메뉴관리','/memu','','9','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000010','mn5000009','메뉴관리','/menu/menu','','10','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000011','mn5000009','레포트관리','/menu/report','','11','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000012','mn5000001','로그관리','/log','','12','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000013','mn5000012','로그인이력관리','/log/loginHst','','13','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000014','mn5000012','작업이력관리','/log/jobHst','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000015','mn5000001','게시판관리','/board','','15','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','board','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000016','mn5000015','공지사항','/board/notice','','16','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000017','mn5000015','FAQ','/board/faq','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000018','mn5000015','QNA','/board/qna','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000019','mn5000001','알람관리','/alarm','','19','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000020','mn5000019','알람관리','/alarm/alarm','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 
@@ -954,11 +872,7 @@ INSERT INTO T_GROUP_MENU_AUTH (AUTH_ID,MENU_ID,MENU_ATTR,USE_YN,RGST_ID,RGST_DT,
 -- 레포트 관리 테스트 샘플 데이터
 INSERT INTO portal.t_report
 (REPORT_ID, REPORT_NM, REPORT_URL, COMPANY_ID, GROUP_ID, REPORT_TYPE, REPORT_SIZE, REPORT_DSC,USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT)
-VALUES('test01', '테스트이름', 'www.naver.com', 'PCT', 'AU200001', 'T', '600X1200', '11111', 'Y', 'jinix55', '2021-12-08 10:48:31.000', 'jinix55', NULL);
-
-
--- -------------------------------------------------------- (2021-05-17 추가)
-
+VALUES('test01', '테스트이름', 'http://110.10.189.106:8889/logpresso/dashboard/pw78eed90ea3c75e61?apikey=38741ca9-d580-f0d7-0737-1b21143a0336', 'PPLUS', 'AU200001', 'L', '600X1200', '11111', 'Y', 'jinix55', '2021-12-08 10:48:31.000', 'jinix55', NULL);
 
 -- 로그 로그 참조 정보 초기 데이터
 TRUNCATE TABLE T_LOG_REF_INFO;
@@ -1011,11 +925,4 @@ INSERT INTO T_LOG_REF_INFO (LOG_ID,CONTROLLER_NM,METHOD_NM,PROGRAM_NM,RGST_ID,RG
 ('46','StatisticsController','getUsage','이용통계 조회','SYSTEM',NOW()),
 ('47','StatisticsController','getResponse','응답통계 조회','SYSTEM',NOW()),
 ('48','StatisticsController','getKnowledge','지식통계 조회','SYSTEM',NOW());
-
-
-
-
-
-
-
 
