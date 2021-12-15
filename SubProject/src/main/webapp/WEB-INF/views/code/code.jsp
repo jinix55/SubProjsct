@@ -119,7 +119,7 @@
 									<h4 class="tl pt30">
 										<span class="title-point">[상세코드 등록]</span>
 									</h4>
-									<form id="inputFrm">
+									<form id="inputFrm_${code.codeId}">
 									<div class="row row-grp" id="tr_${code.codeId}_input">
 									</div>
 									</form>
@@ -398,9 +398,9 @@
 	}
 	
 	function insertCode(id){
-		$('#tr_'+id+'_input #groupId').attr('disabled',false);
+		$('#tr_'+setGrpId+'_input #groupId').attr('disabled',false);
 		if(valyCheck()){
-			var param =  $('#inputFrm').serialize();
+			var param =  $('#inputFrm_'+setGrpId).serialize();
 			insertAjax(param,'insert/code');
 		}
 	}
@@ -770,7 +770,8 @@
 		});
 		
 		$('.tr-item').click(function(){
-			upCodeList($(this).parent().attr('id'),$(this).parent().attr('nm'));
+			setGrpId = $(this).parent().attr('id');
+			upCodeList(setGrpId,$(this).parent().attr('nm'));
 		});
 		
 		$('.search-box-append').click(function(){
