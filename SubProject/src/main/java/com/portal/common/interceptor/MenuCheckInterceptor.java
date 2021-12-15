@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.portal.adm.menu.model.MenuModel;
 import com.portal.adm.menu.service.MenuService;
+import com.portal.adm.report.model.ReportModel;
 import com.portal.common.Constant;
 import com.portal.config.security.AuthUser;
 
@@ -79,6 +80,8 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 							}else {
 								cnt = 0;
 							}
+							
+							// 상단 메뉴 위치
 							if(StringUtils.equals(subMenuList.get(i).getMenuUrl(),request.getRequestURI()) && StringUtils.equals(subMenuList.get(i).getMenuSe(),("M"))) {
 								JSONArray arr = subMenuList.get(i).getFullPathNm();
 								ArrayList<String> list = new ArrayList<String>(); 
@@ -88,10 +91,22 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 								} 
 								modelAndView.addObject("menuNavi", list);
 							}
+							
+							
 						}
+						
+						// 레포트 자동 노출
+//						List<ReportModel> reportModel = menuService.reportMenuList(authUser.getMemberModel().getCompanyCode(), authUser.getMemberModel().getAuthId());
+//						List<String> list = new ArrayList<String>();
+//						
+//						for(int i = 0 ; i < reportModel.size(); i++) {
+//							list.add("/report/reportView/"+reportModel.get(i).getReportId());
+//						}
+						
 						modelAndView.addObject("subMenuList", subMenuList);
 						modelAndView.addObject("menuGpCnt", menuGpCnt);
 						modelAndView.addObject("myUri", request.getRequestURI());
+//						modelAndView.addObject("reportUrls", list);
 					} catch (BindingException e) {
 						log.warn("urlCheck Error {}", e.getMessage());
 					}

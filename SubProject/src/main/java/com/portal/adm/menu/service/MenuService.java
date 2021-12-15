@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.portal.adm.menu.mapper.MenuMapper;
 import com.portal.adm.menu.model.MenuModel;
+import com.portal.adm.report.model.ReportModel;
 
 /**
  * 메뉴관리 서비스 클래스
@@ -156,5 +157,19 @@ public class MenuService {
     @Transactional
     public long updateMenuAuth(MenuModel model) {
     	return menuMapper.updateMenuAuth(model);
+    }
+    
+    /**
+     * 권한별 레포트 메뉴를 업데이트 한다.
+     *
+     * @param model
+     * @return
+     */
+    @Transactional
+    public List<ReportModel> reportMenuList(String companyId,String authId) {
+    	Map<String,String> param = new HashMap<>();
+    	param.put("companyId", companyId);
+    	param.put("authId", authId);
+    	return menuMapper.reportMenuList(param);
     }
 }

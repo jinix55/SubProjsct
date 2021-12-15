@@ -326,4 +326,9 @@ LIMIT 1
 			, MODI_DT = NOW()
 		WHERE MENU_ID =  #{menuId}
     </update>
+    
+     <select id="reportMenuList" resultType="com.portal.adm.report.model.ReportModel" parameterType="map">
+     	SELECT * FROM t_report
+		WHERE GROUP_ID = #{authId} AND COMPANY_ID = #{companyId}
+     </select>
 </mapper>

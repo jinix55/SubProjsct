@@ -37,17 +37,30 @@
 						</c:if>
 					</c:forEach>
 					<c:if test="${downMenuYn eq 'Y' }">
-					<ul style="height: ${menuhg}px;">
-						<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status3">
-							<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
-								<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li>
-							</c:if>
-						</c:forEach>
-					</ul>
+						<ul style="height: ${menuhg}px;">
+							<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status3">
+								<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
+									<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li>
+								</c:if>
+							</c:forEach>
+						</ul>
 					</c:if>
 				</li>
 			</c:if>
 			</c:forEach>
+<%-- 			<c:if test="${!empty reportUrls}"> --%>
+<%-- 					<li data-menu="reportMemu" ${fn:startsWith(myUri,'/report/reportView') ? 'class=open' : ''}> --%>
+<!-- 						<a href="#" title=""><span class="txtlmg "></span>레포트 목록</a> -->
+<%-- 						<c:forEach var="reportUrl" items="${reportUrls}" varStatus="status"> --%>
+<!-- 							<ul style="height: 44px;"> -->
+<!-- 								<li> -->
+<%-- 									<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li> --%>
+<%-- 									${reportUrl } --%>
+<!-- 								</li> -->
+<!-- 							</ul> -->
+<%-- 						</c:forEach> --%>
+<!-- 					</li> -->
+<%-- 			</c:if> --%>
      	</ul>
 		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
 			<div class="iScrollIndicator" style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);"></div>

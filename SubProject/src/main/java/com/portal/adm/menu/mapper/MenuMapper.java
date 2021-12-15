@@ -1,6 +1,7 @@
 package com.portal.adm.menu.mapper;
 
 import com.portal.adm.menu.model.MenuModel;
+import com.portal.adm.report.model.ReportModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
 import java.util.List;
@@ -110,4 +111,10 @@ public interface MenuMapper {
      * @return
      */
     long updateMenuAuth(MenuModel model);
+    
+    /**
+     * 권한별 레포트 메뉴 리스트
+     */
+    List<ReportModel> reportMenuList(Map<String,String> param);
+    
 }
