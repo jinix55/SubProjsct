@@ -17,7 +17,7 @@
 				<div class="form-inline">
 					<div class="search-box w250">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
-							class="search-box-append">
+							class="search-box-append searchKeyword">
 							<button type="button" class="button-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
@@ -793,7 +793,7 @@
 			deleteAjax();
 		});
 		
-		$('.search-box-append').click(function(){
+		$('.searchKeyword').click(function(){
 			$('#searchFrm').submit();
 		});
 	});

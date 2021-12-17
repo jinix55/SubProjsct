@@ -429,9 +429,10 @@ iframe {height: 100%;left: 0;position: absolute;top: 0;width: 100%;}
 .login-content .login-form form .login-id:before {position: absolute;top: 6px;left: 10px;width: 24px;height: 24px;background: url(../../images/icon_user2.png) no-repeat;pointer-events: none;content: '';opacity: 0.5;}
 .login-content .login-form form .login-pw:before {position: absolute;top: 6px;left: 10px;width: 24px;height: 24px;background: url(../../images/icon_pw.png) no-repeat;pointer-events: none;content: '';opacity: 0.5;}
 .login-content .login-form form .login-id input,.login-content .login-form form .login-pw input {font-size: 1.3rem}
-.login-content .login-form .btn-group ul {border: 2px solid #4288ca;margin-top: 30px;}
+.login-content .login-form .btn-group ul {border: 2px solid #4288ca; margin-top: 30px;}
+.login-content .login-form .btn-group ul {width: 50%; margin-left: 25%;}/*임시*/
 .login-content .login-form .btn-group ul:after {content: '';display: block;clear: both;}
-.login-content .login-form .btn-group ul li {float: left;width: 50%;background: url(../../images/line_enrollment.gif) 100% 50% no-repeat;}
+.login-content .login-form .btn-group ul li {float: left; width: 100%; /*background: url(/images/line_enrollment.gif) 100% 50% no-repeat;*/}
 .login-content .login-form .btn-group ul li a {display: block;height: 38px;line-height: 36px;color: #666;text-align: center;letter-spacing: -1px;}
 
 .multi {width: 80px;}
