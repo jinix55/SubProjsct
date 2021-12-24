@@ -49,13 +49,13 @@
 			<table class="table table-actions">
 				<colgroup>
 <%-- 					<col style="width: 30px;"> --%>
-					<col style="width: 40px;">
-					<col style="width: 135px;">
-					<col style="width: 180px;">
-					<col style="width: 150px;">
-					<col style="width: 85px;">
-					<col style="width: 60px;">
-					<col style="width: 90px;">
+					<col style="width: 6%;">
+					<col style="width: 15%;">
+					<col style="width: *;">
+					<col style="width: 15%;">
+					<col style="width: 14%;">
+					<col style="width: 8%;">
+					<col style="width: 8%;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
@@ -85,7 +85,7 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal" class="btn-Ticon02">
+									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal" class="btn-icon">
 										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
 									</a>
 									<c:if test="${company.useYn eq 'Y'}">
@@ -262,7 +262,7 @@
 <div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 	data-modal-parent="#myModal">
-	<div class="modal-content" style="width: 400px">
+	<div class="modal-content" style="width: 450px">
 		<div class="modal-header">
 			<h4 class="modal-title">중복확인</h4>
 			<button type="button" class="close" data-dismiss="modal">
@@ -722,7 +722,7 @@ function searchCodeAction(searchCode){
 	    		$('#codeSearch').removeClass('search-Success');
 	    	}else{
 	    		$('.form-notice').text("사용 가능한 코드 입니다.");
-	    		$('.form-notice').addClass("fontColorGreen");
+	    		$('.form-notice').addClass("fontColorBlue");
 	    		$('#reg_companyCode').val(result);
 	    		$('#re_reg_companyCode').val(result);
 	    		$('#codeSearch').addClass('search-Success');

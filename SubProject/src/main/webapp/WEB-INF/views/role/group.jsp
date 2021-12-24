@@ -98,9 +98,9 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#detail" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_detail.png" alt="상세보기" class="tbl-icon"></a>
-									<a href="#edit" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-									<a href="#delete" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+									<a href="#detail" role="button" data-toggle="modal" class="btn-icon"><img src="/images/icon_detail.png" alt="상세보기" class="tbl-icon"></a>
+									<a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
+									<a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
 								</div>
 							</td>
 						</tr>

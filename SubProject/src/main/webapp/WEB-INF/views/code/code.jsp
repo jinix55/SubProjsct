@@ -382,12 +382,12 @@
 	
 	/*상세보기 눌렀을때 데이터 적용*/
 	function setView(data){
-		$('#codeId').val(data.codeId);
-		$('#codeNm').val(data.codeNm);
-		$('#codeDsc').val(data.codeDsc);
-		$('#rgstDt').val(data.rgstDt);
-		$('#modiDt').val(data.modiDt);
-		$('#use'+data.useYn).prop('checked',true);
+		$('#register #codeId').val(data.codeId);
+		$('#register #codeNm').val(data.codeNm);
+		$('#register #codeDsc').val(data.codeDsc);
+		$('#register #rgstDt').val(data.rgstDt);
+		$('#register #modiDt').val(data.modiDt);
+		$('#register #use'+data.useYn).prop('checked',true);
 	}
 	
 	function insert(){

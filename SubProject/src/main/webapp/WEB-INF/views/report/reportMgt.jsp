@@ -107,7 +107,7 @@
 										<td>
 											<div class="btn-group">
 												<a href="#register" role="button" data-toggle="modal" onclick="detailView('${list.reportId}');" class="btn-icon">
-													<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon02">
+													<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon">
 												</a>
 												<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${list.reportId}');" class="btn-icon del_data">
 													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
@@ -240,11 +240,11 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useY" name="useYn" type="radio" value="Y">
 									<label for="useY" class="mr05">사용</label>
 								</div>
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useN" name="useYn" type="radio" value="N">
 									<label for="useN" class="mr05">미사용</label>
 								</div>

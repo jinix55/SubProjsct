@@ -104,10 +104,10 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${list.solarDate}');" role="button" data-toggle="modal" class="btn-Ticon02">
+									<a href="#register" onclick="detailView('${list.solarDate}');" role="button" data-toggle="modal" class="btn-icon">
 										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
 									</a>
-									<a href="#delete" onclick="deleteSet('${list.solarDate}');" role="button" data-toggle="modal" class="btn-Ticon02">
+									<a href="#delete" onclick="deleteSet('${list.solarDate}');" role="button" data-toggle="modal" class="btn-icon">
 										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
 									</a>
 								</div>
@@ -180,11 +180,11 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useY" name="useYn" type="radio" value="Y">
 									<label for="useY" class="mr05">사용</label>
 								</div>
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useN" name="useYn" type="radio" value="N">
 									<label for="useN" class="mr05">미사용</label>
 								</div>

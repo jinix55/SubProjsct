@@ -20,8 +20,8 @@
 				</div>
 				<div class="form-inline">
 					<div class="search-box w250">
-						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
-							class="search-box-append">
+						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> 
+						<span class="search-box-append">
 							<button type="button" class="button-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
@@ -64,10 +64,8 @@
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
-						<th>
-<!-- 							<input type="checkbox" name="all" id="checkAll"> -->
-						</th>
-<!-- 						<th scope="col">번호</th> -->
+						<!-- <th><input type="checkbox" name="all" id="checkAll"></th>-->
+                        <th scope="col">번호</th>
 						<th scope="col">그룹 ID</th>
 						<th scope="col">그룹 명</th>
 						<th scope="col">그룹 설명</th>
@@ -80,7 +78,7 @@
 				<tbody>
 					<c:forEach var="role" items="${roles}" varStatus="status">
 						<tr>
-<!-- 							<th><input type="checkbox" name="chk"></th> -->
+<!-- 						<th><input type="checkbox" name="chk"></th> -->
 							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 							<td class="text-point">${role.authId}</td>
 							<td>${role.authNm}</td>
@@ -291,26 +289,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
+			</div>
+			<div class="row">
+				<div class="col-100">
 					<div class="form-group">
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useY" name="useYn" type="radio" value="Y">
 									<label for="useY" class="mr05">사용</label>
 								</div>
-								<div class="btn-sm di-inblock">
+								<div class="button-Rsmall d-inblock">
 									<input id="useN" name="useYn" type="radio" value="N">
 									<label for="useN" class="mr05">미사용</label>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-100">
 					<div class="form-group">
 						<label class="col-25 form-label-textarea">그룹 설명</label>
 						<div class="col-75">

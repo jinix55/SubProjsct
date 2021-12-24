@@ -117,7 +117,7 @@
 	            }
 	            var classColor = '';
 	            if(nodeValues[7] == 'N'){
-	            		classColor = 'backColorRed';
+	            		classColor = 'backColorBlue';
 	            }
 	            document.write("<a class='"+classColor+"' href=javascript:choiceNodes('" + i + "');>");
 	            if (hasChildNode) {
@@ -231,12 +231,7 @@
 		<!-- S_left-area -->
 		<div class="col-35-area pr16-area">
 			<div class="left-area">
-				<h5>
-					<div class="area-img form-inline">
-						<img src="/images/icon-list.png">
-					</div>
-					메뉴목록
-				</h5>
+				<h4 class="tab"><span>메뉴목록</span></h4>
 				<div class="nav_tree">
 				<script language="javascript" type="text/javaScript">
 					var chk_Object = true;
@@ -324,13 +319,8 @@
 		<!-- S_right-area -->
 		<div class="col-65-area">
 			<div class="right-area">
-				<h5>
-					<div class="area-img form-inline">
-						<img src="/images/icon-list.png">
-					</div>
-					메뉴적용 현황
-				</h5>
-				<div class="row">
+			<!-- <h4 class="tab"><span>메뉴적용 현황</span></h4> -->
+				<div class="row pt30">
 					<div class="col-100">
 						<div class="form-group">
 							<label class="col-25 form-label">상위 메뉴ID</label>
@@ -359,22 +349,36 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-25 form-label">메뉴순서</label>
+							<div class="col-75">
+<!-- 								<div class="form-input"> -->
+<!-- 									<input type="text" class="text-input" name="ordSeq" id="ordSeq"> -->
+<!-- 								</div> -->
+								<select id="ordSeq" name="ordSeq" class="select-box" disabled>
+								<option value="none" >선택</option>
+								<c:forEach items="${menus}" var="menu">
+									<option value="${menu.ordSeq}">${menu.ordSeq }</option>
+								</c:forEach> 
+							</select>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-25 form-label">메뉴구분</label>
 							<div class="col-75">
 								<div class="form-input-box">
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="radioA" name="menuSe" value="A" disabled>
 										<label for="radioA" class="mr05">폴더(A)</label> 
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="radioM" name="menuSe" value="M" disabled>
 										<label for="radioM" class="mr05">메뉴(M)</label> 
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="radioF" name="menuSe" value="F" disabled>
 										<label for="radioF" class="mr05">기능(F)</label>
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="radioL" name="menuSe" value="L" disabled>
 										<label for="radioL" class="mr05">레포트 링크(L)</label>
 									</div>
@@ -394,49 +398,36 @@
 							<div class="col-75">
 								<input type="hidden" class="text-input" name="menuAttr" id="menuAttr" readonly>
 								<div class="form-input-box">
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="checkbox" name="menuAttrIns" id="menuAttrIns" disabled>
 										<label for="menuAttrIns" class="mr05 pt1">Insert</label>
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="checkbox" name="menuAttrUpd" id="menuAttrUpd" disabled>
 										<label for="menuAttrUpd" class="mr05 pt1">Update</label>
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="checkbox" name="menuAttrDet" id="menuAttrDet" disabled>
 										<label for="menuAttrDet" class="mr05 pt1">Detail</label>
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="checkbox" name="menuAttrDel" id="menuAttrDel" disabled>
 										<label for="menuAttrDel" class="mr05 pt1">Delete</label>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="col-25 form-label">메뉴순서</label>
-							<div class="col-75">
-<!-- 								<div class="form-input"> -->
-<!-- 									<input type="text" class="text-input" name="ordSeq" id="ordSeq"> -->
-<!-- 								</div> -->
-								<select id="ordSeq" name="ordSeq" class="select-box" style="width:15%;" disabled>
-								<option value="none" >선택</option>
-								<c:forEach items="${menus}" var="menu">
-									<option value="${menu.ordSeq}">${menu.ordSeq }</option>
-								</c:forEach> 
-							</select>
-							</div>
-						</div>
+
 						<div class="form-group">
 							<label class="col-25 form-label">메뉴사용여부</label>
 							<div class="col-75">
 								<div class="form-input-box">
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="useY" name="useYn" value="Y" disabled>
 										<label for="useY" class="mr05">사용(Y)</label>
 										
 									</div>
-									<div class="btn-sm di-inblock">
+									<div class="button-Rsmall d-inblock">
 										<input type="radio" id="useN" name="useYn" value="N" disabled>
 										<label for="useN" class="mr05">미사용(N)</label> 
 									</div>
@@ -444,10 +435,10 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-25 form-label-textarea">설명</label>
+							<label class="col-25 form-label-textarea" style="height: 100px;">설명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<textarea class="textarea" id="menuDsc" name="menuDsc" disabled></textarea>
+									<textarea cols="50" rows="10" class="textarea" style="height: 100px;" id="menuDsc" name="menuDsc" disabled></textarea>
 								</div>
 							</div>
 						</div>
