@@ -1,6 +1,8 @@
 package com.portal.adm.report;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,9 @@ import com.portal.adm.report.model.ReportModel;
 import com.portal.adm.report.service.ReportService;
 import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
+import com.portal.common.ApiRequestUtil;
 import com.portal.common.IdUtil;
+import com.portal.config.props.TableauProps;
 import com.portal.config.security.AuthUser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +47,12 @@ public class ReportController {
     
     @Resource
     private IdUtil idUtil;
+    
+	@Resource(name="tableauProps")
+	private TableauProps props;
+	
+	@Resource(name="apiRequestUtil")
+	private ApiRequestUtil apiRequestUtil;
     
     /**
      * 레포트관리 페이지로 이동
@@ -185,6 +195,20 @@ public class ReportController {
      */
     @PostMapping("/report/detail/{reportId}")
     public ResponseEntity<ReportModel> getReportsForReportId(@PathVariable("reportId") String reportId) {
+    	
+		//태블로 토큰 요청
+    	Map<String, String> param = new HashMap<String, String>();
+    	param.put("username", reportId);
+    	String tableauToken = apiRequestUtil.requestPost(props.getTokenUrl(), param);
+    	log.debug("###tableauToken : {}", tableauToken);
+    	
+    	StringBuffer urlSb = new StringBuffer(props.getTokenUrl());
+    	urlSb.append(tableauToken);
+    	urlSb.append("/#/user/local/"+reportId+"/content");
+    	
+    	String reportViewUrl = urlSb.toString();
+    	log.debug("###reportViewUrl : {}", reportViewUrl);
+    	
     	ReportModel reportModel = new ReportModel();
     	reportModel.setReportId(reportId);
 		reportModel = reportService.selectReportId(reportModel);

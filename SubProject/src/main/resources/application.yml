@@ -71,6 +71,16 @@ menuCheck:
     ignoreUrls: /, /login, /error/**, /css/**, /js/**, /images/**, /font/**, /webjars/**, /favicon.ico, /test/**
 
 
+# TABLEAU Properties
+tableau-props:
+    api-url: "https://tableau.mobideep.co.kr/api/3.0"
+    token-url: "https://tableau.mobideep.co.kr/trusted/"
+    schema-location: "tableauSchema/ts-api_3_0.xsd" # 태블로 api사용을 위한 스키마 파일 정보 위치 버전에 따라서 스키마 파일을 서버에 위치시킴
+    username: "admin"
+    default-content-url: ""
+    target-site: ""
+    cache-preview-path: "c:/works/temp/cache/preview-image"
+
 
 --- #dev 설정
 spring:
