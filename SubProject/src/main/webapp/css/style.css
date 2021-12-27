@@ -538,7 +538,8 @@ input[name="tab_item"] {display: none;}
 .fontColorBlue{color:#4288ca !important;}
 .btnEdit{background-color:#ca4242 !important;}
 .eInput { ime-mode: active }
-.search-Success{background-color: #e1e1e1 !important;}
+.search-Fail{background-color: red !important;}
+.search-Success{background-color: #4fae3d !important;}
 .btn-yes, .btn-yes{cursor: default;}
 .rolsId{font-weight: bold; font-size: 16px;}
 .btn-yes, .btn-yes{cursor: default;}

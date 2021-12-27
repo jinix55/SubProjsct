@@ -26,6 +26,7 @@
 		// 		$("#sso").val("Y");
 		// 		$("#frm").submit();
 		// 	}
+		$('.pwdMgt').hide();
 		$('.pass_reset').hide();
 		$('.pass_change').hide();
 		let msgs = '${result}'.split("|")[1];
@@ -41,14 +42,20 @@
 				$('.error_text li.msg' + index).text(msg[index]);
 			});
 			$('.error_text').show();
-			$('.last.init').hide();
+// 			$('.last.init').hide();
+			if(init == 1){
+				$('.pwdMgt').show();
+				$('.last.init').show();
+			}
 			if(init == 2){
+				$('.pwdMgt').show();
 				$('.last.change').show();
 			}
 		}
 		
 		if (!msg && init) {
 			$('.error_text li.msg0').text(init);
+			$('.pwdMgt').show();
 			$('.error_text').show();
 		}
 		
@@ -61,6 +68,7 @@
 		}
 		
 		if(changeRes != '' && changeRes != undefined){
+			$('.pwdMgt').hide();
 			$('.login').hide();
 			$('.pass_reset').hide();
 			$("#ch_userId").val("");
@@ -227,7 +235,7 @@
 						</div>
 						<div class="btn-group">
 							<button type="button" class="button btn-success w100" onclick="loginAction();">확인</button>
-							<ul>
+							<ul class="pwdMgt">
 								<li class="last init" onclick="pwdChangeInitView();"><a href="javascript:void(0);">비밀번호 초기화 신청</a></li>
 								<li class="last change" onclick="pwdChangeView();" style="display:none;" ><a href="javascript:void(0);">비밀번호 변경</a></li>
 							</ul>

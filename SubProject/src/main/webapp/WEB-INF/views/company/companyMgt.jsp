@@ -618,20 +618,27 @@ function deleteCompanyAction(){
 	param = {
 			companyId : $('.delCompanyAction').val()
 	}
-	$.ajax({
-		url : '/system/company/delete',
-		dataType : 'text',
-		type : "POST",
-		data : param,
-	    error: function(xhr, status, error){
-	        console.log(error);
-	    },
-		success : function(result) {
-			if(result == 'Delete'){
-				location.href = '/system/company';
-			}
+	if(validation()){
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			$.ajax({
+				url : '/system/company/delete',
+				dataType : 'text',
+				type : "POST",
+				data : param,
+			    error: function(xhr, status, error){
+			        console.log(error);
+			    },
+				success : function(result) {
+					if(result == 'Delete'){
+						location.href = '/system/company';
+					}
+				}
+			});
 		}
-	});
+	}
 }
 
 function companySave(){
@@ -665,27 +672,38 @@ function companyInsert(){
 }
 
 function callInsertAjax(param){
-	$.ajax({
-	    type : 'post',
-	    url : '/system/company/insert',
-	    data : param,
-	    dataType : 'text',
-	    error: function(xhr, status, error){
-	        console.log(error);
-	    },
-	    success : function(result){
-	    	if(result == 'Update' || result == 'Insert'){
-	    		location.href = '/system/company';
-	    	}
-	    }
-	});
+	if(validation()){
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			$.ajax({
+			    type : 'post',
+			    url : '/system/company/insert',
+			    data : param,
+			    dataType : 'text',
+			    error: function(xhr, status, error){
+			        console.log(error);
+			    },
+			    success : function(result){
+			    	if(result == 'Update' || result == 'Insert'){
+			    		location.href = '/system/company';
+			    	}
+			    }
+			});
+		}
+	}
 }
 
 function codeSearch(){
 	var codeSearch = $('#reg_companyCode').val();
 	if(codeSearch){
 		$('#re_reg_companyCode').val(codeSearch);
-		searchCodeAction(codeSearch);
+		if(isDisabled){
+			return false;
+		}else{
+			searchCodeAction(codeSearch);
+		}
 	}else{
 		$('#re_reg_companyCode').val('');
 		$('.form-notice').text("확인이 필요합니다.");
@@ -696,7 +714,11 @@ function codeSearch(){
 function re_codeSearch(){
 	var re_codeSearch = $('#re_reg_companyCode').val();
 	if(re_codeSearch){
-		searchCodeAction(re_codeSearch);
+		if(isDisabled){
+			return false;
+		}else{
+			searchCodeAction(re_codeSearch);
+		}
 	}
 }
 
@@ -707,6 +729,7 @@ function codeCheckReset(){
 }
 
 function searchCodeAction(searchCode){
+	isDisabled = true;
 	$.ajax({
 	    type : 'post',
 	    url : '/system/company/popup',
@@ -808,11 +831,11 @@ $(document).ready(function() {
     });
 	
 	$("#codeSearch").mouseup(function(e) {
-       	codeSearch();
+   		codeSearch();
     });
 	
 	$(".codeSearchBtn").mouseup(function(e) {
-       	codeSearch();
+		codeSearch();
     });
 
 	$('#re_codeSearch').click(function(){
@@ -820,12 +843,58 @@ $(document).ready(function() {
 	});
 	
 	$('.companyInsert').click(function(){
-		companyInsert();
+		if(validation()){
+			companyInsert();
+		}
 	});
 	
 	$('.codeCheck').click(function(){
 		codeCheckReset();
 	});
 });
+
+function validation(){
+	if($('#reg_companyId').val() == ''){
+		alert('회사 코드를 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_companyNm').val() == ''){
+		alert('회사 이름을 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_representativeNm').val() == ''){
+		alert('대표자을 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_address').val() == ''){
+		alert('회사 주소를 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_companyNo1').val() == ''){
+		alert('회사 사업자번호을 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_companyNo2').val() == ''){
+		alert('회사 사업자번호을 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_companyNo3').val() == ''){
+		alert('회사 사업자번호을 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_telephoneNo1').val() == ''){
+		alert('회사 연락처를 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_telephoneNo2').val() == ''){
+		alert('회사 연락처를 입력해 주세요..');
+		return false;
+	}
+	if($('#reg_telephoneNo3').val() == ''){
+		alert('회사 연락처를 입력해 주세요..');
+		return false;
+	}
+	return true;
+}
 
 </script>

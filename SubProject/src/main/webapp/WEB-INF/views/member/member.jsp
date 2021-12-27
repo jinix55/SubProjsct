@@ -629,6 +629,8 @@
 		    		$('.form-notice').text("이미 사용중인 아이디 입니다.");
 		    		$('.form-notice').addClass("colorRed");
 		    		$('#idSearch').removeClass('search-Success');
+		    		$('#idSearch').addClass('search-Fail');
+		    		$('#idSearchCheck').text('다시확인');
 		    	}else{
 		    		$('.form-notice').text("사용 가능한 아이디 입니다.");
 		    		$('.form-notice').addClass("fontColorBlue");
@@ -662,25 +664,73 @@
 		$('#regBtn').addClass('save');
 	}
 	
+	function validation(){
+		if($('#userId').val() == ''){
+			alert('아이디를 입력해 주세요..');
+			return false;
+		}
+		if($('#userNm').val() == ''){
+			alert('이름을 입력해 주세요..');
+			return false;
+		}
+		if($('#companyCode').val() == 'none'){
+			alert('회사를 선택해 주세요..');
+			return false;
+		}
+		if($('#authId').val() == 'none'){
+			alert('그룹을 선택해 주세요..');
+			return false;
+		}
+		if($('#email1').val() == ''){
+			alert('메일을 입력해 주세요..');
+			return false;
+		}
+		if($('#email2').val() == ''){
+			alert('메일을 입력해 주세요..');
+			return false;
+		}
+		if($('#phone1').val() == ''){
+			alert('연락처를 입력해 주세요..');
+			return false;
+		}
+		if($('#phone2').val() == ''){
+			alert('연락처를 입력해 주세요..');
+			return false;
+		}
+		if($('#phone3').val() == ''){
+			alert('연락처를 입력해 주세요..');
+			return false;
+		}
+		return true;
+	}
+	
 	function userInsert(){
 		var has = $('#idSearch').hasClass('search-Success');
-		if(!has && $('#regBtn').hasClass('save')){
+		if(!has && ($('#regBtn').hasClass('save') || $('#regBtn').hasClass('insert'))){
 			alert('아이디 중복 학인이 필요합니다.');
 			return false;
 		}
 		
-		var param =  $('#frm').serialize();
-		insertAjax(param,'insert');
+		if(validation()){
+			isDisabled = true;
+			var param =  $('#frm').serialize();
+			insertAjax(param,'insert');
+		}
+		
 	}
 	
 	function userUpdate(){
 		$('#userId').prop('disabled',false);
 		var param =  $('#frm').serialize();
 		
-		insertAjax(param,'update');
+		if(validation()){
+			isDisabled = true;
+			insertAjax(param,'update');
+		}
 	}
 	
 	function insertAjax(param,action){
+		isDisabled = true;
 		$.ajax({
 		    type : 'post',
 		    url : '/member/member/'+action,
@@ -698,6 +748,7 @@
 	}
 	
 	function deleteAjax(param,action){
+		isDisabled = true;
 		param = {
 				userId : $('#del_userId').val()
 		}
@@ -769,10 +820,18 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				userInsert();
+				if(isDisabled){
+					return false;
+				}else{
+					userInsert();
+				}
 			}
 			if($('#regBtn').hasClass('save')){
-				userUpdate();
+				if(isDisabled){
+					return false;
+				}else{
+					userUpdate();
+				}
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
@@ -788,11 +847,19 @@
 		});
 		
 		$('.delete').click(function(){
-			deleteAjax();
+			if(isDisabled){
+				return false;
+			}else{
+				deleteAjax();
+			}
 		});
 		
 		$('.searchKeyword').click(function(){
-			$('#searchFrm').submit();
+			if(isDisabled){
+				return false;
+			}else{
+				$('#searchFrm').submit();
+			}
 		});
 	});
 </script>

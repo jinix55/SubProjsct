@@ -5,6 +5,8 @@
 	<sec:authentication var="user" property="principal" />
 </sec:authorize>
 <script type="text/javascript">
+var isDisabled = false;
+
 $(document).ready(function() {
 	var intervalTime = 10000;
 // 	callAlarm();
