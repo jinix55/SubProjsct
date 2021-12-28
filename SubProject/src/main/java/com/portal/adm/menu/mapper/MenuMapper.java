@@ -36,11 +36,18 @@ public interface MenuMapper {
     MenuModel select(MenuModel model);
 
     /**
-     * 메뉴모델을 삭제한다.
+     * 메뉴모델을 비활성화한다.
      * @param model
      * @return
      */
     long delete(MenuModel model);
+    
+    /**
+     * 메뉴모델을 삭제한다.
+     * @param model
+     * @return
+     */
+    long deleteData(MenuModel model);
     
     /**
      * 메뉴모델을 삭제한다.

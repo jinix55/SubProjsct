@@ -60,7 +60,11 @@ public class MenuService {
     @Transactional
     public long delete(MenuModel model) {
     	menuMapper.deleteAuth(model);
-        return menuMapper.delete(model);
+    	if(model.getAuthId() == "au2000001") {
+    		return menuMapper.delete(model);
+    	}else {
+    		return menuMapper.delete(model);
+    	}
     }
 
     /**
