@@ -75,23 +75,6 @@ public interface RoleMapper {
      */
     long insert(RoleModel model) throws Exception;
     
-    
-    long insertRoleGroup(RoleGroupModel model) throws Exception;
-    long updateRoleGroup(RoleGroupModel model) throws Exception;
-    long deleteRoleGroup(RoleGroupModel model) throws Exception;
-    
-    List<RoleGroupModel> selectRoleGroupList(Criteria criteria);
-    int selectRoleGroupListCount(Criteria criteria);
-    RoleGroupModel selectRoleGroup(RoleGroupModel model);
-    
-    long insertRoleGroupDtl(RoleGroupModel model) throws Exception;
-    long updateRoleGroupDtl(RoleGroupModel model) throws Exception;
-    long deleteRoleGroupDtl(RoleGroupModel model) throws Exception;
-    
-    List<RoleGroupModel> selectRoleGroupDtlList(Criteria criteria);
-    int selectRoleGroupDtlListCount(Criteria criteria);
-    RoleGroupModel selectRoleGroupDtl(RoleGroupModel model);
-    
     /**
      * 관리자 권한관리 페이징 조건에 따라서 목록을 조회한다.
      *
