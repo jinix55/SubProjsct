@@ -45,10 +45,12 @@
 // 			$('.last.init').hide();
 			if(init == 1){
 				$('.pwdMgt').show();
+				$('.last.change').hide();
 				$('.last.init').show();
 			}
 			if(init == 2){
 				$('.pwdMgt').show();
+				$('.last.init').hide();
 				$('.last.change').show();
 			}
 		}
