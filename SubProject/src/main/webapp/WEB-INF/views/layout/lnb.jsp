@@ -11,7 +11,8 @@
 		<span class="lnb-user">
 			<span class="img"><img src="/images/logo_p.png" alt="회사로고"></span>
 			<span class="desc">
-			<span class="depart">PPlueEco</span><p class="name">PKG Production&Development</p>
+				<span class="depart">PPlue Echo</span>
+				<p class="name">PKG Production&Development</p>
 			</span>
 		</span>
 	</div>
@@ -49,17 +50,17 @@
 			</c:if>
 			</c:forEach>
 <%-- 			<c:if test="${!empty reportUrls}"> --%>
-<%-- 					<li data-menu="reportMemu" ${fn:startsWith(myUri,'/report/reportView') ? 'class=open' : ''}> --%>
-<!-- 						<a href="#" title=""><span class="txtlmg "></span>레포트 목록</a> -->
-<%-- 						<c:forEach var="reportUrl" items="${reportUrls}" varStatus="status"> --%>
-<!-- 							<ul style="height: 44px;"> -->
-<!-- 								<li> -->
-<%-- 									<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li> --%>
-<%-- 									${reportUrl } --%>
-<!-- 								</li> -->
-<!-- 							</ul> -->
-<%-- 						</c:forEach> --%>
-<!-- 					</li> -->
+<%-- 				<li data-menu="reportMemu" ${fn:startsWith(myUri,'/report/reportView') ? 'class=open' : ''}> --%>
+<!-- 					<a href="#" title=""><span class="txtlmg "></span>레포트 목록</a> -->
+<%-- 					<c:forEach var="reportUrl" items="${reportUrls}" varStatus="status"> --%>
+<!-- 						<ul style="height: 44px;"> -->
+<!-- 							<li> -->
+<%-- 								<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li> --%>
+<%-- 								${reportUrl } --%>
+<!-- 							</li> -->
+<!-- 						</ul> -->
+<%-- 					</c:forEach> --%>
+<!-- 				</li> -->
 <%-- 			</c:if> --%>
      	</ul>
 		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
