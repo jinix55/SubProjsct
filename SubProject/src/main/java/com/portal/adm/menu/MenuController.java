@@ -157,6 +157,7 @@ public class MenuController {
 		try {
 			menuModel.setRgstId(authUser.getMemberModel().getUserId());
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
+			menuModel.setAuthId(authUser.getMemberModel().getAuthId());
 
 			long count = menuService.delete(menuModel);
 
