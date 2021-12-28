@@ -10,35 +10,41 @@
 	
 	<sql id="searchReport">
 		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-			and ((upper(report_id) like concat('%',upper(#{searchValue}),'%')) or (upper(report_nm) like concat('%',upper(#{searchValue}),'%')))
+			and ((upper(r.report_id) like concat('%',upper(#{searchValue}),'%')) or (upper(r.report_nm) like concat('%',upper(#{searchValue}),'%')))
 		</if>
 		<if test="searchKey != '' and searchKey == 'reportId' and searchValue != ''">
-			and (upper(report_id) like concat('%',upper(#{searchValue}),'%'))
+			and (upper(r.report_id) like concat('%',upper(#{searchValue}),'%'))
 		</if>
 		<if test="searchKey != '' and searchKey == 'reportNm' and searchValue != ''">
-			and (upper(report_nm) like concat('%',upper(#{searchValue}),'%')) 
+			and (upper(r.report_nm) like concat('%',upper(#{searchValue}),'%')) 
 		</if>
 	</sql>
 
 	<select id="selectReportList" resultType="com.portal.adm.report.model.ReportModel" parameterType="com.portal.adm.report.model.ReportModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
-			, REPORT_ID
-			, REPORT_NM
-			, REPORT_URL
-			, REPORT_DSC
-			, COMPANY_ID
-<!-- 			, GROUP_ID -->
-			, REPORT_TYPE
-			, REPORT_SIZE
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
-		FROM T_REPORT
+			ROW_NUMBER() OVER (ORDER BY UPPER(r.MODI_DT) ASC) AS ROWNUM
+			, r.REPORT_ID
+			, r.REPORT_NM
+			, r.REPORT_URL
+			, r.REPORT_DSC
+			, r.COMPANY_ID
+<!-- 		, r.GROUP_ID -->
+			, r.REPORT_TYPE
+			, r.REPORT_SIZE
+			, r.USE_YN
+			, r.RGST_ID
+			, r.RGST_DT
+			, r.MODI_ID
+			, r.MODI_DT
+		FROM T_REPORT r
+		left outer join t_company c ON c.company_code = r.company_id
 		WHERE 1 = 1
 		<include refid="searchReport"></include>
+		<if test="authId != 'au2000001'">
+			<if test="companyId != null and companyId != ''">
+				and c.company_code = #{companyId}
+			</if>
+		</if>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
@@ -46,9 +52,15 @@
 	<select id="selectReportListCount" resultType="int">
 		SELECT
 			count(1)
-		FROM T_REPORT
+		FROM T_REPORT r
+		left outer join t_company c ON c.company_code = r.company_id
 		WHERE 1 = 1
 		<include refid="searchReport"></include>
+		<if test="authId != 'au2000001'">
+			<if test="companyId != null and companyId != ''">
+				and c.company_code = #{companyId}
+			</if>
+		</if>
 	</select>
 	
 	<insert id="insert" parameterType="com.portal.adm.report.model.ReportModel">
