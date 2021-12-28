@@ -102,11 +102,14 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 //						for(int i = 0 ; i < reportModel.size(); i++) {
 //							list.add("/report/reportView/"+reportModel.get(i).getReportId());
 //						}
+//						modelAndView.addObject("reportUrls", list);
 						
 						modelAndView.addObject("subMenuList", subMenuList);
 						modelAndView.addObject("menuGpCnt", menuGpCnt);
 						modelAndView.addObject("myUri", request.getRequestURI());
-//						modelAndView.addObject("reportUrls", list);
+						
+						//내정보 셋팅
+						modelAndView.addObject("myInfo", authUser.getMemberModel());
 					} catch (BindingException e) {
 						log.warn("urlCheck Error {}", e.getMessage());
 					}
