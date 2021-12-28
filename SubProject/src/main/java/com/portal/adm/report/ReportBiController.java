@@ -53,10 +53,11 @@ public class ReportBiController {
      * @return
      */
     @RequestMapping(value="/reportView/{reportId}", method= {RequestMethod.GET,RequestMethod.POST})
-    public String getReportView(@PathVariable("reportId") String reportId, Model model) {
+    public String getReportView(@PathVariable("reportId") String reportId, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info("========= getReportView in ===========");
     	ReportModel reportModel = new ReportModel();
     	reportModel.setReportId(reportId);
+    	reportModel.setAuthId(authUser.getMemberModel().getAuthId());
 		reportModel = reportService.selectReportId(reportModel);
 		model.addAttribute("report", reportModel);
 
