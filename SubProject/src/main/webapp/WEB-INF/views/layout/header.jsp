@@ -90,6 +90,11 @@ function intervalTime(t){
 	</div>
 	<ul class="top-nav">
 <!-- 		<li><span class="top-nav-bi top-nav-bilink"><a href="/BIChat.html" title="BI분석플랫품">BI분석플랫품</a></span></li> -->
+		<li>
+			<span>
+				${myInfo.userId } / ${myInfo.companyNm } 
+			</span>
+		</li>
 		<li class="dropdown-notification">
 			<a href="#" title="알림" style="position:relative;">
 				<img src="/images/icon_bell.png" alt="알림">
