@@ -469,7 +469,12 @@
 	}
 	
 	$('#deleteAction').click(function(){
-		deleteAjax();
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			deleteAjax();
+		}
 	});
 	
 	function deleteAjax(){
@@ -512,10 +517,20 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				insert();
+				if(isDisabled){
+					return false;
+				}else{
+					isDisabled = true;
+					insert();
+				}
 			}
 			if($('#regBtn').hasClass('save')){
-				update();
+				if(isDisabled){
+					return false;
+				}else{
+					isDisabled = true;
+					update();
+				}
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
@@ -523,11 +538,21 @@
 		});
 		
 		$('.delete').click(function(){
-			deleteAjax();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				deleteAjax();
+			}
 		});
 		
 		$('.search-box-append').click(function(){
-			$('#searchFrm').submit();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				$('#searchFrm').submit();
+			}
 		});
 		
 	});

@@ -540,12 +540,23 @@
 	
 	function authInsert(){
 		var param =  $('#frm').serialize();
-		insertAjax(param,'insert');
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			insertAjax(param,'insert');
+		}
 	}
 	
 	function authUpdate(){
+		$('#authId').attr('disabled',false);
 		var param =  $('#frm').serialize();
-		insertAjax(param,'update');
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			insertAjax(param,'insert');
+		}
 	}
 	
 	function insertAjax(param,action){
@@ -781,10 +792,14 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				authInsert();
+				if(validation()){
+					authInsert();
+				}
 			}
 			if($('#regBtn').hasClass('save')){
-				authUpdate();
+				if(validation()){
+					authUpdate();
+				}
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
@@ -792,11 +807,37 @@
 		});
 		
 		$('.delete').click(function(){
-			deleteAjax();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				deleteAjax();
+			}
 		});
 		
 		$('.search-box-append').click(function(){
-			$('#searchFrm').submit();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				$('#searchFrm').submit();
+			}
 		});
 	});
+	
+	function validation(){
+		if($('#register #companyCode').val() == 'none'){
+			alert('회사를 선택해 주세요.');
+			return false;
+		}
+		if($('#register #authCl').val() == 'none'){
+			alert('그룹을 선택해 주세요.');
+			return false;
+		}
+		if($('#register #authNm').val() == ''){
+			alert('그룹명을 입력해 주세요.');
+			return false;
+		}
+		return true;
+	}
 </script>

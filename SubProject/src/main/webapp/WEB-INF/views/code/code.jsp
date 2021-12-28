@@ -689,7 +689,12 @@
 	}
 	
 	$('#deleteAction').click(function(){
-		deleteAjax();
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			deleteAjax();
+		}
 	});
 	
 	function deleteAjax(){
@@ -707,6 +712,9 @@
 		    success : function(result){
 		    	if(result == 'Delete'){
 		    		location.href = '/system/code';
+		    	}
+		    	if(result == 'UseCodeId'){
+		    		alert('상세코드에 사용중인 코드가 있습니다.');
 		    	}
 		    }
 		});
@@ -751,10 +759,20 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				insert();
+				if(isDisabled){
+					return false;
+				}else{
+					isDisabled = true;
+					insert();
+				}
 			}
 			if($('#regBtn').hasClass('save')){
-				update();
+				if(isDisabled){
+					return false;
+				}else{
+					isDisabled = true;
+					update();
+				}
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
@@ -762,11 +780,21 @@
 		});
 		
 		$('.delete').click(function(){
-			insert();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				insert();
+			}
 		});
 		
 		$('#insertCode').click(function(){
-			insertCode();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				insertCode();
+			}
 		});
 		
 		$('.tr-item').click(function(){
@@ -775,7 +803,12 @@
 		});
 		
 		$('.search-box-append').click(function(){
-			$('#searchFrm').submit();
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				$('#searchFrm').submit();
+			}
 		});
 	});
 </script>
