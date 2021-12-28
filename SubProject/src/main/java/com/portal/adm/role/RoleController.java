@@ -110,7 +110,7 @@ public class RoleController {
     @PostMapping("/role/insert")
     @ResponseBody
     public String insert(@ModelAttribute RoleModel roleModel, @AuthenticationPrincipal AuthUser authUser) {
-    	if(roleModel.getAuthId().equals("") || roleModel.getAuthId() == null) {
+    	if(roleModel.getAuthId() == null || roleModel.getAuthId().equals("")) {
     		roleModel.setAuthId(idUtil.getAuthId());
     	}
         try {
