@@ -440,14 +440,24 @@
 		});
 		if(valyCheck()){
 			var param =  $('#frm').serialize();
-			insertAjax(param,'insert');
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				insertAjax(param,'insert');
+			}
 		}
 	}
 	
 	function update(){
 		if(valyCheck()){
 			var param =  $('#frm').serialize();
-			insertAjax(param,'update');
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				insertAjax(param,'update');
+			}
 		}
 	}
 	
@@ -517,20 +527,10 @@
 		
 		$('#regBtn').click(function(){
 			if($('#regBtn').hasClass('insert')){
-				if(isDisabled){
-					return false;
-				}else{
-					isDisabled = true;
-					insert();
-				}
+				insert();
 			}
 			if($('#regBtn').hasClass('save')){
-				if(isDisabled){
-					return false;
-				}else{
-					isDisabled = true;
-					update();
-				}
+				update();
 			}
 			if($('#regBtn').hasClass('edit')){
 				setEdit();
