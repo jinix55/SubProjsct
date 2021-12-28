@@ -117,9 +117,9 @@
 	            }
 	            var classColor = '';
 	            if(nodeValues[7] == 'N'){
-	            		classColor = 'backColorBlue';
+	            		classColor = 'backColorRed';
 	            }
-	            document.write("<a class='"+classColor+"' href=javascript:choiceNodes('" + i + "');>");
+	            document.write("<a id='ad"+nodeValues[0]+"' class='"+classColor+"' href=javascript:choiceNodes('" + i + "');>");
 	            if (hasChildNode) {
 	                document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_folder")
 	                if (isNodeOpen) document.write("open");
@@ -322,6 +322,7 @@
 			<!-- <h4 class="tab"><span>메뉴적용 현황</span></h4> -->
 				<div class="row pt30">
 					<div class="col-100">
+						<input type="hidden" class="text-input" name="defaulttMenuUrl" id="defaulttMenuUrl" readonly disabled/>
 						<div class="form-group">
 							<label class="col-25 form-label">상위 메뉴ID</label>
 							<div class="col-75">
@@ -501,8 +502,14 @@ function insertMenuList() {
     document.menuForm.action = "/menu/menu/insert";
     document.menuForm.upMenuId.disabled=false;
     document.menuForm.menuUrl.disabled=false;
-    btnCheck()
-    document.menuForm.submit();
+    allDisabled(false);
+    btnCheck();
+	if(isDisabled){
+		return false;
+	}else{
+		isDisabled = true;
+    	document.menuForm.submit();
+	}
 }
 
 /* ********************************************************
@@ -514,8 +521,14 @@ function updateMenuList() {
     document.menuForm.action = "/menu/menu/update";
     document.menuForm.upMenuId.disabled=false;
     btnCheck();
-    document.menuForm.actionType = 'I'
-    document.menuForm.submit();
+    document.menuForm.actionType = 'I';
+   	allDisabled(false);
+	if(isDisabled){
+		return false;
+	}else{
+		isDisabled = true;
+   		document.menuForm.submit();
+	}
 }
 
 /* ********************************************************
@@ -528,7 +541,12 @@ function deleteMenuList() {
 	    document.menuForm.menuId.disabled=false;
 	    document.menuForm.menuId.readOnly=false;
 	    document.menuForm.action = "/menu/menu/delete";
-	    document.menuForm.submit();
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+	    	document.menuForm.submit();
+		}
     }
 }
 
@@ -536,13 +554,11 @@ function deleteMenuList() {
  * 입력값 validator 함수
  ******************************************************** */
 function fn_validatorMenuList() {
-
-//     if(document.menuForm.menuId.value.replace('mn','') == ""){alert("메뉴번호는 Not Null 항목입니다"); return false;} //메뉴번호는 Not Null 항목입니다.
-    if(document.menuForm.ordSeq.value == ""){alert("메뉴순서는 Not Null 항목입니다."); return false;} //메뉴순서는 Not Null 항목입니다.
-    if(document.menuForm.upMenuId.value == ""){alert("상위메뉴번호는 Not Null 항목입니다."); return false;} //상위메뉴번호는 Not Null 항목입니다.
-    if(document.menuForm.menuUrl.value == ""){alert("메뉴URL은 Not Null 항목입니다."); return false;} //프로그램파일명은 Not Null 항목입니다.
-    if(document.menuForm.menuNm.value == ""){alert("메뉴명은 Not Null 항목입니다."); return false;} //메뉴명은 Not Null 항목입니다.
-
+    if(document.menuForm.ordSeq.value == ""){alert("메뉴순서는 선택해 주세요."); return false;} //메뉴순서는 Not Null 항목입니다.
+    if(document.menuForm.upMenuId.value == ""){alert("생성할 메뉴 위치를 선택해 주세요."); return false;} //상위메뉴번호는 Not Null 항목입니다.
+    if(document.menuForm.menuUrl.value == ""){alert("메뉴URL을 입력해 주세요."); return false;} //프로그램파일명은 Not Null 항목입니다.
+    if(document.menuForm.menuNm.value == ""){alert("메뉴명을 입력해 주세요."); return false;} //메뉴명은 Not Null 항목입니다.
+    if(!document.menuForm.menuUrl.value.startsWith($('#defaulttMenuUrl').val())){alert('카테고리 범위에서 벗어날수 없습니다.\nURL을 확인해 주세요.'); return false;}
     return true;
 }
 
@@ -554,6 +570,7 @@ function btnCheck(){
  * 초기화 함수
  ******************************************************** */
 function initlMenuList() {
+	$('#ad'+document.menuForm.upMenuId.value).css('border','');
     document.menuForm.upMenuId.value="";
     document.menuForm.menuId.value="";
     document.menuForm.menuNm.value="";
@@ -597,7 +614,8 @@ function newMenuList() {
 	$('input').attr('readOnly',false);
 	$('textarea').attr('readOnly',false);
 	$('select').attr('readOnly',false);
-	
+	$('#upMenuId').attr('disabled',true);
+	$('#upMenuId').attr('placeholder','추가될 곳의 메뉴를 선택해 주세요.');
     document.menuForm.upMenuId.value="";
     document.menuForm.menuId.value="NEW";
     document.menuForm.menuNm.value="";
@@ -626,46 +644,103 @@ function newMenuList() {
 /* ********************************************************
  * 상세내역조회 함수
  ******************************************************** */
+ 
+function allDisabled(isDisabled)  {
+	if(isDisabled){
+		for(var i = 0 ; i < document.getElementsByName('menuSe').length ; i++){
+			document.getElementsByName('menuSe')[i].disabled = true;
+		}
+	}else{
+		for(var i = 0 ; i < document.getElementsByName('menuSe').length ; i++){
+			document.getElementsByName('menuSe')[i].disabled = false;
+		}
+	}
+}
+
 function choiceNodes(nodeNum) {
-	$('input').attr('disabled',true);
-	$('textarea').attr('disabled',true);
-	$('select').attr('disabled',true);
-	$('radio').attr('disabled',true);
-	$('checkbox').attr('disabled',true);
-	
-	$('input').attr('readOnly',true);
-	$('textarea').attr('readOnly',true);
-	$('select').attr('readOnly',true);
-	$('radio').attr('readOnly',true);
-	$('checkbox').attr('readOnly',true);
-    var nodeValues = treeNodes[nodeNum].split("|");
-    document.menuForm.upMenuId.value = nodeValues[1];
-    document.menuForm.menuId.value = nodeValues[0];
-    document.menuForm.ordSeq.value = nodeValues[5];
-    document.menuForm.menuNm.value = nodeValues[2];
-    document.menuForm.menuDsc.value = nodeValues[4];
-    document.menuForm.menuUrl.value = nodeValues[3];
-//     document.menuForm.useYn.value = nodeValues[7];
-//     document.menuForm.menuSe.value = nodeValues[6];
-    $('#use'+nodeValues[7]).prop('checked',true);
-    $('#radio'+nodeValues[6]).prop('checked',true);
-    document.menuForm.menuAttr.value = nodeValues[8].replace(/`/gi,'"');
-    var attrPerson = JSON.parse(document.menuForm.menuAttr.value);
-    $('#menuAttrIns').prop('checked',attrPerson.attr.insert);
-    $('#menuAttrUpd').prop('checked',attrPerson.attr.update);
-    $('#menuAttrDet').prop('checked',attrPerson.attr.detail);
-    $('#menuAttrDel').prop('checked',attrPerson.attr.delete);
-    document.menuForm.ordSeq.disabled=true;
-    document.menuForm.menuUrl.readOnly=true;
-    document.menuForm.menuUrl.disabled=true;
-    
-    document.menuForm.tmp_CheckVal.value = "U";
-    $('.newMenu').hide();
-    $('.saveMenu').text('수정');
-    $('.saveMenu').addClass('modiMode');
-    $('.saveMenu').show();
-    $('.delMenu').show();
-    $('.cancel').show();
+	var nodeValues = treeNodes[nodeNum].split("|");
+	$('#ad'+document.menuForm.upMenuId.value).css('border','');
+	if($('.newMenu').hasClass('new')){
+		allDisabled(false);
+		$('#upMenuId').attr('disabled',true);
+		$('#radio'+nodeValues[6]).prop('checked',true);
+		if(nodeValues[6] != 'A'){
+			document.menuForm.upMenuId.value = nodeValues[1];	
+		}else{
+			document.menuForm.upMenuId.value = nodeValues[0];
+		}
+		if(nodeValues[1] == '' || nodeValues[1] == undefined ){
+			document.menuForm.upMenuId.value = nodeValues[0];
+		}
+		
+	    if(nodeValues[6] == 'L'){
+	    	allDisabled(true);
+	    	$('#radioL').prop('checked',true);
+	    	$('#menuUrl').val('/report/reportView/');
+	    }else{
+	    	var sl = nodeValues[3].indexOf('/',1);
+	    	if(sl == -1){
+		    	$('#menuUrl').val(nodeValues[3]+'/');
+		    	if(nodeValues[3].startsWith('/report')){
+		    		allDisabled(true);
+		    		$('#radioL').prop('checked',true);
+		    		$('#menuUrl').val('/report/reportView/');
+		    	}
+	    	}else{
+		    	var str = nodeValues[3].substring(0,sl);
+		    	$('#menuUrl').val(str+'/');
+		    	if(str == '/report'){
+		    		allDisabled(true);
+		    		$('#radioL').prop('checked',true);
+		    		$('#menuUrl').val('/report/reportView/');
+		    	}
+	    	}
+	    }
+	    
+	    $('#defaulttMenuUrl').val($('#menuUrl').val());
+	    
+		$('#ad'+document.menuForm.upMenuId.value).css('border','dashed red');
+		
+	}else{
+		$('input').attr('disabled',true);
+		$('textarea').attr('disabled',true);
+		$('select').attr('disabled',true);
+		$('radio').attr('disabled',true);
+		$('checkbox').attr('disabled',true);
+		
+		$('input').attr('readOnly',true);
+		$('textarea').attr('readOnly',true);
+		$('select').attr('readOnly',true);
+		$('radio').attr('readOnly',true);
+		$('checkbox').attr('readOnly',true);
+	    document.menuForm.upMenuId.value = nodeValues[1];
+	    document.menuForm.menuId.value = nodeValues[0];
+	    document.menuForm.ordSeq.value = nodeValues[5];
+	    document.menuForm.menuNm.value = nodeValues[2];
+	    document.menuForm.menuDsc.value = nodeValues[4];
+	    document.menuForm.menuUrl.value = nodeValues[3];
+	//     document.menuForm.useYn.value = nodeValues[7];
+	//     document.menuForm.menuSe.value = nodeValues[6];
+	    $('#use'+nodeValues[7]).prop('checked',true);
+	    $('#radio'+nodeValues[6]).prop('checked',true);
+	    document.menuForm.menuAttr.value = nodeValues[8].replace(/`/gi,'"');
+	    var attrPerson = JSON.parse(document.menuForm.menuAttr.value);
+	    $('#menuAttrIns').prop('checked',attrPerson.attr.insert);
+	    $('#menuAttrUpd').prop('checked',attrPerson.attr.update);
+	    $('#menuAttrDet').prop('checked',attrPerson.attr.detail);
+	    $('#menuAttrDel').prop('checked',attrPerson.attr.delete);
+	    document.menuForm.ordSeq.disabled=true;
+	    document.menuForm.menuUrl.readOnly=true;
+	    document.menuForm.menuUrl.disabled=true;
+	    
+	    document.menuForm.tmp_CheckVal.value = "U";
+	    $('.newMenu').hide();
+	    $('.saveMenu').text('수정');
+	    $('.saveMenu').addClass('modiMode');
+	    $('.saveMenu').show();
+	    $('.delMenu').show();
+	    $('.cancel').show();
+	}
 }
 
 /*메뉴 수정
