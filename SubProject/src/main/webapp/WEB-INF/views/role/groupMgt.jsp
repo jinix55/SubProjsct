@@ -96,7 +96,7 @@
 							</td>
 							<td>
 								<div class="bottom-group">
-									<a href="" onclick="sidebar_open('${role.authId}')" role="button" data-toggle="modal" class="btn-icon menuAuthOpen">
+									<a href="" onclick="sidebar_open('${role.authNm}','${role.authId}')" role="button" data-toggle="modal" class="btn-icon menuAuthOpen">
 										<img src="/images/icon_genemenu.png" title="메뉴생성" class="btn-Ticon">
 									</a>
 								</div>
@@ -134,8 +134,9 @@
 <section class="menu-chat sidebar-animate" id="Sidebar">
 	<div class="modal-header">
 		<h4 class="modal-title">권한별 메뉴 변경</h4>
-		<a href="javascript:layerPopupClose(sidebar_close);"><img
-			src="/images/icon_close.png"></a>
+		<a href="javascript:layerPopupClose(sidebar_close);">
+			<img src="/images/icon_close.png">
+		</a>
 	</div>
 	<div class="modal-body">
 		<!-- 버튼 -->
@@ -417,9 +418,9 @@
 	    $("#searchFrm").submit();
 	});
 	
-	function sidebar_open(authId) {
+	function sidebar_open(authNm,authId) {
 		document.getElementById("Sidebar").style.display = "block";
-		$('.rolsId').text(authId);
+		$('.rolsId').text(authNm+'('+authId+')');
 		$("#authId").val(authId);
 		selectMenuAuth(authId);
 	}
