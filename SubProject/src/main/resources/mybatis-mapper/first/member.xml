@@ -7,7 +7,7 @@
 	<sql id="searchMember">
 		<where>
 			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-				and (upper(u.user_id) like concat('%',upper(#{searchValue}),'%') or upper(u.user_nm) like concat('%',upper(#{searchValue}),'%') or (upper(d.dept_nm) like concat('%',upper(#{searchValue}),'%'))
+				and (upper(u.user_id) like concat('%',upper(#{searchValue}),'%') or upper(u.user_nm) like concat('%',upper(#{searchValue}),'%') or (upper(d.dept_nm) like concat('%',upper(#{searchValue}),'%')))
 			</if>
 			<if test="searchKey != '' and searchKey == 'userId' and searchValue != ''">
 				and (upper(u.user_id) like concat('%',upper(#{searchValue}),'%'))
