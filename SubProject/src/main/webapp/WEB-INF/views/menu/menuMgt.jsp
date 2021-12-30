@@ -686,6 +686,9 @@ function choiceNodes(nodeNum) {
 		    		$('#radioL').prop('checked',true);
 		    		$('#menuUrl').val('/report/reportView/');
 		    	}
+		    	if(nodeValues[1] == '' || nodeValues[1] == undefined){
+		    		$('#menuUrl').val(nodeValues[3]);
+		    	}
 	    	}else{
 		    	var str = nodeValues[3].substring(0,sl);
 		    	$('#menuUrl').val(str+'/');
@@ -698,7 +701,6 @@ function choiceNodes(nodeNum) {
 	    }
 	    
 	    $('#defaulttMenuUrl').val($('#menuUrl').val());
-	    
 		$('#ad'+document.menuForm.upMenuId.value).css('border','dashed red');
 		
 	}else{
