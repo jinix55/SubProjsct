@@ -231,7 +231,7 @@
 		<!-- S_left-area -->
 		<div class="col-35-area pr16-area">
 			<div class="left-area">
-				<h4 class="tab"><span>메뉴목록</span></h4>
+				<h4 class="tree_tab"><span>메뉴목록</span></h4>
 				<div class="nav_tree">
 				<script language="javascript" type="text/javaScript">
 					var chk_Object = true;
