@@ -21,7 +21,7 @@ public class ReportModel extends Criteria{
     private String reportNm;							// 레포트이름
     private String reportUrl;							// 레포트 url
     private String reportDsc;							// 회사 ID
-    private String companyId;							// 회사 ID
+    private String companyCode;							// 회사 ID
     private String groupId;								// 그룹 ID
     private String reportType;							// 회사 ID
     private String reportSize;							// 레포트 사이즈

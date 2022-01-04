@@ -27,7 +27,7 @@
 			, r.REPORT_NM
 			, r.REPORT_URL
 			, r.REPORT_DSC
-			, r.COMPANY_ID
+			, r.COMPANY_CODE
 <!-- 		, r.GROUP_ID -->
 			, r.REPORT_TYPE
 			, r.REPORT_SIZE
@@ -37,12 +37,12 @@
 			, r.MODI_ID
 			, r.MODI_DT
 		FROM T_REPORT r
-		left outer join t_company c ON c.company_code = r.company_id
+		left outer join t_company c ON c.company_code = r.company_code
 		WHERE 1 = 1
 		<include refid="searchReport"></include>
 		<if test="authId != 'au2000001'">
-			<if test="companyId != null and companyId != ''">
-				and c.company_code = #{companyId}
+			<if test="companyCode != null and companyCode != ''">
+				and c.company_code = #{companyCode}
 			</if>
 		</if>
 		ORDER BY ROWNUM ASC
@@ -53,12 +53,12 @@
 		SELECT
 			count(1)
 		FROM T_REPORT r
-		left outer join t_company c ON c.company_code = r.company_id
+		left outer join t_company c ON c.company_code = r.company_code
 		WHERE 1 = 1
 		<include refid="searchReport"></include>
 		<if test="authId != 'au2000001'">
-			<if test="companyId != null and companyId != ''">
-				and c.company_code = #{companyId}
+			<if test="companyCode != null and companyCode != ''">
+				and c.company_code = #{companyCode}
 			</if>
 		</if>
 	</select>
@@ -69,7 +69,7 @@
 			, REPORT_NM
 			, REPORT_URL
 			, REPORT_DSC
-			, COMPANY_ID
+			, COMPANY_CODE
 <!-- 			, GROUP_ID -->
 			, REPORT_TYPE
 			, REPORT_SIZE
@@ -83,7 +83,7 @@
 			, #{reportNm}
 			, #{reportUrl}
 			, #{reportDsc}
-			, #{companyId}
+			, #{companyCode}
 <!-- 			, #{groupId} -->
 			, #{reportType}
 			, #{reportSize}
@@ -102,7 +102,7 @@
 			, REPORT_DSC = #{reportDsc}
 			, REPORT_NM = #{reportNm}
 			, REPORT_URL = #{reportUrl}
-			, COMPANY_ID = #{companyId}
+			, COMPANY_CODE = #{companyCode}
 			, REPORT_SIZE = #{reportSize}
 			, USE_YN = #{useYn}
 			, MODI_ID = #{modiId}
@@ -117,7 +117,7 @@
 			, REPORT_NM
 			, REPORT_URL
 			, REPORT_DSC
-			, COMPANY_ID
+			, COMPANY_CODE
 <!-- 			, GROUP_ID -->
 			, REPORT_TYPE
 			, REPORT_SIZE
@@ -138,7 +138,7 @@
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE
-			REPORT_ID = #{reportId} AND COMPANY_ID = #{companyId}
+			REPORT_ID = #{reportId} AND COMPANY_CODE = #{companyCode}
 	</update>
 	
 	
