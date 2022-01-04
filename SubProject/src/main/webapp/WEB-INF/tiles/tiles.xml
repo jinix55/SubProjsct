@@ -72,6 +72,16 @@
 			value="/WEB-INF/views/alarm/{1}.jsp" />
 	</definition>
 	
+	<definition name="packagingCode/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/packagingCode/{1}.jsp" />
+	</definition>
+	
+	<definition name="supplier/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/supplier/{1}.jsp" />
+	</definition>
+	
 	<definition name="board/notice/*" extends="default-layout">
 		<put-attribute name="body"
 			value="/WEB-INF/views/board/notice/{1}.jsp" />
