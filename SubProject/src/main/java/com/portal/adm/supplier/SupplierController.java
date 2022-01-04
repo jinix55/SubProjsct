@@ -42,7 +42,7 @@ public class SupplierController {
     @GetMapping("/supplier")
     public String code(@ModelAttribute SupplierModel supplierModel, Model model) {
 
-        return "supplier/supplier";
+        return "supplier/supplierMgt";
     }
 
     /**
@@ -54,7 +54,7 @@ public class SupplierController {
     @PostMapping("/supplier")
     public String codePost(@ModelAttribute SupplierModel supplierModel, Model model) {
 
-        return "supplier/supplier";
+        return "supplier/supplierMgt";
     }
 
     /**
