@@ -59,7 +59,7 @@ public class PackagingCodeController {
 //            model.addAttribute("firstCodeUseYn", models.get(0).getUseYn());
 //        }
 
-        return "companyCode/packagingCode";
+        return "packagingCode/packagingCode";
     }
 
     /**
@@ -78,7 +78,7 @@ public class PackagingCodeController {
         model.addAttribute("codes", models);
         model.addAttribute("pages", packagingCodeMapper);
 
-        return "companyCode/packagingCode";
+        return "packagingCode/packagingCode";
     }
 
     /**
