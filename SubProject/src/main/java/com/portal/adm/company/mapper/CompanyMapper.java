@@ -6,7 +6,7 @@ import com.portal.adm.company.model.CompanyModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
 /**
- * Mybatis 코드관리 매핑 Interface
+ * Mybatis 회사관리 매핑 Interface
  */
 @ConnMapperFirst
 public interface CompanyMapper {
