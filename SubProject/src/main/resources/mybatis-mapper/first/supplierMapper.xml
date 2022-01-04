@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.supplier.mapper.SupplierMapper">
+
+	<sql id="searchCompany">
+		<where>
+			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+				and ((upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%')) OR (upper(COMPANY_NM) like concat('%',upper(#{searchValue}),'%')))
+			</if>
+			<if test="searchKey != '' and searchKey == 'companyCode' and searchValue != ''">
+				and (upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+			<if test="searchKey != '' and searchKey == 'companyNm' and searchValue != ''">
+				and (upper(COMPANY_NM) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectCompanyList" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
+			, COMPANY_ID
+			, COMPANY_CODE
+			, COMPANY_NO
+			, COMPANY_NM
+			, COMPANY_DSC
+			, ADDRESS
+			, TELEPHONE_NO
+			, REPRESENTATIVE_NM
+			, NOTE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_COMPANY
+		<include refid="searchCompany"></include>
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+	
+	<select id="selectCompanyListCount" resultType="int">
+		SELECT
+			count(1)
+		FROM T_COMPANY
+		<include refid="searchCompany"></include>
+	</select>
+	
+	<insert id="insert" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		INSERT INTO t_company (
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		) VALUES (
+			#{companyId},
+			#{companyCode},
+			#{companyNo},
+			#{companyNm},
+			#{companyDsc},
+			#{address},
+			#{telephoneNo},
+			#{representativeNm},
+			#{note},
+			#{useYn},
+			#{rgstId},
+			NOW(),
+			#{modiId},
+			NOW()
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		UPDATE t_company SET
+			COMPANY_CODE = #{companyCode},
+			COMPANY_NO = #{companyNo},
+			COMPANY_NM = #{companyNm},
+			COMPANY_DSC = #{companyDsc},
+			ADDRESS = #{address},
+			TELEPHONE_NO = #{telephoneNo},
+			REPRESENTATIVE_NM = #{representativeNm},
+			NOTE = #{note},
+			USE_YN = #{useYn},
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			COMPANY_ID = #{companyId}
+	</update>
+	
+	<select id="selectCode" resultType="string" parameterType="string">
+		SELECT
+			COMPANY_CODE
+		FROM
+			t_company
+		WHERE
+			COMPANY_Code = #{companyCode}
+	</select>
+	
+	<select id="select" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="string">
+		SELECT
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			t_company
+		WHERE
+			COMPANY_ID = #{companyId}
+	</select>
+	
+	<select id="selectListAll" resultType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			t_company
+	</select>
+	
+	<update id="delete" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		UPDATE t_company SET
+			USE_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			COMPANY_ID = #{companyId}
+	</update>
+	
+	
+</mapper>
