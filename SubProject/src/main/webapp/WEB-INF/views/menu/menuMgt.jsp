@@ -696,6 +696,8 @@ function choiceNodes(nodeNum) {
 		    		allDisabled(true);
 		    		$('#radioL').prop('checked',true);
 		    		$('#menuUrl').val('/report/reportView/');
+		    	}else{
+		    		$('#menuUrl').val(str);
 		    	}
 	    	}
 	    }
@@ -804,7 +806,7 @@ $(document).ready(function () {
 	});
 	
 	$('#radioF, #radioM, #radioA').click(function(){
-		$('#menuUrl').val('');
+		$('#menuUrl').val($('#defaulttMenuUrl').val());
 	});
 });
 </script>
