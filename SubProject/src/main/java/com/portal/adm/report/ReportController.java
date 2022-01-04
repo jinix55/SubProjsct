@@ -67,7 +67,7 @@ public class ReportController {
     	ReportModel repoModel = new ReportModel();
     	repoModel = reportModel;
     	repoModel.setAuthId(authUser.getMemberModel().getAuthId());
-    	repoModel.setCompanyId(authUser.getMemberModel().getCompanyCode());
+    	repoModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	log.info(" =============== report get in ============== reportModel : "+repoModel.toString());
         List<ReportModel> models = reportService.selectReportList(repoModel);
         reportModel.setTotalCount(reportService.selectReportListCount(repoModel));
@@ -125,7 +125,7 @@ public class ReportController {
     			String groupId = request.getParameter("groupId");
     			String reportDsc = request.getParameter("reportDsc");
     			String reportType = request.getParameter("reportType");
-    			String companyId = authUser.getMemberModel().getCompanyCode();
+    			String companyCode = authUser.getMemberModel().getCompanyCode();
     			String reportSize = request.getParameter("reportSize");
     			String useYn = request.getParameter("useYn");
     			
@@ -138,7 +138,7 @@ public class ReportController {
     			reportModel.setGroupId(authUser.getMemberModel().getAuthId());
     			reportModel.setReportType(reportType);
     			reportModel.setReportDsc(reportDsc);
-    			reportModel.setCompanyId(companyId);
+    			reportModel.setCompanyCode(companyCode);
     			reportModel.setReportSize(reportSize);
     			reportModel.setUseYn(useYn);
     			
@@ -173,12 +173,12 @@ public class ReportController {
 	            String reportId = request.getParameter("reportId");
     			String reportNm = request.getParameter("reportNm");
     			String reportUrl = request.getParameter("reportUrl");
-    			String companyId = authUser.getMemberModel().getCompanyCode();
+    			String companyCode = authUser.getMemberModel().getCompanyCode();
 	
 	            reportModel.setReportId(reportId);
     			reportModel.setReportNm(reportNm);
     			reportModel.setReportUrl(reportUrl);
-    			reportModel.setCompanyId(companyId);
+    			reportModel.setCompanyCode(companyCode);
 	
 	            reportModel.setModiId(authUser.getMemberModel().getUserId());
 	
