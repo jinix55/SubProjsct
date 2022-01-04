@@ -20,7 +20,7 @@
 						<input type="text" class="text-input"> <span
 							class="search-box-append">
 							<button type="button" class="button-search">
-								<img src="images/icon_search.png" title="검색">
+								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
 					</div>
@@ -35,11 +35,11 @@
 			<div>
 				<a href="#Alldelete" role="button" data-toggle="modal">
 					<button type="button" class="btn-alldelete">
-						전체삭제<img src="images/icon_delete.png" title="삭제">
+						전체삭제<img src="/images/icon_delete.png" title="삭제">
 					</button>
 				</a>
 				<button type="button" class="btn-allcancel">
-					삭제취소<img src="images/icon_cancel.png" title="취소">
+					삭제취소<img src="/images/icon_cancel.png" title="취소">
 				</button>
 			</div>
 			<div>
@@ -80,16 +80,16 @@
 						<td>홍길동</td>
 						<td class="ellipsis">원자재</td>
 						<td><a href="#charge" role="button" data-toggle="modal"
-							class="btn-icon"><img src="images/icon_user2.png">홍나리</a></td>
+							class="btn-icon"><img src="/images/icon_user2.png">홍나리</a></td>
 						<td>
 							<div class="btn-group">
 								<a href="#detail" role="button" data-toggle="modal"
-									class="btn-icon"><img src="images/icon_detail.png"
+									class="btn-icon"><img src="/images/icon_detail.png"
 									alt="상세보기" class="btn-Ticon"></a> <a href="#edit"
 									role="button" data-toggle="modal" class="btn-icon"><img
-									src="images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
+									src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
 								<a href="#delete" role="button" data-toggle="modal"
-									class="btn-icon"><img src="images/icon_delete2.png"
+									class="btn-icon"><img src="/images/icon_delete2.png"
 									alt="삭제하기" class="btn-Ticon02"></a>
 							</div>
 						</td>
@@ -102,16 +102,16 @@
 						<td>강감찬</td>
 						<td class="ellipsis">포장</td>
 						<td><a href="#charge" role="button" data-toggle="modal"
-							class="btn-icon"><img src="images/icon_user2.png">홍나리</a></td>
+							class="btn-icon"><img src="/images/icon_user2.png">홍나리</a></td>
 						<td>
 							<div class="btn-group">
 								<a href="#detail" role="button" data-toggle="modal"
-									class="btn-icon"><img src="images/icon_detail.png"
+									class="btn-icon"><img src="/images/icon_detail.png"
 									alt="상세보기" class="btn-Ticon"></a> <a href="#edit"
 									role="button" data-toggle="modal" class="btn-icon"><img
-									src="images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
+									src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
 								<a href="#delete" role="button" data-toggle="modal"
-									class="btn-icon"><img src="images/icon_delete2.png"
+									class="btn-icon"><img src="/images/icon_delete2.png"
 									alt="삭제하기" class="btn-Ticon02"></a>
 							</div>
 						</td>
@@ -155,7 +155,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">공급업체등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -249,10 +249,10 @@
 									<td>
 										<div class="btn-group">
 											<a href="#edit02" role="button" data-toggle="modal"
-												class="btn-icon"><img src="images/icon_edit.png"
+												class="btn-icon"><img src="/images/icon_edit.png"
 												alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
 												role="button" data-toggle="modal" class="btn-icon"><img
-												src="images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+												src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
 										</div>
 									</td>
 								</tr>
@@ -262,10 +262,10 @@
 									<td>
 										<div class="btn-group">
 											<a href="#edit02" role="button" data-toggle="modal"
-												class="btn-icon"><img src="images/icon_edit.png"
+												class="btn-icon"><img src="/images/icon_edit.png"
 												alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
 												role="button" data-toggle="modal" class="btn-icon"><img
-												src="images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+												src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
 										</div>
 									</td>
 								</tr>
@@ -334,7 +334,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">공급업체상세</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -479,7 +479,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">공급업체수정</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -608,7 +608,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">담당자수정</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -670,7 +670,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -699,7 +699,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">전체삭제</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
@@ -727,7 +727,7 @@
 		<div class="modal-header">
 			<h4 class="modal-title">담당자 정보</h4>
 			<button type="button" class="close" data-dismiss="modal">
-				<img src="images/icon_close.png">
+				<img src="/images/icon_close.png">
 			</button>
 		</div>
 		<div class="modal-body">
