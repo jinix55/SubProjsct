@@ -8,7 +8,7 @@
 		limit #{offSet}, #{pageSize}
 	</sql>
 
-	<select id="selectGroupIdList" resultType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<select id="selectGroupIdList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
 			GROUP_ID,
@@ -26,7 +26,7 @@
 		<include refid="paging"></include>
 	</select>
 
-	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		select
 			count(*)
 		from
@@ -35,7 +35,7 @@
 			group_id = #{groupId}
 	</select>
 
-	<select id="selectGroupIdAllList" resultType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<select id="selectGroupIdAllList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		select
 			row_number() over (order by ord_seq ASC) as rownum,
 			group_id,
@@ -55,7 +55,7 @@
 		order by rownum
 	</select>
 
-	<select id="select" resultType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<select id="select" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		select
 			group_id,
 			code_id,
@@ -74,7 +74,7 @@
 			code_id = #{codeId}
 	</select>
 
-	<insert id="insert" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<insert id="insert" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		insert into t_code (
 			group_id
 			, code_id
@@ -100,7 +100,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<update id="update" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		update t_code
 		set
 			code_nm = #{codeNm}
@@ -115,7 +115,7 @@
 			code_id = #{codeId}
 	</update>
 
-	<update id="delete" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<update id="delete" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		update t_code
 		set
 			use_yn = 'N'
@@ -125,7 +125,7 @@
 			code_id = #{codeId}
 	</update>
 
-	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
+	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		select count(*)
 		from t_code
 		where group_id = #{codeId}
