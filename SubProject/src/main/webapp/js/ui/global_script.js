@@ -409,7 +409,7 @@ $(function() {
 	// 기간( from~to ) 달력 세팅
 	$("[name=dateFrom]").calendar($("[name=dateTo]"));
 });
-// 탭추가
+// 탭추가 상세페이지
 $(function() {
 	$('.tab-in-content > div').hide();
 	$('.tab-in-nav a').click(function() {
@@ -419,80 +419,7 @@ $(function() {
 		return false;
 	}).filter(':eq(0)').click();
 });
-
-//체크박스//
-//function customSelectBox() {
-//	var customSelectEle, i, j, selElmnt, divEle, divEleSelected, c;
-//	customSelectEle = document.querySelector(".custom_select");
-//	selElmnt = customSelectEle.getElementsByTagName("select")[0];
-//	divEle = document.createElement("DIV");
-//	divEle.setAttribute("class", "select_selected");
-//	divSpan = document.createElement("span");
-//	divSpan = divEle.appendChild(divSpan)
-//	divSpan.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-//	customSelectEle.appendChild(divEle);
-//	divEle.children[0].classList.add("color_lightGray");
-//	divEleSelected = document.createElement("ul");
-//	divEleSelected.setAttribute("class", "select_items select_hide");
-//	Array.from(selElmnt).forEach((item, index) => {
-//		c = document.createElement("li");
-//		cSpan = document.createElement("span");
-//		cSpan = c.appendChild(cSpan);
-//		cSpan.innerHTML = selElmnt.options[index].innerHTML;
-//		c.addEventListener("click", function(e) {
-//			var y, i, k, selEleParent, selEleSibling;
-//			selEleParent = this.parentNode.parentNode.getElementsByTagName("select")[0];
-//			selEleSibling = this.parentNode.previousSibling;
-//			for (i = 0; i < selEleParent.length; i++) {
-//				if (selEleParent.options[i].innerHTML == this.children[0].innerHTML) {
-//					selEleParent.selectedIndex = i;
-//					selEleSibling.innerHTML = this.innerHTML;
-//					y = this.parentNode.getElementsByClassName("sameSelected");
-//					for (k = 0; k < y.length; k++) {
-//						y[k].removeArribute("class");
-//					}
-//					this.setAttribute("class", "sameSelected");
-//					break;
-//				}
-//			}
-//			selEleSibling.click();
-//		});
-//		divEleSelected.appendChild(c);
-//		c.children[0].classList.add("color_lightGray")
-//	});
-//	customSelectEle.appendChild(divEleSelected);
-//	divEle.addEventListener("click", function(e) {
-//		e.stopPropagation();
-//		closeSelect(this);
-//		this.nextSibling.classList.toggle("select_hide");
-//		this.classList.toggle("select_arrow_active");
-//	});
-//	var text = document.getElementsByClassName("");
-//	function closeSelect(elmnt) {
-//		var customSelectEle, y, i,
-//			arrNo = [];
-//		customSelectEle = document.getElementsByClassName("select_items");
-//		y = document.getElementsByClassName("select_selected");
-//		for (i = 0; i < y.length; i++) {
-//			if (elmnt == y[i]) {
-//				arrNo.push(i);
-//			}
-//			else {
-//				y[i].classList.remove("select_arrow_active");
-//			}
-//		}
-//		for (i = 0; i < customSelectEle.length; i++) {
-//			if (arrNo.indexOf(i)) {
-//				customSelectEle[i].classList.add("select_hide");
-//			}
-//		}
-//	}
-//	document.addEventListener("click", closeSelect);
-//}
-//window.onload = function() {
-//	customSelectBox();
-//};
-//탭추가
+// 탭추가 수정페이지
 $(function() {
 	$('.tabcontent > div').hide();
 	$('.tabnav a').click(function() {
@@ -502,3 +429,30 @@ $(function() {
 		return false;
 	}).filter(':eq(0)').click();
 });
+// 탭추가 등록페이지
+$(function() {
+	$('.tabcontent02 > div').hide();
+	$('.tabnav02 a').click(function() {
+		$('.tabcontent02 > div').hide().filter(this.hash).fadeIn();
+		$('.tabnav02 a').removeClass('active');
+		$(this).addClass('active');
+		return false;
+	}).filter(':eq(0)').click();
+});
+// 숫자증가
+function count(type) {
+	// 결과를 표시할 element
+	const resultElement = document.getElementById('result');
+	// 현재 화면에 표시된 값
+	let number = resultElement.innerText;
+	// 더하기/빼기
+	if (type === 'plus') {
+		number = parseInt(number) + 1;
+	} else if (type === 'minus') {
+		number = parseInt(number) - 1;
+	}
+	// 결과 출력
+	resultElement.innerText = number;
+}
+
+
