@@ -5,7 +5,7 @@
 <mapper namespace="com.portal.adm.packagingCode.mapper.PackagingCodeMapper">
 
 	<sql id="paging">
-		limit #{offSet}, #{pageSize}
+		LIMIT #{offSet}, #{pageSize}
 	</sql>
 
 	<select id="selectGroupIdList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
@@ -13,6 +13,10 @@
 			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
 			GROUP_ID,
 			CODE_ID,
+			<if test="authId == 'au2000001'">
+				UP_COMPANY_CODE,
+			</if>
+			CODE_KEY,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -20,75 +24,86 @@
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
-		FROM T_CODE
-		where GROUP_ID = #{groupId}
+		FROM T_PACKAGING_CODE
+		where GROUP_ID = #{groupId} 
+		<if test="authId != 'au2000001'">
+			<if test="upCompanyCode != null and upCompanyCode != ''">
+				AND UP_COMPANY_CODE = #{upCompanyCode}
+			</if>
+		</if>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
 
 	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		select
-			count(*)
-		from
-			t_code
-		where
-			group_id = #{groupId}
+		SELECT
+			COUNT(*)
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
 	</select>
 
 	<select id="selectGroupIdAllList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		select
-			row_number() over (order by ord_seq ASC) as rownum,
-			group_id,
-			code_id,
-			code_nm,
-			code_dsc,
-			use_yn,
-			rgst_id,
-			rgst_dt,
-			modi_id,
-			modi_dt,
-			ord_seq
-		from
-			t_code
-		where
-			group_id = #{groupId}
-		order by rownum
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY ORD_SEQ ASC) AS ROWNUM,
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT,
+			ORD_SEQ
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		ORDER BY ROWNUM
 	</select>
 
 	<select id="select" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		select
-			group_id,
-			code_id,
-			code_nm,
-			code_dsc,
-			use_yn,
-			rgst_id,
-			rgst_dt,
-			modi_id,
-			modi_dt
-		from
-			t_code
-		where
-			group_id = #{groupId}
-		and
-			code_id = #{codeId}
+		SELECT
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND
+			CODE_ID = #{codeId}
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		insert into t_code (
-			group_id
-			, code_id
-			, code_nm
-			, code_dsc
-			, use_yn
-			, rgst_id
-			, rgst_dt
-			, modi_id
-			, modi_dt
-			, ord_seq
-		) values (
+		INSERT INTO T_PACKAGING_CODE (
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, UP_COMPANY_CODE
+			, CODE_NM
+			, CODE_DSC
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+			, ORD_SEQ
+		) VALUES (
 			#{groupId}
 			, #{codeId}
+			, #{codeKey}
+			, #{upCompanyCode}
 			, #{codeNm}
 			, #{codeDsc}
 			, #{useYn}
@@ -101,34 +116,35 @@
 	</insert>
 
 	<update id="update" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		update t_code
-		set
-			code_nm = #{codeNm}
-			, code_dsc = #{codeDsc}
-			, modi_dt = now()
-			, modi_id = #{modiId}
-			, use_yn = #{useYn}
-			, ord_seq = #{ordSeq}
-		where
-			group_id = #{groupId}
-		and
-			code_id = #{codeId}
+		UPDATE T_PACKAGING_CODE
+		SET
+			CODE_NM = #{codeNm}
+			, CODE_KEY = #{codeKey}
+			, CODE_DSC = #{codeDsc}
+			, MODI_DT = now()
+			, MODI_ID = #{modiId}
+			, USE_YN = #{useYn}
+			, ORD_SEQ = #{ordSeq}
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND
+			CODE_ID = #{codeId}
 	</update>
 
 	<update id="delete" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		update t_code
-		set
-			use_yn = 'N'
-		where
-			group_id = #{groupId}
-		and
-			code_id = #{codeId}
+		UPDATE T_PACKAGING_CODE
+		SET
+			USE_YN = 'N'
+		WHERE
+			GROUP_ID = #{groupId}
+		AND
+			CODE_ID = #{codeId}
 	</update>
 
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		select count(*)
-		from t_code
-		where group_id = #{codeId}
-		and use_yn = 'Y'
+		SELECT COUNT(*)
+		FROM T_PACKAGING_CODE
+		WHERE GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND USE_YN = 'Y'
 	</select>
 </mapper>

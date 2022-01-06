@@ -17,7 +17,9 @@ public class PackagingCodeModel extends Criteria{
 
     private String rownum;          // 순번
     private String groupId;         // 코드그룹ID
+    private String upCompanyCode;   // 소속 회사코드
     private String codeId;          // 코드ID
+    private String codeKey;          // 코드ID
     private String codeNm;          // 코드이름
     private String codeDsc;        // 코드설명
     private String useYn;           // 사용여부

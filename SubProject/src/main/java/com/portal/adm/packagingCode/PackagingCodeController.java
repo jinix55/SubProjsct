@@ -42,11 +42,12 @@ public class PackagingCodeController {
      * @return
      */
     @GetMapping("/packagingCode")
-    public String code(@ModelAttribute PackagingCodeModel packagingCodeMapper, Model model) {
-    	String codeKey = "";
-    	if(packagingCodeMapper.getGroupId() == null) {
-    		packagingCodeMapper.setGroupId("GROUP_ID");
-    	}
+    public String code(@ModelAttribute PackagingCodeModel packagingCodeMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	String largeCategory = "GROUP_ID";
+    	String middleCategory = "";
+    	packagingCodeMapper.setGroupId("GROUP_ID");
+		packagingCodeMapper.setAuthId(authUser.getMemberModel().getAuthId());
+    	packagingCodeMapper.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
         List<PackagingCodeModel> models = packagingCodeService.selectGroupIdList(packagingCodeMapper);
         packagingCodeMapper.setTotalCount(packagingCodeService.selectGroupIdListCount(packagingCodeMapper));
         model.addAttribute("codes", models);
