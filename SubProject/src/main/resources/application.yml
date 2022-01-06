@@ -19,10 +19,11 @@ spring:
             on-profile: local # spring boot 2.4.0 부터 변경된 프로파일 정의 설정
     session:
         store-type: jdbc    # spring session 저장타입지정 / spring-session-jdbc를 추가하면 jdbc가 기본으로 동작해서 임시로 동작중지함.de
-        timeout: 12h
+        timeout: 12h 
     first:
         datasource:  # mysql
             jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
+            ##jdbc-url: jdbc:mysql://ppluseco.com:43306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
             driver-class-name: com.mysql.cj.jdbc.Driver
             type: com.zaxxer.hikari.HikariDataSource
             username: portal
