@@ -27,26 +27,38 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td class="text-point">PAPER</td>
-										<td>종이</td>
-										<td>
-											<div class="btn-group">
-												<a href="#delete" role="button" data-toggle="modal" class="btn-icon">
-													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
-												</a>
-											</div>
-										</td>
-									</tr>
+								<c:choose>
+									<c:when test="${1 != 1}">
+										<tr>
+											<td>1</td>
+											<td class="text-point">PAPER</td>
+											<td>종이</td>
+											<td>
+												<div class="btn-group">
+													<a href="#delete" role="button" data-toggle="modal" class="btn-icon">
+														<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+													</a>
+												</div>
+											</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<td colspan="4">
+												등록된 데이터가 없습니다.
+											</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<!-- E_그리드-->
 					<div class="btn-group pt15 tr">
-						<button type="button" class="button btn-success" data-toggle="modal">
-							<a href="#coderegister_b" data-toggle="modal">대분류등록</a>
+						<button type="button" class="button btn-success" data-toggle="modal"  href="#coderegister_b">
+							대분류등록
+<!-- 							<a href="#coderegister_b" data-toggle="modal" >대분류등록</a> -->
 						</button>
 					</div>
 				</div>
@@ -104,45 +116,48 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td class="text-point">PAPER_CASE</td>
-										<td>종이 포장</td>
-										<td><a href="#coderegister_s" role="button"
-											data-toggle="modal" class="button-Csmall">소분류 코드등록</a></td>
-										<td>
-											<div class="btn-group">
-												<a href="#edit" role="button" data-toggle="modal"
-													class="btn-icon"><img src="/images/icon_edit.png"
-													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
-													role="button" data-toggle="modal" class="btn-icon"><img
-													src="/images/icon_delete2.png" alt="삭제하기"
-													class="btn-Ticon02"></a>
-											</div>
-										</td>
-									</tr>
+								<c:choose>
+									<c:when test="${1 != 1}">
+										<tr>
+											<td>1</td>
+											<td class="text-point">PAPER_CASE</td>
+											<td>종이 포장</td>
+											<td><a href="#coderegister_s" role="button"
+												data-toggle="modal" class="button-Csmall">소분류 코드등록</a></td>
+											<td>
+												<div class="btn-group">
+													<a href="#edit" role="button" data-toggle="modal" class="btn-icon">
+														<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+													</a>
+													<a href="#delete" role="button" data-toggle="modal" class="btn-icon">
+														<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+													</a>
+												</div>
+											</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<td colspan="5">
+												등록된 데이터가 없습니다.
+											</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
+									
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<!-- E_그리드-->
 					<div class="btn-group pt15 tr">
-						<button type="button" class="button btn-success"
-							data-toggle="modal">
-							<a href="#coderegister_m" data-toggle="modal">중분류등록</a>
+						<button type="button" class="button btn-success" data-toggle="modal" href="#coderegister_m">
+							중분류등록
+<!-- 							<a href="#coderegister_m" data-toggle="modal">중분류등록</a> -->
 						</button>
 					</div>
 					<!-- S_페이징-->
 					<div class="board-paging">
-						<ul>
-							<li><a href="#" class="start">◀</a></li>
-							<li class="on"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#" class="last">▶</a></li>
-						</ul>
 					</div>
 					<!-- E_페이징-->
 				</div>
@@ -231,8 +246,7 @@
 </div>
 
 <!-- 레이어 팝업 - 중분류등록  -->
-<div id="coderegister_m" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="coderegister_m" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 500px">
 		<div class="modal-header">
 			<h4 class="modal-title">중분류등록</h4>
@@ -389,9 +403,7 @@
 </div>
 
 <!-- 레이어 팝업 - delete -->
-<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-	data-modal-parent="#myModal">
+<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	<!-- Modal content-->
 	<div class="modal-content" style="width: 500px">
 		<div class="modal-header">
@@ -422,18 +434,9 @@
 	/**
 	 * 페이징 처리 공통 함수
 	 */
-	var totalPage = $
-	{
-		pages.totalPage
-	};
-	var page = $
-	{
-		pages.page
-	};
-	var pageSize = $
-	{
-		pages.pageSize
-	};
+	var totalPage = ${pages.totalPage};
+	var page = ${pages.page};
+	var pageSize = ${pages.pageSize};
 	var setGrpId;
 	var setCodeId;
 	// var totalPageCnt = 10;
