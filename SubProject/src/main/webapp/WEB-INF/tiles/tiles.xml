@@ -77,6 +77,11 @@
 			value="/WEB-INF/views/packagingCode/{1}.jsp" />
 	</definition>
 	
+	<definition name="environmentCode/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/environmentCode/{1}.jsp" />
+	</definition>
+	
 	<definition name="supplier/*" extends="default-layout">
 		<put-attribute name="body"
 			value="/WEB-INF/views/supplier/{1}.jsp" />
