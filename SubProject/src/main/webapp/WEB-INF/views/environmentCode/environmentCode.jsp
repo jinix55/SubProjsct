@@ -2,12 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="content">
-	<div class="row">
+	<div class="d-flex">
+		<span class="pt10 pr10">ㆍ코드변경시점</span> <select class="select-box w150">
+			<option value="0">2021년 1월</option>
+			<option value="1">2021년 8월</option>
+			<option value="3">2022년 1월</option>
+		</select>
+	</div>
+	<div class="row pt30">
 		<!-- S_left-area -->
 		<div class="code-left-wrap">
-			<h4 class="code-tit">ㆍ분류그룹등록 > 대분류</h4>
+			<h4 class="code-tit">ㆍ환경부코드등록 > 대분류</h4>
 			<div class="left-area">
 				<div class="content">
+					<div class="d-flex">
+						<span class="pt10 pr10">ㆍ재질</span> <select class="select-box w150">
+							<option value="0">선택</option>
+							<option value="0">종이팩</option>
+							<option value="1">유리병</option>
+							<option value="3">금속팩</option>
+						</select>
+					</div>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">
@@ -29,13 +44,91 @@
 								<tbody>
 									<tr>
 										<td>1</td>
-										<td class="text-point">PAPER</td>
-										<td>종이</td>
+										<td class="text-point">01</td>
+										<td>종이팩</td>
 										<td>
 											<div class="btn-group">
-												<a href="#delete" role="button" data-toggle="modal" class="btn-icon">
-													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
-												</a>
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td class="text-point">02</td>
+										<td>유리병</td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td class="text-point">03</td>
+										<td>금속캔(철캔)</td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td class="text-point">04</td>
+										<td>금속캔(알루미늄)</td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td class="text-point">05</td>
+										<td>일반 발포합성수지 단일·복합재질</td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td class="text-point">06</td>
+										<td>폴리스티렌페이퍼(PSP)</td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
 											</div>
 										</td>
 									</tr>
@@ -45,8 +138,9 @@
 					</div>
 					<!-- E_그리드-->
 					<div class="btn-group pt15 tr">
-						<button type="button" class="button btn-success" data-toggle="modal">
-							<a href="#coderegister_b" data-toggle="modal">대분류등록</a>
+						<button type="button" class="button btn-success" data-toggle="modal" href="#coderegister_m">
+							대분류 등록
+<!-- 							<a href="#coderegister_m" data-toggle="modal">대분류 등록</a> -->
 						</button>
 					</div>
 				</div>
@@ -55,11 +149,10 @@
 		<!-- E_left-area -->
 		<!-- S_right-area -->
 		<div class="code-right-wrap">
-			<h4 class="code-tit">ㆍ분류그룹등록 > 중분류</h4>
+			<h4 class="code-tit">ㆍ환경부코드등록 > 중분류</h4>
 			<div class="right-area">
-
 				<div class="content">
-					<!-- S_검색-->
+				<!-- S_검색-->
 					<form>
 						<div class="justify-content-between">
 							<div class="form-group">
@@ -106,17 +199,34 @@
 								<tbody>
 									<tr>
 										<td>1</td>
-										<td class="text-point">PAPER_CASE</td>
-										<td>종이 포장</td>
+										<td class="text-point">01</td>
+										<td>몸체</td>
 										<td><a href="#coderegister_s" role="button"
-											data-toggle="modal" class="button-Csmall">소분류 코드등록</a></td>
+											data-toggle="modal" class="button-Csmall">코드등록</a></td>
 										<td>
 											<div class="btn-group">
 												<a href="#edit" role="button" data-toggle="modal"
-													class="btn-icon"><img src="/images/icon_edit.png"
+													class="btn-icon"><img src="../images/icon_edit.png"
 													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
 													role="button" data-toggle="modal" class="btn-icon"><img
-													src="/images/icon_delete2.png" alt="삭제하기"
+													src="../images/icon_delete2.png" alt="삭제하기"
+													class="btn-Ticon02"></a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td class="text-point">02</td>
+										<td>마개및잡자재</td>
+										<td><a href="#coderegister_s" role="button"
+											data-toggle="modal" class="button-Csmall">코드등록</a></td>
+										<td>
+											<div class="btn-group">
+												<a href="#edit" role="button" data-toggle="modal"
+													class="btn-icon"><img src="../images/icon_edit.png"
+													alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
+													role="button" data-toggle="modal" class="btn-icon"><img
+													src="../images/icon_delete2.png" alt="삭제하기"
 													class="btn-Ticon02"></a>
 											</div>
 										</td>
@@ -127,24 +237,24 @@
 					</div>
 					<!-- E_그리드-->
 					<div class="btn-group pt15 tr">
-						<button type="button" class="button btn-success"
-							data-toggle="modal">
-							<a href="#coderegister_m" data-toggle="modal">중분류등록</a>
+						<button type="button" class="button btn-success" data-toggle="modal" href="#coderegister_m">
+							중분류 등록
+<!-- 							<a href="#coderegister_m" data-toggle="modal">중분류등록</a> -->
 						</button>
 					</div>
-					<!-- S_페이징-->
-					<div class="board-paging">
-						<ul>
-							<li><a href="#" class="start">◀</a></li>
-							<li class="on"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#" class="last">▶</a></li>
-						</ul>
-					</div>
-					<!-- E_페이징-->
+					<!-- S_페이징
+									<div class="board-paging">
+										<ul>
+											<li><a href="#" class="start">◀</a></li>
+											<li class="on"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#" class="last">▶</a></li>
+										</ul>
+									</div>
+									 E_페이징-->
 				</div>
 			</div>
 		</div>
@@ -422,22 +532,31 @@
 	/**
 	 * 페이징 처리 공통 함수
 	 */
-	var totalPage = ${pages.totalPage};
-	var page = ${pages.page};
-	var pageSize = ${pages.pageSize};
+	var totalPage = $
+	{
+		pages.totalPage
+	};
+	var page = $
+	{
+		pages.page
+	};
+	var pageSize = $
+	{
+		pages.pageSize
+	};
 	var setGrpId;
 	var setCodeId;
 	// var totalPageCnt = 10;
 	// var pageCnt = 2; 
 	// var pageSizeCnt = 10; 
 
-	$('.board-paging').bootpag({ 	// 페이징을 표시할 div의 클래스
-		total : totalPage, 			// 페이징모델의 전체페이지수
-		page : page, 				// 페이징모델의 현재페이지번호
-		maxVisible : pageSize, 		// 보여질 최대 페이지수
-		firstLastUse : true, 		// first와 last사용유무
-		wrapClass : 'paging',		// 페이징을 감싼 클래스명
-		activeClass : 'on', 		// 현재페이지의 클래스명
+	$('.board-paging').bootpag({ // 페이징을 표시할 div의 클래스
+		total : totalPage, // 페이징모델의 전체페이지수
+		page : page, // 페이징모델의 현재페이지번호
+		maxVisible : pageSize, // 보여질 최대 페이지수
+		firstLastUse : true, // first와 last사용유무
+		wrapClass : 'paging', // 페이징을 감싼 클래스명
+		activeClass : 'on', // 현재페이지의 클래스명
 		disabledClass : 'disabled', // 각 항목별 클래스 지정
 		nextClass : 'next',
 		prevClass : 'prev',
