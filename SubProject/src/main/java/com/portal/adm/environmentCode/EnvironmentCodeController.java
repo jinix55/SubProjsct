@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,16 +43,18 @@ public class EnvironmentCodeController {
      * @return
      */
     @GetMapping("/environmentCode")
-    public String code(@ModelAttribute EnvironmentCodeModel environmentCodeMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String code(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	String largeCategory = "GROUP_ID";
-    	String middleCategory = "";
-    	environmentCodeMapper.setGroupId("GROUP_ID");
-		environmentCodeMapper.setAuthId(authUser.getMemberModel().getAuthId());
-    	environmentCodeMapper.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeMapper);
-        environmentCodeMapper.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeMapper));
+    	if(environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
+    		largeCategory = "GROUP_ID";
+    	}
+    	environmentCodeModel.setGroupId("GROUP_ID");
+		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	environmentCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeModel);
+        environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
         model.addAttribute("codes", models);
-        model.addAttribute("pages", environmentCodeMapper);
+        model.addAttribute("pages", environmentCodeModel);
 
 //        if(models.size() > 0) {
 //            model.addAttribute("firstCodeId", models.get(0).getCodeId());
@@ -70,14 +73,14 @@ public class EnvironmentCodeController {
      * @return
      */
     @PostMapping("/environmentCode")
-    public String codePost(@ModelAttribute EnvironmentCodeModel environmentCodeMapper, Model model) {
-    	if(environmentCodeMapper.getGroupId() == null) {
-    		environmentCodeMapper.setGroupId("GROUP_ID");
+    public String codePost(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model) {
+    	if(environmentCodeModel.getGroupId() == null) {
+    		environmentCodeModel.setGroupId("GROUP_ID");
     	}
-        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeMapper);
-        environmentCodeMapper.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeMapper));
+        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeModel);
+        environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
         model.addAttribute("codes", models);
-        model.addAttribute("pages", environmentCodeMapper);
+        model.addAttribute("pages", environmentCodeModel);
 
         return "environmentCode/environmentCode";
     }
@@ -91,7 +94,8 @@ public class EnvironmentCodeController {
     @PostMapping("/environmentCode/insert")
     public ResponseEntity<String> groupSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
-            EnvironmentCodeModel environmentCodeMapper = new EnvironmentCodeModel();
+        	String _groupId = "";
+            EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
@@ -101,20 +105,22 @@ public class EnvironmentCodeController {
             String codeDesc = request.getParameter("codeDsc");
             String codeUseYn = request.getParameter("useYn");
 
-            environmentCodeMapper.setCodeId(codeId);
-            environmentCodeMapper.setCodeNm(codeNm);
-            environmentCodeMapper.setCodeDsc(codeDesc);
-            environmentCodeMapper.setUseYn(codeUseYn);
-            if(groupId != null) {
-            	 environmentCodeMapper.setGroupId(groupId);
+            if(groupId == null || StringUtils.equals(groupId,"")) {
+            	_groupId = "GROUP_ID";
             }else {
-            	environmentCodeMapper.setGroupId("GROUP_ID");
+            	_groupId = groupId;
             }
+            
+            environmentCodeModel.setCodeId(codeId);
+            environmentCodeModel.setCodeNm(codeNm);
+            environmentCodeModel.setCodeDsc(codeDesc);
+            environmentCodeModel.setUseYn(codeUseYn);
+        	environmentCodeModel.setGroupId(_groupId);
 
-            environmentCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeMapper.setModiId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = environmentCodeService.save(environmentCodeMapper);
+            String result = environmentCodeService.save(environmentCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -131,17 +137,17 @@ public class EnvironmentCodeController {
     @PostMapping("/environmentCode/delete")
     public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
-            EnvironmentCodeModel environmentCodeMapper = new EnvironmentCodeModel();
+            EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
 
             String codeId = request.getParameter("codeId");
 
-            environmentCodeMapper.setCodeId(codeId);
-            environmentCodeMapper.setGroupId("GROUP_ID");
+            environmentCodeModel.setCodeId(codeId);
+            environmentCodeModel.setGroupId("GROUP_ID");
 
-            environmentCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeMapper.setModiId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = environmentCodeService.delete(environmentCodeMapper);
+            String result = environmentCodeService.delete(environmentCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -160,12 +166,12 @@ public class EnvironmentCodeController {
      */
     @RequestMapping(value="/environmentCode/detail/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<EnvironmentCodeModel> codesForGroupCd(@ModelAttribute EnvironmentCodeModel environmentCodeMapper, @PathVariable("codeId") String codeId) {
-    	environmentCodeMapper.setCodeId(codeId);
-    	environmentCodeMapper.setGroupId("GROUP_ID");
-        environmentCodeMapper = environmentCodeService.select(environmentCodeMapper);
+    public ResponseEntity<EnvironmentCodeModel> codesForGroupCd(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @PathVariable("codeId") String codeId) {
+    	environmentCodeModel.setCodeId(codeId);
+    	environmentCodeModel.setGroupId("GROUP_ID");
+        environmentCodeModel = environmentCodeService.select(environmentCodeModel);
 
-        return new ResponseEntity<>(environmentCodeMapper, HttpStatus.OK);
+        return new ResponseEntity<>(environmentCodeModel, HttpStatus.OK);
     }
     
     
@@ -177,19 +183,19 @@ public class EnvironmentCodeController {
      */
     @RequestMapping("/environmentCode/detail/code/{groupCd}")
     public ResponseEntity<List<EnvironmentCodeModel>> codesForCodeCd(@PathVariable("groupCd") String groupId) {
-    	List<EnvironmentCodeModel> environmentCodeMappers = environmentCodeService.selectGroupIdAllList(groupId);
+    	List<EnvironmentCodeModel> environmentCodeModels = environmentCodeService.selectGroupIdAllList(groupId);
     	
-    	return new ResponseEntity<>(environmentCodeMappers, HttpStatus.OK);
+    	return new ResponseEntity<>(environmentCodeModels, HttpStatus.OK);
     }
 
     /**
      * 코드를 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
      *
-     * @param environmentCodeMapper
+     * @param environmentCodeModel
      * @return
      */
     @PostMapping("/environmentCode/insert/code")
-    public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeMapper, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
@@ -200,20 +206,20 @@ public class EnvironmentCodeController {
             String codeDesc = request.getParameter("codeDsc");
             String codeUseYn = request.getParameter("code_useYn");
 
-            environmentCodeMapper.setCodeId(codeId);
-            environmentCodeMapper.setCodeNm(codeNm);
-            environmentCodeMapper.setCodeDsc(codeDesc);
-            environmentCodeMapper.setUseYn(codeUseYn);
+            environmentCodeModel.setCodeId(codeId);
+            environmentCodeModel.setCodeNm(codeNm);
+            environmentCodeModel.setCodeDsc(codeDesc);
+            environmentCodeModel.setUseYn(codeUseYn);
             if(groupId != null) {
-            	 environmentCodeMapper.setGroupId(groupId);
+            	 environmentCodeModel.setGroupId(groupId);
             }else {
-            	environmentCodeMapper.setGroupId("GROUP_ID");
+            	environmentCodeModel.setGroupId("GROUP_ID");
             }
 
-            environmentCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeMapper.setModiId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = environmentCodeService.save(environmentCodeMapper);
+            String result = environmentCodeService.save(environmentCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -226,16 +232,16 @@ public class EnvironmentCodeController {
     /**
      * 코드를 삭제한다.
      *
-     * @param environmentCodeMapper
+     * @param environmentCodeModel
      * @return
      */
     @PostMapping("/environmentCode/delete/code")
-    public ResponseEntity<String> delete(@ModelAttribute EnvironmentCodeModel environmentCodeMapper, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> delete(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @AuthenticationPrincipal AuthUser authUser) {
         try {
-            environmentCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeMapper.setModiId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = environmentCodeService.delete(environmentCodeMapper);
+            String result = environmentCodeService.delete(environmentCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
