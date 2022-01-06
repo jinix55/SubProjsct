@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.product.mapper.ProductMapper">
+
+	<sql id="paging">
+		LIMIT #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectGroupIdList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
+			GROUP_ID,
+			CODE_ID,
+			<if test="authId == 'au2000001'">
+				UP_COMPANY_CODE,
+			</if>
+			CODE_KEY,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM T_PACKAGING_CODE
+		where GROUP_ID = #{groupId} 
+		<if test="authId != 'au2000001'">
+			<if test="upCompanyCode != null and upCompanyCode != ''">
+				AND UP_COMPANY_CODE = #{upCompanyCode}
+			</if>
+		</if>
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+
+	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+			COUNT(*)
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+	</select>
+
+	<select id="selectGroupIdAllList" resultType="com.portal.adm.product.model.ProductModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY ORD_SEQ ASC) AS ROWNUM,
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT,
+			ORD_SEQ
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		ORDER BY ROWNUM
+	</select>
+
+	<select id="select" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND
+			CODE_ID = #{codeId}
+	</select>
+
+	<insert id="insert" parameterType="com.portal.adm.product.model.ProductModel">
+		INSERT INTO T_PACKAGING_CODE (
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, UP_COMPANY_CODE
+			, CODE_NM
+			, CODE_DSC
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+			, ORD_SEQ
+		) VALUES (
+			#{groupId}
+			, #{codeId}
+			, #{codeKey}
+			, #{upCompanyCode}
+			, #{codeNm}
+			, #{codeDsc}
+			, #{useYn}
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+			, #{ordSeq}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T_PACKAGING_CODE
+		SET
+			CODE_NM = #{codeNm}
+			, CODE_KEY = #{codeKey}
+			, CODE_DSC = #{codeDsc}
+			, MODI_DT = now()
+			, MODI_ID = #{modiId}
+			, USE_YN = #{useYn}
+			, ORD_SEQ = #{ordSeq}
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND
+			CODE_ID = #{codeId}
+	</update>
+
+	<update id="delete" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T_PACKAGING_CODE
+		SET
+			USE_YN = 'N'
+		WHERE
+			GROUP_ID = #{groupId}
+		AND
+			CODE_ID = #{codeId}
+	</update>
+
+	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT COUNT(*)
+		FROM T_PACKAGING_CODE
+		WHERE GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		AND USE_YN = 'Y'
+	</select>
+</mapper>
