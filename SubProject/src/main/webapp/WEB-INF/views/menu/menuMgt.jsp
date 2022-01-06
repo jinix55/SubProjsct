@@ -223,7 +223,7 @@
 <c:set var="string1" value='${fn:replace(menu.menuAttr,\'\"\',\'`\')}' />
 <c:set var="string2" value='${fn:replace(menu.fullPathId,\'\"\',\'`\')}' />
 <c:set var="string3" value='${fn:replace(menu.fullPathNm,\'\"\',\'`\')}' />
-<input type="hidden" name="tmp_menuNmVal" value="${menu.menuId}|${menu.upMenuId}|${menu.menuNm}|${menu.menuUrl}|${menu.menuDsc}|${menu.ordSeq}|${menu.menuSe}|${menu.useYn}|${string1}|${menu.lv}|${string2}|${string3}|${menu.fullOrdSeq}" />
+<input type="hidden" name="tmp_menuNmVal" value="${menu.menuId}|${menu.upMenuId}|${menu.menuNm}|${menu.menuUrl}|${menu.menuDsc}|${menu.ordSeq}|${menu.menuSe}|${menu.useYn}|${string1}|${menu.lv}|${string2}|${string3}|${menu.fullOrdSeq}|${menu.iconNm}" />
 </c:forEach>
 
 <div class="content">
@@ -386,6 +386,14 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group folderImg">
+							<label class="col-25 form-label">폴더 이미지</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input type="text" class="text-input" name="iconNm" id="iconNm" disabled>
+								</div>
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="col-25 form-label">메뉴URL</label>
 							<div class="col-75">
@@ -460,38 +468,6 @@
 </form>
 
 <script type="text/javascript">
-/**
- * 페이징 처리 공통 함수
- */
-// var totalPage = ${pages.totalPage};
-// var page = ${pages.page}; 
-// var pageSize = ${pages.pageSize}; 
-
-var totalPageCnt = 10;
-var pageCnt = 2; 
-var pageSizeCnt = 10; 
-
-$('.paging_cont').bootpag({        // 페이징을 표시할 div의 클래스
-	total: totalPageCnt,  // 페이징모델의 전체페이지수
-    page: pageCnt,        // 페이징모델의 현재페이지번호
-    maxVisible: pageSizeCnt,  // 보여질 최대 페이지수
-    firstLastUse: true,             // first와 last사용유무
-    wrapClass: 'paging',              // 페이징을 감싼 클래스명
-    activeClass: 'on',              // 현재페이지의 클래스명
-    disabledClass: 'disabled',      // 각 항목별 클래스 지정
-    nextClass: 'next',
-    prevClass: 'prev',
-    lastClass: 'last',
-    firstClass: 'first',
-	next: ' ',
-	prev: ' ',
-	first: '<span aria-hidden="true"></span>',
-	last: '<span aria-hidden="true"></span>'
-}).on("paging_cont", function(event, num){
-    $("#page").val(num);
-    $("#holiBdForm").submit();
-});
-
 
 /* ********************************************************
  * 메뉴 등록 처리 함수
@@ -723,6 +699,7 @@ function choiceNodes(nodeNum) {
 	    document.menuForm.menuNm.value = nodeValues[2];
 	    document.menuForm.menuDsc.value = nodeValues[4];
 	    document.menuForm.menuUrl.value = nodeValues[3];
+	    document.menuForm.iconNm.value = nodeValues[13];
 	//     document.menuForm.useYn.value = nodeValues[7];
 	//     document.menuForm.menuSe.value = nodeValues[6];
 	    $('#use'+nodeValues[7]).prop('checked',true);

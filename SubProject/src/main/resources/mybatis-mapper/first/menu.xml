@@ -16,6 +16,7 @@
 		      , JSON_ARRAY(cast(M.MENU_ID as varchar(4000))) AS FULL_PATH_ID
 		      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
 		      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
+		      , M.ICON_NM
 		    FROM t_group_menu M
 		    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
 		    UNION ALL
@@ -25,6 +26,7 @@
 		      , JSON_ARRAY_APPEND(R.FULL_PATH_ID,'$',M.MENU_ID) AS FULL_PATH_ID
 		      , JSON_ARRAY_APPEND(R.FULL_PATH_NM,'$',M.MENU_NM) AS FULL_PATH_NM
 		      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
+		      , M.ICON_NM
 		    FROM R
 		    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
 			<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(authId)'>
@@ -37,6 +39,7 @@
 		  , R.FULL_PATH_ID
 		  , R.FULL_PATH_NM
 		  , R.FULL_ORD_SEQ
+		  , ICON_NM
 		FROM R
 		WHERE MENU_SE != 'F'
 		ORDER BY FULL_ORD_SEQ, MENU_NM
