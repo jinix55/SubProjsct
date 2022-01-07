@@ -678,7 +678,7 @@ TRUNCATE TABLE T_SUPPLIER_MANAGER;
 DROP TABLE IF EXISTS T_ENVIRONMENT_CODE CASCADE;
 CREATE TABLE IF NOT EXISTS T_ENVIRONMENT_CODE (
     GROUP_ID VARCHAR(64) NOT NULL COMMENT '그룹 ID'
-  , UP_COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '소속 회사 코드'
+  , UP_COMPANY_CODE VARCHAR(16) COMMENT '소속 회사 코드'
   , CODE_ID VARCHAR(64) NOT NULL COMMENT '코드 ID'
   , REVISION_YEAR VARCHAR(4) NOT NULL COMMENT '개정 년'
   , REVISION_MONTH VARCHAR(2) NOT NULL COMMENT '개정 월'
@@ -698,8 +698,10 @@ CREATE TABLE IF NOT EXISTS T_ENVIRONMENT_CODE (
   , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
   , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '환경부 코드 관리[환경부 코드 관리]';
-ALTER TABLE T_ENVIRONMENT_CODE ADD CONSTRAINT T_ENVIRONMENT_CODE_PK PRIMARY KEY(GROUP_ID,UP_COMPANY_CODE,CODE_ID);
--- CREATE INDEX T_ENVIRONMENT_CODE_IX1 ON T_ENVIRONMENT_CODE(GROUP_ID,UP_COMPANY_CODE,CODE_ID);	
+ALTER TABLE T_ENVIRONMENT_CODE ADD CONSTRAINT T_ENVIRONMENT_CODE_PK PRIMARY KEY(GROUP_ID,CODE_ID,REVISION_YEAR,REVISION_MONTH);
+-- CREATE INDEX T_ENVIRONMENT_CODE_IX1 ON T_ENVIRONMENT_CODE(GROUP_ID,CODE_ID,REVISION_YEAR,REVISION_MONTH);
+
+
 
 -- 공통    환경부 코드 관리
 TRUNCATE TABLE T_ENVIRONMENT_CODE;
@@ -849,6 +851,52 @@ INSERT INTO T_USER (USER_ID,USER_NM,PASSWORD,EMAIL,PHONE,PSTN_CODE,DEPT_CODE,HDE
 ('fail11','실패11',SHA2('pplus!1',256),'fail11@pplus.com','010-9999-0015','P1','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('2021-12-16','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('fail12','실패12',SHA2('pplus!1',256),'fail12@pplus.com','010-9999-0016','P1','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('2021-12-16','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('fail13','실패13',SHA2('pplus!1',256),'fail13@pplus.com','010-9999-0017','P2','D1','S1',NULL,'DTCOMPANY','N',DATE_FORMAT('2021-12-16','%Y-%m-%d %T'),DATE_FORMAT('2020-11-01','%Y-%m-%d'),DATE_FORMAT('2021-12-31','%Y-%m-%d'),'Y',NULL,NULL,NULL,NULL,NULL,NULL,'N','Y',0,'R','SYSTEM',NOW(),'SYSTEM',NOW());
+
+TRUNCATE TABLE T_ENVIRONMENT_CODE;
+INSERT INTO T_ENVIRONMENT_CODE (GROUP_ID,UP_COMPANY_CODE,CODE_ID,REVISION_YEAR,REVISION_MONTH,CODE_KEY,CODE_NM,CODE_DSC,RPT_MAT_STRUCT,RPT_DEV_ANAL,RPT_VISUAL_JUDG,RPT_TEST,RPT_PERMISSION,RPT_ETC,ORD_SEQ,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
+('GROUP_ID',NULL,'PAPER_PACK','2021','06','01','종이팩','종이팩 포장','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID',NULL,'GLASS_BOTTLE','2021','06','02','유리병','유리병 포장','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_PACK',NULL,'PAPER_BODY','2021','06','01','몸체','종이팩 포장 몸체','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_PACK',NULL,'PAPER_STOPPER','2021','06','03','마개및잡자재','마개및잡자재','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_BEST','2021','06','A','최우수','최우수 제품','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_GOOD','2021','06','B','우수','우수한 제품','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_NORMAL','2021','06','C','보통','보통 제품','N','N','N','N','N','N','3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_DIFFICULT','2021','06','D','어려움','어려운 제품','N','N','N','N','N','N','4','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_GOOD',NULL,'PAPER_GOOD_01','2021','06','09','알루미늄 첩합 구조 미사용','알루미늄 첩합 구조 미사용 제품','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_NORMAL',NULL,'PAPER_NORMAL_09','2021','06','09','기타','기타 제품','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_DIFFICULT',NULL,'PAPER_DIFFICULT_01','2021','06','01','알루미늄 첩합 구조를 사용한 종이팩',NULL,'Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_DIFFICULT',NULL,'PAPER_DIFFICULT_02','2021','06','02','백색을 제외한 펄프를 사용한 제품',NULL,'Y','N','N','Y','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_BOTTLE',NULL,'GLASS_BODY','2021','06','01','몸체','유리병 포장 몸체','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_BODY',NULL,'GLASS_GOOD','2021','06','B','우수','우수','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_BODY',NULL,'GLASS_NORMAL','2021','06','C','보통','보통','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_BODY',NULL,'GLASS_DIFFICULT','2021','06','D','어려움','어려움','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_GOOD',NULL,'GLASS_GOOD_01','2021','06','01','무색','무색','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_GOOD',NULL,'GLASS_GOOD_02','2021','06','02','녹색','녹색','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_GOOD',NULL,'GLASS_GOOD_03','2021','06','03','갈색','갈색','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_NORMAL',NULL,'GLASS_NORMAL_01','2021','06','01','몸체에 표면코팅 또는 도색','몸체에 표면코팅 또는 도색','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_NORMAL',NULL,'GLASS_NORMAL_99','2021','06','99','기타','기타','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_DIFFICULT',NULL,'GLASS_DIFFICULT_01','2021','06','01','무색, 갈색, 녹색 이외의 색상','무색, 갈색, 녹색 이외의 색상','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GLASS_DIFFICULT',NULL,'GLASS_DIFFICULT_02','2021','06','02','검정에 가까운 짙은 녹색 등 일반적인 녹/갈색이 아닌 색상','검정에 가까운 짙은 녹색 등 일반적인 녹/갈색이 아닌 색상','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STOPPER',NULL,'PAPER_STP_GOOD','2021','06','B','우수','우수한 제품','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STOPPER',NULL,'PAPER_STP_NORMAL','2021','06','C','보통','보통 제품','N','N','N','N','N','N','3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STOPPER',NULL,'PAPER_STP_DIFFICULT','2021','06','D','어려움','어려운 제품','N','N','N','N','N','N','4','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_GOOD',NULL,'PAPER_STP_GOOD_01','2021','06','01','미사용','미사용','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_NORMAL',NULL,'PAPER_STP_NORMAL_01','2021','06','01','몸체와 분리 가능한 마개 또는 성형 구조물','몸체와 분리 가능한 마개 또는 성형 구조물','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_NORMAL',NULL,'PAPER_STP_NORMAL_02','2021','06','02','몸체와 분리 불가능한 PE재질의 마개 및 잡자개가 전체중량의 10% 이내','몸체와 분리 불가능한 PE재질의 마개 및 잡자개가 전체중량의 10% 이내','Y','N','Y','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_NORMAL',NULL,'PAPER_STP_NORMAL_99','2021','06','99','기타','기타','Y','N','N','N','N','N','3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_DIFFICULT',NULL,'PAPER_STP_DIFFICULT_01','2021','06','01','몸체와 분리가 불가능한 합성수지 마개 또는 성형 구조물','몸체와 분리가 불가능한 합성수지 마개 또는 성형 구조물','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_STP_DIFFICULT',NULL,'PAPER_STP_DIFFICULT_02','2021','06','02','PE재질의 마개 및 잡자재가 포장재 전체 중량의 10% 초과','PE재질의 마개 및 잡자재가 포장재 전체 중량의 10% 초과','Y','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID',NULL,'PAPER_PACK','2020','05','01','종이팩','종이팩 포장','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID',NULL,'GLASS_BOTTLE','2020','05','02','유리병','유리병 포장','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_PACK',NULL,'PAPER_BODY','2020','05','01','몸체','종이팩 포장 몸체','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_BEST','2020','05','A','최우수','최우수 제품','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_GOOD','2020','05','B','우수','우수한 제품','N','N','N','N','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_NORMAL','2020','05','C','보통','보통 제품','N','N','N','N','N','N','3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_BODY',NULL,'PAPER_DIFFICULT','2020','05','D','어려움','어려운 제품','N','N','N','N','N','N','4','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_GOOD',NULL,'PAPER_GOOD_01','2020','05','09','알루미늄 첩합 구조 미사용','알루미늄 첩합 구조 미사용 제품','Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_NORMAL',NULL,'PAPER_NORMAL_09','2020','05','09','기타','기타 제품','Y','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_DIFFICULT',NULL,'PAPER_DIFFICULT_01','2020','05','01','알루미늄 첩합 구조를 사용한 종이팩',NULL,'Y','N','Y','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PAPER_DIFFICULT',NULL,'PAPER_DIFFICULT_02','2020','05','02','백색을 제외한 펄프를 사용한 제품',NULL,'Y','N','N','Y','N','N','2','Y','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 -- 공통    사용자 테스트
