@@ -1,5 +1,6 @@
 package com.portal.adm.environmentCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -42,48 +43,59 @@ public class EnvironmentCodeController {
      * @param model
      * @return
      */
-    @GetMapping("/environmentCode")
-    public String code(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    @RequestMapping(value="/environmentCode", method= {RequestMethod.GET,RequestMethod.POST})
+    public String environmentCode(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	System.out.println("===================environmentCode==================");
+    	System.out.println("=== environmentCodeModel => : "+environmentCodeModel);
     	String largeCategory = "GROUP_ID";
     	if(environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
     		largeCategory = "GROUP_ID";
     	}
-    	environmentCodeModel.setGroupId("GROUP_ID");
-		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
-    	environmentCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeModel);
-        environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
-        model.addAttribute("codes", models);
-        model.addAttribute("pages", environmentCodeModel);
-
-//        if(models.size() > 0) {
-//            model.addAttribute("firstCodeId", models.get(0).getCodeId());
-//            model.addAttribute("firstCodeNm", models.get(0).getCodeNm());
-//            model.addAttribute("firstCodeDsc", models.get(0).getCodeDsc());
-//            model.addAttribute("firstCodeUseYn", models.get(0).getUseYn());
-//        }
-
-        return "environmentCode/environmentCode";
-    }
-
-    /**
-     * 코드관리 페이지로 이동
-     *
-     * @param criteria
-     * @return
-     */
-    @PostMapping("/environmentCode")
-    public String codePost(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model) {
-    	if(environmentCodeModel.getGroupId() == null) {
-    		environmentCodeModel.setGroupId("GROUP_ID");
+    	model.addAttribute("setLargeCategory", environmentCodeModel.getLargeCategory());
+    	List<EnvironmentCodeModel> dayList = new ArrayList<EnvironmentCodeModel>();
+    	List<EnvironmentCodeModel> largeModels = new ArrayList<EnvironmentCodeModel>();
+    	List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
+    	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
+    	
+    	dayList = environmentCodeService.selectCodeDayList(environmentCodeModel);
+    	model.addAttribute("dayList", dayList);
+    	
+    	if(environmentCodeModel.getRevisionMonth() == null || environmentCodeModel.getRevisionYear() == null || StringUtils.equals(environmentCodeModel.getRevisionMonth(), "") || StringUtils.equals(environmentCodeModel.getRevisionYear(), "") ) {
+    		environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
+    		environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
     	}
-        List<EnvironmentCodeModel> models = environmentCodeService.selectGroupIdList(environmentCodeModel);
-        environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
-        model.addAttribute("codes", models);
-        model.addAttribute("pages", environmentCodeModel);
+    	
+    	// 재질 리스트
+    	environmentCodeModel.setGroupId(largeCategory);
+		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
+        largeModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
+        model.addAttribute("largeCodeList", largeModels);
+        
+    	if(largeModels.size() > 0) {
+    		if(environmentCodeModel.getLargeCategory() == null){
+    			largeModels.get(0).setGroupId(largeModels.get(0).getCodeId());
+    		}else {
+    			largeModels.get(0).setGroupId(environmentCodeModel.getLargeCategory());
+    		}
+    		middleModels = environmentCodeService.selectGroupIdList(largeModels.get(0));
+    		model.addAttribute("middleCodeList", middleModels);
+    		model.addAttribute("middlePages", environmentCodeModel);
+    	}
 
+        
+        // 부위 리스트
+        if(middleModels.size() > 0) {
+        	middleModels.get(0).setGroupId(middleModels.get(0).getCodeId());
+        	smallModels = environmentCodeService.selectGroupIdList(middleModels.get(0));
+        	environmentCodeModel.setGroupId(middleModels.get(0).getCodeId());
+        	environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
+        	model.addAttribute("smallCodeList", smallModels);
+        	model.addAttribute("pages", environmentCodeModel);
+        }
+        
         return "environmentCode/environmentCode";
     }
+
 
     /**
      * 코드그룹을 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.

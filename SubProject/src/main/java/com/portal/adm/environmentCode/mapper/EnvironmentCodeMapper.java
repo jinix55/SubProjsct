@@ -11,13 +11,21 @@ import com.portal.common.annotation.ConnMapperFirst;
 @ConnMapperFirst
 public interface EnvironmentCodeMapper {
 
+	/**
+	 * 그룹 ID 리스트를 가져온다
+	 *
+	 * @param criteria   그룹 ID가 "GROUP_ID"이면 코드 그룹이고 그룹ID가 코드ID이면 세부코드를 리턴한다
+	 * @return          그룹ID의 하위 코드모델 리스트
+	 */
+	List<EnvironmentCodeModel> selectGroupIdList(EnvironmentCodeModel model);
+	
     /**
-     * 그룹 ID 리스트를 가져온다
+     * 환경부 코드 리스트 최근 날짜순으로 조회한다.
      *
-     * @param criteria   그룹 ID가 "GROUP_ID"이면 코드 그룹이고 그룹ID가 코드ID이면 세부코드를 리턴한다
-     * @return          그룹ID의 하위 코드모델 리스트
+     * @param criteria   "GROUP_ID"기준으로 그룹으로 조회하여 리스트 생성
+     * @return          GROUP_ID 기준 갱신 년 월 리턴
      */
-    List<EnvironmentCodeModel> selectGroupIdList(EnvironmentCodeModel model);
+    List<EnvironmentCodeModel> selectCodeDayList(EnvironmentCodeModel model);
 
     /**
      * 그룹 ID 리스트 카운트를 가져온다

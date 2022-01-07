@@ -27,7 +27,17 @@ public class EnvironmentCodeService {
      * @return
      */
     public List<EnvironmentCodeModel> selectGroupIdList(EnvironmentCodeModel model) {
-        return environmentCodeMapper.selectGroupIdList(model);
+    	return environmentCodeMapper.selectGroupIdList(model);
+    }
+    
+    /**
+     * 환경부코드 리스트 날짜를 조회한다.
+     *
+     * @param groupId
+     * @return
+     */
+    public List<EnvironmentCodeModel> selectCodeDayList(EnvironmentCodeModel model) {
+        return environmentCodeMapper.selectCodeDayList(model);
     }
 
     public int selectGroupIdListCount(EnvironmentCodeModel model) {

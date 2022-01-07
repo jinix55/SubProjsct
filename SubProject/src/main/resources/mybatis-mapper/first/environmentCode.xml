@@ -7,16 +7,34 @@
 	<sql id="paging">
 		LIMIT #{offSet}, #{pageSize}
 	</sql>
-
+	
+	<select id="selectCodeDayList"  resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		SELECT
+			REVISION_YEAR,
+			REVISION_MONTH
+		FROM
+			T_ENVIRONMENT_CODE
+		WHERE
+			GROUP_ID = 'GROUP_ID'
+		GROUP BY
+			REVISION_YEAR ,
+			REVISION_MONTH
+		ORDER BY
+			REVISION_YEAR DESC ,
+			REVISION_MONTH DESC
+	</select>
+	
 	<select id="selectGroupIdList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
+			ROW_NUMBER() OVER (ORDER BY UPPER(ORD_SEQ) ASC) AS ROWNUM,
 			GROUP_ID,
 			CODE_ID,
 			<if test="authId == 'au2000001'">
 				UP_COMPANY_CODE,
 			</if>
 			CODE_KEY,
+			REVISION_YEAR,
+			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -24,8 +42,9 @@
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
-		FROM T_PACKAGING_CODE
+		FROM T_ENVIRONMENT_CODE
 		where GROUP_ID = #{groupId} 
+		AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 		<if test="authId != 'au2000001'">
 			<if test="upCompanyCode != null and upCompanyCode != ''">
 				AND UP_COMPANY_CODE = #{upCompanyCode}
@@ -39,7 +58,7 @@
 		SELECT
 			COUNT(*)
 		FROM
-			T_PACKAGING_CODE
+			T_ENVIRONMENT_CODE
 		WHERE
 			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
 	</select>
@@ -50,6 +69,8 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			REVISION_YEAR,
+			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -59,7 +80,7 @@
 			MODI_DT,
 			ORD_SEQ
 		FROM
-			T_PACKAGING_CODE
+			T_ENVIRONMENT_CODE
 		WHERE
 			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
 		ORDER BY ROWNUM
@@ -70,6 +91,8 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			REVISION_YEAR,
+			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -78,7 +101,7 @@
 			MODI_ID,
 			MODI_DT
 		FROM
-			T_PACKAGING_CODE
+			T_ENVIRONMENT_CODE
 		WHERE
 			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
 		AND
@@ -86,7 +109,7 @@
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
-		INSERT INTO T_PACKAGING_CODE (
+		INSERT INTO T_ENVIRONMENT_CODE (
 			GROUP_ID
 			, CODE_ID
 			, CODE_KEY
@@ -116,7 +139,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
-		UPDATE T_PACKAGING_CODE
+		UPDATE T_ENVIRONMENT_CODE
 		SET
 			CODE_NM = #{codeNm}
 			, CODE_KEY = #{codeKey}
@@ -132,7 +155,7 @@
 	</update>
 
 	<update id="delete" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
-		UPDATE T_PACKAGING_CODE
+		UPDATE T_ENVIRONMENT_CODE
 		SET
 			USE_YN = 'N'
 		WHERE
@@ -143,7 +166,7 @@
 
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT COUNT(*)
-		FROM T_PACKAGING_CODE
+		FROM T_ENVIRONMENT_CODE
 		WHERE GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
 		AND USE_YN = 'Y'
 	</select>
