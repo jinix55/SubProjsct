@@ -18,6 +18,7 @@ public class EnvironmentCodeModel extends Criteria{
     private String rownum;          // 순번
     private String groupId;         // 코드그룹ID
     private String upCompanyCode;   // 소속 회사코드
+    private String revision;	// 개정 년
     private String revisionYear;	// 개정 년
     private String revisionMonth;	// 개정 월
     private String codeId;          // 코드ID
@@ -36,8 +37,14 @@ public class EnvironmentCodeModel extends Criteria{
     private LocalDateTime modiDt; // 수정일시
     private Integer ordSeq;			//정렬순서
     private String largeCategory;	//대분류
-    private String middelCategory;	//대분류
+    private String middleCategory;	//대분류
     private String smallCategory;	//대분류
     private String detailCategory;	//대분류
+    
+    private String deGroupId;         // 코드그룹ID
+    private String deCodeId;          // 코드ID
+    private String deCodeNm;          // 코드이름
+    private String deCodeDsc;        // 코드설명
+    private String deRevision;	// 개정 년
 }
 

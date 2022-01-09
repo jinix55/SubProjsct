@@ -3,15 +3,14 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <form id="frm">
 <div class="content">
+	<input type="hidden" id="middleCategory" name="middleCategory" value="${setMiddleCategory }">
+	<input type="hidden" id="smallCategory" name="smallCategory" value="${setSmallCategory }">
+	<input type="hidden" id="smallCategoryNm" name="smallCategoryNm" value="${setSmallCategoryNm }">
 	<div class="d-flex">
 		<span class="pt10 pr10">ㆍ갱신일</span>
-		<input type="hidden" id="revisionYear" name="revisionYear" value="${revisionYear }">
-		<input type="hidden" id="revisionMonth" name="revisionMonth" value="${revisionMonth }">
-		<input type="hidden" id="codeId" name="codeId" value="${codeId }">
-		<input type="hidden" id="groupId" name="groupId" value="groupId">
-		<select class="select-box w150">
+		<select class="select-box w150" id="revision" name="revision">
 			<c:forEach items="${dayList }" var="list">
-				<option value="${list.revisionYear}-${list.revisionMonth}">${list.revisionYear}년 ${list.revisionMonth}월</option>
+				<option value="${list.revisionYear}-${list.revisionMonth}" <c:if test="${setRevision eq list.revision}">selected</c:if>>${list.revisionYear}년 ${list.revisionMonth}월</option>
 			</c:forEach>
 		</select>
 	</div>
@@ -51,7 +50,7 @@
 									<c:choose>
 										<c:when test="${not empty middleCodeList }">
 											<c:forEach items="${middleCodeList }" var="list" varStatus="status">
-												<tr>
+												<tr id="tr_${list.codeId }" onclick="selectTr(this);">
 													<td>${status.count}</td>
 													<td class="text-point">${list.codeId }</td>
 													<td>${list.codeNm }</td>
@@ -125,7 +124,7 @@
 													<td class="text-point">${list.codeId }</td>
 													<td>${list.codeNm }</td>
 													<td>
-														<a href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall">내용 관리</a>
+														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall" onclick="detailCode(this);">내용 관리</a>
 													</td>
 													<td>
 														<div class="btn-group">
@@ -227,7 +226,7 @@
 						<label class="col-25 form-label">대분류코드</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="FAQ_CAT" disabled>
+								<input type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
@@ -235,7 +234,7 @@
 						<label class="col-25 form-label">대분류코드명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="FAQ_CAT" disabled>
+								<input type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
@@ -243,7 +242,7 @@
 						<label class="col-25 form-label">중분류코드</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="FAQ_CAT">
+								<input type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -251,7 +250,7 @@
 						<label class="col-25 form-label">중분류코드명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input type="text" class="text-input" value="FAQ 카테고리">
+								<input type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -268,13 +267,14 @@
 </form>
 
 <!-- 레이어 팝업 - 소분류등록  -->
-<form id="">
+<form id="frmDetail">
 <div id="coderegister_s" class="modal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
+	<input type="hidden" id="deRevision" name="deRevision">
 	<div class="modal-content" style="width: 800px">
 		<div class="modal-header">
-			<h4 class="modal-title">소분류 코드 등록</h4>
-			<button type="button" class="close" data-dismiss="modal">
+			<h4 class="modal-title">내용 등록</h4>
+			<button type="button" class="close de_close" data-dismiss="modal">
 				<img src="/images/icon_close.png">
 			</button>
 		</div>
@@ -288,65 +288,53 @@
 						</colgroup>
 						<thead>
 							<tr class="th-bg">
-								<th scope="col">소분류코드</th>
-								<th scope="col">소분류코드명</th>
+								<th scope="col">내용 코드</th>
+								<th scope="col">내용 명</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>FAQ_CAT</td>
-								<td>FAQ 카테고리</td>
-							</tr>
-							<tr>
-								<td>FAQ_CAT</td>
-								<td>FAQ 카테고리</td>
-							</tr>
-							<tr>
-								<td>FAQ_CAT</td>
-								<td>FAQ 카테고리</td>
-							</tr>
-							<tr>
-								<td>FAQ_CAT</td>
-								<td>FAQ 카테고리</td>
-							</tr>
-							<tr>
-								<td>FAQ_CAT</td>
-								<td>FAQ 카테고리</td>
-							</tr>
+						<tbody id="detailCodeList">
 						</tbody>
 					</table>
 				</div>
-				<div class="right-wrap">
+				<div class="right-wrap" id="detailCodListInput">
 					<div class="col-100">
 						<div class="form-group">
-							<label class="col-25 form-label">중분류코드</label>
+							<label class="col-25 form-label">용이성 코드</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" value="FAQ_CAT" disabled>
+									<input id="deGroupId" name="deGroupId" type="text" class="text-input" disabled>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-25 form-label">중분류코드명</label>
+							<label class="col-25 form-label">용이성 명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" value="FAQ_CAT" disabled>
+									<input id="deGroupNm" name="deGroupNm" type="text" class="text-input" disabled>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-25 form-label">소분류코드</label>
+							<label class="col-25 form-label">내용 코드</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" value="FAQ_CAT">
+									<input id="deCodeId" name="deCodeId" type="text" class="text-input" disabled>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-25 form-label">소분류코드명</label>
+							<label class="col-25 form-label">내용 명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" value="FAQ 카테고리">
+									<input id="deCodeNm" name="deCodeNm" type="text" class="text-input" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-25 form-label">내용 키</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input id="deCodeKey" name="deCodeKey" type="text" class="text-input" disabled>
 								</div>
 							</div>
 						</div>
@@ -354,7 +342,7 @@
 							<label class="col-25 form-label-textarea">비고</label>
 							<div class="col-75">
 								<div class="form-input">
-									<textarea class="textarea"></textarea>
+									<textarea id="deCodeDsc" name="deCodeDsc" class="textarea" disabled></textarea>
 								</div>
 							</div>
 						</div>
@@ -364,8 +352,8 @@
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success smallCodeInsert" data-dismiss="modal">저장</button>
-			<button type="button" class="button btn-cancel smallCodeInsert" data-dismiss="modal">취소</button>
+			<button type="button" class="button btn-success smallCodeInsert new" >신규</button>
+			<button type="button" class="button btn-cancel smallCodeCancel" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
@@ -409,31 +397,126 @@
 		}
 		
 		$('#largeCategory').change(function(){
+			$('#middleCategory').val('');
 			var param = $('#frm').serialize();
 			$('#frm').attr('action','/system/environmentCode');
 			$('#frm').submit();
 		});
+		
+		$('#revision').change(function(){
+			var param = $('#frm').serialize();
+			$('#frm').attr('action','/system/environmentCode');
+			$('#frm').submit();
+		});
+		
+		$('.smallCodeCancel, .de_close').click(function(){
+			detailInputReset();
+			$('.smallCodeInsert').addClass('new');
+			$('.smallCodeInsert').text('신규');
+			$('.smallCodeInsert').removeClass('save');
+			$('.smallCodeInsert').removeClass('edit');
+		});
+		
+		$('.smallCodeInsert').click(function(){
+			if($('.smallCodeInsert').hasClass('new')){
+				
+			}
+			if($('.smallCodeInsert').hasClass('edit')){
+				detailCodeEdit();
+			}
+			if($('.smallCodeInsert').hasClass('save')){
+				
+			}
+		});
 	
 	});
 	
-	//코드 입력창을 초기화한다.
-	function clearInputCode() {
-		$('#codeId').val('');
-		$('#codeId').removeAttr('readonly');
-		$('#codeNm').val('');
-		$('#codeDsc').val('');
-		$('#ordSeq').val('');
-		$("input:radio[name='useYn']").prop("checked", false);
+	function detailCodeEdit(){
+		$('.smallCodeInsert').text('저장');
+		$('.smallCodeInsert').removeClass('edit');
+		$('.smallCodeInsert').addClass('save');
+		$('#detailCodListInput #deCodeId').attr('disabled',false);
+		$('#detailCodListInput #deCodeKey').attr('disabled',false);
+		$('#detailCodListInput #deCodeNm').attr('disabled',false);
+		$('#detailCodListInput #deCodeDsc').attr('disabled',false);
 	}
 	
-	function resetInput(){
+	function selectTr(that){
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			$('#middleCategory').val($(that).attr('id').replace('tr_',''));
+			var param = $('#frm').serialize();
+			$('#frm').attr('action','/system/environmentCode');
+			$('#frm').submit();
+		}
+	}
+	
+	function detailCode(that){
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			$('#smallCategory').val($(that).attr('id').replace('tr_',''));
+			$('#smallCategoryNm').val($(that).attr('nm'));
+			$('#deRevision').val($('#revision').val());
+			var param = $('#frm').serialize();
+			var action = 'detail/'+$(that).attr('id').replace('tr_',''); 
+			detailCodeList(param, action);
+		}
+	}
+	
+	function detailCodeSelect(that){
+		$('.smallCodeInsert').text('수정');
+		$('.smallCodeInsert').removeClass('new');
+		$('.smallCodeInsert').addClass('edit');
+		if(isDisabled){
+			return false;
+		}else{
+			isDisabled = true;
+			$('#smallCategory').val($(that).attr('id').replace('tr_',''));
+			var param = $('#frmDetail').serialize();
+			var action = 'detail/select/'+$(that).attr('id').replace('tr_',''); 
+			detailCoddSelectAjax(param, action);
+		}
+	}
+	
+	function makeDetailList(data){
+		detailInputReset();
+		var html = '';
+		if(data.length > 0){
+			data.forEach(function(item, index) {
+				html += '<tr style="cursor: pointer;" id="tr_'+item.codeId+'" onclick="detailCodeSelect(this);">';
+				html += '	<td style="text-overflow: ellipsis; overflow:hidden;">'+item.codeId+'</td>';
+				html += '	<td style="text-overflow: ellipsis; overflow:hidden;">'+item.codeNm+'</td>';
+				html += '</tr>';
+			});
+		}
+		$('#detailCodeList').append(html);
+		$('#deGroupId').val($('#smallCategory').val());
+		$('#deGroupNm').val($('#smallCategoryNm').val());
+	}
+	
+	function detailInputReset(){
+		$('#detailCodeList').empty();
+		$('#detailCodListInput input').val('');
+		$('#detailCodListInput textarea').val('');
+	}
+	
+	function makeDetailView(data){
+		console.log(data)
+		$('#detailCodListInput #deCodeId').val(data.codeId);
+		$('#detailCodListInput #deCodeNm').val(data.codeNm);
+		$('#detailCodListInput #deCodeKey').val(data.codeKey);
+		$('#detailCodListInput #deCodeDsc').val(data.codeDsc);
 		
 	}
 
 	function insertCode() {
 		if (valyCheck()) {
 			var param = $('#frm').serialize();
-			insertAjax(param, 'insert');
+			actionAjax(param, 'insert');
 		}
 	}
 	
@@ -441,7 +524,7 @@
 	function updateCode() {
 		if (valyCheck()) {
 			var param = $('#frm').serialize();
-			insertAjax(param, 'insert');
+			actionAjax(param, 'insert');
 		}
 	}
 	
@@ -454,21 +537,54 @@
 	function deleteCode() {
 		if (valyCheck()) {
 			var param = $('#frm').serialize();
-			insertAjax(param, 'insert');
+			actionAjax(param, 'insert');
 		}
 	}
 	
 
+	function detailCodeList(param, action) {
+		$.ajax({
+			type : 'post',
+			url : '/system/environmentCode/' + action,
+			data : param,
+			dataType : 'json',
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				makeDetailList(result);
+			}
+		});
+	}
+	
+	function detailCoddSelectAjax(param, action) {
+		$.ajax({
+			type : 'post',
+			url : '/system/environmentCode/' + action,
+			data : param,
+			dataType : 'json',
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				makeDetailView(result);
+			}
+		});
+	}
+	
 	function actionAjax(param, action) {
 		$.ajax({
 			type : 'post',
-			url : '/system/code/' + action,
+			url : '/system/environmentCode/' + action,
 			data : param,
 			dataType : 'text',
 			error : function(xhr, status, error) {
 				console.log(error);
 			},
 			success : function(result) {
+				isDisabled = false;
 				if (result == 'Update' || result == 'Insert') {
 					location.href = '/system/code';
 				}

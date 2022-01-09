@@ -51,20 +51,45 @@ public class EnvironmentCodeController {
     	if(environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
     		largeCategory = "GROUP_ID";
     	}
-    	model.addAttribute("setLargeCategory", environmentCodeModel.getLargeCategory());
+		model.addAttribute("setLargeCategory", environmentCodeModel.getLargeCategory());
+    	
+    	if(environmentCodeModel.getRevision() != null) {
+    		environmentCodeModel.setRevision(environmentCodeModel.getRevision().replace("-", ""));
+    		model.addAttribute("setRevision", environmentCodeModel.getRevision().replace("-", ""));
+    	}
     	List<EnvironmentCodeModel> dayList = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> largeModels = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
     	
     	dayList = environmentCodeService.selectCodeDayList(environmentCodeModel);
+    	if(dayList.size() > 0) {
+    		for(int i = 0 ; i < dayList.size() ; i++) {
+    			dayList.get(i).setRevision(dayList.get(i).getRevisionYear()+dayList.get(i).getRevisionMonth());
+    		}
+    	}
     	model.addAttribute("dayList", dayList);
     	
-    	if(environmentCodeModel.getRevisionMonth() == null || environmentCodeModel.getRevisionYear() == null || StringUtils.equals(environmentCodeModel.getRevisionMonth(), "") || StringUtils.equals(environmentCodeModel.getRevisionYear(), "") ) {
-    		environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
-    		environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
+    	if(environmentCodeModel.getRevision() == null || StringUtils.equals(environmentCodeModel.getRevision(),"") ) {
+    		if(environmentCodeModel.getRevisionMonth() == null || StringUtils.equals(environmentCodeModel.getRevisionMonth(), "") 
+    				|| environmentCodeModel.getRevisionYear() == null || StringUtils.equals(environmentCodeModel.getRevisionYear(), "") ) {
+    			environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
+    			environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
+    			environmentCodeModel.setRevision(dayList.get(0).getRevisionYear()+dayList.get(0).getRevisionMonth());
+    			model.addAttribute("setRevision", environmentCodeModel.getRevision());
+    		}
+    	}else {
+    		String[] revision = environmentCodeModel.getRevision().split("-");
+    		if(revision.length > 1) {
+    			environmentCodeModel.setRevisionYear(revision[0]);
+    			environmentCodeModel.setRevisionMonth(revision[1]);
+    		}else {
+    			environmentCodeModel.setRevisionYear(environmentCodeModel.getRevision().substring(0, 4));
+    			environmentCodeModel.setRevisionMonth(environmentCodeModel.getRevision().substring(4, 6));
+    		}
     	}
     	
+    	System.out.println("=== environmentCodeModel 222=> : "+environmentCodeModel);
     	// 재질 리스트
     	environmentCodeModel.setGroupId(largeCategory);
 		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
@@ -81,17 +106,28 @@ public class EnvironmentCodeController {
     		model.addAttribute("middleCodeList", middleModels);
     		model.addAttribute("middlePages", environmentCodeModel);
     	}
-
-        
+    	
+    	
         // 부위 리스트
         if(middleModels.size() > 0) {
-        	middleModels.get(0).setGroupId(middleModels.get(0).getCodeId());
-        	smallModels = environmentCodeService.selectGroupIdList(middleModels.get(0));
-        	environmentCodeModel.setGroupId(middleModels.get(0).getCodeId());
+        	String middleCategory = "";
+        	if(environmentCodeModel.getMiddleCategory() == null || StringUtils.equals(environmentCodeModel.getMiddleCategory(), "")) {
+        		middleCategory = middleModels.get(0).getCodeId();
+        	}else {
+        		middleCategory = environmentCodeModel.getMiddleCategory();
+        	}
+        	model.addAttribute("setMiddleCategory", environmentCodeModel.getLargeCategory());
+        	environmentCodeModel.setGroupId(middleCategory);
+        	smallModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
         	environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
         	model.addAttribute("smallCodeList", smallModels);
         	model.addAttribute("pages", environmentCodeModel);
         }
+        
+        
+        
+        
+        
         
         return "environmentCode/environmentCode";
     }
@@ -177,14 +213,19 @@ public class EnvironmentCodeController {
      * @return
      */
     @RequestMapping(value="/environmentCode/detail/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<EnvironmentCodeModel> codesForGroupCd(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @PathVariable("codeId") String codeId) {
-    	environmentCodeModel.setCodeId(codeId);
-    	environmentCodeModel.setGroupId("GROUP_ID");
-        environmentCodeModel = environmentCodeService.select(environmentCodeModel);
-
-        return new ResponseEntity<>(environmentCodeModel, HttpStatus.OK);
+    public ResponseEntity<List<EnvironmentCodeModel>> codesForGroupCd(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @PathVariable("codeId") String codeId) {
+    	
+    	environmentCodeModel.setGroupId(environmentCodeModel.getSmallCategory());
+    	if(environmentCodeModel.getRevision() != null && !StringUtils.equals(environmentCodeModel.getRevision(), "")) {
+    		String[] revision = environmentCodeModel.getRevision().split("-");
+    		environmentCodeModel.setRevisionYear(revision[0]);
+    		environmentCodeModel.setRevisionMonth(revision[1]);
+    	}
+    	List<EnvironmentCodeModel> detailCodeList = environmentCodeService.selectList(environmentCodeModel);
+    	
+    	return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
     }
+    
     
     
     /**
@@ -193,12 +234,22 @@ public class EnvironmentCodeController {
      * @param groupCd
      * @return
      */
-    @RequestMapping("/environmentCode/detail/code/{groupCd}")
-    public ResponseEntity<List<EnvironmentCodeModel>> codesForCodeCd(@PathVariable("groupCd") String groupId) {
-    	List<EnvironmentCodeModel> environmentCodeModels = environmentCodeService.selectGroupIdAllList(groupId);
+    @RequestMapping(value="/environmentCode/detail/select/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
+    public ResponseEntity<EnvironmentCodeModel> codesForCodeId(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @PathVariable("codeId") String codeId) {
     	
-    	return new ResponseEntity<>(environmentCodeModels, HttpStatus.OK);
+    	environmentCodeModel.setGroupId(environmentCodeModel.getSmallCategory());
+    	if(environmentCodeModel.getDeRevision() != null && !StringUtils.equals(environmentCodeModel.getDeRevision(), "")) {
+    		String[] revision = environmentCodeModel.getDeRevision().split("-");
+    		environmentCodeModel.setRevisionYear(revision[0]);
+    		environmentCodeModel.setRevisionMonth(revision[1]);
+    	}
+    	environmentCodeModel.setCodeId(codeId);
+        EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCodeModel);
+
+        return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
     }
+    
+    
 
     /**
      * 코드를 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
@@ -206,7 +257,7 @@ public class EnvironmentCodeController {
      * @param environmentCodeModel
      * @return
      */
-    @PostMapping("/environmentCode/insert/code")
+    @PostMapping("/environmentCode/insert/{codeId}")
     public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
             for (String key : request.getParameterMap().keySet()) {
@@ -247,7 +298,7 @@ public class EnvironmentCodeController {
      * @param environmentCodeModel
      * @return
      */
-    @PostMapping("/environmentCode/delete/code")
+    @PostMapping("/environmentCode/delete/{codeId}")
     public ResponseEntity<String> delete(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @AuthenticationPrincipal AuthUser authUser) {
         try {
             environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());

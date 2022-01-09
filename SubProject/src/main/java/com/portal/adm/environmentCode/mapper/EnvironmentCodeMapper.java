@@ -49,6 +49,14 @@ public interface EnvironmentCodeMapper {
      * @param model     코드모델의 그룹ID, 코드ID조건을 사용
      * @return          코드모델
      */
+    List<EnvironmentCodeModel> selectList(EnvironmentCodeModel model);
+    
+    /**
+     * 그룹ID와 코드ID 조건의 코드모델을 리턴한다
+     *
+     * @param model     코드모델의 그룹ID, 코드ID조건을 사용
+     * @return          코드모델
+     */
     EnvironmentCodeModel select(EnvironmentCodeModel model);
 
     /**

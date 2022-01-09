@@ -60,7 +60,7 @@
 		FROM
 			T_ENVIRONMENT_CODE
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			GROUP_ID = #{groupId}
 	</select>
 
 	<select id="selectGroupIdAllList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -82,8 +82,31 @@
 		FROM
 			T_ENVIRONMENT_CODE
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			GROUP_ID = #{groupId}
 		ORDER BY ROWNUM
+	</select>
+	
+	
+	<select id="selectList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		SELECT
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			REVISION_YEAR,
+			REVISION_MONTH,
+			CODE_NM,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_ENVIRONMENT_CODE
+		WHERE
+			GROUP_ID = #{groupId}
+		AND
+			REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 	</select>
 
 	<select id="select" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -103,9 +126,9 @@
 		FROM
 			T_ENVIRONMENT_CODE
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
-		AND
 			CODE_ID = #{codeId}
+		AND
+			REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -149,7 +172,7 @@
 			, USE_YN = #{useYn}
 			, ORD_SEQ = #{ordSeq}
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			GROUP_ID = #{groupId}
 		AND
 			CODE_ID = #{codeId}
 	</update>
@@ -167,7 +190,7 @@
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT COUNT(*)
 		FROM T_ENVIRONMENT_CODE
-		WHERE GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
+		WHERE GROUP_ID = #{codeId}
 		AND USE_YN = 'Y'
 	</select>
 </mapper>

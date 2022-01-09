@@ -61,6 +61,16 @@ public class EnvironmentCodeService {
      * @param model
      * @return
      */
+    public List<EnvironmentCodeModel> selectList(EnvironmentCodeModel model) {
+        return environmentCodeMapper.selectList(model);
+    }
+    
+    /**
+     * 환경부코드 ID와 코드ID가 동일한 코드모델을 조회한다.
+     *
+     * @param model
+     * @return
+     */
     public EnvironmentCodeModel select(EnvironmentCodeModel model) {
         return environmentCodeMapper.select(model);
     }
