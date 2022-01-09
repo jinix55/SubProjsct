@@ -41,40 +41,6 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 );
 
 
--- 공휴일 관리 데이터(calendar_lunar_solar_v1.sql 우선 실행)
-TRUNCATE TABLE T_HOLIDAY;
-INSERT INTO T_HOLIDAY (
-	SOLAR_DATE
-	, LUNAR_DATE
-	, GANJI
-	, LEAP_YEAR
-	, HOLI_NM
-	, USE_YN
-	, HOLI_TYPE
-	, MEMO
-) SELECT
-	SOLAR_DATE
-	, LUNAR_DATE
-	, GANJI
-	, CASE WHEN YUN = 1 THEN 'Y' ELSE 'N' END AS LEAP_YEAR
-	, CASE
-		WHEN MEMO = '' THEN
-			CASE 
-				WHEN dayofweek(SOLAR_DATE) = 7 THEN '토요일'
-				ELSE '일요일'
-			END
-		ELSE MEMO END AS HOLI_NM
-	, 'Y' AS USE_YN
-	, CASE
-		WHEN MEMO = '' THEN
-			CASE 
-				WHEN dayofweek(SOLAR_DATE) > 0 THEN 'W'
-			END 
-		ELSE 'C' END AS HOLI_TYPE
-	, '' AS MEMO
-FROM calendar_lunar_solar WHERE (solar_date BETWEEN '1900-01-01' AND '2200-12-31' AND dayofweek(solar_date) IN (1,7)) OR (MEMO != '' AND MEMO IS NOT NULL);
-COMMIT;
-
 
 -- 공통    코드
 DROP TABLE IF EXISTS T_CODE CASCADE;
@@ -371,12 +337,12 @@ CREATE TABLE IF NOT EXISTS T_GROUP_MENU (
   , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
   , MODI_DT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 일시'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '그룹 메뉴[그룹 메뉴]';
-ALTER TABLE T_GROUP_MENU ADD CONSTRAINT T_GROUP_MENU_PK PRIMARY KEY();
+ALTER TABLE T_GROUP_MENU ADD CONSTRAINT T_GROUP_MENU_PK PRIMARY KEY(MENU_ID);
 -- CREATE INDEX T_GROUP_MENU_IX1 ON T_GROUP_MENU();
 
 
 -- 관리자    그룹 메뉴 권한 관리
-DROP TABLE IF EXISTS t_group_menu_auth CASCADE;
+DROP TABLE IF EXISTS T_GROUP_MENU_AUTH CASCADE;
 CREATE TABLE IF NOT EXISTS t_group_menu_auth (
     AUTH_ID VARCHAR(32) NOT NULL COMMENT '권한 ID'
   , MENU_ID VARCHAR(16) NOT NULL COMMENT '메뉴 ID'
@@ -599,6 +565,42 @@ ALTER TABLE T_LOG_REF_INFO ADD CONSTRAINT T_LOG_REF_INFO_PK PRIMARY KEY(LOG_ID,C
 -- CREATE INDEX T_LOG_REF_INFO_IX1 ON T_LOG_REF_INFO(LOG_ID,CONTROLLER_NM,METHOD_NM);
 
 
+
+-- 공휴일 관리 데이터(calendar_lunar_solar_v1.sql 우선 실행)
+TRUNCATE TABLE T_HOLIDAY;
+INSERT INTO T_HOLIDAY (
+	SOLAR_DATE
+	, LUNAR_DATE
+	, GANJI
+	, LEAP_YEAR
+	, HOLI_NM
+	, USE_YN
+	, HOLI_TYPE
+	, MEMO
+) SELECT
+	SOLAR_DATE
+	, LUNAR_DATE
+	, GANJI
+	, CASE WHEN YUN = 1 THEN 'Y' ELSE 'N' END AS LEAP_YEAR
+	, CASE
+		WHEN MEMO = '' THEN
+			CASE 
+				WHEN dayofweek(SOLAR_DATE) = 7 THEN '토요일'
+				ELSE '일요일'
+			END
+		ELSE MEMO END AS HOLI_NM
+	, 'Y' AS USE_YN
+	, CASE
+		WHEN MEMO = '' THEN
+			CASE 
+				WHEN dayofweek(SOLAR_DATE) > 0 THEN 'W'
+			END 
+		ELSE 'C' END AS HOLI_TYPE
+	, '' AS MEMO
+FROM calendar_lunar_solar WHERE (solar_date BETWEEN '1900-01-01' AND '2200-12-31' AND dayofweek(solar_date) IN (1,7)) OR (MEMO != '' AND MEMO IS NOT NULL);
+COMMIT;
+
+
 -- 관리자 공급 업체 관리
 DROP TABLE IF EXISTS T_SUPPLIER CASCADE;
 CREATE TABLE IF NOT EXISTS T_SUPPLIER (
@@ -710,7 +712,7 @@ TRUNCATE TABLE T_ENVIRONMENT_CODE;
 
 
 -- 데이터
----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 
 
 -- 공통    코드
@@ -1011,7 +1013,7 @@ INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,M
 ('mn5000030','mn5000028','A회사 레포트 2번','/report/reportView/rp2100010','','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000031','mn5000028','A회사 레포트 3번','/report/reportView/rp2100011','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000032','mn5000028','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000033','mn5000028','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000033','mn5000028','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000034','mn5000028','C회사 레포트 1번','/report/reportView/3','','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
