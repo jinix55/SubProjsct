@@ -616,6 +616,7 @@ vertical-align: top;
 .backColorBlue{background-color:#c1defa !important;}
 .fontColorGreen{color:forestgreen !important;}
 .fontColorBlue{color:#4288ca !important;}
+.fontColorRed{color:red !important;}
 .btnEdit{background-color:#ca4242 !important;}
 .eInput { ime-mode: active }
 .search-Fail{background-color: red !important;}
@@ -625,3 +626,5 @@ vertical-align: top;
 .btn-yes, .btn-yes{cursor: default;}
 .search-date2 {width: 100%;}
 .search-date2:nth-last-child(1):before {content: '' !important;}
+.selectHover tr td.text-point{cursor: pointer;}
+.selectHover tr:hover {background: #eee;}
