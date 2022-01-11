@@ -29,14 +29,12 @@
 			ROW_NUMBER() OVER (ORDER BY UPPER(ORD_SEQ) ASC) AS ROWNUM,
 			GROUP_ID,
 			CODE_ID,
-			<if test="authId == 'au2000001'">
-				UP_COMPANY_CODE,
-			</if>
 			CODE_KEY,
 			REVISION_YEAR,
 			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
+			ORD_SEQ,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -45,11 +43,6 @@
 		FROM T_ENVIRONMENT_CODE
 		where GROUP_ID = #{groupId} 
 		AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
-		<if test="authId != 'au2000001'">
-			<if test="upCompanyCode != null and upCompanyCode != ''">
-				AND UP_COMPANY_CODE = #{upCompanyCode}
-			</if>
-		</if>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
@@ -114,6 +107,7 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			ORD_SEQ,
 			REVISION_YEAR,
 			REVISION_MONTH,
 			CODE_NM,
@@ -126,7 +120,7 @@
 		FROM
 			T_ENVIRONMENT_CODE
 		WHERE
-			CODE_ID = #{codeId}
+			CODE_ID = #{codeId} AND GROUP_ID = #{groupId}
 		AND
 			REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 	</select>
@@ -145,6 +139,8 @@
 			, MODI_ID
 			, MODI_DT
 			, ORD_SEQ
+			, REVISION_YEAR
+			, REVISION_MONTH
 		) VALUES (
 			#{groupId}
 			, #{codeId}
@@ -158,6 +154,8 @@
 			, #{modiId}
 			, now()
 			, #{ordSeq}
+			, #{revisionYear}
+			, #{revisionMonth}
 		)
 	</insert>
 
@@ -177,15 +175,15 @@
 			CODE_ID = #{codeId}
 	</update>
 
-	<update id="delete" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
-		UPDATE T_ENVIRONMENT_CODE
-		SET
-			USE_YN = 'N'
-		WHERE
-			GROUP_ID = #{groupId}
-		AND
-			CODE_ID = #{codeId}
-	</update>
+	<delete id="delete" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		DELETE FROM T_ENVIRONMENT_CODE
+		WHERE GROUP_ID = #{groupId} AND CODE_ID = #{codeId} AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
+	</delete>
+	
+	<delete id="deleteDownCode" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		DELETE FROM T_ENVIRONMENT_CODE
+		WHERE GROUP_ID = #{codeId} AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
+	</delete>
 
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT COUNT(*)

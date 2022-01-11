@@ -65,6 +65,13 @@ public interface EnvironmentCodeMapper {
      * @return          영향 row카운트 수
      */
     long delete(EnvironmentCodeModel model);
+    
+    /**
+     * 그룹ID 기준으로 하위 모든 데이터를 삭제한다.
+     * @param model     코드모델의 그룹ID 사용
+     * @return          영향 row카운트 수
+     */
+    long deleteDownCode(EnvironmentCodeModel model);
 
     /**
      * 그룹ID와 코드ID 조건의 코드모델을 업데이트한다.

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,16 +85,12 @@ public class EnvironmentCodeService {
     @Transactional
     public String delete(EnvironmentCodeModel model) {
 
-        if(model.getGroupId().equals("GROUP_ID")) {
-            int codeCount = selectCodeCountForGroupId(model);
-
-            if(codeCount > 0) {
-                return Constant.DB.USE_CODE_ID;
-            }
+        if(StringUtils.equals(model.getDelType(),"middle") || StringUtils.equals(model.getDelType(),"small")) {
+        	environmentCodeMapper.deleteDownCode(model);
         }
 
         long count = environmentCodeMapper.delete(model);
-
+        
         if(count > 0) {
             return Constant.DB.DELETE;
         } else {

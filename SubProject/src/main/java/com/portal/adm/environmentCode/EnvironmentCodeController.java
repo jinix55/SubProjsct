@@ -27,7 +27,7 @@ import com.portal.config.security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 시스템관리 / 코드관리 컨트롤러
+ * 시스템관리 / 환경부 코드관리 컨트롤러
  */
 @Slf4j
 @RequestMapping("/system")
@@ -38,7 +38,7 @@ public class EnvironmentCodeController {
     private EnvironmentCodeService environmentCodeService;
     
     /**
-     * 코드관리 페이지로 이동
+     * 환경부 코드관리 페이지로 이동
      *
      * @param model
      * @return
@@ -69,6 +69,7 @@ public class EnvironmentCodeController {
     		}
     	}
     	model.addAttribute("dayList", dayList);
+    	model.addAttribute("defaultDay", dayList.get(0).getRevisionYear()+"-"+dayList.get(0).getRevisionMonth());
     	
     	if(environmentCodeModel.getRevision() == null || StringUtils.equals(environmentCodeModel.getRevision(),"") ) {
     		if(environmentCodeModel.getRevisionMonth() == null || StringUtils.equals(environmentCodeModel.getRevisionMonth(), "") 
@@ -97,7 +98,7 @@ public class EnvironmentCodeController {
         model.addAttribute("largeCodeList", largeModels);
         
     	if(largeModels.size() > 0) {
-    		if(environmentCodeModel.getLargeCategory() == null){
+    		if(environmentCodeModel.getLargeCategory() == null || environmentCodeModel.getLargeCategory().equals(environmentCodeModel.getMiddleCategory())){
     			largeModels.get(0).setGroupId(largeModels.get(0).getCodeId());
     		}else {
     			largeModels.get(0).setGroupId(environmentCodeModel.getLargeCategory());
@@ -111,7 +112,8 @@ public class EnvironmentCodeController {
         // 부위 리스트
         if(middleModels.size() > 0) {
         	String middleCategory = "";
-        	if(environmentCodeModel.getMiddleCategory() == null || StringUtils.equals(environmentCodeModel.getMiddleCategory(), "")) {
+        	if(environmentCodeModel.getMiddleCategory() == null || StringUtils.equals(environmentCodeModel.getMiddleCategory(), "") ||
+        			environmentCodeModel.getMiddleCategory().equals(environmentCodeModel.getLargeCategory())) {
         		middleCategory = middleModels.get(0).getCodeId();
         	}else {
         		middleCategory = environmentCodeModel.getMiddleCategory();
@@ -121,93 +123,14 @@ public class EnvironmentCodeController {
         	smallModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
         	environmentCodeModel.setTotalCount(environmentCodeService.selectGroupIdListCount(environmentCodeModel));
         	model.addAttribute("smallCodeList", smallModels);
-        	model.addAttribute("pages", environmentCodeModel);
         }
-        
-        
-        
-        
-        
         
         return "environmentCode/environmentCode";
     }
 
 
     /**
-     * 코드그룹을 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/environmentCode/insert")
-    public ResponseEntity<String> groupSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	try {
-        	String _groupId = "";
-            EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
-            for (String key : request.getParameterMap().keySet()) {
-            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
-            }
-            String groupId = request.getParameter("groupId");
-            String codeId = request.getParameter("codeId");
-            String codeNm = request.getParameter("codeNm");
-            String codeDesc = request.getParameter("codeDsc");
-            String codeUseYn = request.getParameter("useYn");
-
-            if(groupId == null || StringUtils.equals(groupId,"")) {
-            	_groupId = "GROUP_ID";
-            }else {
-            	_groupId = groupId;
-            }
-            
-            environmentCodeModel.setCodeId(codeId);
-            environmentCodeModel.setCodeNm(codeNm);
-            environmentCodeModel.setCodeDsc(codeDesc);
-            environmentCodeModel.setUseYn(codeUseYn);
-        	environmentCodeModel.setGroupId(_groupId);
-
-            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = environmentCodeService.save(environmentCodeModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-    
-    /**
-     * 코드그룹을 삭제한다.
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/environmentCode/delete")
-    public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-        try {
-            EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
-
-            String codeId = request.getParameter("codeId");
-
-            environmentCodeModel.setCodeId(codeId);
-            environmentCodeModel.setGroupId("GROUP_ID");
-
-            environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
-            environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = environmentCodeService.delete(environmentCodeModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }    
-    
-    
-    
-    
-    /**
-     * 그룹코드 목록을 조회한다.
+     * 환경부 코드 내용 목록을 조회한다.
      *
      * @param groupCd
      * @return
@@ -236,8 +159,7 @@ public class EnvironmentCodeController {
      */
     @RequestMapping(value="/environmentCode/detail/select/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
     public ResponseEntity<EnvironmentCodeModel> codesForCodeId(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @PathVariable("codeId") String codeId) {
-    	
-    	environmentCodeModel.setGroupId(environmentCodeModel.getSmallCategory());
+    	environmentCodeModel.setGroupId(environmentCodeModel.getGroupId());
     	if(environmentCodeModel.getDeRevision() != null && !StringUtils.equals(environmentCodeModel.getDeRevision(), "")) {
     		String[] revision = environmentCodeModel.getDeRevision().split("-");
     		environmentCodeModel.setRevisionYear(revision[0]);
@@ -245,35 +167,79 @@ public class EnvironmentCodeController {
     	}
     	environmentCodeModel.setCodeId(codeId);
         EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCodeModel);
-
         return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
     }
     
-    
 
     /**
-     * 코드를 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
+     * 환경부 코드를 저장한다. 카테고리 기준으로 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
      *
      * @param environmentCodeModel
      * @return
      */
-    @PostMapping("/environmentCode/insert/{codeId}")
-    public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/environmentCode/insert/{category}")
+    @ResponseBody
+    public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @PathVariable("category") String category, @AuthenticationPrincipal AuthUser authUser) {
     	try {
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
-            String groupId = request.getParameter("groupId");
-            String codeId = request.getParameter("codeId");
-            String codeNm = request.getParameter("codeNm");
-            String codeDesc = request.getParameter("codeDsc");
-            String codeUseYn = request.getParameter("code_useYn");
-
+            
+            System.out.println("== category => "+category);
+            System.out.println("== environmentCodeModel => "+environmentCodeModel);
+            
+            String groupId = "";
+    		String codeId = "";
+    		String codeNm = "";
+    		String codeKey = "";
+    		String codeDsc = "";
+    		String codeUseYn = "Y";
+    		String revisionYear = "";
+    		String revisionMonth = "";
+    		int ordSeq = -1;
+    		
+            if(category.equals("middle")) {
+            	groupId = environmentCodeModel.getMidGroupId();
+            	codeId = environmentCodeModel.getMidCodeId();
+            	codeNm = environmentCodeModel.getMidCodeNm();
+            	codeKey = environmentCodeModel.getMidCodeKey();
+            	codeDsc = environmentCodeModel.getMidCodeDsc();
+            	ordSeq = environmentCodeModel.getMidOrdSeq();
+            	String[] revision = environmentCodeModel.getMidRevision().split("-");
+            	revisionYear = revision[0];
+            	revisionMonth = revision[1];
+            }else if(category.equals("small")) {
+            	groupId = environmentCodeModel.getSmlGroupId();
+            	codeId = environmentCodeModel.getSmlCodeId();
+            	codeNm = environmentCodeModel.getSmlCodeNm();
+            	codeKey = environmentCodeModel.getSmlCodeKey();
+            	codeDsc = environmentCodeModel.getSmlCodeDsc();
+            	ordSeq = environmentCodeModel.getSmlOrdSeq();
+            	String[] revision = environmentCodeModel.getSmlRevision().split("-");
+            	revisionYear = revision[0];
+            	revisionMonth = revision[1];
+            }else if(category.equals("detail")) {
+            	groupId = environmentCodeModel.getDeGroupId();
+            	codeId = environmentCodeModel.getDeCodeId();
+            	codeNm = environmentCodeModel.getDeCodeNm();
+            	codeKey = environmentCodeModel.getDeCodeKey();
+            	codeDsc = environmentCodeModel.getDeCodeDsc();
+            	ordSeq = environmentCodeModel.getDeOrdSeq();
+            	String[] revision = environmentCodeModel.getDeRevision().split("-");
+            	revisionYear = revision[0];
+            	revisionMonth = revision[1];
+            }
+            
             environmentCodeModel.setCodeId(codeId);
             environmentCodeModel.setCodeNm(codeNm);
-            environmentCodeModel.setCodeDsc(codeDesc);
+            environmentCodeModel.setCodeDsc(codeDsc);
             environmentCodeModel.setUseYn(codeUseYn);
-            if(groupId != null) {
+            environmentCodeModel.setCodeKey(codeKey);
+            environmentCodeModel.setOrdSeq(ordSeq);
+            environmentCodeModel.setRevisionYear(revisionYear);
+            environmentCodeModel.setRevisionMonth(revisionMonth);
+            
+            if(groupId != null && !StringUtils.equals(groupId, "")) {
             	 environmentCodeModel.setGroupId(groupId);
             }else {
             	environmentCodeModel.setGroupId("GROUP_ID");
@@ -281,6 +247,8 @@ public class EnvironmentCodeController {
 
             environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
             environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
+            
+            System.out.println("== environmentCodeModel 222 => "+environmentCodeModel);
 
             String result = environmentCodeService.save(environmentCodeModel);
 
@@ -290,10 +258,36 @@ public class EnvironmentCodeController {
         }
     }
 
-
+    /**
+     * 코드그룹을 삭제한다.
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/environmentCode/delete")
+    public ResponseEntity<String> codeDelete(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+        try {
+        	String revisionYear = "";
+        	String revisionMonth = "";
+        	String[] revision = environmentCodeModel.getDelRevision().split("-");
+        	revisionYear = revision[0];
+        	revisionMonth = revision[1];
+        	environmentCodeModel.setGroupId(environmentCodeModel.getDelGroupId());
+        	environmentCodeModel.setCodeId(environmentCodeModel.getDelCodeId());
+        	environmentCodeModel.setRevisionYear(revisionYear);
+        	environmentCodeModel.setRevisionMonth(revisionMonth);
+        	environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+        	environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
+        	System.out.println("== groupDelete 222 => "+environmentCodeModel);
+            String result = environmentCodeService.delete(environmentCodeModel);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 
     /**
-     * 코드를 삭제한다.
+     * 환경부 코드를 삭제한다.
      *
      * @param environmentCodeModel
      * @return
