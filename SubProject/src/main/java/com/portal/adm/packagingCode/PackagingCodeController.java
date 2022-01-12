@@ -1,16 +1,17 @@
 package com.portal.adm.packagingCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ import com.portal.config.security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 시스템관리 / 코드관리 컨트롤러
+ * 시스템관리 / 환경부 코드관리 컨트롤러
  */
 @Slf4j
 @RequestMapping("/system")
@@ -36,92 +37,175 @@ public class PackagingCodeController {
     private PackagingCodeService packagingCodeService;
     
     /**
-     * 코드관리 페이지로 이동
+     * 환경부 코드관리 페이지로 이동
      *
      * @param model
      * @return
      */
-    @GetMapping("/packagingCode")
-    public String code(@ModelAttribute PackagingCodeModel packagingCodeMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    @RequestMapping(value="/packagingCode", method= {RequestMethod.GET,RequestMethod.POST})
+    public String packagingCode(@ModelAttribute PackagingCodeModel packagingCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	System.out.println("===================packagingCode==================");
+    	System.out.println("=== packagingCodeModel => : "+packagingCodeModel);
     	String largeCategory = "GROUP_ID";
-    	String middleCategory = "";
-    	packagingCodeMapper.setGroupId("GROUP_ID");
-		packagingCodeMapper.setAuthId(authUser.getMemberModel().getAuthId());
-    	packagingCodeMapper.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-        List<PackagingCodeModel> models = packagingCodeService.selectGroupIdList(packagingCodeMapper);
-        packagingCodeMapper.setTotalCount(packagingCodeService.selectGroupIdListCount(packagingCodeMapper));
-        model.addAttribute("codes", models);
-        model.addAttribute("pages", packagingCodeMapper);
-
-//        if(models.size() > 0) {
-//            model.addAttribute("firstCodeId", models.get(0).getCodeId());
-//            model.addAttribute("firstCodeNm", models.get(0).getCodeNm());
-//            model.addAttribute("firstCodeDsc", models.get(0).getCodeDsc());
-//            model.addAttribute("firstCodeUseYn", models.get(0).getUseYn());
-//        }
-
-        return "packagingCode/packagingCode";
-    }
-
-    /**
-     * 코드관리 페이지로 이동
-     *
-     * @param criteria
-     * @return
-     */
-    @PostMapping("/packagingCode")
-    public String codePost(@ModelAttribute PackagingCodeModel packagingCodeMapper, Model model) {
-    	if(packagingCodeMapper.getGroupId() == null) {
-    		packagingCodeMapper.setGroupId("GROUP_ID");
+    	if(packagingCodeModel.getGroupId() == null || StringUtils.equals(packagingCodeModel.getGroupId(),"")) {
+    		largeCategory = "GROUP_ID";
+    	}else {
+    		largeCategory = packagingCodeModel.getGroupId();
     	}
-        List<PackagingCodeModel> models = packagingCodeService.selectGroupIdList(packagingCodeMapper);
-        packagingCodeMapper.setTotalCount(packagingCodeService.selectGroupIdListCount(packagingCodeMapper));
-        model.addAttribute("codes", models);
-        model.addAttribute("pages", packagingCodeMapper);
-
+    	
+    	List<PackagingCodeModel> largeModels = new ArrayList<PackagingCodeModel>();
+    	List<PackagingCodeModel> middleModels = new ArrayList<PackagingCodeModel>();
+    	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	System.out.println("=== packagingCodeModel 222=> : "+packagingCodeModel);
+    	
+    	// 대분류 리스트
+    	packagingCodeModel.setGroupId(largeCategory);
+		packagingCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
+        largeModels = packagingCodeService.selectGroupIdList(packagingCodeModel);
+        model.addAttribute("largeCodeList", largeModels);
+        
+        
+        //  중분류 리스트
+        if(largeModels.size() > 0) {
+        	String middleCategory = "";
+        	String middleCategoryNm = "";
+        	if(packagingCodeModel.getMiddleCategory() == null || StringUtils.equals(packagingCodeModel.getMiddleCategory(), "") ||
+        			packagingCodeModel.getMiddleCategory().equals(packagingCodeModel.getLargeCategory())) {
+        		middleCategory = largeModels.get(0).getCodeId();
+        		middleCategoryNm = largeModels.get(0).getCodeNm();
+        	}else {
+        		middleCategory = packagingCodeModel.getMiddleCategory();
+        	}
+        	model.addAttribute("setMiddleCategory", middleCategory);
+        	model.addAttribute("setMiddleCategoryNm", middleCategoryNm);
+        	packagingCodeModel.setGroupId(middleCategory);
+        	System.out.println("=== packagingCodeModel 333=> : "+packagingCodeModel);
+        	middleModels = packagingCodeService.selectGroupIdList(packagingCodeModel);
+        	model.addAttribute("middleCodeList", middleModels);
+        }
+    	
+		model.addAttribute("setLargeCategory", packagingCodeModel.getLargeCategory());
+		model.addAttribute("setSmallCategory", packagingCodeModel.getSmallCategory());
+		System.out.println("== packagingCodeModel => "+packagingCodeModel);
+    	
         return "packagingCode/packagingCode";
     }
 
+
     /**
-     * 코드그룹을 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
+     * 환경부 코드 내용 목록을 조회한다.
      *
-     * @param request
+     * @param groupCd
      * @return
      */
-    @PostMapping("/packagingCode/insert")
-    public ResponseEntity<String> groupSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @RequestMapping(value="/packagingCode/detail/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
+    public ResponseEntity<List<PackagingCodeModel>> codesForGroupCd(@ModelAttribute PackagingCodeModel packagingCodeModel, @PathVariable("codeId") String codeId, @AuthenticationPrincipal AuthUser authUser) {
+    	packagingCodeModel.setGroupId(codeId);
+    	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	System.out.println("=== codesForGroupCd packagingCodeModel => : "+packagingCodeModel);
+    	List<PackagingCodeModel> detailCodeList = packagingCodeService.selectList(packagingCodeModel);
+    	
+    	return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
+    }
+    
+    
+    
+    /**
+     * 그룹코드 목록을 조회한다.
+     *
+     * @param groupCd
+     * @return
+     */
+    @RequestMapping(value="/packagingCode/detail/select/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
+    public ResponseEntity<PackagingCodeModel> codesForCodeId(@ModelAttribute PackagingCodeModel packagingCodeModel, @PathVariable("codeId") String codeId, @AuthenticationPrincipal AuthUser authUser) {
+    	packagingCodeModel.setGroupId(packagingCodeModel.getGroupId());
+    	if(packagingCodeModel.getDeRevision() != null && !StringUtils.equals(packagingCodeModel.getDeRevision(), "")) {
+    		String[] revision = packagingCodeModel.getDeRevision().split("-");
+    		packagingCodeModel.setRevisionYear(revision[0]);
+    		packagingCodeModel.setRevisionMonth(revision[1]);
+    	}
+    	packagingCodeModel.setCodeId(codeId);
+    	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+        PackagingCodeModel detailCodeList = packagingCodeService.select(packagingCodeModel);
+        return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
+    }
+    
+
+    /**
+     * 환경부 코드를 저장한다. 카테고리 기준으로 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
+     *
+     * @param packagingCodeModel
+     * @return
+     */
+    @PostMapping("/packagingCode/insert/{category}")
+    @ResponseBody
+    public ResponseEntity<String> save(@ModelAttribute PackagingCodeModel packagingCodeModel, HttpServletRequest request, @PathVariable("category") String category, @AuthenticationPrincipal AuthUser authUser) {
     	try {
-            PackagingCodeModel packagingCodeMapper = new PackagingCodeModel();
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
-            String groupId = request.getParameter("groupId");
-            String codeId = request.getParameter("codeId");
-            String codeNm = request.getParameter("codeNm");
-            String codeDesc = request.getParameter("codeDsc");
-            String codeUseYn = request.getParameter("useYn");
+            
+            System.out.println("== category => "+category);
+            System.out.println("== packagingCodeModel => "+packagingCodeModel);
+            
+            String groupId = "";
+    		String codeId = "";
+    		String codeNm = "";
+    		String codeKey = "";
+    		String codeDsc = "";
+    		String codeUseYn = "Y";
+    		int ordSeq = -1;
+    		
+            if(category.equals("large")) {
+            	groupId = packagingCodeModel.getLarGroupId();
+            	codeId = packagingCodeModel.getLarCodeId();
+            	codeNm = packagingCodeModel.getLarCodeNm();
+            	codeKey = packagingCodeModel.getLarCodeKey();
+            	codeDsc = packagingCodeModel.getLarCodeDsc();
+            	ordSeq = packagingCodeModel.getLarOrdSeq();
+            }else if(category.equals("middle")) {
+            	groupId = packagingCodeModel.getMidGroupId();
+            	codeId = packagingCodeModel.getMidCodeId();
+            	codeNm = packagingCodeModel.getMidCodeNm();
+            	codeKey = packagingCodeModel.getMidCodeKey();
+            	codeDsc = packagingCodeModel.getMidCodeDsc();
+            	ordSeq = packagingCodeModel.getMidOrdSeq();
 
-            packagingCodeMapper.setCodeId(codeId);
-            packagingCodeMapper.setCodeNm(codeNm);
-            packagingCodeMapper.setCodeDsc(codeDesc);
-            packagingCodeMapper.setUseYn(codeUseYn);
-            if(groupId != null) {
-            	 packagingCodeMapper.setGroupId(groupId);
+            }else if(category.equals("small")) {
+            	groupId = packagingCodeModel.getSmlGroupId();
+            	codeId = packagingCodeModel.getSmlCodeId();
+            	codeNm = packagingCodeModel.getSmlCodeNm();
+            	codeKey = packagingCodeModel.getSmlCodeKey();
+            	codeDsc = packagingCodeModel.getSmlCodeDsc();
+            	ordSeq = packagingCodeModel.getSmlOrdSeq();
+            }
+            
+            packagingCodeModel.setCodeId(codeId);
+            packagingCodeModel.setCodeNm(codeNm);
+            packagingCodeModel.setCodeDsc(codeDsc);
+            packagingCodeModel.setUseYn(codeUseYn);
+            packagingCodeModel.setCodeKey(codeKey);
+            packagingCodeModel.setOrdSeq(ordSeq);
+            packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+            if(groupId != null && !StringUtils.equals(groupId, "")) {
+            	 packagingCodeModel.setGroupId(groupId);
             }else {
-            	packagingCodeMapper.setGroupId("GROUP_ID");
+            	packagingCodeModel.setGroupId("GROUP_ID");
             }
 
-            packagingCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            packagingCodeMapper.setModiId(authUser.getMemberModel().getUserId());
+            packagingCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            packagingCodeModel.setModiId(authUser.getMemberModel().getUserId());
+            
+            System.out.println("== packagingCodeModel 222 => "+packagingCodeModel);
 
-            String result = packagingCodeService.save(packagingCodeMapper);
+            String result = packagingCodeService.save(packagingCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-    
+
     /**
      * 코드그룹을 삭제한다.
      *
@@ -129,113 +213,34 @@ public class PackagingCodeController {
      * @return
      */
     @PostMapping("/packagingCode/delete")
-    public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> codeDelete(@ModelAttribute PackagingCodeModel packagingCodeModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
-            PackagingCodeModel packagingCodeMapper = new PackagingCodeModel();
-
-            String codeId = request.getParameter("codeId");
-
-            packagingCodeMapper.setCodeId(codeId);
-            packagingCodeMapper.setGroupId("GROUP_ID");
-
-            packagingCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            packagingCodeMapper.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = packagingCodeService.delete(packagingCodeMapper);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }    
-    
-    
-    
-    
-    /**
-     * 그룹코드 목록을 조회한다.
-     *
-     * @param groupCd
-     * @return
-     */
-    @RequestMapping(value="/packagingCode/detail/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<PackagingCodeModel> codesForGroupCd(@ModelAttribute PackagingCodeModel packagingCodeMapper, @PathVariable("codeId") String codeId) {
-    	packagingCodeMapper.setCodeId(codeId);
-    	packagingCodeMapper.setGroupId("GROUP_ID");
-        packagingCodeMapper = packagingCodeService.select(packagingCodeMapper);
-
-        return new ResponseEntity<>(packagingCodeMapper, HttpStatus.OK);
-    }
-    
-    
-    /**
-     * 그룹코드 목록을 조회한다.
-     *
-     * @param groupCd
-     * @return
-     */
-    @RequestMapping("/packagingCode/detail/code/{groupCd}")
-    public ResponseEntity<List<PackagingCodeModel>> codesForCodeCd(@PathVariable("groupCd") String groupId) {
-    	List<PackagingCodeModel> packagingCodeMappers = packagingCodeService.selectGroupIdAllList(groupId);
-    	
-    	return new ResponseEntity<>(packagingCodeMappers, HttpStatus.OK);
-    }
-
-    /**
-     * 코드를 저장한다. 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.
-     *
-     * @param packagingCodeMapper
-     * @return
-     */
-    @PostMapping("/packagingCode/insert/code")
-    public ResponseEntity<String> save(@ModelAttribute PackagingCodeModel packagingCodeMapper, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	try {
-            for (String key : request.getParameterMap().keySet()) {
-            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
-            }
-            String groupId = request.getParameter("groupId");
-            String codeId = request.getParameter("codeId");
-            String codeNm = request.getParameter("codeNm");
-            String codeDesc = request.getParameter("codeDsc");
-            String codeUseYn = request.getParameter("code_useYn");
-
-            packagingCodeMapper.setCodeId(codeId);
-            packagingCodeMapper.setCodeNm(codeNm);
-            packagingCodeMapper.setCodeDsc(codeDesc);
-            packagingCodeMapper.setUseYn(codeUseYn);
-            if(groupId != null) {
-            	 packagingCodeMapper.setGroupId(groupId);
-            }else {
-            	packagingCodeMapper.setGroupId("GROUP_ID");
-            }
-
-            packagingCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            packagingCodeMapper.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = packagingCodeService.save(packagingCodeMapper);
-
+        	packagingCodeModel.setGroupId(packagingCodeModel.getDelGroupId());
+        	packagingCodeModel.setCodeId(packagingCodeModel.getDelCodeId());
+        	packagingCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+        	packagingCodeModel.setModiId(authUser.getMemberModel().getUserId());
+        	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+        	System.out.println("== groupDelete 222 => "+packagingCodeModel);
+            String result = packagingCodeService.delete(packagingCodeModel);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-
-
     /**
-     * 코드를 삭제한다.
+     * 환경부 코드를 삭제한다.
      *
-     * @param packagingCodeMapper
+     * @param packagingCodeModel
      * @return
      */
-    @PostMapping("/packagingCode/delete/code")
-    public ResponseEntity<String> delete(@ModelAttribute PackagingCodeModel packagingCodeMapper, @AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/packagingCode/delete/{codeId}")
+    public ResponseEntity<String> delete(@ModelAttribute PackagingCodeModel packagingCodeModel, @AuthenticationPrincipal AuthUser authUser) {
         try {
-            packagingCodeMapper.setRgstId(authUser.getMemberModel().getUserId());
-            packagingCodeMapper.setModiId(authUser.getMemberModel().getUserId());
-
-            String result = packagingCodeService.delete(packagingCodeMapper);
+            packagingCodeModel.setRgstId(authUser.getMemberModel().getUserId());
+            packagingCodeModel.setModiId(authUser.getMemberModel().getUserId());
+            packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+            String result = packagingCodeService.delete(packagingCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

@@ -17,6 +17,7 @@
 				UP_COMPANY_CODE,
 			</if>
 			CODE_KEY,
+			ORD_SEQ,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -25,7 +26,7 @@
 			MODI_ID,
 			MODI_DT
 		FROM T_PACKAGING_CODE
-		where GROUP_ID = #{groupId} 
+		where GROUP_ID = #{groupId} AND USE_YN != 'N'
 		<if test="authId != 'au2000001'">
 			<if test="upCompanyCode != null and upCompanyCode != ''">
 				AND UP_COMPANY_CODE = #{upCompanyCode}
@@ -41,7 +42,7 @@
 		FROM
 			T_PACKAGING_CODE
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode} AND USE_YN != 'N'
 	</select>
 
 	<select id="selectGroupIdAllList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel">
@@ -61,7 +62,7 @@
 		FROM
 			T_PACKAGING_CODE
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode} AND USE_YN != 'N'
 		ORDER BY ROWNUM
 	</select>
 
@@ -71,6 +72,7 @@
 			CODE_ID,
 			CODE_KEY,
 			CODE_NM,
+			ORD_SEQ,
 			CODE_DSC,
 			USE_YN,
 			RGST_ID,
@@ -83,6 +85,25 @@
 			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
 		AND
 			CODE_ID = #{codeId}
+	</select>
+	
+	<select id="selectList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
+		SELECT
+			GROUP_ID,
+			CODE_ID,
+			CODE_KEY,
+			CODE_NM,
+			ORD_SEQ,
+			CODE_DSC,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_PACKAGING_CODE
+		WHERE
+			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode} AND USE_YN != 'N'
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
@@ -138,7 +159,15 @@
 		WHERE
 			GROUP_ID = #{groupId}
 		AND
-			CODE_ID = #{codeId}
+			CODE_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
+	</update>
+	
+	<update id="deleteDownCode" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		UPDATE T_PACKAGING_CODE
+		SET
+			USE_YN = 'N'
+		WHERE
+			GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
 	</update>
 
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
