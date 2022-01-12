@@ -631,6 +631,7 @@
 	}
 	
 	function middleCodeSave(){
+		valyCheck('middle');
 		if(isDisabled){
 			return false;
 		}else{
@@ -642,6 +643,7 @@
 	}
 	
 	function smallCodeSave(){
+		valyCheck('small');
 		if(isDisabled){
 			return false;
 		}else{
@@ -654,6 +656,7 @@
 	}
 	
 	function detailCodeSave(){
+		valyCheck('detail');
 		if(isDisabled){
 			return false;
 		}else{
@@ -894,18 +897,70 @@
 		});
 	}
 
-	function valyCheck() {
-		if ($('#codeId').val() == '') {
-			$('#groupId').attr('disabled', true);
-			alert('코드 ID을 입력해 주세요.');
-			$('#codeId').focus();
-			return false;
-		}
-		if ($('#codeNm').val() == '') {
-			$('#groupId').attr('disabled', true);
-			alert('코드 명을 입력해 주세요.');
-			$('#codeNm').focus(); 
-			return false;
+	function valyCheck(type) {
+		if(type == 'middle'){
+			if ($('#midCodeId').val() == '') {
+				alert('부위구분 ID을 입력해 주세요.');
+				$('#midCodeId').focus();
+				return false;
+			}
+			if ($('#midCodeNm').val() == '') {
+				alert('부위구분 이름을 입력해 주세요.');
+				$('#midCodeNm').focus();
+				return false;
+			}
+			if ($('#midCodeKey').val() == '') {
+				alert('부위구분 키을 입력해 주세요.');
+				$('#midCodeKey').focus();
+				return false;
+			}
+			if ($('#midOrdSeq').val() == '') {
+				alert('정렬 순서를 입력해 주세요.');
+				$('#midOrdSeq').focus();
+				return false;
+			}
+		}else if(type == 'small'){
+			if ($('#smlCodeId').val() == '') {
+				alert('용이성 ID을 입력해 주세요.');
+				$('#smlCodeId').focus();
+				return false;
+			}
+			if ($('#smlCodeNm').val() == '') {
+				alert('용이성 이름을 입력해 주세요.');
+				$('#smlCodeNm').focus();
+				return false;
+			}
+			if ($('#smlCodeKey').val() == '') {
+				alert('용이성 키을 입력해 주세요.');
+				$('#smlCodeKey').focus();
+				return false;
+			}
+			if ($('#smlOrdSeq').val() == '') {
+				alert('정렬 순서를 입력해 주세요.');
+				$('#smlOrdSeq').focus();
+				return false;
+			}
+		}else if(type == 'detail'){
+			if ($('#deCodeId').val() == '') {
+				alert('내용 ID을 입력해 주세요.');
+				$('#deCodeId').focus();
+				return false;
+			}
+			if ($('#deCodeNm').val() == '') {
+				alert('내용 이름을 입력해 주세요.');
+				$('#deCodeNm').focus();
+				return false;
+			}
+			if ($('#deCodeKey').val() == '') {
+				alert('내용 키을 입력해 주세요.');
+				$('#deCodeKey').focus();
+				return false;
+			}
+			if ($('#deOrdSeq').val() == '') {
+				alert('정렬 순서를 입력해 주세요.');
+				$('#deOrdSeq').focus();
+				return false;
+			}
 		}
 		return true;
 	}
