@@ -450,7 +450,7 @@
 		var day = '${environmentCodeModel.revisionYear}-${environmentCodeModel.revisionMonth}';
 		$('#midRevision').val(day);
 		$('#smlRevision').val(day);	
-		$('#smlGroupId').val('${environmentCodeModel.groupId}');	
+		$('#smlGroupId').val('${environmentCodeModel.groupId}');
 		
 		$('#largeCategory').change(function(){
 			$('#middleCategory').val('');
@@ -475,6 +475,7 @@
 		
 		$('.smallCodeCancel, .sml_close').click(function(){
 			smallInputReset();
+			$('#smlGroupId').val('${environmentCodeModel.groupId}');
 			$('.smallCodeInsert').addClass('new');
 			$('.smallCodeInsert').text('신규');
 			$('.smallCodeInsert').removeClass('save');
