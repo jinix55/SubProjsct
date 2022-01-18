@@ -10,13 +10,14 @@
 
 	<select id="selectGroupIdList" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
+			ROW_NUMBER() OVER (ORDER BY ORD_SEQ ASC) AS ROWNUM,
 			GROUP_ID,
 			CODE_ID,
 			<if test="authId == 'au2000001'">
 				UP_COMPANY_CODE,
 			</if>
 			CODE_KEY,
+			CODE_TYPE,
 			ORD_SEQ,
 			CODE_NM,
 			CODE_DSC,
@@ -33,7 +34,7 @@
 			</if>
 		</if>
 		ORDER BY ROWNUM ASC
-		<include refid="paging"></include>
+<!-- 		<include refid="paging"></include> -->
 	</select>
 
 	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
@@ -51,6 +52,7 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			CODE_TYPE,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -71,6 +73,7 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			CODE_TYPE,
 			CODE_NM,
 			ORD_SEQ,
 			CODE_DSC,
@@ -92,6 +95,7 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
+			CODE_TYPE,
 			CODE_NM,
 			ORD_SEQ,
 			CODE_DSC,
@@ -104,6 +108,7 @@
 			T_PACKAGING_CODE
 		WHERE
 			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode} AND USE_YN != 'N'
+		ORDER BY ORD_SEQ ASC
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.packagingCode.model.PackagingCodeModel">
@@ -111,6 +116,7 @@
 			GROUP_ID
 			, CODE_ID
 			, CODE_KEY
+			, CODE_TYPE
 			, UP_COMPANY_CODE
 			, CODE_NM
 			, CODE_DSC
@@ -124,6 +130,7 @@
 			#{groupId}
 			, #{codeId}
 			, #{codeKey}
+			, #{codeType}
 			, #{upCompanyCode}
 			, #{codeNm}
 			, #{codeDsc}
@@ -140,6 +147,7 @@
 		UPDATE T_PACKAGING_CODE
 		SET
 			CODE_NM = #{codeNm}
+			, CODE_TYPE = #{codeType}
 			, CODE_KEY = #{codeKey}
 			, CODE_DSC = #{codeDsc}
 			, MODI_DT = now()

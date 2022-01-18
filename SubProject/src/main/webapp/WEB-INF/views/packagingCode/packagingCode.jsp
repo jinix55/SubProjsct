@@ -88,7 +88,7 @@
 									<col style="width: 40px;">
 									<col style="width: 110px;">
 									<col style="width: 150px;">
-									<col style="width: 150px;">
+<%-- 									<col style="width: 150px;"> --%>
 									<col style="width: 90px;">
 								</colgroup>
 								<thead>
@@ -96,7 +96,7 @@
 										<th scope="col">번호</th>
 										<th scope="col">중분류코드</th>
 										<th scope="col">중분류코드명</th>
-										<th scope="col">서브코드관리</th>
+<!-- 										<th scope="col">서브코드관리</th> -->
 										<th scope="col">관리</th>
 									</tr>
 								</thead>
@@ -108,9 +108,9 @@
 													<td>${status.count}</td>
 													<td class="text-point">${list.codeId }</td>
 													<td>${list.codeNm }</td>
-													<td>
-														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall" onclick="smallCode(this);">내용 관리</a>
-													</td>
+<!-- 													<td> -->
+<%-- 														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall" onclick="smallCode(this);">내용 관리</a> --%>
+<!-- 													</td> -->
 													<td>
 														<div class="btn-group">
 															<a id="setMid_${list.codeId }" nm="${list.codeNm }" upId="setMid_${list.groupId }" codeKey="${list.codeKey }" ordSeq="${list.ordSeq }" codeDsc="${list.codeDsc }" onclick="middleViewSet(this);" href="#coderegister_m" role="button" data-toggle="modal" class="btn-icon">
