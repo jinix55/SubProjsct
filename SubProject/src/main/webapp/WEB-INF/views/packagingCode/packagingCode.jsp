@@ -9,13 +9,13 @@
 	<input type="hidden" id="largeCategoryNm" name="largeCategoryNm" value="${setLargeCategoryNm }">
 	<div class="row pt30">
 		<!-- S_left-area -->
-		<div class="code-left-wrap">
+		<div class="pack-left-wrap">
 			<h4 class="code-tit">ㆍ분류그룹등록 > 대분류</h4>
 			<div class="left-area">
 				<div class="content">
 					<!-- S_그리드-->
 					<div class="content-table">
-						<div class="scroll-auto">
+						<div class="scroll-auto h600auto">
 							<table class="table">
 								<colgroup>
 									<col style="width: 40px;">
@@ -76,7 +76,7 @@
 		</div>
 		<!-- E_left-area -->
 		<!-- S_right-area -->
-		<div class="code-right-wrap">
+		<div class="pack-right-wrap">
 			<h4 class="code-tit">ㆍ분류그룹등록 > 중분류</h4>
 			<div class="right-area">
 				<div class="content">
