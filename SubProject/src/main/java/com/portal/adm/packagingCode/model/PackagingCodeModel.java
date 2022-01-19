@@ -40,6 +40,7 @@ public class PackagingCodeModel extends Criteria{
     private String middleCategory;	//대분류
     private String smallCategory;	//대분류
     private String detailCategory;	//대분류
+    private String codeType;		//대분류
     
     private String larGroupId;		//대분류 화면 코드
     private String larCodeId;		//대분류 화면 코드
@@ -47,7 +48,8 @@ public class PackagingCodeModel extends Criteria{
     private String larCodeKey;		//대분류 화면 코드
     private String larCodeDsc;		//대분류 화면 코드
     private String larRevision;		// 개정 년
-    private Integer larOrdSeq;			//정렬순서
+    private Integer larOrdSeq;		//정렬순서
+    private String larCodeType;		//대분류
     
     private String midGroupId;		//중분류 화면 코드
     private String midCodeId;		//중분류 화면 코드
@@ -56,6 +58,7 @@ public class PackagingCodeModel extends Criteria{
     private String midCodeDsc;		//중분류 화면 코드
     private String midRevision;		// 개정 년
     private Integer midOrdSeq;			//정렬순서
+    private String midCodeType;		//대분류
     
     private String smlGroupId;		//소분류 화면 코드
     private String smlCodeId;		//소분류 화면 코드
@@ -64,18 +67,7 @@ public class PackagingCodeModel extends Criteria{
     private String smlCodeDsc;		//소분류 화면 코드
     private String smlRevision;		// 개정 년
     private Integer smlOrdSeq;			//정렬순서
+    private String smlCodeType;		//대분류
     
-    private String deGroupId;       //디테일 화면 코드
-    private String deCodeId;        //디테일 화면 코드
-    private String deCodeNm;        //디테일 화면 코드
-    private String deCodeKey;		//소분류 화면 코드
-    private String deCodeDsc;       //디테일 화면 코드
-    private String deRevision;		// 개정 년
-    private Integer deOrdSeq;		//정렬순서
-    
-    private String delGroupId;       //디테일 화면 코드
-    private String delCodeId;        //디테일 화면 코드
-    private String delRevision;        //디테일 화면 코드
-    private String delType;        //디테일 화면 코드
 }
 
