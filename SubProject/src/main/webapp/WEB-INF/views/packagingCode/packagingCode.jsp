@@ -760,7 +760,6 @@
 		$('#delGroupId').val(groupId);
 		$('#delCodeId').val(codeId);
 		$('#delType').val('middle');
-		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
 	}
 
 	function deleteSmallSet() {
