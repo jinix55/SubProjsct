@@ -30,7 +30,7 @@
 					</div>
 					<!-- S_그리드-->
 					<div class="content-table">
-						<div class="scroll-auto">
+						<div class="scroll-auto h600auto">
 							<table class="table">
 								<colgroup>
 									<col style="width: 40px;">

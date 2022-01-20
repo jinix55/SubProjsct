@@ -110,26 +110,6 @@ public class PackagingCodeController {
     
     
     
-    /**
-     * 그룹코드 목록을 조회한다.
-     *
-     * @param groupCd
-     * @return
-     */
-    @RequestMapping(value="/packagingCode/detail/select/{codeId}", method= {RequestMethod.GET,RequestMethod.POST})
-    public ResponseEntity<PackagingCodeModel> codesForCodeId(@ModelAttribute PackagingCodeModel packagingCodeModel, @PathVariable("codeId") String codeId, @AuthenticationPrincipal AuthUser authUser) {
-    	packagingCodeModel.setGroupId(packagingCodeModel.getGroupId());
-    	if(packagingCodeModel.getDeRevision() != null && !StringUtils.equals(packagingCodeModel.getDeRevision(), "")) {
-    		String[] revision = packagingCodeModel.getDeRevision().split("-");
-    		packagingCodeModel.setRevisionYear(revision[0]);
-    		packagingCodeModel.setRevisionMonth(revision[1]);
-    	}
-    	packagingCodeModel.setCodeId(codeId);
-    	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-        PackagingCodeModel detailCodeList = packagingCodeService.select(packagingCodeModel);
-        return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
-    }
-    
 
     /**
      * 환경부 코드를 저장한다. 카테고리 기준으로 그룹ID와 코드ID가 동일한 데이터가 존재하면 업데이트 없으면 신규 등록한다.

@@ -69,5 +69,8 @@ public class PackagingCodeModel extends Criteria{
     private Integer smlOrdSeq;			//정렬순서
     private String smlCodeType;		//대분류
     
+    private String delGroupId;		//대분류
+    private String delCodeId;		//대분류
+    
 }
 
