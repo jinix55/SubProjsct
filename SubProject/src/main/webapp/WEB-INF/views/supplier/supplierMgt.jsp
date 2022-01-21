@@ -8,11 +8,9 @@
 			<div class="form-group">
 				<div class="form-inline">
 					<select class="select-box w150">
-						<option value="">전체</option>
-						<option value="0">공급업체</option>
-						<option value="1">사업자번호</option>
-						<option value="2">공급유형</option>
-						<option value="3">담당자</option>
+						<option value="ALL">전체</option>
+						<option value="supplierNm">공급업체명</option>
+						<option value="supplierCode">공급업체코드</option>
 					</select>
 				</div>
 				<div class="form-inline">
@@ -31,21 +29,6 @@
 	<!-- E_검색-->
 	<!-- S_그리드-->
 	<div class="content-table">
-		<div class="buttons-action" style="display: none">
-			<div>
-				<a href="#Alldelete" role="button" data-toggle="modal">
-					<button type="button" class="btn-alldelete">
-						전체삭제<img src="/images/icon_delete.png" title="삭제">
-					</button>
-				</a>
-				<button type="button" class="btn-allcancel">
-					삭제취소<img src="/images/icon_cancel.png" title="취소">
-				</button>
-			</div>
-			<div>
-				<span class="text-action">14 items selected</span>
-			</div>
-		</div>
 		<div class="scroll-auto">
 			<table class="table table-actions">
 				<colgroup>
@@ -54,285 +37,76 @@
 					<col style="width: 180px;">
 					<col style="width: 100px;">
 					<col style="width: 80px;">
-					<col style="width: 90px;">
 					<col style="width: 100px;">
 					<col style="width: 90px;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
-						<th><input type="checkbox" name="all" id="checkAll"></th>
-						<th scope="col">공급업체ID</th>
-						<th scope="col">공급업체명</th>
+						<th></th>
+						<th scope="col">공급업체 코드</th>
+						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-						<th scope="col">공급유형</th>
 						<th scope="col">담당자</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr>
-						<th><input type="checkbox" name="chk"></th>
-						<td>SUP_001</td>
-						<td class="text-point">희성산업</td>
-						<td>02-000-000</td>
-						<td>홍길동</td>
-						<td class="ellipsis">원자재</td>
-						<td><a href="#charge" role="button" data-toggle="modal"
-							class="btn-icon"><img src="/images/icon_user2.png">홍나리</a></td>
-						<td>
-							<div class="btn-group">
-								<a href="#detail" role="button" data-toggle="modal"
-									class="btn-icon"><img src="/images/icon_detail.png"
-									alt="상세보기" class="btn-Ticon"></a> <a href="#edit"
-									role="button" data-toggle="modal" class="btn-icon"><img
-									src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-								<a href="#delete" role="button" data-toggle="modal"
-									class="btn-icon"><img src="/images/icon_delete2.png"
-									alt="삭제하기" class="btn-Ticon02"></a>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th><input type="checkbox" name="chk"></th>
-						<td>SUP_002</td>
-						<td class="text-point">포장</td>
-						<td>02-000-000</td>
-						<td>강감찬</td>
-						<td class="ellipsis">포장</td>
-						<td><a href="#charge" role="button" data-toggle="modal"
-							class="btn-icon"><img src="/images/icon_user2.png">홍나리</a></td>
-						<td>
-							<div class="btn-group">
-								<a href="#detail" role="button" data-toggle="modal"
-									class="btn-icon"><img src="/images/icon_detail.png"
-									alt="상세보기" class="btn-Ticon"></a> <a href="#edit"
-									role="button" data-toggle="modal" class="btn-icon"><img
-									src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-								<a href="#delete" role="button" data-toggle="modal"
-									class="btn-icon"><img src="/images/icon_delete2.png"
-									alt="삭제하기" class="btn-Ticon02"></a>
-							</div>
-						</td>
-					</tr>
+					<c:forEach items="${suppliers }" var="list" varStatus="status">
+						<tr>
+							<th>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</th>
+							<td>${list.supplierCode}</td>
+							<td>${list.supplierNm}</td>
+							<td>${list.supplierNo}</td>
+							<td>${list.representativeNm}</td>
+							<td><c:forEach items="${managers }" var="mng"
+									varStatus="status1">
+									<c:if test="${mng.supplierCode eq list.supplierCode }">
+										<a href="#charge" role="button"
+											onclick="selectManager('${mng.managerId}');"
+											data-toggle="modal" class="btn-icon text-point"> <img
+											src="/images/icon_user2.png"> ${mng.managerNm }
+										</a>
+									</c:if>
+								</c:forEach></td>
+							<td>
+								<div class="btn-group">
+									<a href="#edit" role="button" data-toggle="modal"
+										onclick="detailView('${list.supplierId}');" class="btn-icon">
+										<img src="/images/icon_edit.png" alt="상세보기" class="btn-Ticon">
+									</a> <a href="#delete" role="button" data-toggle="modal"
+										onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"
+										class="btn-icon"> <img src="/images/icon_delete2.png"
+										alt="삭제하기" class="btn-Ticon02">
+									</a>
+								</div>
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</div>
 	<!-- E_그리드-->
 	<div class="btn-group pt15 tr">
-		<button type="button" class="button btn-success" data-toggle="modal">
-			<a href="#register" data-toggle="modal">공급업체등록</a>
+		<button type="button" class="button btn-success" href="#register" data-toggle="modal">
+			공급업체등록
+			<!-- 			<a href="#register" data-toggle="modal">공급업체등록</a> -->
 		</button>
 	</div>
 	<!-- S_페이징-->
-	<div class="board-paging">
-		<ul>
-			<li><a href="#" class="start">◀</a></li>
-			<li class="on"><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#">6</a></li>
-			<li><a href="#">7</a></li>
-			<li><a href="#">8</a></li>
-			<li><a href="#">9</a></li>
-			<li><a href="#">10</a></li>
-			<li><a href="#">...20</a></li>
-			<li><a href="#" class="last">▶</a></li>
-		</ul>
-	</div>
+	<div class="board-paging"></div>
 	<!-- E_페이징-->
 </div>
 
-
-<!-- 레이어 팝업 - 등록  -->
+<!-- 레이어 팝업 - 등록 -->
+<form id="frmRegister">
 <div id="register" class="modal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 900px">
 		<div class="modal-header">
-			<h4 class="modal-title">공급업체등록</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="tab">
-				<ul class="tabnav">
-					<li><a href="#tab01">기업정보</a></li>
-					<li><a href="#tab02">담당자</a></li>
-				</ul>
-				<div class="tabcontent">
-					<div id="tab01">
-						<div class="row">
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">업체명</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">대표자명</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">사업자번호</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">공급기업Type</label>
-									<div class="col-75">
-										<select class="select-box">
-											<option value="1">원자재/포전재</option>
-											<option value="2">원자재/포전재</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-100">
-								<div class="form-group">
-									<label class="col-25 form-label">주소</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-25 form-label">웹사이트</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-25 form-label-textarea">설명</label>
-									<div class="col-75">
-										<div class="form-input">
-											<textarea class="textarea"></textarea>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="tab02">
-						<table class="table">
-							<colgroup>
-								<col style="width: 100px;">
-								<col style="width: 100px;">
-								<col style="width: 90px;">
-							</colgroup>
-							<thead>
-								<tr class="th-bg">
-									<th scope="col">성명</th>
-									<th scope="col">직위</th>
-									<th scope="col">관리</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td class="text-point">홍길동</td>
-									<td>과장</td>
-									<td>
-										<div class="btn-group">
-											<a href="#edit02" role="button" data-toggle="modal"
-												class="btn-icon"><img src="/images/icon_edit.png"
-												alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
-												role="button" data-toggle="modal" class="btn-icon"><img
-												src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-point">고길동</td>
-									<td>차장</td>
-									<td>
-										<div class="btn-group">
-											<a href="#edit02" role="button" data-toggle="modal"
-												class="btn-icon"><img src="/images/icon_edit.png"
-												alt="수정하기" class="btn-Ticon02"></a> <a href="#delete"
-												role="button" data-toggle="modal" class="btn-icon"><img
-												src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-
-						<div class="row pt30">
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">성명</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">휴대폰번호</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">부서</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-50">
-								<div class="form-group">
-									<label class="col-25 form-label">직위</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-							<div class="col-100">
-								<div class="form-group">
-									<label class="col-25 form-label">이메일</label>
-									<div class="col-75">
-										<input type="text" class="text-input">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">저장</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-		</div>
-	</div>
-</div>
-
-
-<!-- 레이어 팝업 - 상세 -->
-<div id="detail" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 900px">
-		<div class="modal-header">
-			<h4 class="modal-title">공급업체상세</h4>
+			<h4 class="modal-title">공급업체 등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
 				<img src="/images/icon_close.png">
 			</button>
@@ -344,51 +118,69 @@
 			<div class="row">
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">등록날짜</label>
+						<label class="col-25 form-label">업체 코드<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="2001-12-30" disabled>
+							<input id="supplierCode" name="supplierCode" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">공급업체 ID</label>
+						<label class="col-25 form-label">업체명<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="SUP_001" disabled>
+							<input id="supplierNm" name="supplierNm" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">업체명</label>
+						<label class="col-25 form-label">대표자명<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="희성산업" disabled>
+							<input id="representativeNm" name="representativeNm" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">대표자명</label>
+						<label class="col-25 form-label">사업자번호<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<div class="phone-number">
+								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+							</div>
+							<input type="hidden" id="supplierNo" name="supplierNo" />
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">사업자번호</label>
+						<label class="col-25 form-label">연락처<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<div class="phone-number">
+								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+							</div>
+							<input type="hidden" id="telephoneNo" name="telephoneNo" />
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">공급기업Type</label>
+						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
-							<select class="select-box">
-								<option value="1">원자재/포전재</option>
-								<option value="2">원자재/포전재</option>
+							<select id="useYn" name="useYn" class="select-box">
+								<option value="Y">예</option>
+								<option value="N">아니요</option>
 							</select>
 						</div>
 					</div>
@@ -397,22 +189,16 @@
 			<div class="row">
 				<div class="col-100">
 					<div class="form-group">
-						<label class="col-25 form-label">주소</label>
+						<label class="col-25 form-label">주소<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-25 form-label">웹사이트</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
+							<input id="address" name="address" type="text" class="text-input">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-25 form-label-textarea">설명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<textarea class="textarea"></textarea>
+								<textarea id="supplierDsc" name="supplierDsc" class="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -423,19 +209,31 @@
 				<span class="title-point">[담당자]</span>
 			</h4>
 			<div class="row">
+				<div class="col-100 mb10">
+					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk">대표 적용
+				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">성명</label>
+						<label class="col-25 form-label">성명<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<input id="managerNm" name="managerNm" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호</label>
+						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<div class="phone-number">
+								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+							</div>
+							<div class="phone-number">
+								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+							</div>
+							<input type="hidden" id="managerPhone" name="managerPhone" />
 						</div>
 					</div>
 				</div>
@@ -443,7 +241,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">부서</label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<input id="managerDept" name="managerDept" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -451,278 +249,332 @@
 					<div class="form-group">
 						<label class="col-25 form-label">직위</label>
 						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">확인</button>
-		</div>
-	</div>
-</div>
-
-<!-- 레이어 팝업 - 수정 -->
-<div id="edit" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 900px">
-		<div class="modal-header">
-			<h4 class="modal-title">공급업체수정</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<h4 class="tl mb10">
-				<span class="title-point">[기업정보]</span>
-			</h4>
-			<div class="row">
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">업체명</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
+							<input id="managerPstn" name="managerPstn" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">대표자명</label>
+						<label class="col-25 form-label">이메일<em>*</em></label>
 						<div class="col-75">
-							<input type="text" class="text-input">
+							<div class="email-add">
+								<input id="managerMail1" name="managerMail1" type="text"
+									class="text-input email">
+							</div>
+							<div class="email-add">
+								<input id="managerMail2" name="managerMail2" type="text"
+									class="text-input email">
+							</div>
+							<input type="hidden" id="managerMail" name="managerMail" />
 						</div>
 					</div>
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">사업자번호</label>
+						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">공급기업Type</label>
-						<div class="col-75">
-							<select class="select-box">
-								<option value="1">원자재/포전재</option>
-								<option value="2">원자재/포전재</option>
+							<select id="ma_useYn" name="ma_useYn" class="select-box">
+								<option value="Y">예</option>
+								<option value="N">아니요</option>
 							</select>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label">주소</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
+		</div>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-success" onclick="insertSupplier();" >저장</button>
+		</div>
+	</div>
+</div>
+</form>
+
+<!-- 레이어 팝업 - 등록  -->
+<form id="frmReg">
+	<div id="edit" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<input id="supplierId" name="supplierId" type="hidden"
+			class="text-input">
+		<div class="modal-content" style="width: 900px">
+			<div class="modal-header">
+				<h4 class="modal-title">공급업체 상세</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<img src="/images/icon_close.png">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="tab">
+					<ul class="tabnav">
+						<li><a id="tabnav01" href="#tab01">기업정보</a></li>
+						<li><a id="tabnav02" href="#tab02">담당자</a></li>
+					</ul>
+					<div class="tabcontent">
+						<div id="tab01">
+							<div class="row">
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">등록일자</label>
+										<div class="col-75">
+											<input id="rgstDt" name="rgstDt" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">수정일자</label>
+										<div class="col-75">
+											<input id="modiDt" name="modidt" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">업체코드</label>
+										<div class="col-75">
+											<input id="supplierCode" name="supplierCode" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">사용여부</label>
+										<div class="col-75">
+											<select id="useYn" name="useYn" class="select-box">
+												<option value="Y">예</option>
+												<option value="N">아니요</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">업체명</label>
+										<div class="col-75">
+											<input id="supplierNm" name="supplierNm" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">대표자명</label>
+										<div class="col-75">
+											<input id="representativeNm" name="representativeNm"
+												type="text" class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">사업자번호</label>
+										<div class="col-75">
+											<div class="phone-number">
+												<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+											</div>
+											<input type="hidden" id="supplierNo" name="supplierNo" />
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">연락처</label>
+										<div class="col-75">
+											<div class="phone-number">
+												<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											</div>
+											<input type="hidden" id="telephoneNo" name="telephoneNo" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-100">
+									<div class="form-group">
+										<label class="col-25 form-label">주소</label>
+										<div class="col-75">
+											<input id="address" name="address" type="text"
+												class="text-input">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-25 form-label-textarea">설명</label>
+										<div class="col-75">
+											<div class="form-input">
+												<textarea id="note" name="note" class="textarea"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-25 form-label">웹사이트</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-25 form-label-textarea">설명</label>
-						<div class="col-75">
-							<div class="form-input">
-								<textarea class="textarea"></textarea>
+						<div id="tab02">
+							<table class="table">
+								<colgroup>
+									<col style="width: 15%;">
+									<col style="width: 10%;">
+									<col style="width: 10%;">
+									<col style="width: 20%;">
+									<col style="width: 20%;">
+									<col style="width: 5%;">
+								</colgroup>
+								<thead>
+									<tr class="th-bg">
+										<th scope="col">성명</th>
+										<th scope="col">부서</th>
+										<th scope="col">직위</th>
+										<th scope="col">연락처</th>
+										<th scope="col">메일</th>
+										<th scope="col">관리</th>
+									</tr>
+								</thead>
+								<tbody id="managerTable">
+									<tr>
+										<td colspan="6">등록된 담당자가 없습니다.</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="row pt30">
+								<div class="col-100 mb10">
+									<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk">대표 적용
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">성명</label>
+										<div class="col-75">
+											<input id="managerNm" name="managerNm" type="text" class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">휴대폰번호</label>
+										<div class="col-75">
+											<div class="phone-number">
+												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											</div>
+											<div class="phone-number">
+												<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											</div>
+											<input type="hidden" id="managerPhone" name="managerPhone" />
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">부서</label>
+										<div class="col-75">
+											<input id="managerDept" name="managerDept" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">직위</label>
+										<div class="col-75">
+											<input id="managerPstn" name="managerPstn" type="text"
+												class="text-input">
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">이메일</label>
+										<div class="col-75">
+											<div class="email-add">
+												<input id="managerMail1" name="managerMail1" type="text"
+													class="text-input email">
+											</div>
+											<div class="email-add">
+												<input id="managerMail2" name="managerMail2" type="text"
+													class="text-input email">
+											</div>
+											<input type="hidden" id="managerMail" name="managerMail" />
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">사용여부</label>
+										<div class="col-75">
+											<select id="ma_useYn" name="ma_useYn" class="select-box">
+												<option value="Y">예</option>
+												<option value="N">아니요</option>
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<h4 class="tl mb10 pt15">
-				<span class="title-point">[담당자]</span>
-			</h4>
-			<div class="row">
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">성명</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
+			<!-- 버튼 -->
+			<div class="modal-footer btn-group">
+				<button type="button" class="button btn-success check" data-dismiss="modal">확인</button>
+				<button type="button" class="button btn-cancel cancel" data-dismiss="modal">취소</button>
 			</div>
 		</div>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">확인</button>
-		</div>
 	</div>
-</div>
+</form>
 
-<!-- 레이어 팝업 - 수정 -->
-<div id="edit02" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 900px">
-		<div class="modal-header">
-			<h4 class="modal-title">담당자수정</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">성명</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일</label>
-						<div class="col-75">
-							<input type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">확인</button>
-		</div>
-	</div>
-</div>
 <!-- 레이어 팝업 - delete -->
-<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-	data-modal-parent="#myModal">
-	<!-- Modal content-->
-	<div class="modal-content" style="width: 400px">
-		<div class="modal-header">
-			<h4 class="modal-title">삭제</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<div class="tc">
-							(<em class="text-bold">2021-10-18</em>)삭제합니다.
+<form id="frmManager">
+	<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+		data-modal-parent="#myModal">
+		<input type="hidden" name="delManagerId" id="delManagerId" /> <input
+			type="hidden" name="delSupplierCode" id="delSupplierCode" /> <input
+			type="hidden" name="delSupplierId" id="delSupplierId" />
+		<!-- Modal content-->
+		<div class="modal-content" style="width: 400px">
+			<div class="modal-header">
+				<h4 class="modal-title">삭제</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<img src="/images/icon_close.png">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-100">
+						<div class="form-group">
+							<div class="tc">
+								<em class="text-bold delName"></em> 삭제합니다.
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-		</div>
-	</div>
-</div>
-<!-- 레이어 팝업 delete All -->
-<div id="Alldelete" class="modal" data-backdrop-limit="1" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-	data-modal-parent="#myModal">
-	<!-- Modal content-->
-	<div class="modal-content" style="width: 400px">
-		<div class="modal-header">
-			<h4 class="modal-title">전체삭제</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<div class="tc">
-							<em class="text-bold">14 items selected</em><br />삭제하시겠습니까?
-						</div>
-					</div>
-				</div>
+			<div class="modal-footer btn-group">
+				<button type="button" class="button btn-warning"
+					onclick="deleteManager();" data-dismiss="modal">삭제</button>
+				<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 			</div>
 		</div>
-		<div class="modal-footer btn-Tgroup">
-			<button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-		</div>
 	</div>
-</div>
+</form>
 
 <!-- 레이어 팝업 - 담당자  -->
-<div id="charge" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="charge" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 700px">
 		<div class="modal-header">
 			<h4 class="modal-title">담당자 정보</h4>
@@ -732,11 +584,16 @@
 		</div>
 		<div class="modal-body">
 			<div class="row">
+				<input id="pop_managerId" name="pop_managerId" type="hidden"
+					class="text-input" disabled> <input
+					id="pop_managerRepresent" name="pop_managerRepresent" value="Y"
+					type="hidden" class="text-input" disabled>
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">성명</label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="홍나리" disabled>
+							<input id="pop_managerNm" name="pop_managerNm" type="text"
+								class="text-input" value="홍나리" disabled>
 						</div>
 					</div>
 				</div>
@@ -744,7 +601,8 @@
 					<div class="form-group">
 						<label class="col-25 form-label">휴대폰번호</label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="010-123-4567">
+							<input id="pop_managerPhone" name="pop_managerPhone" type="text"
+								class="text-input" value="010-123-4567">
 						</div>
 					</div>
 				</div>
@@ -752,7 +610,8 @@
 					<div class="form-group">
 						<label class="col-25 form-label">부서</label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="홍보">
+							<input id="pop_managerDept" name="pop_managerDept" type="text"
+								class="text-input" value="홍보">
 						</div>
 					</div>
 				</div>
@@ -760,7 +619,8 @@
 					<div class="form-group">
 						<label class="col-25 form-label">직위</label>
 						<div class="col-75">
-							<input type="text" class="text-input" value="과장">
+							<input id="pop_mmanagerPstn" name="pop_mmanagerPstn" type="text"
+								class="text-input" value="과장">
 						</div>
 					</div>
 				</div>
@@ -768,8 +628,8 @@
 					<div class="form-group">
 						<label class="col-25 form-label">이메일</label>
 						<div class="col-75">
-							<input type="text" class="text-input"
-								value="PPlueEco@PlueEc.co.kr">
+							<input id="pop_managerMail" name="pop_managerMail" type="text"
+								class="text-input" value="PPlueEco@PlueEc.co.kr">
 						</div>
 					</div>
 				</div>
@@ -777,8 +637,7 @@
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">수정</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+			<button type="button" class="button btn-success" data-dismiss="modal">확인</button>
 		</div>
 	</div>
 </div>
@@ -789,22 +648,16 @@
 	/**
 	 * 페이징 처리 공통 함수
 	 */
-	var totalPage = $
-	{
-		pages.totalPage
-	};
-	var page = $
-	{
-		pages.page
-	};
-	var pageSize = $
-	{
-		pages.pageSize
-	};
+	var totalPage = ${pages.totalPage};
+	var page = ${pages.page};
+	var pageSize = ${pages.pageSize};
 
-	// var totalPage = 10;
-	// var page = 2; 
-	// var pageSize = 10; 
+	// 	var totalPage = 1;
+	// 	var page = 2; 
+	// 	var pageSize = 10;
+
+	var setSupplierCode = '';
+	var setManager = 'N';
 
 	$('.board-paging').bootpag({ // 페이징을 표시할 div의 클래스
 		total : totalPage, // 페이징모델의 전체페이지수
@@ -823,237 +676,49 @@
 		$("#holiBdForm").submit();
 	});
 
-	function detailView(id) {
-		$.ajax({
-			url : '/system/company/detail/' + id,
-			dataType : 'json',
-			type : "POST",
-			error : function(xhr, status, error) {
-				console.log(error);
-			},
-			success : function(data) {
-				setView(data);
-			}
-		});
-	}
-
-	function setView(data) {
-
-		$('#edit .modal-title').text('상세');
-		$('#edit input').attr('disabled', true);
-		$('#edit textarea').attr('disabled', true);
-		$('#edit select').attr('disabled', true);
-
-		var companyNo1;
-		var companyNo2;
-		var companyNo3;
-		var telephoneNo1;
-		var telephoneNo2;
-		var telephoneNo3;
-
-		if (data.companyNo) {
-			companyNo1 = data.companyNo.split("-")[0];
-			companyNo2 = data.companyNo.split("-")[1];
-			companyNo3 = data.companyNo.split("-")[2];
-		}
-		if (data.telephoneNo) {
-			telephoneNo1 = data.telephoneNo.split("-")[0];
-			telephoneNo2 = data.telephoneNo.split("-")[1];
-			telephoneNo3 = data.telephoneNo.split("-")[2];
-		}
-
-		$('#companyCode').val(data.companyCode);
-		$('#companyId').val(data.companyId);
-		$('#companyNo').val(data.companyNo);
-		$('#companyNo1').val(companyNo1);
-		$('#companyNo2').val(companyNo2);
-		$('#companyNo3').val(companyNo3);
-		$('#companyNm').val(data.companyNm);
-		$('#companyDsc').val(data.companyDsc);
-		$('#address').val(data.address);
-		$('#telephoneNo').val(data.telephoneNo);
-		$('#telephoneNo1').val(telephoneNo1);
-		$('#telephoneNo2').val(telephoneNo2);
-		$('#telephoneNo3').val(telephoneNo3);
-		$('#representativeNm').val(data.representativeNm);
-		$('#note').val(data.note);
-		$('#useYn').val(data.useYn);
-
-	}
-
-	function setEdit() {
-		$('#edit .modal-title').text('수정');
-		$('#edit input').attr('disabled', false);
-		$('#edit textarea').attr('disabled', false);
-		$('#edit select').attr('disabled', false);
-		$('#companyId').attr('disabled', true);
-		$('.btnCheck').text('취소');
-		$('.btnEdit').text('저장');
-		$('.btnEdit').addClass('btnSave');
-	}
-
-	function resetView() {
-		$('#edit .modal-title').text('상세');
-		$('#edit input').attr('disabled', true);
-		$('#edit textarea').attr('disabled', true);
-		$('#edit select').attr('disabled', true);
-		$('.btnCheck').text('확인');
-		$('.btnEdit').text('수정');
-		$('.btnEdit').removeClass('btnSave');
-	}
-
-	function regResetView() {
-		$('#register input').val('');
-		$('#register .codeSearch').removeClass('search-Success');
-	}
-
-	function deleteCompanyAction() {
-		$('#tr_' + $('.delCompanyAction').val()).remove();
-		param = {
-			companyId : $('.delCompanyAction').val()
-		}
-		if (validation()) {
-			if (isDisabled) {
-				return false;
-			} else {
-				isDisabled = true;
-				$.ajax({
-					url : '/system/company/delete',
-					dataType : 'text',
-					type : "POST",
-					data : param,
-					error : function(xhr, status, error) {
-						console.log(error);
-					},
-					success : function(result) {
-						if (result == 'Delete') {
-							location.href = '/system/company';
-						}
-					}
-				});
-			}
-		}
-	}
-
-	function companySave() {
-		$('#companyId').attr('disabled', false);
-		var param = $("#companyInst").serialize();
-		callInsertAjax(param)
-	}
-
-	function companyInsert() {
-		var has = $('#codeSearch').hasClass('search-Success');
-		if (!has) {
-			alert('회사 코드 중복 학인이 필요합니다.');
+	function insertSupplier(){
+		validation('register');
+		if (isDisabled) {
 			return false;
-		}
-
-		var companyNo = $('#reg_companyNo1').val() + "-"
-				+ $('#reg_companyNo2').val() + "-" + $('#reg_companyNo3').val();
-		var telephoneNo = $('#reg_telephoneNo1').val() + "-"
-				+ $('#reg_telephoneNo2').val() + "-"
-				+ $('#reg_telephoneNo3').val();
-		var param = {
-			companyCode : $('#reg_companyCode').val(),
-			companyId : $('#reg_companyId').val(),
-			companyNo : companyNo,
-			companyNm : $('#reg_companyNm').val(),
-			companyDsc : $('#reg_companyDsc').val(),
-			address : $('#reg_address').val(),
-			telephoneNo : telephoneNo,
-			representativeNm : $('#reg_representativeNm').val(),
-			note : $('#reg_note').val(),
-			useYn : $('#reg_useYn').val()
-		};
-		callInsertAjax(param);
-	}
-
-	function callInsertAjax(param) {
-		if (validation()) {
-			if (isDisabled) {
-				return false;
-			} else {
-				isDisabled = true;
-				$.ajax({
-					type : 'post',
-					url : '/system/company/insert',
-					data : param,
-					dataType : 'text',
-					error : function(xhr, status, error) {
-						console.log(error);
-					},
-					success : function(result) {
-						if (result == 'Update' || result == 'Insert') {
-							location.href = '/system/company';
-						}
-					}
-				});
-			}
-		}
-	}
-
-	function codeSearch() {
-		var codeSearch = $('#reg_companyCode').val();
-		if (codeSearch) {
-			$('#re_reg_companyCode').val(codeSearch);
-			if (isDisabled) {
-				return false;
-			} else {
-				searchCodeAction(codeSearch);
-			}
 		} else {
-			$('#re_reg_companyCode').val('');
-			$('.form-notice').text("확인이 필요합니다.");
-			$('.form-notice').hide();
-		}
-	}
-
-	function re_codeSearch() {
-		var re_codeSearch = $('#re_reg_companyCode').val();
-		if (re_codeSearch) {
-			if (isDisabled) {
-				return false;
-			} else {
-				searchCodeAction(re_codeSearch);
+			isDisabled = true;
+			var supplierNo = $('#register #supplierNo1').val()+'-'+$('#register #supplierNo2').val()+'-'+$('#register #supplierNo3').val();
+			var telephoneNo = $('#register #telephoneNo1').val()+'-'+$('#register #telephoneNo2').val()+'-'+$('#register #telephoneNo3').val();
+			$('#register #supplierNo').val(supplierNo);
+			$('#register #telephoneNo').val(telephoneNo);
+			var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
+			var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
+			$('#register #managerPhone').val(managerPhone);
+			$('#register #managerMail').val(managerMail);
+			if($('#register #managerRepresent').is(':checked')){
+				$('#register #managerRepresent').val('Y');
+			}else{
+				$('#register #managerRepresent').val('');
 			}
+			var param = $('#frmRegister').serialize();
+			insertSupplierAjax(param, 'insert');
 		}
 	}
-
-	function codeCheckReset() {
-		$('.form-notice').text("확인이 필요합니다.");
-		$('.form-notice').hide();
-		$('#re_reg_companyCode').val("");
-	}
-
-	function searchCodeAction(searchCode) {
-		isDisabled = true;
+	
+	function insertSupplierAjax(param, action) {
 		$.ajax({
-			type : 'post',
-			url : '/system/company/popup',
-			data : {
-				search : searchCode
-			},
-			dataType : 'text',
+			url : '/supplier/supplier/' + action,
+			dataType : 'TEXT',
+			type : "POST",
+			data : param,
 			error : function(xhr, status, error) {
 				console.log(error);
 			},
 			success : function(result) {
-				if (result == 'none') {
-					$('.form-notice').text("이미 사용중인 코드 입니다.");
-					$('.form-notice').addClass("colorRed");
-					$('#codeSearch').removeClass('search-Success');
-				} else {
-					$('.form-notice').text("사용 가능한 코드 입니다.");
-					$('.form-notice').addClass("fontColorBlue");
-					$('#reg_companyCode').val(result);
-					$('#re_reg_companyCode').val(result);
-					$('#codeSearch').addClass('search-Success');
+				isDisabled = false;
+				console.log(result);
+				if (result == 'Insert' || result == 'Update') {
+					location.href = '/supplier/supplier';
 				}
-				$('.form-notice').show();
 			}
 		});
 	}
-
+	
 	function checkNumber(event) {
 		if (event.key >= 0 && event.key <= 9) {
 			return true;
@@ -1061,12 +726,219 @@
 		return false;
 	}
 
-	function checkEnglish(event) {
-		alert(event.key == /[^a-zA-Z0-9]/gi);
-		// 	if(event.key >= 0 && event.key <= 9) {
-		// 		return true;
-		// 	}
-		// 	return false;
+	/*공급 업체 삭제를 눌렀을때*/
+	function deleteSupSet(nm, Id) {
+		$('.delName').text(nm);
+		$('#delSupplierId').val(Id);
+		$('#delManagerId').val('');
+	}
+
+	/*담당자 삭제를 눌렀을때*/
+	function deleteSet(nm, Id) {
+		$('.delName').text(nm);
+		$('#delManagerId').val(Id);
+		$('#delSupplierCode').val(setSupplierCode);
+	}
+
+	function deleteManager() {
+		if ($('#delManagerId').val() == '') {
+			if (isDisabled) {
+				return false;
+			} else {
+				isDisabled = true;
+				var param = $('#frmManager').serialize();
+				deleteSupplierAjax(param, 'delete/supplier');
+			}
+		} else {
+			if (isDisabled) {
+				return false;
+			} else {
+				isDisabled = true;
+				var param = $('#frmManager').serialize();
+				deleteManagerAjax(param, 'delete/manager');
+			}
+		}
+	}
+
+	function deleteSupplierAjax(param, action) {
+		$.ajax({
+			url : '/supplier/supplier/' + action,
+			dataType : 'TEXT',
+			type : "POST",
+			data : param,
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				console.log(result);
+				if (result == 'Delete') {
+					location.href = '/supplier/supplier';
+				}
+			}
+		});
+	}
+
+	function deleteManagerAjax(param, action) {
+		$.ajax({
+			url : '/supplier/supplier/' + action,
+			dataType : 'JSON',
+			type : "POST",
+			data : param,
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(data) {
+				isDisabled = false;
+				managersViewMake(data);
+			}
+		});
+	}
+
+	// 대표매니저 검색
+	function selectManager(id) {
+		if (isDisabled) {
+			return false;
+		} else {
+			isDisabled = true;
+			$.ajax({
+				url : '/supplier/supplier/detail/manager/' + id,
+				dataType : 'JSON',
+				type : "POST",
+				error : function(xhr, status, error) {
+					console.log(error);
+				},
+				success : function(data) {
+					managerDetailView(data);
+				}
+			});
+		}
+	}
+
+	function managerDetailView(data) {
+		$('#pop_managerId').val(data.managerId);
+		$('#pop_managerNm').val(data.managerNm);
+		$('#pop_managerPhone').val(data.managerPhone);
+		$('#pop_managerMail').val(data.managerMail);
+		$('#pop_managerDept').val(data.managerDept);
+		$('#pop_managerPstn').val(data.managerPstn);
+		$('#pop_managerRepresent').val(data.managerRepresent);
+		isDisabled = false;
+	}
+
+	function detailView(id) {
+		if (isDisabled) {
+			return false;
+		} else {
+			isDisabled = true;
+			$.ajax({
+				url : '/supplier/supplier/detail/' + id,
+				dataType : 'JSON',
+				type : "POST",
+				error : function(xhr, status, error) {
+					console.log(error);
+				},
+				success : function(data) {
+					detailViewMake(data);
+					isDisabled = false;
+				}
+			});
+		}
+	}
+
+	function detailViewMake(data) {
+		$('#edit input').attr('disabled', true);
+		$('#edit select').attr('disabled', true);
+		$('#edit textarea').attr('disabled', true);
+		setSupplierCode = data.supplierCode;
+		var telephoneNo = data.telephoneNo.split('-');
+		var telephoneNo1 = telephoneNo[0];
+		var telephoneNo2 = telephoneNo[1];
+		var telephoneNo3 = telephoneNo[2];
+		var supplierNo = data.supplierNo.split('-');
+		var supplierNo1 = supplierNo[0];
+		var supplierNo2 = supplierNo[1];
+		var supplierNo3 = supplierNo[2];
+		$('#edit #supplierId').val(data.supplierId);
+		$('#edit #supplierCode').val(data.supplierCode);
+		$('#edit #supplierNo').val(data.supplierNo);
+		$('#edit #supplierNo1').val(supplierNo1);
+		$('#edit #supplierNo2').val(supplierNo2);
+		$('#edit #supplierNo3').val(supplierNo3);
+		$('#edit #supplierNm').val(data.supplierNm);
+		$('#edit #supplierDsc').val(data.supplierDsc);
+		$('#edit #address').val(data.address);
+		$('#edit #telephoneNo').val(data.telephoneNo);
+		$('#edit #telephoneNo1').val(telephoneNo1);
+		$('#edit #telephoneNo2').val(telephoneNo2);
+		$('#edit #telephoneNo3').val(telephoneNo2);
+		if(data.representativeNm == 'Y'){
+			$('#edit #managerRepresent').prop('checked',true);
+		}else{
+			$('#edit #managerRepresent').prop('checked',false);
+		}
+		$('#edit #representativeNm').val(data.representativeNm);
+		$('#edit #note').val(data.note);
+		$('#edit #useYn').val(data.useYn);
+		$('#edit #rgstDt').val(data.rgstDt);
+		$('#edit #modiDt').val(data.modiDt);
+	}
+
+	// 담당자 검색
+	function managersView(id) {
+		setManager = 'Y';
+		if (isDisabled) {
+			return false;
+		} else {
+			isDisabled = true;
+			$.ajax({
+				url : '/supplier/supplier/detail/managers/' + id,
+				dataType : 'JSON',
+				type : "POST",
+				error : function(xhr, status, error) {
+					console.log(error);
+				},
+				success : function(data) {
+					managersViewMake(data);
+					isDisabled = false;
+				}
+			});
+		}
+	}
+
+	function managersViewMake(data) {
+		console.log(data);
+		$('#managerTable').empty();
+		var html = '';
+		if (data.length > 0) {
+			data
+					.forEach(function(item, index) {
+						html += '<tr>';
+						html += '	<td class="text-point">' + item.managerNm
+								+ '</td>';
+						html += '	<td>' + item.managerDept + '</td>';
+						html += '	<td>' + item.managerPstn + '</td>';
+						html += '	<td>' + item.managerPhone + '</td>';
+						html += '	<td>' + item.managerMail + '</td>';
+						html += '	<td>';
+						html += '		<div class="btn-group">';
+						html += '			<a href="#delete" role="button" data-toggle="modal" class="btn-icon">';
+						html += '				<img src="/images/icon_delete2.png" onclick="deleteSet(\''
+								+ item.managerNm
+								+ '\',\''
+								+ item.managerId
+								+ '\');" alt="삭제하기" class="btn-Ticon02">';
+						html += '			</a>';
+						html += '		</div>';
+						html += '	</td>';
+						html += '</tr>';
+					});
+		} else {
+			html += '<tr>';
+			html += '	<td colspan="6">등록된 담당자가 없습니다.</td>';
+			html += '</tr>';
+		}
+		$('#managerTable').append(html);
 	}
 
 	$(document).ready(function() {
@@ -1075,123 +947,124 @@
 			$('#searchKey').val('${pages.searchKey}');
 		}
 
-		$('.deleteBtnAction').click(function() {
-			var code = this.dataset.code;
-			var id = this.dataset.id;
-			var no = this.dataset.no;
-			var nm = this.dataset.nm;
-			console.log(code);
-			console.log(id);
-			console.log(no);
-			console.log(nm);
-			$('.delCompanyAction').val(id)
-			$('.delCompanyText').text(nm);
+		$('#supplierCode').keyup(function() {
+			var str = $('#supplierCode').val();
+			str = str.replace(/[^a-zA-Z0-9]/gi, "").toUpperCase();
+			$('#supplierCode').val(str);
 		});
 
-		$('.btnEdit').click(function() {
-			if ($(this).hasClass('btnSave')) {
-				companySave();
-			} else {
-				setEdit();
+		$('#tabnav01').click(function() {
+		});
+
+		$('#tabnav02').click(function() {
+			if (setManager == 'N') {
+				managersView(setSupplierCode);
 			}
 		});
 
-		$('#reg_companyCode').keyup(function() {
-			var str = $('#reg_companyCode').val();
-			str = str.replace(/[^a-zA-Z0-9]/gi, "").toUpperCase();
-			$('#reg_companyCode').val(str);
-		});
-
-		$('#re_reg_companyCode').keyup(function() {
-			var str = $('#re_reg_companyCode').val();
-			str = str.replace(/[^a-zA-Z0-9]/gi, "").toUpperCase();
-			$('#re_reg_companyCode').val(str);
-		});
-
-		$('.close').click(function() {
-			resetView();
-			regResetView();
-		});
-
-		$('.btn-cancel').click(function() {
-			resetView();
-			regResetView();
+		$('#edit .close, #edit .btn-cancel').click(function() {
+			setSupplierCode = '';
+			setManager = 'N';
+			$('.active').removeClass('active');
+			$('#tab02').css('display', 'none');
+			$('#tab01').css('display', 'block');
+			$('#tabnav01').addClass('active');
+			$('#edit #supplierId').val('');
+			$('#edit #supplierCode').val('');
+			$('#edit #supplierNo').val('');
+			$('#edit #supplierNo1').val('');
+			$('#edit #supplierNo2').val('');
+			$('#edit #supplierNo3').val('');
+			$('#edit #supplierNm').val('');
+			$('#edit #note').val('');
+			$('#edit #address').val('');
+			$('#edit #telephoneNo').val('');
+			$('#edit #telephoneNo1').val('');
+			$('#edit #telephoneNo2').val('');
+			$('#edit #telephoneNo3').val('');
+			$('#edit #representativeNm').val('');
+			$('#edit #note').val('');
+			$('#edit #useYn').val('');
+			$('#edit #rgstDt').val('');
+			$('#edit #modiDt').val('');
 		});
 
 		$('.btnCheck').click(function() {
-			resetView();
 		});
 
 		$("#codeSearch").keyup(function(e) {
 			if (e.keyCode == '13') {
-				$(".codeSearchBtn").click();
-				codeSearch();
 			}
 		});
 
-		$("#codeSearch").mouseup(function(e) {
-			codeSearch();
-		});
-
-		$(".codeSearchBtn").mouseup(function(e) {
-			codeSearch();
-		});
-
-		$('#re_codeSearch').click(function() {
-			re_codeSearch();
-		});
-
-		$('.companyInsert').click(function() {
-			if (validation()) {
-				companyInsert();
-			}
-		});
-
-		$('.codeCheck').click(function() {
-			codeCheckReset();
-		});
 	});
 
-	function validation() {
-		if ($('#reg_companyId').val() == '') {
-			alert('회사 코드를 입력해 주세요..');
+	function validation(type){
+		if ($('#'+type+' #supplierCode').val() == '') {
+			alert('공급업체 코드를 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_companyNm').val() == '') {
-			alert('회사 이름을 입력해 주세요..');
+		if ($('#'+type+' #supplierNm').val() == '') {
+			alert('공급업체 이름을 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_representativeNm').val() == '') {
-			alert('대표자을 입력해 주세요..');
+		if ($('#'+type+' #representativeNm').val() == '') {
+			alert('대표자을 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_address').val() == '') {
-			alert('회사 주소를 입력해 주세요..');
+		if ($('#'+type+' #address').val() == '') {
+			alert('회사 주소를 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_companyNo1').val() == '') {
-			alert('회사 사업자번호을 입력해 주세요..');
+		if ($('#'+type+' #supplierNo1').val() == '') {
+			alert('공급업체 사업자번호을 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_companyNo2').val() == '') {
-			alert('회사 사업자번호을 입력해 주세요..');
+		if ($('#'+type+' #supplierNo2').val() == '') {
+			alert('공급업체 사업자번호을 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_companyNo3').val() == '') {
-			alert('회사 사업자번호을 입력해 주세요..');
+		if ($('#'+type+' #supplierNo3').val() == '') {
+			alert('공급업체 사업자번호을 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_telephoneNo1').val() == '') {
-			alert('회사 연락처를 입력해 주세요..');
+		if ($('#'+type+' #telephoneNo1').val() == '') {
+			alert('공급업체 연락처를 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_telephoneNo2').val() == '') {
-			alert('회사 연락처를 입력해 주세요..');
+		if ($('#'+type+' #telephoneNo2').val() == '') {
+			alert('공급업체 연락처를 입력해 주세요.');
 			return false;
 		}
-		if ($('#reg_telephoneNo3').val() == '') {
-			alert('회사 연락처를 입력해 주세요..');
+		if ($('#'+type+' #telephoneNo3').val() == '') {
+			alert('공급업체 연락처를 입력해 주세요.');
 			return false;
+		}
+		if(type == 'register'){
+			if ($('#'+type+' #managerNm').val() == '') {
+				alert('담당자 이름를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone1').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone2').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone3').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerMail1').val() == '') {
+				alert('담당자 메일을 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerMail2').val() == '') {
+				alert('담당자 메일을 입력해 주세요.');
+				return false;
+			}
 		}
 		return true;
 	}

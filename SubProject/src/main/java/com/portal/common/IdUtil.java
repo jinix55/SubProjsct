@@ -175,4 +175,18 @@ public class IdUtil {
 	public String getAlarmId() {
 		return service.getId(Constant.ID.ALARM);
 	}
+	
+	/**
+	 * 알람 ID : 알람
+	 */
+	public String getSupplierId() {
+		return service.getId(Constant.ID.SUPPLIER);
+	}
+	
+	/**
+	 * 알람 ID : 알람
+	 */
+	public String getManagerId() {
+		return service.getId(Constant.ID.MANAGER);
+	}
 }

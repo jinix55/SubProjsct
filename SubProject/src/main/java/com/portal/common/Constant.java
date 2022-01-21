@@ -191,6 +191,10 @@ public interface Constant {
 		public static final String RESETPASSWORD = "rpw";
 		//알람
 		public static final String ALARM = "al";
+		//공급 업체
+		public static final String SUPPLIER = "sp";
+		//공급업체 담당자
+		public static final String MANAGER = "mg";
 		
 	}
 	

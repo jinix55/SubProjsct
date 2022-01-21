@@ -23,7 +23,37 @@ public class SupplierService {
      * @return
      */
     public List<SupplierModel> selectSupplierList(SupplierModel supplierModel) {
-        return supplierMapper.selectSupplierList(supplierModel);
+    	return supplierMapper.selectSupplierList(supplierModel);
+    }
+    
+    /**
+     * 담당자 리스트를 조회한다.
+     *
+     * @param groupId
+     * @return
+     */
+    public SupplierModel selectSupplierMngRepper(SupplierModel supplierModel) {
+    	return supplierMapper.selectSupplierMngRepper(supplierModel);
+    }
+    
+    /**
+     * 담당자를 조회한다.
+     *
+     * @param groupId
+     * @return
+     */
+    public SupplierModel selectSupplierManager(String managerId) {
+    	return supplierMapper.selectSupplierManager(managerId);
+    }
+    
+    /**
+     * 담당자들을 조회한다.
+     *
+     * @param groupId
+     * @return
+     */
+    public List<SupplierModel> selectSupplierManagers(String supplierCode) {
+        return supplierMapper.selectSupplierManagers(supplierCode);
     }
     
     /**
@@ -36,10 +66,6 @@ public class SupplierService {
     	return supplierMapper.selectSupplierListCount(supplierModel);
     }
     
-    public List<SupplierModel> selectListAll() {
-    	return supplierMapper.selectListAll();
-    }
-    
     /**
      * 공급업체정보를 저장한다.
      *
@@ -48,6 +74,12 @@ public class SupplierService {
      */
     public String save(SupplierModel supplierModel) {
     	SupplierModel existModel = supplierMapper.select(supplierModel);
+    	SupplierModel existManagerModel = supplierMapper.selectSupplierManagerSearch(supplierModel);
+    	if(existManagerModel != null) {
+    		supplierMapper.updateManager(supplierModel);
+    	}else {
+    		supplierMapper.insertManager(supplierModel);
+    	}
 
         if(existModel != null) {
             long count = supplierMapper.update(supplierModel);
@@ -75,23 +107,29 @@ public class SupplierService {
      * @return
      */
     public String delete(SupplierModel supplierModel) {
-        long count = supplierMapper.delete(supplierModel);
+    	long count = supplierMapper.delete(supplierModel);
+    	
+    	if(count > 0) {
+    		return Constant.DB.DELETE;
+    	} else {
+    		return Constant.DB.FAIL;
+    	}
+    }
+    
+    /**
+     * 공급업체 담당자를 삭제한다.
+     *
+     * @param supplierCode
+     * @return
+     */
+    public String deleteManager(SupplierModel model) {
+        long count = supplierMapper.deleteManager(model);
 
         if(count > 0) {
             return Constant.DB.DELETE;
         } else {
             return Constant.DB.FAIL;
         }
-    }
-    
-    /**
-     * 공급업체정보를 조회한다.
-     *
-     * @param supplierCode
-     * @return
-     */
-    public String selectCode(String supplierCode) {
-    	return supplierMapper.selectCode(supplierCode);
     }
     
     /**

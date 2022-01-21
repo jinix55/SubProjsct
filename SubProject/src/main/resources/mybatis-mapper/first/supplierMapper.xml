@@ -4,32 +4,31 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.portal.adm.supplier.mapper.SupplierMapper">
 
-	<sql id="searchCompany">
-		<where>
-			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-				and ((upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%')) OR (upper(COMPANY_NM) like concat('%',upper(#{searchValue}),'%')))
-			</if>
-			<if test="searchKey != '' and searchKey == 'companyCode' and searchValue != ''">
-				and (upper(COMPANY_CODE) like concat('%',upper(#{searchValue}),'%'))
-			</if>
-			<if test="searchKey != '' and searchKey == 'companyNm' and searchValue != ''">
-				and (upper(COMPANY_NM) like concat('%',upper(#{searchValue}),'%'))
-			</if>
-		</where>
+	<sql id="searchSupplier">
+		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+			and ((upper(SUPPLIER_CODE) like concat('%',upper(#{searchValue}),'%')) OR (upper(SUPPLIER_NM) like concat('%',upper(#{searchValue}),'%')))
+		</if>
+		<if test="searchKey != '' and searchKey == 'companyCode' and searchValue != ''">
+			and (upper(SUPPLIER_CODE) like concat('%',upper(#{searchValue}),'%'))
+		</if>
+		<if test="searchKey != '' and searchKey == 'companyNm' and searchValue != ''">
+			and (upper(SUPPLIER_NM) like concat('%',upper(#{searchValue}),'%'))
+		</if>
 	</sql>
 	
 	<sql id="paging">
 		limit #{offSet}, #{pageSize}
 	</sql>
 
-	<select id="selectCompanyList" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="com.portal.adm.supplier.model.SupplierModel">
+	<select id="selectSupplierList" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
-			, COMPANY_ID
-			, COMPANY_CODE
-			, COMPANY_NO
-			, COMPANY_NM
-			, COMPANY_DSC
+			, SUPPLIER_ID
+			, UP_COMPANY_CODE
+			, SUPPLIER_CODE
+			, SUPPLIER_NO
+			, SUPPLIER_NM
+			, SUPPLIER_DSC
 			, ADDRESS
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
@@ -39,55 +38,71 @@
 			, RGST_DT
 			, MODI_ID
 			, MODI_DT
-		FROM T_COMPANY
-		<include refid="searchCompany"></include>
+		FROM T_SUPPLIER
+		WHERE 1 = 1
+		AND USE_YN = 'Y' 
+		<if test="authId != 'au2000001'">
+			<if test="upCompanyCode != null and upCompanyCode != ''">
+				AND UP_COMPANY_CODE = #{upCompanyCode}
+			</if>
+		</if>
+		<include refid="searchSupplier"></include>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
 	
-	<select id="selectCompanyListCount" resultType="int">
+	<select id="selectSupplierListCount" resultType="int">
 		SELECT
 			count(1)
-		FROM T_COMPANY
-		<include refid="searchCompany"></include>
+		FROM T_SUPPLIER
+		WHERE 1 = 1
+		AND USE_YN = 'Y'
+		<if test="authId != 'au2000001'">
+			<if test="upCompanyCode != null and upCompanyCode != ''">
+				AND UP_COMPANY_CODE = #{upCompanyCode}
+			</if>
+		</if>
+		<include refid="searchSupplier"></include>
 	</select>
 	
 	<insert id="insert" parameterType="com.portal.adm.supplier.model.SupplierModel">
-		INSERT INTO t_company (
-			COMPANY_ID,
-			COMPANY_CODE,
-			COMPANY_NO,
-			COMPANY_NM,
-			COMPANY_DSC,
-			ADDRESS,
-			TELEPHONE_NO,
-			REPRESENTATIVE_NM,
-			NOTE,
-			USE_YN,
-			RGST_ID,
-			RGST_DT,
-			MODI_ID,
-			MODI_DT
+		INSERT INTO T_SUPPLIER (
+			SUPPLIER_ID
+			, UP_COMPANY_CODE
+			, SUPPLIER_CODE
+			, SUPPLIER_NO
+			, SUPPLIER_NM
+			, SUPPLIER_DSC
+			, ADDRESS
+			, TELEPHONE_NO
+			, REPRESENTATIVE_NM
+			, NOTE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
 		) VALUES (
-			#{companyId},
-			#{companyCode},
-			#{companyNo},
-			#{companyNm},
-			#{companyDsc},
-			#{address},
-			#{telephoneNo},
-			#{representativeNm},
-			#{note},
-			#{useYn},
-			#{rgstId},
-			NOW(),
-			#{modiId},
-			NOW()
+			#{supplierId}
+			, #{upCompanyCode}
+			, #{supplierCode}
+			, #{supplierNo}
+			, #{supplierNm}
+			, #{supplierDsc}
+			, #{address}
+			, #{telephoneNo}
+			, #{representativeNm}
+			, #{note}
+			, #{useYn}
+			, #{rgstId}
+			, NOW()
+			, #{modiId}
+			, NOW()
 		)
 	</insert>
 	
 	<update id="update" parameterType="com.portal.adm.supplier.model.SupplierModel">
-		UPDATE t_company SET
+		UPDATE T_SUPPLIER SET
 			COMPANY_CODE = #{companyCode},
 			COMPANY_NO = #{companyNo},
 			COMPANY_NM = #{companyNm},
@@ -100,67 +115,182 @@
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE
-			COMPANY_ID = #{companyId}
+			SUPPLIER_ID = #{supplierId} AND UP_COMPANY_CODE = #{upCompanyCode}
 	</update>
-	
-	<select id="selectCode" resultType="string" parameterType="string">
-		SELECT
-			COMPANY_CODE
-		FROM
-			t_company
-		WHERE
-			COMPANY_Code = #{companyCode}
-	</select>
 	
 	<select id="select" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="string">
 		SELECT
-			COMPANY_ID,
-			COMPANY_CODE,
-			COMPANY_NO,
-			COMPANY_NM,
-			COMPANY_DSC,
-			ADDRESS,
-			TELEPHONE_NO,
-			REPRESENTATIVE_NM,
-			NOTE,
-			USE_YN,
-			RGST_ID,
-			RGST_DT,
-			MODI_ID,
-			MODI_DT
+			SUPPLIER_ID
+			, UP_COMPANY_CODE
+			, SUPPLIER_CODE
+			, SUPPLIER_NO
+			, SUPPLIER_NM
+			, SUPPLIER_DSC
+			, ADDRESS
+			, TELEPHONE_NO
+			, REPRESENTATIVE_NM
+			, NOTE
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
 		FROM
-			t_company
+			T_SUPPLIER
 		WHERE
-			COMPANY_ID = #{companyId}
-	</select>
-	
-	<select id="selectListAll" resultType="com.portal.adm.supplier.model.SupplierModel">
-		SELECT
-			COMPANY_ID,
-			COMPANY_CODE,
-			COMPANY_NO,
-			COMPANY_NM,
-			COMPANY_DSC,
-			ADDRESS,
-			TELEPHONE_NO,
-			REPRESENTATIVE_NM,
-			NOTE,
-			USE_YN,
-			RGST_ID,
-			RGST_DT,
-			MODI_ID,
-			MODI_DT
-		FROM
-			t_company
+			SUPPLIER_ID = #{supplierId}
 	</select>
 	
 	<update id="delete" parameterType="com.portal.adm.supplier.model.SupplierModel">
-		UPDATE t_company SET
+		UPDATE T_SUPPLIER SET
 			USE_YN = 'N',
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE
-			COMPANY_ID = #{companyId}
+			SUPPLIER_ID = #{supplierId}
+	</update>
+	
+	<update id="deleteManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		UPDATE T_SUPPLIER_MANAGER SET
+			USE_YN = 'N',
+			MODI_ID = #{modiId},
+			MODI_DT = NOW()
+		WHERE
+			MANAGER_ID = #{managerId}
+	</update>
+	
+	<select id="selectSupplierMngRepper" parameterType="com.portal.adm.supplier.model.SupplierModel" resultType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			MANAGER_ID,
+			SUPPLIER_CODE,
+			MANAGER_NM,
+			MANAGER_PHONE,
+			MANAGER_MAIL,
+			MANAGER_DEPT,
+			MANAGER_PSTN,
+			MANAGER_REPRESENT,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_SUPPLIER_MANAGER
+		WHERE
+			USE_YN = 'Y' AND SUPPLIER_CODE = #{supplierCode}
+		ORDER BY MANAGER_REPRESENT DESC, RGST_DT DESC
+		LIMIT 1
+	</select>
+	
+	<select id="selectSupplierManager" parameterType="string" resultType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			MANAGER_ID,
+			SUPPLIER_CODE,
+			MANAGER_NM,
+			MANAGER_PHONE,
+			MANAGER_MAIL,
+			MANAGER_DEPT,
+			MANAGER_PSTN,
+			MANAGER_REPRESENT,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_SUPPLIER_MANAGER
+		WHERE
+			USE_YN = 'Y' AND MANAGER_ID = #{managerId}
+	</select>
+	
+	<select id="selectSupplierManagerSearch" parameterType="com.portal.adm.supplier.model.SupplierModel" resultType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			MANAGER_ID,
+			SUPPLIER_CODE,
+			MANAGER_NM,
+			MANAGER_PHONE,
+			MANAGER_MAIL,
+			MANAGER_DEPT,
+			MANAGER_PSTN,
+			MANAGER_REPRESENT,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_SUPPLIER_MANAGER
+		WHERE
+			MANAGER_NM = #{managerNm} AND MANAGER_MAIL = #{managerMail} AND SUPPLIER_CODE = #{supplierCode}
+	</select>
+	
+	<select id="selectSupplierManagers" parameterType="string" resultType="com.portal.adm.supplier.model.SupplierModel">
+		SELECT
+			MANAGER_ID,
+			SUPPLIER_CODE,
+			MANAGER_NM,
+			MANAGER_PHONE,
+			MANAGER_MAIL,
+			MANAGER_DEPT,
+			MANAGER_PSTN,
+			MANAGER_REPRESENT,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			T_SUPPLIER_MANAGER
+		WHERE
+			USE_YN = 'Y' AND SUPPLIER_CODE = #{supplierCode}
+	</select>
+	
+	<insert id="insertManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		INSERT INTO T_SUPPLIER_MANAGER (
+			MANAGER_ID
+			, SUPPLIER_CODE
+			, MANAGER_NM
+			, MANAGER_PHONE
+			, MANAGER_MAIL
+			, MANAGER_DEPT
+			, MANAGER_PSTN
+			, MANAGER_REPRESENT
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			#{managerId}
+			, #{supplierCode}
+			, #{managerNm}
+			, #{managerPhone}
+			, #{managerMail}
+			, #{managerDept}
+			, #{managerPstn}
+			, #{managerRepresent}
+			, #{useYn}
+			, #{rgstId}
+			, NOW()
+			, #{modiId}
+			, NOW()
+		)
+	</insert>
+	
+	<update id="updateManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		UPDATE T_SUPPLIER_MANAGER SET
+			SUPPLIER_CODE = #{supplierCode}
+			, MANAGER_NM = {managerNm}
+			, MANAGER_PHONE = #{managerPhone}
+			, MANAGER_MAIL = #{managerMail}
+			, MANAGER_DEPT = #{managerDept}
+			, MANAGER_PSTN = #{managerPstn}
+			, MANAGER_REPRESENT = #{managerRepresent}
+			, USE_YN = #{useYn}
+			, MODI_ID = #{modiId}
+			, MODI_DT = NOW()
+		WHERE
+			MANAGER_ID = #{managerId}
 	</update>
 	
 	

@@ -17,7 +17,12 @@ public class SupplierModel extends Criteria {
 	private String supplierDsc;							// 공급업체 설명
 	private String supplierCode;						// 공급업체 코드
 	private String supplierNo;							// 공급업체 사업자번호
-	private String up_companyId;						// 공급업체 소속 회사
+	private String upCompanyCode;						// 공급업체 소속 회사
+	private String address;								// 주소
+	private String telephoneNo;							// 전화번호
+	private String representativeNm;					// 대표자명
+	private String note;								// 비고
+	
     private String useYn;								// 사용여부
     private String rgstId;								// 등록자ID
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")	// spring eval taglib를 사용하여 annotation 패턴으로 출력 가능
@@ -29,5 +34,18 @@ public class SupplierModel extends Criteria {
     private LocalDateTime modiDt;						// 수정일시
     private String searchKey;       // 검색키
     private String searchValue;     // 검색값
-
+    private String delSupplierId;     // 검색값
+    
+	private String managerId;
+	private String managerNm;
+	private String managerPhone;
+	private String managerMail;
+	private String managerDept;
+	private String managerPstn;
+	private String managerRepresent;
+    
+    private String delSupplierCode;
+    private String delManagerId; 
+    private String ma_useYn; 
+    
 }

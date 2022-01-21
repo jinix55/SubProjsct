@@ -1,14 +1,17 @@
 package com.portal.adm.supplier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
+import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class SupplierController {
 
+	@Resource
+	private SupplierService supplierService;
+	
     @Resource
-    private SupplierService supplierService;
+    private IdUtil idUtil;
     
     /**
      * 공급업체 페이지로 이동
@@ -39,21 +46,29 @@ public class SupplierController {
      * @param model
      * @return
      */
-    @GetMapping("/supplier")
-    public String code(@ModelAttribute SupplierModel supplierModel, Model model) {
-
-        return "supplier/supplierMgt";
-    }
-
-    /**
-     * 공급업체 페이지로 이동
-     *
-     * @param criteria
-     * @return
-     */
-    @PostMapping("/supplier")
-    public String codePost(@ModelAttribute SupplierModel supplierModel, Model model) {
-
+    @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
+    public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	log.info(" =============== supplier in ==============");
+    	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	log.info(" ====== supplier get supplierModel =======> {} ",supplierModel);
+        List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
+        supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
+        
+        List<SupplierModel> managers = new ArrayList<SupplierModel>();
+        
+        for( SupplierModel md : models) {
+        	SupplierModel maModel = new SupplierModel();
+        	String supCode = md.getSupplierCode();
+        	maModel.setSupplierCode(supCode);
+        	maModel = supplierService.selectSupplierMngRepper(maModel);
+        	managers.add(maModel);
+        }
+        
+        model.addAttribute("suppliers", models);
+        model.addAttribute("pages", supplierModel);
+        model.addAttribute("managers", managers);
+        
         return "supplier/supplierMgt";
     }
 
@@ -64,10 +79,21 @@ public class SupplierController {
      * @return
      */
     @PostMapping("/supplier/insert")
-    public ResponseEntity<String> groupSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> groupSave(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
-
-            String result = "";
+    		
+    		if(supplierModel.getSupplierId() == null || StringUtils.equals(supplierModel.getSupplierId(),"")) {
+    			supplierModel.setSupplierId(idUtil.getSupplierId());
+    			supplierModel.setManagerId(idUtil.getManagerId());
+    		}
+    		if(supplierModel.getManagerRepresent() == null) {
+        		supplierModel.setManagerRepresent("N");
+        	}
+    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
+    		supplierModel.setModiId(authUser.getMemberModel().getUserId());
+    		System.out.println("supplierModel : "+supplierModel);
+            String result = supplierService.save(supplierModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -81,17 +107,43 @@ public class SupplierController {
      * @param request
      * @return
      */
-    @PostMapping("/supplier/delete")
-    public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/supplier/delete/supplier")
+    public ResponseEntity<String> groupDelete(@ModelAttribute SupplierModel supplierModel,HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
-
-            String result = "";
+        	SupplierModel model = new SupplierModel();
+        	model.setSupplierId(supplierModel.getDelSupplierId());
+        	model.setModiId(authUser.getMemberModel().getUserId());
+        	
+            String result = supplierService.delete(model);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
-    }    
+    }
+    
+    /**
+     * 담장자를 삭제한다.
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/supplier/delete/manager")
+    @ResponseBody
+    public ResponseEntity<List<SupplierModel>> supplierManagerDelete(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    	SupplierModel model = new SupplierModel();
+    	if(supplierModel.getManagerRepresent() == null) {
+    		supplierModel.setManagerRepresent("N");
+    	}
+    	model.setManagerId(supplierModel.getDelManagerId());
+    	model.setSupplierCode(supplierModel.getDelSupplierCode());
+    	model.setModiId(authUser.getMemberModel().getUserId());
+    	supplierService.deleteManager(model);
+    	
+        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getDelSupplierCode());
+
+        return new ResponseEntity<>(models, HttpStatus.OK);
+    }
     
     /**
      * 그룹코드 목록을 조회한다.
@@ -101,9 +153,35 @@ public class SupplierController {
      */
     @RequestMapping(value="/supplier/detail/{supplierId}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<SupplierModel> codesForGroupCd(@ModelAttribute SupplierModel supplierModel, @PathVariable("supplierId") String codeId) {
-
+    public ResponseEntity<SupplierModel> codesForGroupCd(@ModelAttribute SupplierModel supplierModel, @PathVariable("supplierId") String supplierId) {
+    	supplierModel = supplierService.selectSupplierId(supplierId);
+    	return new ResponseEntity<>(supplierModel, HttpStatus.OK);
+    }
+    
+    /**
+     * 그룹코드 목록을 조회한다.
+     *
+     * @param groupCd
+     * @return
+     */
+    @RequestMapping(value="/supplier/detail/manager/{managerId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<SupplierModel> selectManagerId(@ModelAttribute SupplierModel supplierModel, @PathVariable("managerId") String managerId) {
+    	supplierModel = supplierService.selectSupplierManager(managerId);
         return new ResponseEntity<>(supplierModel, HttpStatus.OK);
+    }
+    
+    /**
+     * 그룹코드 목록을 조회한다.
+     *
+     * @param groupCd
+     * @return
+     */
+    @RequestMapping(value="/supplier/detail/managers/{supplierCode}", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<SupplierModel>> selectManagersBySupplierCode(@ModelAttribute SupplierModel supplierModel, @PathVariable("supplierCode") String supplierCode) {
+    	List<SupplierModel> models = supplierService.selectSupplierManagers(supplierCode);
+        return new ResponseEntity<>(models, HttpStatus.OK);
     }
     
 }
