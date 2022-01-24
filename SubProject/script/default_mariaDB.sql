@@ -1581,14 +1581,16 @@ INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,M
 ('mn5000024','mn5000023','알람관리','/alarm/alarm','','24','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000025','mn5000001','상품','/product','','25','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','myself','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000026','mn5000025','상품 관리','/product/prodList','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000027','mn5000025','상품 이미지','/product/prodImage','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000028','mn5000001','레포트','/report','레포트','28','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000029','mn5000028','A회사 레포트 1번','/report/reportView/test01','레포트 화면','29','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000030','mn5000028','A회사 레포트 2번','/report/reportView/rp2100010','','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000031','mn5000028','A회사 레포트 3번','/report/reportView/rp2100011','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000032','mn5000028','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000033','mn5000028','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000034','mn5000028','C회사 레포트 1번','/report/reportView/3','','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000027','mn5000025','공급 업체','/product/supplier','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000028','mn5000025','상품 이미지','/product/prodImage','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000029','mn5000001','레포트','/report','레포트','28','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000030','mn5000029','A회사 레포트 1번','/report/reportView/test01','레포트 화면','29','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000031','mn5000029','A회사 레포트 2번','/report/reportView/rp2100010','','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000032','mn5000029','A회사 레포트 3번','/report/reportView/rp2100011','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000033','mn5000029','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000034','mn5000029','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000035','mn5000029','C회사 레포트 1번','/report/reportView/3','','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+
 
 
 -- 그룹 메뉴 권한
