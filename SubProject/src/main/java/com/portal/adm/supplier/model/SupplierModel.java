@@ -43,9 +43,11 @@ public class SupplierModel extends Criteria {
 	private String managerDept;
 	private String managerPstn;
 	private String managerRepresent;
+	private String maSupplierCode;
+	
     
     private String delSupplierCode;
     private String delManagerId; 
-    private String ma_useYn; 
+    private String maUseYn; 
     
 }

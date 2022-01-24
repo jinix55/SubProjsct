@@ -3,11 +3,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="content">
 	<!-- S_검색-->
-	<form>
+	<form id="searchFrm">
 		<div class="justify-content-between">
 			<div class="form-group">
 				<div class="form-inline">
-					<select class="select-box w150">
+					<select id="searchKey" name="searchKey" class="select-box w150">
 						<option value="ALL">전체</option>
 						<option value="supplierNm">공급업체명</option>
 						<option value="supplierCode">공급업체코드</option>
@@ -15,7 +15,7 @@
 				</div>
 				<div class="form-inline">
 					<div class="search-box w250">
-						<input type="text" class="text-input"> <span
+						<input id="searchVlaue" name="searchValue" type="text" class="text-input"> <span
 							class="search-box-append">
 							<button type="button" class="button-search">
 								<img src="/images/icon_search.png" title="검색">
@@ -273,7 +273,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
-							<select id="ma_useYn" name="ma_useYn" class="select-box">
+							<select id="maUseYn" name="maUseYn" class="select-box">
 								<option value="Y">예</option>
 								<option value="N">아니요</option>
 							</select>
@@ -291,11 +291,9 @@
 </form>
 
 <!-- 레이어 팝업 - 등록  -->
-<form id="frmReg">
-	<div id="edit" class="modal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<input id="supplierId" name="supplierId" type="hidden"
-			class="text-input">
+<form id="frmEdit">
+	<div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<input id="supplierId" name="supplierId" type="hidden" class="text-input">
 		<div class="modal-content" style="width: 900px">
 			<div class="modal-header">
 				<h4 class="modal-title">공급업체 상세</h4>
@@ -325,7 +323,7 @@
 									<div class="form-group">
 										<label class="col-25 form-label">수정일자</label>
 										<div class="col-75">
-											<input id="modiDt" name="modidt" type="text"
+											<input id="modiDt" name="modiDt" type="text"
 												class="text-input">
 										</div>
 									</div>
@@ -416,7 +414,7 @@
 										<label class="col-25 form-label-textarea">설명</label>
 										<div class="col-75">
 											<div class="form-input">
-												<textarea id="note" name="note" class="textarea"></textarea>
+												<textarea id="supplierDsc" name="supplierDsc" class="textarea"></textarea>
 											</div>
 										</div>
 									</div>
@@ -449,13 +447,16 @@
 									</tr>
 								</tbody>
 							</table>
-							<div class="row pt30">
+							<div id="managerInfo" class="row pt30">
+								<input id="managerId" name="managerId" type="hidden" class="text-input">
+								<input id="maSupplierCode" name="maSupplierCode" type="hidden" class="text-input">
 								<div class="col-100 mb10">
-									<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk">대표 적용
+									<input id="managerRepresent" name="managerRepresent" type="checkbox">
+									<label for="managerRepresent">대표 적용</label>
 								</div>
 								<div class="col-50">
 									<div class="form-group">
-										<label class="col-25 form-label">성명</label>
+										<label class="col-25 form-label"><em>*</em>성명</label>
 										<div class="col-75">
 											<input id="managerNm" name="managerNm" type="text" class="text-input">
 										</div>
@@ -463,7 +464,7 @@
 								</div>
 								<div class="col-50">
 									<div class="form-group">
-										<label class="col-25 form-label">휴대폰번호</label>
+										<label class="col-25 form-label"><em>*</em>휴대폰번호</label>
 										<div class="col-75">
 											<div class="phone-number">
 												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
@@ -498,7 +499,7 @@
 								</div>
 								<div class="col-50">
 									<div class="form-group">
-										<label class="col-25 form-label">이메일</label>
+										<label class="col-25 form-label"><em>*</em>이메일</label>
 										<div class="col-75">
 											<div class="email-add">
 												<input id="managerMail1" name="managerMail1" type="text"
@@ -516,7 +517,7 @@
 									<div class="form-group">
 										<label class="col-25 form-label">사용여부</label>
 										<div class="col-75">
-											<select id="ma_useYn" name="ma_useYn" class="select-box">
+											<select id="maUseYn" name="maUseYn" class="select-box">
 												<option value="Y">예</option>
 												<option value="N">아니요</option>
 											</select>
@@ -530,7 +531,7 @@
 			</div>
 			<!-- 버튼 -->
 			<div class="modal-footer btn-group">
-				<button type="button" class="button btn-success check" data-dismiss="modal">확인</button>
+				<button type="button" class="button btn-success edit" id="suppDetailBtn" >수정</button>
 				<button type="button" class="button btn-cancel cancel" data-dismiss="modal">취소</button>
 			</div>
 		</div>
@@ -658,6 +659,8 @@
 
 	var setSupplierCode = '';
 	var setManager = 'N';
+	var setTab = 'S';
+	var setManagerList;
 
 	$('.board-paging').bootpag({ // 페이징을 표시할 div의 클래스
 		total : totalPage, // 페이징모델의 전체페이지수
@@ -905,40 +908,169 @@
 			});
 		}
 	}
+	
+	function setManagerView(index){
+		$('#edit input').attr('disabled', true);
+		$('#edit select').attr('disabled', true);
+		$('#edit textarea').attr('disabled', true);
+		if(setManagerList[index].managerRepresent == 'Y'){
+			$('#managerInfo #managerRepresent').prop('checked',true);
+			$('#managerInfo #managerRepresent').val('Y');
+		}else{
+			$('#managerInfo #managerRepresent').prop('checked',false);
+			$('#managerInfo #managerRepresent').val('N');
+		}
+		$('#managerInfo #maSupplierCode').val(setManagerList[index].supplierCode);
+		$('#managerInfo #managerDept').val(setManagerList[index].managerDept);
+		$('#managerInfo #managerDept').val(setManagerList[index].managerDept);
+		$('#managerInfo #managerPstn').val(setManagerList[index].managerPstn);
+		$('#managerInfo #managerPhone1').val(setManagerList[index].managerPhone.split('-')[0]);
+		$('#managerInfo #managerPhone2').val(setManagerList[index].managerPhone.split('-')[1]);
+		$('#managerInfo #managerPhone3').val(setManagerList[index].managerPhone.split('-')[2]);
+		$('#managerInfo #managerPhone').val(setManagerList[index].managerPhone);
+		$('#managerInfo #managerMail1').val(setManagerList[index].managerMail.split('@')[0]);
+		$('#managerInfo #managerMail2').val(setManagerList[index].managerMail.split('@')[1]);
+		$('#managerInfo #managerMail').val(setManagerList[index].managerMail);
+		$('#managerInfo #managerNm').val(setManagerList[index].managerNm);
+		$('#managerInfo #managerId').val(setManagerList[index].managerId);
+		$('#managerInfo #maUseYn').val(setManagerList[index].useYn);
+		
+		$('#edit .btn-success').text('수정');
+		$('#edit .btn-success').addClass('edit');
+		$('#edit .btn-success').removeClass('save');
+		
+	}
 
 	function managersViewMake(data) {
-		console.log(data);
+		setManagerList = data
 		$('#managerTable').empty();
+		console.log(data.length);
 		var html = '';
 		if (data.length > 0) {
-			data
-					.forEach(function(item, index) {
-						html += '<tr>';
-						html += '	<td class="text-point">' + item.managerNm
-								+ '</td>';
-						html += '	<td>' + item.managerDept + '</td>';
-						html += '	<td>' + item.managerPstn + '</td>';
-						html += '	<td>' + item.managerPhone + '</td>';
-						html += '	<td>' + item.managerMail + '</td>';
-						html += '	<td>';
-						html += '		<div class="btn-group">';
-						html += '			<a href="#delete" role="button" data-toggle="modal" class="btn-icon">';
-						html += '				<img src="/images/icon_delete2.png" onclick="deleteSet(\''
-								+ item.managerNm
-								+ '\',\''
-								+ item.managerId
-								+ '\');" alt="삭제하기" class="btn-Ticon02">';
-						html += '			</a>';
-						html += '		</div>';
-						html += '	</td>';
-						html += '</tr>';
-					});
+			data.forEach(function(item, index) {
+				html += '<tr >';
+				html += '	<td class="text-point" thisData="'+item+'"  onclick="setManagerView(\''+index+'\');">' + item.managerNm + '</td>';
+				html += '	<td>' + item.managerDept + '</td>';
+				html += '	<td>' + item.managerPstn + '</td>';
+				html += '	<td>' + item.managerPhone + '</td>';
+				html += '	<td>' + item.managerMail + '</td>';
+				html += '	<td>';
+				html += '		<div class="btn-group">';
+				html += '			<a href="#delete" role="button" data-toggle="modal" class="btn-icon">';
+				html += '				<img src="/images/icon_delete2.png" onclick="deleteSet(\'' + item.managerNm + '\',\'' + item.managerId + '\');" alt="삭제하기" class="btn-Ticon02">';
+				html += '			</a>';
+				html += '		</div>';
+				html += '	</td>';
+				html += '</tr>';
+			});
 		} else {
 			html += '<tr>';
 			html += '	<td colspan="6">등록된 담당자가 없습니다.</td>';
 			html += '</tr>';
 		}
 		$('#managerTable').append(html);
+	}
+	
+	function resetInput1(){
+		$('#tab01 input').attr('disabled', false);
+		$('#tab01 select').attr('disabled', false);
+		$('#tab01 textarea').attr('disabled', false);
+		$('#tab01 #rgstDt').attr('disabled', true);
+		$('#tab01 #modiDt').attr('disabled', true);
+		$('#tab01 #supplierCode').attr('disabled', true);
+		$('#edit .btn-success').text('저장');
+		$('#edit .btn-success').removeClass('edit');
+		$('#edit .btn-success').addClass('save');
+	}
+	
+	function resetInput2(){
+		$('#tab02 input').attr('disabled', false);
+		$('#tab02 select').attr('disabled', false);
+		$('#tab02 textarea').attr('disabled', false);
+		$('#tab02 input').val('');
+		$('#tab02 #maUseYn').val('Y');
+		$('#edit .btn-success').text('저장');
+		$('#tab02 #managerRepresent').prop('checked',false);
+		$('#edit .btn-success').removeClass('edit');
+		$('#edit .btn-success').addClass('save');
+	}
+	
+	function editInput(){
+		$('#tab02 input').attr('disabled', false);
+		$('#tab02 select').attr('disabled', false);
+		$('#tab02 textarea').attr('disabled', false);
+		$('#edit .btn-success').text('저장');
+		$('#edit .btn-success').removeClass('edit');
+		$('#edit .btn-success').addClass('save');
+	}
+	
+	function saveSupplier(){
+		validation('edit');
+		if (isDisabled) {
+			return false;
+		} else {
+			isDisabled = true;
+			var supplierNo = $('#edit #supplierNo1').val()+'-'+$('#edit #supplierNo2').val()+'-'+$('#edit #supplierNo3').val();
+			var telephoneNo = $('#edit #telephoneNo1').val()+'-'+$('#edit #telephoneNo2').val()+'-'+$('#edit #telephoneNo3').val();
+			$('#edit #supplierNo').val(supplierNo);
+			$('#edit #telephoneNo').val(telephoneNo);
+			$('#edit #supplierCode').prop('disabled',false);
+			$('#edit #supplierId').prop('disabled',false);
+			var param = $('#frmEdit').serialize();
+			var dataType = 'TEXT'
+			saveSupplierAjax(param, 'insert/supplier', dataType);
+		}
+	}
+	
+	function saveManager(){
+		validationManager();
+		if (isDisabled) {
+			return false;
+		} else {
+			isDisabled = true;
+			var managerPhone = $('#edit #managerPhone1').val()+'-'+$('#edit #managerPhone2').val()+'-'+$('#edit #managerPhone3').val();
+			var managerMail = $('#edit #managerMail1').val()+'@'+$('#edit #managerMail2').val();
+			$('#edit #managerPhone').val(managerPhone);
+			$('#edit #managerMail').val(managerMail);
+			if($('#edit #managerRepresent').is(':checked')){
+				$('#edit #managerRepresent').val('Y');
+			}else{
+				$('#edit #managerRepresent').val('');
+			}
+			$('#managerId').prop('disabled',false);
+			$('#maSupplierCode').val(setSupplierCode);
+			var param = $('#frmEdit').serialize();
+			var dataType = 'JSON'; 
+			var action = 'update/manager';
+			if($('#managerInfo #managerId').val() == '' || $('#managerInfo #managerId').val() == undefined){
+				action = 'insert/manager'
+			}
+			saveSupplierAjax(param, action, dataType);
+		}
+	}
+	
+	function saveSupplierAjax(param, action, dataType) {
+		$.ajax({
+			url : '/supplier/supplier/' + action,
+			dataType : dataType,
+			type : "POST",
+			data : param,
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				console.log(result);
+				if(setTab == 'M'){
+					managersViewMake(result);
+					resetInput2();
+				}else{
+					if (result == 'Insert' || result == 'Update') {
+						location.href = '/supplier/supplier';
+					}
+				}
+			}
+		});
 	}
 
 	$(document).ready(function() {
@@ -954,17 +1086,40 @@
 		});
 
 		$('#tabnav01').click(function() {
+			setTab = 'S';
+			$('#edit .btn-success.edit').text('수정');
 		});
 
 		$('#tabnav02').click(function() {
+			setTab = 'M';
 			if (setManager == 'N') {
 				managersView(setSupplierCode);
 			}
+			resetInput2();
+		});
+		
+		$('#suppDetailBtn').click(function() {
+			if($('#suppDetailBtn').hasClass('edit')){
+				if(setTab == 'S'){
+					resetInput1();
+				}else{
+					editInput();
+				}
+			}else{
+				if(setTab == 'S'){
+					saveSupplier();
+				}
+				if(setTab == 'M'){
+					saveManager();
+				}
+			}
+			
 		});
 
 		$('#edit .close, #edit .btn-cancel').click(function() {
 			setSupplierCode = '';
 			setManager = 'N';
+			setTab = 'S';
 			$('.active').removeClass('active');
 			$('#tab02').css('display', 'none');
 			$('#tab01').css('display', 'block');
@@ -987,13 +1142,18 @@
 			$('#edit #useYn').val('');
 			$('#edit #rgstDt').val('');
 			$('#edit #modiDt').val('');
+			$('#edit .btn-success').text('수정');
+			$('#edit .btn-success').removeClass('save');
+			$('#edit .btn-success').addClass('edit');
+			$('#managerInfo #managerId').val('');
 		});
-
-		$('.btnCheck').click(function() {
-		});
-
-		$("#codeSearch").keyup(function(e) {
-			if (e.keyCode == '13') {
+		
+		$('.search-box-append').click(function(){
+			if(isDisabled){
+				return false;
+			}else{
+				isDisabled = true;
+				$('#searchFrm').submit();
 			}
 		});
 
@@ -1067,5 +1227,32 @@
 			}
 		}
 		return true;
+	}
+	
+	function validationManager(type){
+			if ($('#'+type+' #managerNm').val() == '') {
+				alert('담당자 이름를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone1').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone2').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerPhone3').val() == '') {
+				alert('담당자 연락처를 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerMail1').val() == '') {
+				alert('담당자 메일을 입력해 주세요.');
+				return false;
+			}
+			if ($('#'+type+' #managerMail2').val() == '') {
+				alert('담당자 메일을 입력해 주세요.');
+				return false;
+			}
 	}
 </script>

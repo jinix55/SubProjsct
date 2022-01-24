@@ -8,10 +8,10 @@
 		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
 			and ((upper(SUPPLIER_CODE) like concat('%',upper(#{searchValue}),'%')) OR (upper(SUPPLIER_NM) like concat('%',upper(#{searchValue}),'%')))
 		</if>
-		<if test="searchKey != '' and searchKey == 'companyCode' and searchValue != ''">
+		<if test="searchKey != '' and searchKey == 'supplierCode' and searchValue != ''">
 			and (upper(SUPPLIER_CODE) like concat('%',upper(#{searchValue}),'%'))
 		</if>
-		<if test="searchKey != '' and searchKey == 'companyNm' and searchValue != ''">
+		<if test="searchKey != '' and searchKey == 'supplierNm' and searchValue != ''">
 			and (upper(SUPPLIER_NM) like concat('%',upper(#{searchValue}),'%'))
 		</if>
 	</sql>
@@ -103,17 +103,17 @@
 	
 	<update id="update" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		UPDATE T_SUPPLIER SET
-			COMPANY_CODE = #{companyCode},
-			COMPANY_NO = #{companyNo},
-			COMPANY_NM = #{companyNm},
-			COMPANY_DSC = #{companyDsc},
-			ADDRESS = #{address},
-			TELEPHONE_NO = #{telephoneNo},
-			REPRESENTATIVE_NM = #{representativeNm},
-			NOTE = #{note},
-			USE_YN = #{useYn},
-			MODI_ID = #{modiId},
-			MODI_DT = NOW()
+			SUPPLIER_CODE = #{supplierCode}
+			, SUPPLIER_NO = #{supplierNo}
+			, SUPPLIER_NM = #{supplierNm}
+			, SUPPLIER_DSC = #{supplierDsc}
+			, ADDRESS = #{address}
+			, TELEPHONE_NO = #{telephoneNo}
+			, REPRESENTATIVE_NM = #{representativeNm}
+			, NOTE = #{note}
+			, USE_YN = #{useYn}
+			, MODI_ID = #{modiId}
+			, MODI_DT = NOW()
 		WHERE
 			SUPPLIER_ID = #{supplierId} AND UP_COMPANY_CODE = #{upCompanyCode}
 	</update>
@@ -280,7 +280,7 @@
 	<update id="updateManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		UPDATE T_SUPPLIER_MANAGER SET
 			SUPPLIER_CODE = #{supplierCode}
-			, MANAGER_NM = {managerNm}
+			, MANAGER_NM = #{managerNm}
 			, MANAGER_PHONE = #{managerPhone}
 			, MANAGER_MAIL = #{managerMail}
 			, MANAGER_DEPT = #{managerDept}

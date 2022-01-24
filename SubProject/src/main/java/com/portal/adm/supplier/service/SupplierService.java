@@ -67,7 +67,7 @@ public class SupplierService {
     }
     
     /**
-     * 공급업체정보를 저장한다.
+     * 공급업체정보를 등록한다.
      *
      * @param supplierCode
      * @return
@@ -97,6 +97,63 @@ public class SupplierService {
             } else {
                 return Constant.DB.FAIL;
             }
+        }
+    }
+    
+    /**
+     * 공급업체정보를 저장한다.
+     *
+     * @param supplierCode
+     * @return
+     */
+    public String updateSupplier(SupplierModel supplierModel) {
+        long count = supplierMapper.update(supplierModel);
+
+        if(count > 0) {
+            return Constant.DB.UPDATE;
+        } else {
+            return Constant.DB.FAIL;
+        }
+    }
+    
+    /**
+     * 공급업체 매니저 정보를 저장한다.
+     *
+     * @param supplierCode
+     * @return
+     */
+    public String saveManager(SupplierModel supplierModel) {
+    	SupplierModel existManagerModel = supplierMapper.selectSupplierManagerSearch(supplierModel);
+    	long count = -1;
+    	if(existManagerModel != null) {
+    		count = supplierMapper.updateManager(supplierModel);
+            if(count > 0) {
+                return Constant.DB.UPDATE;
+            } else {
+                return Constant.DB.FAIL;
+            }
+    	}else {
+    		count = supplierMapper.insertManager(supplierModel);
+            if(count > 0) {
+                return Constant.DB.INSERT;
+            } else {
+                return Constant.DB.FAIL;
+            }
+    	}
+    }
+    
+    /**
+     * 공급업체 매니저 정보를 저장한다.
+     *
+     * @param supplierCode
+     * @return
+     */
+    public String updateManager(SupplierModel supplierModel) {
+		long count = supplierMapper.updateManager(supplierModel);
+        if(count > 0) {
+            return Constant.DB.UPDATE;
+        } else {
+            return Constant.DB.FAIL;
         }
     }
     

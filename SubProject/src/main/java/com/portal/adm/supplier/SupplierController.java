@@ -79,7 +79,7 @@ public class SupplierController {
      * @return
      */
     @PostMapping("/supplier/insert")
-    public ResponseEntity<String> groupSave(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> supplierInsert(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		
     		if(supplierModel.getSupplierId() == null || StringUtils.equals(supplierModel.getSupplierId(),"")) {
@@ -94,6 +94,80 @@ public class SupplierController {
     		supplierModel.setModiId(authUser.getMemberModel().getUserId());
     		System.out.println("supplierModel : "+supplierModel);
             String result = supplierService.save(supplierModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    /**
+     * 공급업체 저장 및 수정
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/supplier/insert/manager")
+    public ResponseEntity< List<SupplierModel>> saveManager(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+		
+		if(supplierModel.getManagerId() == null || StringUtils.equals(supplierModel.getManagerId(),"")) {
+			supplierModel.setManagerId(idUtil.getManagerId());
+		}
+		if(supplierModel.getManagerRepresent() == null) {
+			supplierModel.setManagerRepresent("N");
+		}
+		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
+		supplierModel.setUseYn(supplierModel.getMaUseYn());
+		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
+		supplierModel.setModiId(authUser.getMemberModel().getUserId());
+		System.out.println("supplierModel : "+supplierModel);
+		supplierService.saveManager(supplierModel);
+		
+        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
+        
+		return new ResponseEntity<>(models, HttpStatus.OK);
+    }
+    
+    /**
+     * 공급업체 저장 및 수정
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/supplier/update/manager")
+    public ResponseEntity< List<SupplierModel>> updateManager(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+		
+		if(supplierModel.getManagerRepresent() == null) {
+			supplierModel.setManagerRepresent("N");
+		}
+		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
+		supplierModel.setUseYn(supplierModel.getMaUseYn());
+		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
+		supplierModel.setModiId(authUser.getMemberModel().getUserId());
+		System.out.println("supplierModel : "+supplierModel);
+		supplierService.updateManager(supplierModel);
+		
+        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
+        
+		return new ResponseEntity<>(models, HttpStatus.OK);
+    }
+    
+    /**
+     * 공급업체 저장 및 수정
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/supplier/insert/supplier")
+    public ResponseEntity<String> saveSupplier(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    	try {
+    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
+    		supplierModel.setModiId(authUser.getMemberModel().getUserId());
+    		System.out.println("supplierModel : "+supplierModel);
+            String result = supplierService.updateSupplier(supplierModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
