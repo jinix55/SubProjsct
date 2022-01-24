@@ -628,6 +628,7 @@ vertical-align: top;
 .search-date2:nth-last-child(1):before {content: '' !important;}
 .selectHover tr td.text-point{cursor: pointer;}
 .selectHover tr:hover {background: #eee;}
+.selectTdHover:hover {cursor: pointer;}
 .pack-left-wrap {float: left;-ms-flex: 0 0 50%;flex: 0 0 50%;max-width: 50%;overflow: auto;padding-right: 15px;border-right: 1px solid #e5e5e5;min-height: 100%;position: relative;bottom:0;height: 100%;}
 .pack-right-wrap {padding-left: 15px;border-left: 1px solid #e5e5e5;w-ms-flex: 0 0 50%;flex: 0 0 50%;max-width: 50%;margin-left: -1px;}
 .h600auto { height: 650px; width: 100%; overflow-y: auto; overflow-x: auto;}
