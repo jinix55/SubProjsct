@@ -65,24 +65,22 @@
 		ORDER BY ROWNUM
 	</select>
 
-	<select id="select" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+	<select id="selectList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-			GROUP_ID,
-			CODE_ID,
-			CODE_KEY,
-			CODE_NM,
-			CODE_DSC,
+			PRODUCT_ID,
+			PRODUCT_NM,
+			PRODUCT_CODE,
+			PACKING_TYPE,
+			RECYCLE_GRADE,
+			COMPLITE_STATUS,
+			CHECK1,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
 		FROM
-			T_PACKAGING_CODE
-		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
-		AND
-			CODE_ID = #{codeId}
+			T_PRODUCT
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.product.model.ProductModel">

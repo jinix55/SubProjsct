@@ -42,6 +42,8 @@ public interface ProductMapper {
      * @return          코드모델
      */
     ProductModel select(ProductModel model);
+    
+    List<ProductModel> selectList();
 
     /**
      * 그룹ID와 코드ID 조건의 코드모델을 삭제한다. // 사용여부로 변경예정 (작업중)

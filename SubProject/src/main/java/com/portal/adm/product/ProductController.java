@@ -53,7 +53,12 @@ public class ProductController {
      */
     @RequestMapping(value="/prodList", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute ProductModel productMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
-
+    	System.out.println("===================prodList==================");
+    	List<ProductModel> productList = new ArrayList<>();
+    	
+    	productList = productService.selectList();
+    		model.addAttribute("productList", productList);
+    	
         return "product/prodList";
     }
 
@@ -66,7 +71,7 @@ public class ProductController {
     @RequestMapping(value="/prodImage", method= {RequestMethod.GET,RequestMethod.POST})
     public String codePost(@ModelAttribute ProductModel productMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
-        return "product/prodImg";
+        return "product/prodImage";
     }
 
     /**
