@@ -85,8 +85,8 @@ public class WebSecurityConfig<S extends Session> extends WebSecurityConfigurerA
 		//외부 시스템 요청은 인증 없이 처리
 		http.authorizeRequests().antMatchers("/api/**").permitAll();
 		
-		//HR 연동 테스트 임시 허용
-		http.authorizeRequests().antMatchers("/test/**").permitAll();
+//		//HR 연동 테스트 임시 허용
+//		http.authorizeRequests().antMatchers("/test/**").permitAll();
 		
 		http.authorizeRequests().antMatchers("/**").access("@authChecker.check(request,authentication)").and().httpBasic().authenticationEntryPoint(authEntryPoint);
 		

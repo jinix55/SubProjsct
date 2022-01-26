@@ -363,20 +363,13 @@
 		    <version>4.9.1</version>
 		</dependency>
 				
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
 
-		<!-- 네이버 챗봇 API 모듈 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.portal.chatbot</groupId> -->
-<!-- 			<artifactId>api-extension</artifactId> -->
-<!-- 			<version>0.0.1-SNAPSHOT</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.portal.chatbot</groupId> -->
-<!-- 			<artifactId>api-extension</artifactId> -->
-<!-- 			<version>0.0.1-SNAPSHOT</version> -->
-<!-- 			<scope>system</scope> -->
-<!-- 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/api-extension-0.0.1.jar</systemPath> -->
-<!-- 		</dependency> -->
 		
 	</dependencies>
 

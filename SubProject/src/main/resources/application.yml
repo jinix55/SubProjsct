@@ -19,7 +19,7 @@ spring:
             on-profile: local # spring boot 2.4.0 부터 변경된 프로파일 정의 설정
     session:
         store-type: jdbc    # spring session 저장타입지정 / spring-session-jdbc를 추가하면 jdbc가 기본으로 동작해서 임시로 동작중지함.de
-        timeout: 12h 
+        timeout: 1h 
     first:
         datasource:  # mysql
             jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
@@ -81,6 +81,17 @@ tableau-props:
     default-content-url: ""
     target-site: ""
     cache-preview-path: "c:/works/temp/cache/preview-image"
+
+mail-props:
+    user-id: "joyriver316@gmail.com"
+    password: "ziczunjgqmukrorj"
+    mail-smtp-host: "mail.smtp.host"
+    mail-smtp-port: "mail.smtp.port"
+    mail-smtp-auth: "mail.smtp.auth"
+    mail-smtp-ssl-enable: "mail.smtp.ssl.enable"
+    mail-smtp-ssl-trust: "mail.smtp.ssl.trust"
+    smtp-mail-url: "smtp.gmail.com"
+
 
 
 --- #dev 설정

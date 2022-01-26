@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.api.mapper.ApiExtrnlMapper">
+
+
+    <select id="select" resultType="com.portal.api.model.ApiExtrnlModel" parameterType="com.portal.api.model.ApiExtrnlModel">
+		select
+			API_KEY
+			, TO_COMPANY_CODE
+			, TO_COMPANY_NM
+			, FROM_COMPANY_CODE
+			, FROM_COMPANY_NM
+			, MANAGER_ID
+			, MANAGER_NM
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		from
+		    T_API_PRODUCT_PACKAGE
+		where
+		    API_KEY = #{apiKey}
+    </select>
+
+    <insert id="insert" parameterType="com.portal.api.model.ApiExtrnlModel">
+		insert into T_API_PRODUCT_PACKAGE (
+			API_KEY
+			, TO_COMPANY_CODE
+			, TO_COMPANY_NM
+			, FROM_COMPANY_CODE
+			, FROM_COMPANY_NM
+			, MANAGER_ID
+			, MANAGER_NM
+			, MANAGER_MAIL
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) values (
+			#{apiKey}
+			, #{toCompanyCode}
+			, #{toCompanyNm}
+			, #{fromCompanyCode}
+			, #{fromCompanyNm}
+			, #{managerId}
+			, #{managerNm}
+			, #{managerMail}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+    </insert>
+
+<!--     <update id="update" parameterType="com.portal.api.model.ApiExtrnlModel"> -->
+<!-- 		update t_extrnl_sys set -->
+<!-- 		    extrnl_nm = #{extrnlNm} -->
+<!-- 		  , extrnl_dsc = #{extrnlDsc} -->
+<!-- 		  , extrnl_url = #{extrnlUrl} -->
+<!-- 		  , modi_dt = now() -->
+<!-- 		  , modi_id = #{modiId} -->
+<!-- 		  , use_yn = 'Y' -->
+<!-- 		where -->
+<!-- 		    extrnl_id = #{extrnlId} -->
+<!--     </update> -->
+
+<!--     <delete id="delete" parameterType="com.portal.api.model.ApiExtrnlModel"> -->
+<!-- 		update t_extrnl_sys set -->
+<!-- 		    use_yn = 'N' -->
+<!-- 		  , modi_dt = now() -->
+<!-- 		  , modi_id = #{modiId} -->
+<!-- 		where -->
+<!-- 		    extrnl_id = #{extrnlId} -->
+<!--     </delete> -->
+
+</mapper>
