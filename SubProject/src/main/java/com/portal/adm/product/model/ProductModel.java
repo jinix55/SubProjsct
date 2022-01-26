@@ -33,4 +33,15 @@ public class ProductModel extends Criteria{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modiDt; // 수정일시
     private Integer ordSeq;			//정렬순서
+    
+    
+    private String productId;
+    private String productNm;
+    private String productCode;
+    private String packingType;
+    private String recyleGrade;
+    private String completeStatus;
+    private String check1;
+    
+    
 }

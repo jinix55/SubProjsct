@@ -20,6 +20,14 @@ public class ProductService {
     @Resource
     private ProductMapper productMapper;
 
+    
+    public List<ProductModel> selectList() {
+        return productMapper.selectList();
+    }
+    
+    
+    
+    
     /**
      * 제품코드 ID 리스트를 조회한다.
      *
