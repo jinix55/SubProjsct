@@ -11,6 +11,10 @@
 	<definition name="login" extends="no-layout">
 		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
 	</definition>
+	
+	<definition name="api/*" extends="no-layout">
+		<put-attribute name="body" value="/WEB-INF/views/api/{1}.jsp" />
+	</definition>
 
 	<!-- main -->
 	<definition name="default-layout" template="/WEB-INF/views/layout/base.jsp" preparer="menuPreparer">

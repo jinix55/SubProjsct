@@ -1331,6 +1331,28 @@ INSERT INTO T_SUPPLIER_MANAGER (MANAGER_ID,SUPPLIER_CODE,MANAGER_NM,MANAGER_PHON
 
 
 
+-- 공통 포장 API
+DROP TABLE IF EXISTS T_API_PRODUCT_PACKAGE CASCADE;
+CREATE TABLE IF NOT EXISTS T_API_PRODUCT_PACKAGE (
+    API_KEY VARCHAR(32) NOT NULL COMMENT 'API_KEY'
+  , TO_COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '받는 회사 코드'
+  , TO_COMPANY_NM VARCHAR(256) NOT NULL COMMENT '받는 회사 명'
+  , FROM_COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '보내는 회사 코드'
+  , FROM_COMPANY_NM VARCHAR(256) NOT NULL COMMENT '보내는 회사 명'
+  , MANAGER_ID VARCHAR(16) NOT NULL COMMENT '담당자 ID'
+  , MANAGER_NM VARCHAR(256) NOT NULL COMMENT '담당자 명'
+  , MANAGER_MAIL VARCHAR(256) NOT NULL COMMENT '담당자 메일'
+  , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
+  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '포장 API[제품 포장 API]';
+ALTER TABLE T_API_PRODUCT_PACKAGE ADD CONSTRAINT T_API_PRODUCT_PACKAGE_PK PRIMARY KEY(API_KEY);
+-- CREATE INDEX T_API_PRODUCT_PACKAGE_IX1 ON T_API_PRODUCT_PACKAGE(API_KEY);
+
+
+
 -- 데이터
 -- -------------------------------------------------------------------------------------------------
 
@@ -1580,16 +1602,16 @@ INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,M
 ('mn5000023','mn5000001','알람관리','/alarm','','23','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000024','mn5000023','알람관리','/alarm/alarm','','24','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000025','mn5000001','상품','/product','','25','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','myself','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000026','mn5000025','상품 관리','/product/prodList','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000027','mn5000025','공급 업체','/product/supplier','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000028','mn5000025','상품 이미지','/product/prodImage','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000029','mn5000001','레포트','/report','레포트','28','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000030','mn5000029','A회사 레포트 1번','/report/reportView/test01','레포트 화면','29','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000031','mn5000029','A회사 레포트 2번','/report/reportView/rp2100010','','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000032','mn5000029','A회사 레포트 3번','/report/reportView/rp2100011','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000033','mn5000029','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000034','mn5000029','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
-('mn5000035','mn5000029','C회사 레포트 1번','/report/reportView/3','','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000026','mn5000025','공급 업체','/product/supplier','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000027','mn5000025','상품 관리','/product/prodList','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000028','mn5000025','상품 이미지','/product/prodImage','','28','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000029','mn5000001','레포트','/report','레포트','29','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000030','mn5000029','A회사 레포트 1번','/report/reportView/test01','레포트 화면','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000031','mn5000029','A회사 레포트 2번','/report/reportView/rp2100010','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000032','mn5000029','A회사 레포트 3번','/report/reportView/rp2100011','','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000033','mn5000029','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000034','mn5000029','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000035','mn5000029','C회사 레포트 1번','/report/reportView/3','','35','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 
