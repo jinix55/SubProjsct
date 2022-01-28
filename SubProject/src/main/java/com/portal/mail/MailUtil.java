@@ -40,6 +40,9 @@ public class MailUtil {
 		prop.put(props.getMailSmtpAuth(), "true");
 		prop.put(props.getMailSmtpSslEnable(), "true");
 		prop.put(props.getMailSmtpSslTrust(), props.getSmtpMailUrl());
+		prop.put("mail.smtp.ssl.protocols", "TLSv1.2");
+		
+		log.info("Properties >> "+prop.toString());
 
 		Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {

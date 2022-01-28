@@ -23,7 +23,7 @@ public interface MailConstant {
 				+ "          {NAME}님, 안녕하세요?<br><br>"
 				+ "          {COMPANY} 포장재질구조 담당자 입니다. <br>"
 				+ "          아래 링크를 클릭하시면 환경부 제출서류인 포장재 재질 구조 증명서 입력창이 뜹니다. <br>"
-				+ "          빈칸을 작성 후 직인 날인 후 PDF로 첨부하여 보내기 버튼을 눌러주세요<br><br>"
+				+ "          빈칸을 작성 하여 출력 후 직인 날인 하시고 PDF로 첨부하여 보내기 버튼을 눌러주세요<br><br>"
 				+ "          <div class=\"pt30 tc\">"
 				+ "            <a class=\"button btn-success\" href=\"{HOSTURL}{API}\">바로가기</a>"
 				+ "          </div><br>"
