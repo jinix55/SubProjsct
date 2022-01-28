@@ -90,11 +90,6 @@ function intervalTime(t){
 	</div>
 	<ul class="top-nav">
 <!-- 		<li><span class="top-nav-bi top-nav-bilink"><a href="/BIChat.html" title="BI분석플랫품">BI분석플랫품</a></span></li> -->
-		<li>
-			<span>
-				${myInfo.userId } / ${myInfo.companyNm } 
-			</span>
-		</li>
 		<li class="dropdown-notification">
 			<a href="#" title="알림" style="position:relative;">
 				<img src="/images/icon_bell.png" alt="알림">
@@ -108,7 +103,6 @@ function intervalTime(t){
 			</div>
 			</div>
 		</li>
-		<li><a href="/member/pwdChange" title="비밀번호 변경"><img src="/images/icon_user.png" alt="비밀번호 변경"></a></li>
 		<li><a href="/logout" title="로그아웃"><img src="/images/icon_off.png" alt="로그아웃"></a></li>
 	</ul>
 

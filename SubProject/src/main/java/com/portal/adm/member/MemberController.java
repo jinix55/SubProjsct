@@ -274,7 +274,43 @@ public class MemberController {
     @GetMapping("/pwdChange")
     public String pwdChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info("==================== pwdChange in ===================");
+    	
+    	return "user/pwdChange";
+    }
+    
+    /**
+     * 사용자관리 페이지로 이동한다.
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/userInfoChange")
+    public String userInfoChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	log.info("==================== userInfoChange in ===================");
+    	
+    	return "user/userInfoChange";
+    }
+    
+    /**
+     * 사용자관리 페이지로 이동한다.
+     *
+     * @param model
+     * @return
+     */
+    @PostMapping("member/update/userInfoChange")
+    public ResponseEntity<String> updateUserInfo(@ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	log.info("==================== updateUserInfo in ===================");
+        try {
+            memberModel.setRgstId(authUser.getMemberModel().getUserId());
+            memberModel.setModiId(authUser.getMemberModel().getUserId());
 
-        return "user/pwdChange";
+            String result = memberService.updateMember(memberModel);
+            authUser.getMemberModel().setEmail(memberModel.getEmail());
+            authUser.getMemberModel().setPhone(memberModel.getPhone());
+            
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 }

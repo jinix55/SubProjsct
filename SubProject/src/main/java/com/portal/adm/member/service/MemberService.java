@@ -1,18 +1,17 @@
 package com.portal.adm.member.service;
 
-import com.portal.adm.member.mapper.MemberMapper;
-import com.portal.adm.member.model.MemberModel;
-import com.portal.adm.role.model.RoleModel;
-import com.portal.common.Constant;
-import com.portal.common.paging.Criteria;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
+import com.portal.adm.member.mapper.MemberMapper;
+import com.portal.adm.member.model.MemberModel;
+import com.portal.common.Constant;
+import com.portal.common.paging.Criteria;
 
 /**
  * 사용자관리 서비스 클래스
@@ -182,5 +181,21 @@ public class MemberService {
 	@Transactional
 	public long unlockAccount(MemberModel model) {
 		return memberMapper.unlockAccount(model);
+	}
+	
+	@Transactional
+	public String updateMember(MemberModel model) {
+		
+		int cnt = memberMapper.selectMemberOne(model);
+		if(cnt > 0) {
+			long count = memberMapper.updateMember(model);
+			if (count > 0) {
+				return Constant.DB.UPDATE;
+			} else {
+				return Constant.DB.FAIL;
+			}
+		}else {
+			return Constant.DB.FAIL;
+		}
 	}
 }

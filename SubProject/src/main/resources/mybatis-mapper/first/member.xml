@@ -458,6 +458,26 @@
         SET
             last_log_dt = NULL
         WHERE USER_ID = #{userId}
-	</update>	
+	</update>
+	
+	 <select id="selectMemberOne" resultType="int" parameterType="com.portal.adm.member.model.MemberModel">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			T_USER 
+		WHERE
+			USER_ID = #{userId}
+	</select>
+	
+	 <update id="updateMember" parameterType="com.portal.adm.member.model.MemberModel">
+		UPDATE T_USER
+		SET
+		   EMAIL = #{email}
+		  , PHONE = #{phone}
+		  , MODI_DT = now()
+		  , MODI_ID = #{modiId}
+		WHERE
+			USER_ID = #{userId}
+	</update>
 
 </mapper>

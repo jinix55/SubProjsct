@@ -7,14 +7,16 @@
 
 <section id="lnb">
 	<a href="#" class="menu" title="메뉴 열기/닫기"><img src="/images/arr_menu_left.png" alt="메뉴 열기/닫기"/></a>
-	<div class="btn-lnb_user">
-		<span class="lnb-user">
-			<span class="img"><img src="/images/logo_p.png" alt="회사로고"></span>
-			<span class="desc">
-				<span class="depart">PPlue Echo</span>
-				<p class="name">PKG Production&Development</p>
-			</span>
-		</span>
+	<div class="btn-lnb-comp">
+		<img src="/images/logo_p.png" alt="회사로고">
+	</div>
+	<div class="lnb-user">
+		<span class="img"><img src="/images/icon_user02.png" alt="정보수정"></span>
+		<div class="desc">
+			<a href="/member/userInfoChange" class="depart">${myInfo.companyNm}
+				<small class="name">${myInfo.userNm}님(${myInfo.userId})</small>
+			</a>
+		</div>
 	</div>
 	<nav style="touch-action: none;">
 		<ul style="transform: translate(0px, 0px) translateZ(0px);">
