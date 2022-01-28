@@ -70,9 +70,9 @@
 
 							<tr>
 								<td>1</td>
-								<td>${list.productCode}</td>
+								<td><input type="text" style="border:none" id="productCode_${list.rownum}" value="${list.productCode}" readonly="true"  ></td>
 								<td><img src="../images/pro_img04.jpeg" width="70" height="auto"></td>
-								<td>서울유유 800g</td>
+								<td>${list.productNm} </td>
 								<td>철캔</td>
 								<td class="fontColorBlue"><img src="../images/free-icon-emoji-3456813.png" width="26px">우수</td>
 								<td>진행중</td>
@@ -81,8 +81,8 @@
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
 								<td>
 									<div class="btn-group">
-										<a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-										<a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+										<a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" ></a>
+										<a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" id="deleteBtn_${list.rownum}" ></a>
 									</div>
 								</td>
 							</tr>

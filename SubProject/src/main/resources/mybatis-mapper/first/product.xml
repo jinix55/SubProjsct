@@ -67,6 +67,7 @@
 
 	<select id="selectList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
+		    ROW_NUMBER() OVER (ORDER BY PRODUCT_ID ASC) AS ROWNUM,
 			PRODUCT_ID,
 			PRODUCT_NM,
 			PRODUCT_CODE,
@@ -80,7 +81,8 @@
 			MODI_ID,
 			MODI_DT
 		FROM
-			T_PRODUCT
+			T_PRODUCT 
+        ORDER BY ROWNUM			
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.product.model.ProductModel">
