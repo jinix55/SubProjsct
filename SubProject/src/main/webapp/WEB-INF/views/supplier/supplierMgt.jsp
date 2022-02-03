@@ -204,6 +204,7 @@
 			<h4 class="tl mb10 pt15">
 				<span class="title-point">[관리 담당자]</span>
 			</h4>
+			<input id="managementId" name="managementId" type="hidden" class="text-input">
 			<div class="row">
 				<div class="col-50">
 					<div class="form-group">
