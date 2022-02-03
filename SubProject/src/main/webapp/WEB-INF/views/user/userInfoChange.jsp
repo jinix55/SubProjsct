@@ -14,7 +14,7 @@
 				<div class="form-group">
 					<label class="col-25 form-label">ID</label>
 					<div class="col-75">
-						<input id="userId" name="userId" type="text" class="text-input" value="${myInfo.userId }" disabled>
+						<input id="userId" name="userId" type="text" class="text-input" value="${memberInfo.userId }" disabled>
 					</div>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 				<div class="form-group">
 					<label class="col-25 form-label">회사</label>
 					<div class="col-75">
-						<input id="companyNm" name="companyNm" type="text" class="text-input" value="${myInfo.companyNm }" disabled>
+						<input id="companyNm" name="companyNm" type="text" class="text-input" value="${memberInfo.companyNm }" disabled>
 					</div>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 				<div class="form-group">
 					<label class="col-25 form-label">성명</label>
 					<div class="col-75">
-						<input id="userNm" name="userNm" type="text" class="text-input" value="${myInfo.userNm }" placeholder="이름을 입력해 주세요">
+						<input id="userNm" name="userNm" type="text" class="text-input" value="${memberInfo.userNm }" placeholder="이름을 입력해 주세요">
 					</div>
 				</div>
 			</div>
@@ -39,13 +39,13 @@
 					<label class="col-25 form-label">연락처</label>
 					<div class="col-75">
 						<div class="phone-number">
-							<input id="phone1" name="phone1" value="${fn:split(myInfo.phone,'-')[0]}" type="text" class="text-input" maxlength="3" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<input id="phone1" name="phone1" value="${fn:split(memberInfo.phone,'-')[0]}" type="text" class="text-input" maxlength="3" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
 						</div>
 						<div class="phone-number">
-							<input id="phone2" name="phone2" value="${fn:split(myInfo.phone,'-')[1]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<input id="phone2" name="phone2" value="${fn:split(memberInfo.phone,'-')[1]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
 						</div>
 						<div class="phone-number end">
-							<input id="phone3" name="phone3" value="${fn:split(myInfo.phone,'-')[2]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<input id="phone3" name="phone3" value="${fn:split(memberInfo.phone,'-')[2]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
 						</div>
 						<input type="hidden" id="phone" name="phone" />
 					</div>
@@ -56,10 +56,10 @@
 					<label class="col-25 form-label">이메일</label>
 					<div class="col-75">
 						<div class="email-add">
-							<input id="email1" name="email1" value="${fn:split(myInfo.email,'@')[0]}" type="text" class="text-input email">
+							<input id="email1" name="email1" value="${fn:split(memberInfo.email,'@')[0]}" type="text" class="text-input email">
 						</div>
 						<div class="email-add end">
-							<input id="email2" name="email2" value="${fn:split(myInfo.email,'@')[1]}" type="text" class="text-input email">
+							<input id="email2" name="email2" value="${fn:split(memberInfo.email,'@')[1]}" type="text" class="text-input email">
 						</div>
 						<input type="hidden" id="email" name="email" />
 					</div>
