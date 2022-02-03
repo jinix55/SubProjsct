@@ -36,6 +36,13 @@ public class SupplierModel extends Criteria {
     private String searchValue;     // 검색값
     private String delSupplierId;     // 검색값
     
+    private String managementId;
+    private String managementNm;
+    private String managementPhone;
+    private String managementMail;
+    private String managementDept;
+    private String managementPstn;
+    
 	private String managerId;
 	private String managerNm;
 	private String managerPhone;
