@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -288,6 +287,8 @@ public class MemberController {
     public String userInfoChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	log.info("==================== userInfoChange in ===================");
     	
+    	model.addAttribute("memberInfo",memberService.selectMember(authUser.getMemberModel()));
+    	
     	return "user/userInfoChange";
     }
     
@@ -304,10 +305,8 @@ public class MemberController {
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
             memberModel.setModiId(authUser.getMemberModel().getUserId());
 
-            String result = memberService.updateMember(memberModel);
-            authUser.getMemberModel().setEmail(memberModel.getEmail());
-            authUser.getMemberModel().setPhone(memberModel.getPhone());
-            
+			String result = memberService.updateMember(memberModel);
+
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
