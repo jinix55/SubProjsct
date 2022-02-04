@@ -72,15 +72,15 @@ public class ProductService {
     @Transactional
     public String delete(ProductModel model) {
 
-        if(model.getGroupId().equals("GROUP_ID")) {
-            int codeCount = selectCodeCountForGroupId(model);
+//        if(model.getGroupId().equals("GROUP_ID")) {
+//            int codeCount = selectCodeCountForGroupId(model);
+//
+//            if(codeCount > 0) {
+//                return Constant.DB.USE_CODE_ID;
+//            }
+//        }
 
-            if(codeCount > 0) {
-                return Constant.DB.USE_CODE_ID;
-            }
-        }
-
-        long count = productMapper.delete(model);
+        long count = 1; //productMapper.delete(model);
 
         if(count > 0) {
             return Constant.DB.DELETE;

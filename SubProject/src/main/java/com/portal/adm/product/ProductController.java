@@ -23,6 +23,7 @@ import com.portal.adm.product.model.ProductModel;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
+import com.portal.common.Constant;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -57,8 +58,14 @@ public class ProductController {
     	List<ProductModel> productList = new ArrayList<>();
     	
     	productList = productService.selectList();
-    		model.addAttribute("productList", productList);
+        model.addAttribute("productList", productList);
     	
+    	List<String> productTypeList = new ArrayList<>();
+    	
+    	productTypeList.add("제품분류11");
+    	productTypeList.add("제품분류22");
+        model.addAttribute("productTypeList", productTypeList);        
+        
         return "product/prodList";
     }
 
@@ -101,14 +108,22 @@ public class ProductController {
      */
     @PostMapping("/product/delete")
     public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-        try {
-
-            String result = "";
-
+        try {            
+        	
+        	String result = "";
+            ProductModel model = new ProductModel();
+            
+            System.out.println("===================productItem delete==================");
+            result = productService.delete(model);
+            
             return new ResponseEntity<>(result, HttpStatus.OK);
+            
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
+        
+                
+        
     }    
     
     

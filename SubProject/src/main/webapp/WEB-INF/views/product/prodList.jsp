@@ -2,10 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-
+<form id="frm">
 		<div class="content">
 			<!-- S_검색-->
-			<form>
+			<form >
 				<div class="justify-content-between">
 					<div class="form-group">
 						<div class="form-inline">
@@ -81,8 +81,10 @@
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
 								<td>
 									<div class="btn-group">
-										<a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" ></a>
-										<a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" id="deleteBtn_${list.rownum}" ></a>
+										<a href="#edit" role="button" data-toggle="modal" class="btn-icon">
+										<img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" ></a>
+										<a href="#delete"  onclick="deletePorductItemSet('${list.productCode}');" role="button" data-toggle="modal" class="btn-icon">
+										<img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" id="deleteBtn_${list.rownum}" ></a>
 									</div>
 								</td>
 							</tr>
@@ -130,6 +132,9 @@
 			  <!-- E_페이징-->
 			</div>
 		</div>
+</form>
+
+<form id="frmInsert">
 <!-- 레이어 팝업 - 등록  -->
 <div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width:1000px">
@@ -143,7 +148,7 @@
 				<div class="form-group">
 					<label class="col-25 form-label">상품코드</label>
 					<div class="col-75">
-						<input type="text" class="text-input" value="HSL2100000001" disabled>
+						<input type="text" class="text-input"  placeholder="상품코드를 입력하세요">
 					</div>
 				</div>
 			</div>
@@ -153,10 +158,21 @@
 					<div class="col-75">
 						<select class="select-box">
 							<option value="선택없음" selected="">선택없음</option>
-							<option value="상품분류선택">상품분류선택</option>
-							<option value="상품분류선택">상품분류선택</option>
-							<option value="상품분류선택">상품분류선택</option>
-							<option value="상품분류선택">상품분류선택</option>
+
+							<c:choose>
+								<c:when test="${not empty productTypeList }">
+									<c:forEach items="${productTypeList}" var="list" varStatus="status">
+										<option value="${list}">${list}</option>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="4">
+								재질을 선택하지 않았거나 등록되 데이터가 없습니다.
+							</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
 						</select>
 					</div>
 				</div>
@@ -219,24 +235,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-50">
-				<div class="form-group">
-					<label class="col-25 form-label">포장차수</label>
-					<div class="col-75 text-input d-flex">
-						<div id='result' class="w40">0</div>
-						<input type='button' onclick='count("plus")' value='+'/ class="w30 mr05">
-						<input type='button' onclick='count("minus")' value='-'/ class="w30">
-					</div>
-				</div>
-			</div>
-			<div class="col-50">
-				<div class="form-group">
-					<label class="col-25 form-label">별도포장</label>
-					<div class="col-75">
-						<input type="number" class="text-input" placeholder="1" min="0" max="5" >
-					</div>
-				</div>
-			</div>
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
@@ -246,6 +244,9 @@
 	</div>
 </div>
 </div>
+</form>
+
+<form id="frmResult">
 
 <!-- 레이어 팝업 - 결과  -->
 <div id="envi_result" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -459,6 +460,10 @@
 </div>
 </div>
 
+</form>
+
+
+<form id="frmUpdate">
 <!-- 레이어 팝업 - 수정  -->
 <div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width:1000px">
@@ -659,8 +664,16 @@
 		</div>
 	</div>
 </div>
+
+</form>
+
+<form id="frmDelete">
+
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
+	
+	<input type="hidden" id="delCodeId" name="delCodeId" >
+
 	<div class="modal-content" style="width:400px">
 		<div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
@@ -676,11 +689,14 @@
 			</div>
 		</div>
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
+			<button type="button" class="button btn-warning" onclick="deleteProductItem();" data-dismiss="modal">삭제</button>
 			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
+</form>
+
+<form id="frmDetail">
 <!-- 레이어 팝업 - 상세  -->
 <div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width:auto;max-width:1200px">
@@ -1245,3 +1261,172 @@
 				</div>
 			</div>
     </div>
+</form>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		var day = '${environmentCodeModel.revisionYear}-${environmentCodeModel.revisionMonth}';
+		$('#midRevision').val(day);
+		$('#smlRevision').val(day);	
+		$('#smlGroupId').val('${environmentCodeModel.groupId}');
+		
+		$('#largeCategory').change(function(){
+			$('#middleCategory').val('');
+			var param = $('#frm').serialize();
+			$('#frm').attr('action','/system/environmentCode');
+			$('#frm').submit();
+		});
+		
+		$('#revision').change(function(){
+			var param = $('#frm').serialize();
+			$('#frm').attr('action','/system/environmentCode');
+			$('#frm').submit();
+		});
+		
+		$('.middleCodeCancel, .mid_close').click(function(){
+			middleInputReset();
+			$('.middleCodeInsert').addClass('new');
+			$('.middleCodeInsert').text('신규');
+			$('.middleCodeInsert').removeClass('save');
+			$('.middleCodeInsert').removeClass('edit');
+		});
+		
+		$('.smallCodeCancel, .sml_close').click(function(){
+			smallInputReset();
+			$('#smlGroupId').val('${environmentCodeModel.groupId}');
+			$('.smallCodeInsert').addClass('new');
+			$('.smallCodeInsert').text('신규');
+			$('.smallCodeInsert').removeClass('save');
+			$('.smallCodeInsert').removeClass('edit');
+		});
+		
+		$('.detailCodeCancel, .de_close').click(function(){
+			detailInputReset();
+			$('.detailCodeInsert').addClass('new');
+			$('.detailCodeInsert').text('신규');
+			$('.detailCodeInsert').removeClass('save');
+			$('.detailCodeInsert').removeClass('edit');
+			$('.detailCodeDelete').hide();
+		});
+		
+		$('.middleCodeInsert').click(function(){
+			if($('.middleCodeInsert').hasClass('new')){
+				$('.middleCodeInsert').text('저장');
+				$('.middleCodeInsert').addClass('save');
+				$('.middleCodeInsert').removeClass('new');
+				$('#midGroupId').val($('#largeCategory').val());
+				$('#midCodeId').attr('disabled',false);
+				$('#midCodeKey').attr('disabled',false);
+				$('#midCodeNm').attr('disabled',false);
+				$('#midOrdSeq').attr('disabled',false);
+				$('#midCodeDsc').attr('disabled',false);
+			}else{
+				if($('.middleCodeInsert').hasClass('save')){
+					middleCodeSave();
+				}
+				if($('.middleCodeInsert').hasClass('edit')){
+					middleCodeEdit();
+				}
+			}
+		});
+		
+		$('.smallCodeInsert').click(function(){
+			if($('.smallCodeInsert').hasClass('new')){
+				$('.smallCodeInsert').text('저장');
+				$('.smallCodeInsert').addClass('save');
+				$('.smallCodeInsert').removeClass('new');
+				$('#smlCodeId').attr('disabled',false);
+				$('#smlCodeKey').attr('disabled',false);
+				$('#smlCodeNm').attr('disabled',false);
+				$('#smlOrdSeq').attr('disabled',false);
+				$('#smlCodeDsc').attr('disabled',false);
+			}else{
+				if($('.smallCodeInsert').hasClass('save')){
+					smallCodeSave();
+				}
+				if($('.smallCodeInsert').hasClass('edit')){
+					smallCodeEdit();
+				}
+			}
+		});
+		
+		$('.detailCodeInsert').click(function(){
+			if($('.detailCodeInsert').hasClass('new')){
+				$('.detailCodeInsert').text('저장');
+				$('.detailCodeInsert').addClass('save');
+				$('.detailCodeInsert').removeClass('new');
+				$('#deCodeId').attr('disabled',false);
+				$('#deCodeKey').attr('disabled',false);
+				$('#deCodeNm').attr('disabled',false);
+				$('#deOrdSeq').attr('disabled',false);
+				$('#deCodeDsc').attr('disabled',false);
+			}else{
+				if($('.detailCodeInsert').hasClass('save')){
+					detailCodeSave();
+				}
+				if($('.detailCodeInsert').hasClass('edit')){
+					detailCodeEdit();
+					$('.detailCodeDelete').hide();
+				}
+			}
+		});
+		
+		$('.delPopupCancel').click(function(){
+			$('.fontColorRed').remove();
+		});
+	
+	});
+
+		function deletePorductItemSet(productId) {
+		// $('.delName').text(codeId);		
+		$('#delCodeId').val(productId);
+		$('#delType').val('small');
+		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
+	}
+
+	function deleteProductItem(){
+		$('#delCodeId').val($('#delCodeId').val());
+
+
+		// console.log(delRevision);
+		var action = 'delete';
+		var	param = $('#frmDelete').serialize();
+		
+		// console.log(param);
+
+		// if(isDisabled){
+		// 	return false;
+		// }else{
+			// isDisabled = true;
+			deleteAjax(param, action);
+		// }
+	}
+	
+		
+	// 코드 삭제시 사용(공통)
+	function deleteAjax(param, action) {
+		$.ajax({
+			type : 'post',
+			url : '/product/' + action,
+			data : param,
+			dataType : 'text',
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				if (result == 'Delete') {
+					var param = $('#frm').serialize();
+					$('#frm').attr('action','/product/prodList');
+					$('#frm').submit();
+				}
+			}
+		});
+	}
+	
+
+</script>
+
+
