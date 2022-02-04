@@ -48,7 +48,7 @@ public class EnvironmentCodeController {
     	System.out.println("===================environmentCode==================");
     	System.out.println("=== environmentCodeModel => : "+environmentCodeModel);
     	String largeCategory = "GROUP_ID";
-    	if(environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
+    	if(environmentCodeModel.getLargeCategory() == null || environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
     		largeCategory = "GROUP_ID";
     	}
 		model.addAttribute("setLargeCategory", environmentCodeModel.getLargeCategory());
@@ -94,11 +94,14 @@ public class EnvironmentCodeController {
     	// 재질 리스트
     	environmentCodeModel.setGroupId(largeCategory);
 		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
+		
+		System.out.println("=== environmentCodeModel 333=> : "+environmentCodeModel);
+		
         largeModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
         model.addAttribute("largeCodeList", largeModels);
         
     	if(largeModels.size() > 0) {
-    		if(environmentCodeModel.getLargeCategory() == null || environmentCodeModel.getLargeCategory().equals(environmentCodeModel.getMiddleCategory())){
+    		if(environmentCodeModel.getLargeCategory() == null){
     			largeModels.get(0).setGroupId(largeModels.get(0).getCodeId());
     		}else {
     			largeModels.get(0).setGroupId(environmentCodeModel.getLargeCategory());
@@ -112,11 +115,11 @@ public class EnvironmentCodeController {
         // 부위 리스트
         if(middleModels.size() > 0) {
         	String middleCategory = "";
-        	if(environmentCodeModel.getMiddleCategory() == null || StringUtils.equals(environmentCodeModel.getMiddleCategory(), "") ||
+        	if((environmentCodeModel.getMiddleCategory() == null || StringUtils.equals(environmentCodeModel.getMiddleCategory(), "")) ||
         			environmentCodeModel.getMiddleCategory().equals(environmentCodeModel.getLargeCategory())) {
         		middleCategory = middleModels.get(0).getCodeId();
         	}else {
-        		middleCategory = environmentCodeModel.getMiddleCategory();
+        		middleCategory = environmentCodeModel.getLargeCategory();
         	}
         	model.addAttribute("setMiddleCategory", environmentCodeModel.getLargeCategory());
         	environmentCodeModel.setGroupId(middleCategory);
