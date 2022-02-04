@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.portal.adm.member.model.MemberModel;
+import com.portal.adm.member.service.MemberService;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
 import com.portal.common.IdUtil;
@@ -36,6 +38,9 @@ public class SupplierController {
 
 	@Resource
 	private SupplierService supplierService;
+	
+	@Resource
+    private MemberService memberService;
 	
     @Resource
     private IdUtil idUtil;
@@ -57,17 +62,23 @@ public class SupplierController {
         
         List<SupplierModel> managers = new ArrayList<SupplierModel>();
         
-        for( SupplierModel md : models) {
-        	SupplierModel maModel = new SupplierModel();
-        	String supCode = md.getSupplierCode();
-        	maModel.setSupplierCode(supCode);
-        	maModel = supplierService.selectSupplierMngRepper(maModel);
-        	managers.add(maModel);
+        for( int i = 0 ; i < models.size() ; i++) {
+        	MemberModel memberModel = new MemberModel();
+        	
+        	String memId = models.get(i).getManagementId();
+        	memberModel.setUserId(memId);
+//        	maModel = supplierService.selectSupplierMngRepper(maModel);
+        	memberModel = memberService.selectMember(memberModel);
+        	models.get(i).setManagementId(memId);
+        	models.get(i).setManagementNm(memberModel.getUserNm());
+        	models.get(i).setManagementPhone(memberModel.getPhone());
+        	models.get(i).setManagementMail(memberModel.getEmail());
+        	models.get(i).setManagementDept(memberModel.getDeptNm());
+        	models.get(i).setManagementPstn(memberModel.getPstnNm());
         }
         
         model.addAttribute("suppliers", models);
         model.addAttribute("pages", supplierModel);
-        model.addAttribute("managers", managers);
         
         return "supplier/supplierMgt";
     }
@@ -240,9 +251,13 @@ public class SupplierController {
      */
     @RequestMapping(value="/supplier/detail/manager/{managerId}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<SupplierModel> selectManagerId(@ModelAttribute SupplierModel supplierModel, @PathVariable("managerId") String managerId) {
-    	supplierModel = supplierService.selectSupplierManager(managerId);
-        return new ResponseEntity<>(supplierModel, HttpStatus.OK);
+    public ResponseEntity<MemberModel> selectManagerId(@ModelAttribute SupplierModel supplierModel, @PathVariable("managerId") String managerId) {
+    	MemberModel memberModel = new MemberModel();
+    	
+    	String memId = managerId;
+    	memberModel.setUserId(memId);
+    	memberModel = memberService.selectMember(memberModel);
+        return new ResponseEntity<>(memberModel, HttpStatus.OK);
     }
     
     /**

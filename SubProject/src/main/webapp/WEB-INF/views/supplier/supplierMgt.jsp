@@ -60,16 +60,11 @@
 							<td>${list.supplierNm}</td>
 							<td>${list.supplierNo}</td>
 							<td>${list.representativeNm}</td>
-							<td><c:forEach items="${managers }" var="mng"
-									varStatus="status1">
-									<c:if test="${mng.supplierCode eq list.supplierCode }">
-										<a href="#charge" role="button"
-											onclick="selectManager('${mng.managerId}');"
-											data-toggle="modal" class="btn-icon text-point"> <img
-											src="/images/icon_user2.png"> ${mng.managerNm }
-										</a>
-									</c:if>
-								</c:forEach></td>
+							<td>
+								<a href="#charge" role="button" onclick="selectManager('${list.managementId}');" data-toggle="modal" class="btn-icon text-point">
+									<img src="/images/icon_user2.png"> ${list.managementNm }
+								</a>
+							</td>
 							<td>
 								<div class="btn-group">
 									<a href="#edit" role="button" data-toggle="modal"
@@ -204,9 +199,81 @@
 					</div>
 				</div>
 			</div>
-
+			
+			
 			<h4 class="tl mb10 pt15">
-				<span class="title-point">[담당자]</span>
+				<span class="title-point">[관리 담당자]</span>
+			</h4>
+			<input id="managementId" name="managementId" type="hidden" class="text-input">
+			<div class="row">
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">성명<em>*</em></label>
+						<div class="col-75">
+							<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사명<em>*</em></label>
+						<div class="col-75">
+							<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
+						<div class="col-75">
+							<div class="phone-number">
+								<input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<div class="phone-number">
+								<input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<div class="phone-number">
+								<input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<input type="hidden" id="managementPhone" name="managementPhone" disabled/>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">부서</label>
+						<div class="col-75">
+							<input id="managementDept" name="managementDept" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">직위</label>
+						<div class="col-75">
+							<input id="managementPstn" name="managementPstn" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">이메일<em>*</em></label>
+						<div class="col-75">
+							<div class="email-add">
+								<input id="managementMail1" name="managementMail1" type="text" class="text-input email" disabled>
+							</div>
+							<div class="email-add">
+								<input id="managementMail2" name="managementMail2" type="text" class="text-input email" disabled>
+							</div>
+							<input type="hidden" id="managementMail" name="managementMail"  disabled/>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<h4 class="tl mb10 pt15">
+				<span class="title-point">[업체 담당자]</span>
 			</h4>
 			<div class="row">
 				<div class="col-100 mb10">
@@ -685,14 +752,22 @@
 			return false;
 		} else {
 			isDisabled = true;
+			
 			var supplierNo = $('#register #supplierNo1').val()+'-'+$('#register #supplierNo2').val()+'-'+$('#register #supplierNo3').val();
 			var telephoneNo = $('#register #telephoneNo1').val()+'-'+$('#register #telephoneNo2').val()+'-'+$('#register #telephoneNo3').val();
 			$('#register #supplierNo').val(supplierNo);
 			$('#register #telephoneNo').val(telephoneNo);
+			
+			var managementPhone = $('#register #managementPhone1').val()+'-'+$('#register #managementPhone2').val()+'-'+$('#register #managementPhone3').val();
+			var managementMail = $('#register #managementMail1').val()+'@'+$('#register #managementMail2').val();
+			$('#register #managementPhone').val(managementPhone);
+			$('#register #managementMail').val(managementMail);
+			
 			var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
 			var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
 			$('#register #managerPhone').val(managerPhone);
 			$('#register #managerMail').val(managerMail);
+			
 			if($('#register #managerRepresent').is(':checked')){
 				$('#register #managerRepresent').val('Y');
 			}else{
@@ -819,13 +894,12 @@
 	}
 
 	function managerDetailView(data) {
-		$('#pop_managerId').val(data.managerId);
-		$('#pop_managerNm').val(data.managerNm);
-		$('#pop_managerPhone').val(data.managerPhone);
-		$('#pop_managerMail').val(data.managerMail);
-		$('#pop_managerDept').val(data.managerDept);
-		$('#pop_managerPstn').val(data.managerPstn);
-		$('#pop_managerRepresent').val(data.managerRepresent);
+		$('#pop_managerId').val(data.userId);
+		$('#pop_managerNm').val(data.userNm);
+		$('#pop_managerPhone').val(data.phone);
+		$('#pop_managerMail').val(data.email);
+		$('#pop_managerDept').val(data.deptNm);
+		$('#pop_managerPstn').val(data.pstnNm);
 		isDisabled = false;
 	}
 

@@ -17,12 +17,20 @@ public interface ApiExtrnlMapper {
 	 */
 	ApiExtrnlModel select(ApiExtrnlModel model);
 	
+	/**
+	 * 포장 api 따른 데이터를 저장한다.
+	 *
+	 * @param model 외부시스템ID를 사용
+	 * @return
+	 */
+	long insert(ApiExtrnlModel model);
+	
     /**
-     * 포장 api 따른 데이터를 저장한다.
+     * 포장 api 유효데이터를 정리한다.
      *
      * @param model 외부시스템ID를 사용
      * @return
      */
-    long insert(ApiExtrnlModel model);
+    long updateDate();
 
 }

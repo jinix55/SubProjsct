@@ -636,6 +636,7 @@
 			return false;
 		}else{
 			var action = 'insert/middle';
+			$('#midGroupId').val($('#largeCategory').val());
 			var param = $('#frmMiddle').serialize();
 			isDisabled = true;
 			insertCodeAjax(param, action);

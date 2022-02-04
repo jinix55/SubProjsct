@@ -20,16 +20,27 @@ public class ApiExtrnlService {
 	 * @return
 	 */
 	public ApiExtrnlModel select(ApiExtrnlModel model) {
+		apiExtrnlMapper.updateDate();
 		return apiExtrnlMapper.select(model);
+	}
+	
+	/**
+	 * 포장 api 모델을 저장한다.
+	 *
+	 * @param model 포장 api 모델을 사용
+	 * @return
+	 */
+	public long insert(ApiExtrnlModel model) {
+		return apiExtrnlMapper.insert(model);
 	}
 	
 	/**
      * 포장 api 모델을 저장한다.
      *
-     * @param model 포장 api 모델을 사용
+     * @param
      * @return
      */
-    public long insert(ApiExtrnlModel model) {
-        return apiExtrnlMapper.insert(model);
+    public long updateDate() {
+        return apiExtrnlMapper.updateDate();
     }
 }

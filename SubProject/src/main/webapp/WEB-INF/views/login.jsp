@@ -13,7 +13,6 @@
 <script type="text/javascript" src="/js/plugins/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/plugins/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/plugins/iscroll.js"></script><!-- lnb메뉴스크롤-->
-<script type="text/javascript" src="/js/ui/global_script.js"></script><!-- lnb-->
 <title>'PPLUS Echo'(친환경 통합관리 서비스)</title>
 </head>
 

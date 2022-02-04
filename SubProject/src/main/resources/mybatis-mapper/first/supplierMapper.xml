@@ -32,7 +32,7 @@
 			, ADDRESS
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
-			, NOTE
+			, MANAGEMENT_ID
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -76,7 +76,7 @@
 			, ADDRESS
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
-			, NOTE
+			, MANAGEMENT_ID
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -92,7 +92,7 @@
 			, #{address}
 			, #{telephoneNo}
 			, #{representativeNm}
-			, #{note}
+			, #{managementId}
 			, #{useYn}
 			, #{rgstId}
 			, NOW()
@@ -110,7 +110,7 @@
 			, ADDRESS = #{address}
 			, TELEPHONE_NO = #{telephoneNo}
 			, REPRESENTATIVE_NM = #{representativeNm}
-			, NOTE = #{note}
+			, MANAGEMENT_ID = #{managementId}
 			, USE_YN = #{useYn}
 			, MODI_ID = #{modiId}
 			, MODI_DT = NOW()
@@ -129,7 +129,7 @@
 			, ADDRESS
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
-			, NOTE
+			, MANAGEMENT_ID
 			, USE_YN
 			, RGST_ID
 			, RGST_DT

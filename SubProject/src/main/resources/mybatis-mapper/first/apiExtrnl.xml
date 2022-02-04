@@ -22,7 +22,7 @@
 		from
 		    T_API_PRODUCT_PACKAGE
 		where
-		    API_KEY = #{apiKey}
+		    API_KEY = #{apiKey} AND USE_YN = 'Y'
     </select>
 
     <insert id="insert" parameterType="com.portal.api.model.ApiExtrnlModel">
@@ -56,6 +56,17 @@
 			, now()
 		)
     </insert>
+    
+    <update  id="updateDate">
+    	UPDATE
+			T_API_PRODUCT_PACKAGE
+		SET
+			USE_YN = 'N',
+			MODI_ID = 'SYSTEM',
+			MODI_DT = NOW()
+		WHERE
+			RGST_DT <![CDATA[>]]> DATE_ADD(NOW(), INTERVAL 1 DAY)
+    </update>
 
 <!--     <update id="update" parameterType="com.portal.api.model.ApiExtrnlModel"> -->
 <!-- 		update t_extrnl_sys set -->

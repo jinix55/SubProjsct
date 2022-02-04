@@ -770,6 +770,7 @@ CREATE TABLE IF NOT EXISTS T_ENVIRONMENT_CODE (
 -- ALTER TABLE T_ENVIRONMENT_CODE ADD CONSTRAINT T_ENVIRONMENT_CODE_PK PRIMARY KEY(GROUP_ID,CODE_ID,REVISION_YEAR,REVISION_MONTH);
 -- CREATE INDEX T_ENVIRONMENT_CODE_IX1 ON T_ENVIRONMENT_CODE(GROUP_ID,CODE_ID,REVISION_YEAR,REVISION_MONTH);
 
+-- 환경부 데이터
 TRUNCATE TABLE T_ENVIRONMENT_CODE;
 INSERT INTO T_ENVIRONMENT_CODE (GROUP_ID,UP_COMPANY_CODE,CODE_ID,REVISION_YEAR,REVISION_MONTH,CODE_KEY,CODE_NM,CODE_DSC,RPT_MAT_STRUCT,RPT_DEV_ANAL,RPT_VISUAL_JUDG,RPT_TEST,RPT_PERMISSION,RPT_ETC,ORD_SEQ,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
 ('GROUP_ID',NULL,'PA','2022','01','01','종이팩','종이팩','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -1021,14 +1022,14 @@ INSERT INTO T_ENVIRONMENT_CODE (GROUP_ID,UP_COMPANY_CODE,CODE_ID,REVISION_YEAR,R
 ('GL_L_B',NULL,'GL_L_B_01','2021','09','01','미사용(유통기한 및 제조일자만 표시된 경우 포함)','미사용(유통기한 및 제조일자만 표시된 경우 포함)','Y','N','Y','N','N','N','247','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('GL_L_B',NULL,'GL_L_B_02','2021','09','02','종이재질','종이재질','Y','Y','N','N','N','N','248','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('GL_L_B',NULL,'GL_L_B_03','2021','09','03','절취선을 포함한 비접(점)착식 합성수지 재질','절취선을 포함한 비접(점)착식 합성수지 재질','Y','Y','Y','N','N','N','249','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_B',NULL,'GL_L_C_01','2021','09','01','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 가능한 경우','Y','Y','N','N','N','N','250','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_C',NULL,'GL_L_C_02','2021','09','02','절취선을 포함하지 않은 비접(점)착식 합성수지 재질','절취선을 포함하지 않은 비접(점)착식 합성수지 재질','Y','Y','Y','N','N','N','251','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_C',NULL,'GL_L_C_03','2021','09','03','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리가능한 경우','Y','Y','N','N','N','N','252','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_C',NULL,'GL_L_C_04','2021','09','04','몸체에 직접 인쇄 (유통기간 및 제조일자 표시 제외)','몸체에 직접 인쇄 (유통기간 및 제조일자 표시 제외)','Y','Y','N','N','N','N','253','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_C',NULL,'GL_L_D_01','2021','09','01','라벨을 분리하여 배출하도록 유도하는 문구를 기재하지 않은경우','라벨을 분리하여 배출하도록 유도하는 문구를 기재하지 않은경우','N','N','N','N','N','N','254','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_D',NULL,'GL_L_D_02','2021','09','02','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 불가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 불가능한 경우','N','N','N','N','N','N','255','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GL_L_D',NULL,'GL_L_D_03','2021','09','03','금속혼입재질','금속혼입재질','N','N','N','N','N','N','256','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('GROUP_ID',NULL,'PA','2022','01','01','종이팩','종이팩','N','N','N','N','N','N','1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_B',NULL,'GL_L_B_04','2021','09','04','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 가능한 경우','Y','Y','N','N','N','N','250','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_C',NULL,'GL_L_C_001','2021','09','01','절취선을 포함하지 않은 비접(점)착식 합성수지 재질','절취선을 포함하지 않은 비접(점)착식 합성수지 재질','Y','Y','Y','N','N','N','251','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_C',NULL,'GL_L_C_002','2021','09','02','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리가능한 경우','Y','Y','N','N','N','N','252','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_C',NULL,'GL_L_C_003','2021','09','03','몸체에 직접 인쇄 (유통기간 및 제조일자 표시 제외)','몸체에 직접 인쇄 (유통기간 및 제조일자 표시 제외)','Y','Y','N','N','N','N','253','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_C',NULL,'GL_L_D_004','2021','09','04','라벨을 분리하여 배출하도록 유도하는 문구를 기재하지 않은경우','라벨을 분리하여 배출하도록 유도하는 문구를 기재하지 않은경우','N','N','N','N','N','N','254','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_D',NULL,'GL_L_D_01','2021','09','01','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 불가능한 경우','접(점)착제가 사용된 합성수지 재질로서 몸체와 분리 불가능한 경우','N','N','N','N','N','N','255','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_D',NULL,'GL_L_D_02','2021','09','02','금속혼입재질','금속혼입재질','N','N','N','N','N','N','256','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL_L_D',NULL,'GL_L_D_03','2021','09','03','PVC 계열의 재질','PVC 계열의 재질','N','N','N','N','N','N','257','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('GL',NULL,'GL_G','2021','09','03','마개및잡자재','마개및잡자재','N','N','N','N','N','N','258','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('GL_G',NULL,'GL_G_B','2021','09','B','우수','우수','N','N','N','N','N','N','259','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('GL_G',NULL,'GL_G_C','2021','09','C','보통','보통','N','N','N','N','N','N','260','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -1276,16 +1277,16 @@ ALTER TABLE T_PRODUCT_PACK ADD CONSTRAINT T_PRODUCT_PACK_PK PRIMARY KEY();
 -- 관리자 공급 업체 관리
 DROP TABLE IF EXISTS T_SUPPLIER CASCADE;
 CREATE TABLE IF NOT EXISTS T_SUPPLIER (
-    SUPPLIER_ID VARCHAR(16) NOT NULL COMMENT '업체 ID'
+    SUPPLIER_ID VARCHAR(16) NOT NULL COMMENT '공급 업체 ID'
   , UP_COMPANY_CODE VARCHAR(16) NOT NULL COMMENT '소속 회사 코드'
-  , SUPPLIER_CODE VARCHAR(16) NOT NULL COMMENT '업체 코드'
-  , SUPPLIER_NO VARCHAR(16) NOT NULL COMMENT '업체 사업자번호'
-  , SUPPLIER_NM VARCHAR(256) NOT NULL COMMENT '업체 명'
-  , SUPPLIER_DSC VARCHAR(4000) COMMENT '업체 설명'
+  , SUPPLIER_CODE VARCHAR(16) NOT NULL COMMENT '공급 업체 코드'
+  , SUPPLIER_NO VARCHAR(16) NOT NULL COMMENT '공급 업체 사업자번호'
+  , SUPPLIER_NM VARCHAR(256) NOT NULL COMMENT '공급 업체 명'
+  , SUPPLIER_DSC VARCHAR(4000) COMMENT '공급 업체 설명'
   , ADDRESS VARCHAR(4000) NOT NULL COMMENT '주소'
   , TELEPHONE_NO VARCHAR(16) COMMENT '전화번호'
   , REPRESENTATIVE_NM VARCHAR(16) COMMENT '대표자명'
-  , NOTE VARCHAR(4000) COMMENT '비고'
+  , MANAGEMENT_ID VARCHAR(16) NOT NULL COMMENT '관리자 ID'
   , USE_YN VARCHAR(1) DEFAULT 'Y' COMMENT '사용 여부'
   , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
   , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
@@ -1293,13 +1294,13 @@ CREATE TABLE IF NOT EXISTS T_SUPPLIER (
   , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '공급 업체 관리[공급 업체 관리]';
 ALTER TABLE T_SUPPLIER ADD CONSTRAINT T_SUPPLIER_PK PRIMARY KEY(SUPPLIER_ID);
--- CREATE INDEX T_SUPPLIER_IX1 ON T_SUPPLIER(SUPPLIER_ID);	
+-- CREATE INDEX T_SUPPLIER_IX1 ON T_SUPPLIER(SUPPLIER_ID);
 
 -- 관리자    공급 업체 관리
 TRUNCATE TABLE T_SUPPLIER;
-INSERT INTO T_SUPPLIER (SUPPLIER_ID,SUPPLIER_NM,SUPPLIER_DSC,SUPPLIER_CODE,SUPPLIER_NO,ADDRESS,TELEPHONE_NO,REPRESENTATIVE_NM,NOTE,UP_COMPANY_CODE,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('test1','KAMILL','KAMILL','KM','1234567890','서울','02-1234-5678','홍길동',NULL,'RTDATALAB','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
-('test2','CHUSH','CHUSH','CH','1023456789','부산','051-1234-5678','김영철',NULL,'RTDATALAB','Y','SYSTEM',NOW(),'SYSTEM',NOW());
+INSERT INTO T_SUPPLIER (SUPPLIER_ID,SUPPLIER_NM,SUPPLIER_DSC,SUPPLIER_CODE,SUPPLIER_NO,ADDRESS,TELEPHONE_NO,REPRESENTATIVE_NM,MANAGEMENT_ID,UP_COMPANY_CODE,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
+('test1','KAMILL','KAMILL','KM','1234567890','서울','02-1234-5678','홍길동','jinix55','RTDATALAB','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('test2','CHUSH','CHUSH','CH','1023456789','부산','051-1234-5678','김영철','jinix55','RTDATALAB','Y','SYSTEM',NOW(),'SYSTEM',NOW());
 
 
 
@@ -1354,7 +1355,7 @@ ALTER TABLE T_API_PRODUCT_PACKAGE ADD CONSTRAINT T_API_PRODUCT_PACKAGE_PK PRIMAR
 
 
 -- 데이터
--- -------------------------------------------------------------------------------------------------
+ -- -------------------------------------------------------------------------------------------------
 
 
 -- 공통    코드

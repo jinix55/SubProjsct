@@ -110,4 +110,8 @@ public interface MemberMapper {
     int selectMemberListCountForMgrRoleId(String roleId);
     
     long unlockAccount(MemberModel memberModel);
+    
+    int selectMemberOne(MemberModel memberModel);
+    
+    long updateMember(MemberModel memberModel);
 }
