@@ -62,8 +62,8 @@ public class ProductController {
     	
     	List<String> productTypeList = new ArrayList<>();
     	
-    	productTypeList.add("제품분류11");
-    	productTypeList.add("제품분류22");
+    	productTypeList.add("제품분류113");
+    	productTypeList.add("제품분류223");
         model.addAttribute("productTypeList", productTypeList);        
         
         return "product/prodList";
