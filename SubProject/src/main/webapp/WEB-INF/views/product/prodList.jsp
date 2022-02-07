@@ -674,7 +674,7 @@
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	
-	<input type="hidden" id="delProductCode" name="delProductCode" >
+	<input type="hidden" id="codeId" name="codeId" >
 
 	<div class="modal-content" style="width:400px">
 		<div class="modal-header">
@@ -1385,21 +1385,15 @@
 
 	function deleteProductItemSet(delProductCode) {
 	 	$('.delName').text(delProductCode);		
-		$('#delProductCode').val(delProductCode);
+		$('#codeId').val(delProductCode);
 		$('#delType').val('small');
 		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
 	}
 
 	function deleteProductItem(){
-		$('#delProductCode').val($('#delProductCode').val());
-
-
-		// console.log(delRevision);
+		$('#delProductCode').val($('#codeId').val());		
 		var action = 'delete';
 		var	param = $('#frmDelete').serialize();
-		
-		console.log(param);
-
 		 if(isDisabled){
 		 	return false;
 		 }else{
@@ -1411,9 +1405,10 @@
 		
 	// 코드 삭제시 사용(공통)
 	function deleteAjax(param, action) {
+		console.log('deleteAjax:', param);
 		$.ajax({
 			type : 'post',
-			url : '/product/' + action,
+			url : '/product/prodList/' + action,
 			data : param,
 			dataType : 'text',
 			error : function(xhr, status, error) {

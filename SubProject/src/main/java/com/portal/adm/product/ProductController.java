@@ -107,14 +107,15 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/delete")
+    @PostMapping("prodList/delete")
     public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	
         try {            
         	
         	String result = "";
             
-            System.out.println("===================productItem delete==================" + productModel);
+            System.out.println("===================productItem delete==================\n" + productModel);
+            System.out.println(productModel.getCodeId());
             result = productService.delete(productModel);
             
             return new ResponseEntity<>(result, HttpStatus.OK);
