@@ -115,7 +115,7 @@ public class ProductController {
         	String result = "";
             
             System.out.println("===================productItem delete==================\n" + productModel);
-            System.out.println(productModel.getCodeId());
+            System.out.println(productModel.getProductCode());
             result = productService.delete(productModel);
             
             return new ResponseEntity<>(result, HttpStatus.OK);

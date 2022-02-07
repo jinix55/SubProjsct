@@ -674,7 +674,7 @@
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	
-	<input type="hidden" id="codeId" name="codeId" >
+	<input type="hidden" id="productCode" name="productCode" >
 
 	<div class="modal-content" style="width:400px">
 		<div class="modal-header">
@@ -1383,15 +1383,15 @@
 	
 	});
 
-	function deleteProductItemSet(delProductCode) {
-	 	$('.delName').text(delProductCode);		
-		$('#codeId').val(delProductCode);
+	function deleteProductItemSet(productCode) {
+	 	$('.delName').text(productCode);		
+		$('#productCode').val(productCode);
 		$('#delType').val('small');
 		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
 	}
 
 	function deleteProductItem(){
-		$('#delProductCode').val($('#codeId').val());		
+		$('#productCode').val($('#productCode').val());		
 		var action = 'delete';
 		var	param = $('#frmDelete').serialize();
 		 if(isDisabled){
