@@ -1388,13 +1388,12 @@
 
 	function deleteProductItem(){
 		$('#delCodeId').val($('#delCodeId').val());
-
-
-		// console.log(delRevision);
+	
 		var action = 'delete';
 		var	param = $('#frmDelete').serialize();
-		
-		// console.log(param);
+
+		// console.log('codeId:',delCodeId);
+		// console.log('param:',param);
 
 		// if(isDisabled){
 		// 	return false;
@@ -1407,9 +1406,12 @@
 		
 	// 코드 삭제시 사용(공통)
 	function deleteAjax(param, action) {
+
+		console.log('deleteAjax:',param, action);
+
 		$.ajax({
 			type : 'post',
-			url : '/product/' + action,
+			url : '/product/prodList/' + action,
 			data : param,
 			dataType : 'text',
 			error : function(xhr, status, error) {

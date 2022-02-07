@@ -106,7 +106,7 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/product/delete")
+    @PostMapping("/prodList/delete")
     public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {            
         	
