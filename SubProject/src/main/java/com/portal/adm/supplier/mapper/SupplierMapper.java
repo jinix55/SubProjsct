@@ -2,7 +2,7 @@ package com.portal.adm.supplier.mapper;
 
 import java.util.List;
 
-import com.portal.adm.supplier.model.SupplierModel;
+import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
@@ -92,6 +92,14 @@ public interface SupplierMapper {
    long updateManager(SupplierModel model);
    
    /**
+    * 공급업체정보를 업데이트한다.
+    *
+    * @param supplierModel
+    * @return  공급업체 업데이트
+    */
+   long updateManagementId(SupplierModel model);
+   
+   /**
     * 공급업체정보를 조회한다.
     *
     * @param supplierModel
@@ -122,4 +130,12 @@ public interface SupplierMapper {
     * @return  공급업체 삭제
     */
    SupplierModel select(String supplierId);
+   
+   /**
+    * 공급업체정보를 삭제한다.
+    *
+    * @param supplierModel
+    * @return  공급업체 삭제
+    */
+   List<MemberModel> selectUserNmList(MemberModel model);
 }

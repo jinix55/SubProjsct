@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.supplier.mapper.SupplierMapper;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.common.Constant;
@@ -143,7 +144,23 @@ public class SupplierService {
      * @return
      */
     public String updateManager(SupplierModel supplierModel) {
-		long count = supplierMapper.updateManager(supplierModel);
+    	long count = supplierMapper.updateManager(supplierModel);
+    	if(count > 0) {
+    		return Constant.DB.UPDATE;
+    	} else {
+    		return Constant.DB.FAIL;
+    	}
+    }
+    
+    
+    /**
+     * 공급업체 매니저 정보를 저장한다.
+     *
+     * @param supplierCode
+     * @return
+     */
+    public String updateManagementId(SupplierModel supplierModel) {
+		long count = supplierMapper.updateManagementId(supplierModel);
         if(count > 0) {
             return Constant.DB.UPDATE;
         } else {
@@ -192,5 +209,16 @@ public class SupplierService {
     public SupplierModel selectSupplierId(String supplierId) {
     	return supplierMapper.select(supplierId);
     }
+    
+
+	/**
+	 * 사용자관리 목록을 조회한다.
+	 *
+	 * @param criteria 페이징 모델
+	 * @return
+	 */
+	public List<MemberModel> selectUserNmList(MemberModel model) {
+		return supplierMapper.selectUserNmList(model);
+	}
 
 }

@@ -61,7 +61,7 @@
 							<td>${list.supplierNo}</td>
 							<td>${list.representativeNm}</td>
 							<td>
-								<a href="#charge" role="button" onclick="selectManager('${list.managementId}');" data-toggle="modal" class="btn-icon text-point">
+								<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point">
 									<img src="/images/icon_user2.png"> ${list.managementNm }
 								</a>
 							</td>
@@ -210,7 +210,14 @@
 					<div class="form-group">
 						<label class="col-25 form-label">성명<em>*</em></label>
 						<div class="col-75">
-							<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+							<div class="search-box">
+								<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+								<span class="">
+									<button type="button" class="button-search" id="userSearch" href="#overlap" data-toggle="modal">찾기
+<!-- 										<a id="userSearchCheck" href="#overlap" role="button" data-toggle="modal">찾기</a> -->
+									</button>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -218,7 +225,23 @@
 					<div class="form-group">
 						<label class="col-25 form-label">회사명<em>*</em></label>
 						<div class="col-75">
-							<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+							<input id="managementCompanyNm" name="managementCompanyNm" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">부서</label>
+						<div class="col-75">
+							<input id="managementDept" name="managementDept" type="text" class="text-input" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">직위</label>
+						<div class="col-75">
+							<input id="managementPstn" name="managementPstn" type="text" class="text-input" disabled>
 						</div>
 					</div>
 				</div>
@@ -236,22 +259,6 @@
 								<input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
 							</div>
 							<input type="hidden" id="managementPhone" name="managementPhone" disabled/>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input id="managementDept" name="managementDept" type="text" class="text-input" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input id="managementPstn" name="managementPstn" type="text" class="text-input" disabled>
 						</div>
 					</div>
 				</div>
@@ -569,12 +576,10 @@
 										<label class="col-25 form-label"><em>*</em>이메일</label>
 										<div class="col-75">
 											<div class="email-add">
-												<input id="managerMail1" name="managerMail1" type="text"
-													class="text-input email">
+												<input id="managerMail1" name="managerMail1" type="text" class="text-input email">
 											</div>
 											<div class="email-add">
-												<input id="managerMail2" name="managerMail2" type="text"
-													class="text-input email">
+												<input id="managerMail2" name="managerMail2" type="text" class="text-input email">
 											</div>
 											<input type="hidden" id="managerMail" name="managerMail" />
 										</div>
@@ -652,16 +657,18 @@
 		</div>
 		<div class="modal-body">
 			<div class="row">
-				<input id="pop_managerId" name="pop_managerId" type="hidden"
-					class="text-input" disabled> <input
-					id="pop_managerRepresent" name="pop_managerRepresent" value="Y"
-					type="hidden" class="text-input" disabled>
+				<input id="pop_managerId" name="pop_managerId" type="hidden" class="text-input" disabled>
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">성명</label>
 						<div class="col-75">
-							<input id="pop_managerNm" name="pop_managerNm" type="text"
-								class="text-input" value="홍나리" disabled>
+							<div class="search-box">
+								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input" value="홍나리" disabled>
+								<span class="overlapMngmt" style="display:none;">
+									<button type="button" class="button-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기
+									</button>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -669,17 +676,24 @@
 					<div class="form-group">
 						<label class="col-25 form-label">휴대폰번호</label>
 						<div class="col-75">
-							<input id="pop_managerPhone" name="pop_managerPhone" type="text"
-								class="text-input" value="010-123-4567">
+							<div class="phone-number">
+								<input id="pop_managerPhone1" name="pop_managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<div class="phone-number">
+								<input id="pop_managerPhone2" name="pop_managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<div class="phone-number end">
+								<input id="pop_managerPhone3" name="pop_managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+							</div>
+							<input id="pop_managerPhone" name="pop_managerPhone" type="hidden" class="text-input" value="010-123-4567">
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
+				<%--<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">부서</label>
 						<div class="col-75">
-							<input id="pop_managerDept" name="pop_managerDept" type="text"
-								class="text-input" value="홍보">
+							<input id="pop_managerDept" name="pop_managerDept" type="text" class="text-input" value="홍보" disabled>
 						</div>
 					</div>
 				</div>
@@ -687,17 +701,21 @@
 					<div class="form-group">
 						<label class="col-25 form-label">직위</label>
 						<div class="col-75">
-							<input id="pop_mmanagerPstn" name="pop_mmanagerPstn" type="text"
-								class="text-input" value="과장">
+							<input id="pop_mmanagerPstn" name="pop_mmanagerPstn" type="text" class="text-input" value="과장" disabled>
 						</div>
 					</div>
-				</div>
+				</div> --%>
 				<div class="col-100">
 					<div class="form-group">
 						<label class="col-25 form-label">이메일</label>
 						<div class="col-75">
-							<input id="pop_managerMail" name="pop_managerMail" type="text"
-								class="text-input" value="PPlueEco@PlueEc.co.kr">
+							<div class="email-add">
+								<input id="pop_managerMail1" name="pop_managerMail1" type="text" class="text-input email" disabled>
+							</div>
+							<div class="email-add end">
+								<input id="pop_managerMail2" name="pop_managerMail2" type="text" class="text-input email" disabled>
+							</div>
+							<input id="pop_managerMail" name="pop_managerMail" type="hidden" class="text-input" value="PPlueEc o@PlueEc.co.kr">
 						</div>
 					</div>
 				</div>
@@ -705,7 +723,131 @@
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-success" data-dismiss="modal">확인</button>
+			<button type="button" class="button btn-success pop_btn pop_edit" >수정</button>
+			<button type="button" class="button btn-success pop_cancel" data-dismiss="modal">취소</button>
+		</div>
+	</div>
+</div>
+
+<!-- 레이어 팝업 관리 책임자 검색 -->
+<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<div class="modal-content" style="width: 600px">
+		<div class="modal-header">
+			<h4 class="modal-title">관리 담당자 조회</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 명<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="chUserNm" name="chUserNm" type="text" class="text-input" placeholder="찾으실 이름을 입력해 주세요.">
+								<span>
+									<button id="reUserSearch1" name="reUserSearch1" type="button" class="button-search">
+										<img src="/images/icon_search.png" title="검색">
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="scroll-auto h300auto">
+				<table class="table">
+					<colgroup>
+						<col style="width: 20%;">
+						<col style="width: 30%;">
+						<col style="width: 30%;">
+						<col style="width: 20%;">
+					</colgroup>
+					<thead>
+						<tr class="th-bg">
+							<th scope="col">성명</th>
+							<th scope="col">연락처</th>
+							<th scope="col">메일</th>
+							<th scope="col">선택</th>
+						</tr>
+					</thead>
+					<tbody id="managementTable1">
+						<tr>
+							<td colspan="4">검색된 담당자가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-success userCheck1" data-dismiss="modal">확인</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+		</div>
+	</div>
+</div>
+
+
+<!-- 레이어 팝업 관리 책임자 검색 -->
+<div id="overlapMngmt" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<div class="modal-content" style="width: 600px">
+		<div class="modal-header">
+			<h4 class="modal-title">관리 담당자 조회</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 명<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="reChUserNm" name="reChUserNm" type="text" class="text-input" placeholder="찾으실 담당자를 입력해 주세요.">
+								<span>
+									<button id="reUserSearch2" name="reUserSearch2" type="button" class="button-search">
+										<img src="/images/icon_search.png" title="검색">
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="scroll-auto h300auto">
+				<table class="table">
+					<colgroup>
+						<col style="width: 20%;">
+						<col style="width: 30%;">
+						<col style="width: 30%;">
+						<col style="width: 20%;">
+					</colgroup>
+					<thead>
+						<tr class="th-bg">
+							<th scope="col">성명</th>
+							<th scope="col">연락처</th>
+							<th scope="col">메일</th>
+							<th scope="col">선택</th>
+						</tr>
+					</thead>
+					<tbody id="managementTable2">
+						<tr>
+							<td colspan="4">검색된 담당자가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-success userCheck2" data-dismiss="modal">확인</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 		</div>
 	</div>
 </div>
@@ -728,6 +870,10 @@
 	var setManager = 'N';
 	var setTab = 'S';
 	var setManagerList;
+	var managementData1;
+	var managementData2;
+	var setSelectManagerId;
+	var setSelectSupplierCode;
 
 	$('.board-paging').bootpag({ // 페이징을 표시할 div의 클래스
 		total : totalPage, // 페이징모델의 전체페이지수
@@ -745,36 +891,106 @@
 		$("#page").val(num);
 		$("#holiBdForm").submit();
 	});
+	
+	function userSearch(){
+		var userSearch = $('#managerNm').val();
+		if(userSearch){
+			$('#chUserNm').val(userSearch);
+			searchUserAction(userSearch);
+		}else{
+			$('#chUserNm').val('');
+			$('.form-notice').text("찾으실 이름을 입력해 주세요.");
+			$('.form-notice').hide();
+		}
+	}
+	
+	function reUserSearch(type){
+		if(type == 1){
+			var reUserSearch = $('#chUserNm').val();
+		}else if(type == 2){
+			var reUserSearch = $('#reChUserNm').val();
+		}
+		if(reUserSearch){
+			searchUserAction(reUserSearch,type);
+		}
+	}
+	
+	function searchUserAction(nameSearch,type){
+		$.ajax({
+		    type : 'post',
+		    url : '/supplier/supplier/detail/popup/'+nameSearch,
+		    data : {memberId:nameSearch},
+		    dataType : 'JSON',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+	    		managementTableMake(result,type);
+		    }
+		});
+	}
+	
+	function managementTableMake(data,type){
+		$('#managementTable'+type).empty();
+		console.log(data.length);
+		if(type == 1){
+			managementData1 = data;	
+		}else if(type == 2){
+			managementData2 = data;
+		}
+		
+		var html = '';
+		if (data.length > 0) {
+			data.forEach(function(item, index) {
+				html += '<tr >';
+				html += '	<td class="text-point">'+ item.userNm +'</td>';
+				html += '	<td>' + item.phone + '</td>';
+				html += '	<td>' + item.email + '</td>';
+				html += '	<td>';
+				html += '		<div class="btn-group">';
+				html += '			<input type="radio" name="userCheck'+type+'" value="'+index+'">';
+				html += '		</div>';
+				html += '	</td>';
+				html += '</tr>';
+			});
+		} else {
+			html += '<tr>';
+			html += '	<td colspan="4">검색된 관리 담당자가 없습니다.</td>';
+			html += '</tr>';
+		}
+		$('#managementTable'+type).append(html);
+	}
 
 	function insertSupplier(){
-		validation('register');
-		if (isDisabled) {
-			return false;
-		} else {
-			isDisabled = true;
-			
-			var supplierNo = $('#register #supplierNo1').val()+'-'+$('#register #supplierNo2').val()+'-'+$('#register #supplierNo3').val();
-			var telephoneNo = $('#register #telephoneNo1').val()+'-'+$('#register #telephoneNo2').val()+'-'+$('#register #telephoneNo3').val();
-			$('#register #supplierNo').val(supplierNo);
-			$('#register #telephoneNo').val(telephoneNo);
-			
-			var managementPhone = $('#register #managementPhone1').val()+'-'+$('#register #managementPhone2').val()+'-'+$('#register #managementPhone3').val();
-			var managementMail = $('#register #managementMail1').val()+'@'+$('#register #managementMail2').val();
-			$('#register #managementPhone').val(managementPhone);
-			$('#register #managementMail').val(managementMail);
-			
-			var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
-			var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
-			$('#register #managerPhone').val(managerPhone);
-			$('#register #managerMail').val(managerMail);
-			
-			if($('#register #managerRepresent').is(':checked')){
-				$('#register #managerRepresent').val('Y');
-			}else{
-				$('#register #managerRepresent').val('');
+		if(validation('register')){
+			if (isDisabled) {
+				return false;
+			} else {
+				isDisabled = true;
+				
+				var supplierNo = $('#register #supplierNo1').val()+'-'+$('#register #supplierNo2').val()+'-'+$('#register #supplierNo3').val();
+				var telephoneNo = $('#register #telephoneNo1').val()+'-'+$('#register #telephoneNo2').val()+'-'+$('#register #telephoneNo3').val();
+				$('#register #supplierNo').val(supplierNo);
+				$('#register #telephoneNo').val(telephoneNo);
+				
+				var managementPhone = $('#register #managementPhone1').val()+'-'+$('#register #managementPhone2').val()+'-'+$('#register #managementPhone3').val();
+				var managementMail = $('#register #managementMail1').val()+'@'+$('#register #managementMail2').val();
+				$('#register #managementPhone').val(managementPhone);
+				$('#register #managementMail').val(managementMail);
+				
+				var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
+				var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
+				$('#register #managerPhone').val(managerPhone);
+				$('#register #managerMail').val(managerMail);
+				
+				if($('#register #managerRepresent').is(':checked')){
+					$('#register #managerRepresent').val('Y');
+				}else{
+					$('#register #managerRepresent').val('');
+				}
+				var param = $('#frmRegister').serialize();
+				insertSupplierAjax(param, 'insert');
 			}
-			var param = $('#frmRegister').serialize();
-			insertSupplierAjax(param, 'insert');
 		}
 	}
 	
@@ -874,7 +1090,9 @@
 	}
 
 	// 대표매니저 검색
-	function selectManager(id) {
+	function selectManager(id,code) {
+		setSelectManagerId = id;
+		setSelectSupplierCode = code;
 		if (isDisabled) {
 			return false;
 		} else {
@@ -896,7 +1114,12 @@
 	function managerDetailView(data) {
 		$('#pop_managerId').val(data.userId);
 		$('#pop_managerNm').val(data.userNm);
+		$('#pop_managerPhone1').val(data.phone.split('-')[0]);
+		$('#pop_managerPhone2').val(data.phone.split('-')[1]);
+		$('#pop_managerPhone3').val(data.phone.split('-')[2]);
 		$('#pop_managerPhone').val(data.phone);
+		$('#pop_managerMail1').val(data.email.split('@')[0]);
+		$('#pop_managerMail2').val(data.email.split('@')[1]);
 		$('#pop_managerMail').val(data.email);
 		$('#pop_managerDept').val(data.deptNm);
 		$('#pop_managerPstn').val(data.pstnNm);
@@ -1079,47 +1302,49 @@
 	}
 	
 	function saveSupplier(){
-		validation('edit');
-		if (isDisabled) {
-			return false;
-		} else {
-			isDisabled = true;
-			var supplierNo = $('#edit #supplierNo1').val()+'-'+$('#edit #supplierNo2').val()+'-'+$('#edit #supplierNo3').val();
-			var telephoneNo = $('#edit #telephoneNo1').val()+'-'+$('#edit #telephoneNo2').val()+'-'+$('#edit #telephoneNo3').val();
-			$('#edit #supplierNo').val(supplierNo);
-			$('#edit #telephoneNo').val(telephoneNo);
-			$('#edit #supplierCode').prop('disabled',false);
-			$('#edit #supplierId').prop('disabled',false);
-			var param = $('#frmEdit').serialize();
-			var dataType = 'TEXT'
-			saveSupplierAjax(param, 'insert/supplier', dataType);
+		if(validation('edit')){
+			if (isDisabled) {
+				return false;
+			} else {
+				isDisabled = true;
+				var supplierNo = $('#edit #supplierNo1').val()+'-'+$('#edit #supplierNo2').val()+'-'+$('#edit #supplierNo3').val();
+				var telephoneNo = $('#edit #telephoneNo1').val()+'-'+$('#edit #telephoneNo2').val()+'-'+$('#edit #telephoneNo3').val();
+				$('#edit #supplierNo').val(supplierNo);
+				$('#edit #telephoneNo').val(telephoneNo);
+				$('#edit #supplierCode').prop('disabled',false);
+				$('#edit #supplierId').prop('disabled',false);
+				var param = $('#frmEdit').serialize();
+				var dataType = 'TEXT'
+				saveSupplierAjax(param, 'insert/supplier', dataType);
+			}
 		}
 	}
 	
 	function saveManager(){
-		validationManager();
-		if (isDisabled) {
-			return false;
-		} else {
-			isDisabled = true;
-			var managerPhone = $('#edit #managerPhone1').val()+'-'+$('#edit #managerPhone2').val()+'-'+$('#edit #managerPhone3').val();
-			var managerMail = $('#edit #managerMail1').val()+'@'+$('#edit #managerMail2').val();
-			$('#edit #managerPhone').val(managerPhone);
-			$('#edit #managerMail').val(managerMail);
-			if($('#edit #managerRepresent').is(':checked')){
-				$('#edit #managerRepresent').val('Y');
-			}else{
-				$('#edit #managerRepresent').val('');
+		if(validationManager()){
+			if (isDisabled) {
+				return false;
+			} else {
+				isDisabled = true;
+				var managerPhone = $('#edit #managerPhone1').val()+'-'+$('#edit #managerPhone2').val()+'-'+$('#edit #managerPhone3').val();
+				var managerMail = $('#edit #managerMail1').val()+'@'+$('#edit #managerMail2').val();
+				$('#edit #managerPhone').val(managerPhone);
+				$('#edit #managerMail').val(managerMail);
+				if($('#edit #managerRepresent').is(':checked')){
+					$('#edit #managerRepresent').val('Y');
+				}else{
+					$('#edit #managerRepresent').val('');
+				}
+				$('#managerId').prop('disabled',false);
+				$('#maSupplierCode').val(setSupplierCode);
+				var param = $('#frmEdit').serialize();
+				var dataType = 'JSON'; 
+				var action = 'update/manager';
+				if($('#managerInfo #managerId').val() == '' || $('#managerInfo #managerId').val() == undefined){
+					action = 'insert/manager'
+				}
+				saveSupplierAjax(param, action, dataType);
 			}
-			$('#managerId').prop('disabled',false);
-			$('#maSupplierCode').val(setSupplierCode);
-			var param = $('#frmEdit').serialize();
-			var dataType = 'JSON'; 
-			var action = 'update/manager';
-			if($('#managerInfo #managerId').val() == '' || $('#managerInfo #managerId').val() == undefined){
-				action = 'insert/manager'
-			}
-			saveSupplierAjax(param, action, dataType);
 		}
 	}
 	
@@ -1157,6 +1382,19 @@
 			var str = $('#supplierCode').val();
 			str = str.replace(/[^a-zA-Z0-9]/gi, "").toUpperCase();
 			$('#supplierCode').val(str);
+		});
+
+		$('#chUserNm').keyup(function(e) {
+	        if(e.keyCode == '13'){
+	        	reUserSearch(1);
+	        }
+		});
+		
+		
+		$('#reChUserNm').keyup(function(e){
+	        if(e.keyCode == '13'){
+	        	reUserSearch(2);
+	        }
 		});
 
 		$('#tabnav01').click(function() {
@@ -1230,9 +1468,107 @@
 				$('#searchFrm').submit();
 			}
 		});
-
+		
+		$("#userSearch").click(function(e) {
+        	userSearch();
+	    });
+		
+		$('#reUserSearch1').click(function(){
+			reUserSearch(1);
+		});
+		$('#reUserSearch2').click(function(){
+			reUserSearch(2);
+		});
+		
+		$('.userCheck1').click(function(){
+			setManagerment(1);
+		});
+		
+		$('.userCheck2').click(function(){
+			setManagerment(2);
+		});
+		
+		$('.pop_cancel').click(function(){
+			popResetInput();
+		});
+		
+		$('.pop_btn').click(function(){
+			if($('.pop_btn').hasClass('pop_edit')){
+				$('.pop_edit').text('저장');
+				$('.pop_edit').addClass('pop_save');
+				$('.pop_edit').removeClass('pop_edit');
+				$('.overlapMngmt').show();
+			}else if($('.pop_btn').hasClass('pop_save')){
+				if(setSelectManagerId != $('#pop_managerId').val()){
+					if(confirm('책임자를 변경하시겠습니까?')){
+						$('.pop_save').text('수정');
+						$('.pop_save').addClass('pop_edit');
+						$('.pop_save').removeClass('pop_save');
+						$('.overlapMngmt').hide();
+						updateManager($('#pop_managerId').val());
+					}
+				}else{
+					$('.pop_save').text('수정');
+					$('.pop_save').addClass('pop_edit');
+					$('.pop_save').removeClass('pop_save');
+					$('.overlapMngmt').hide();
+				}
+			}
+		});
 	});
+	
+	function updateManager(id){
+		var param = {
+				supplierCode : setSelectSupplierCode
+		}
+		$.ajax({
+			url : '/supplier/supplier/update/manager/' + id,
+			dataType : 'TEXT',
+			type : "POST",
+			data : param,
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				isDisabled = false;
+				console.log(result);
+				if(result == 'Update'){
+					location.href = '/supplier/supplier';
+				}
+			}
+		});
+	}
+	
+	function popResetInput(){
+		$('.overlapMngmt').hide();
+		$('#charge input').val('');
+		$('.pop_btn').addClass('pop_edit');
+		$('.pop_btn').removeClass('pop_save');
+		$('.pop_btn').text('수정');
+	}
 
+	function setManagerment(type){
+		var data = "";
+		if(type == 1){
+			data = managementData1[$("input[name='userCheck"+type+"']:checked").val()];
+			$('#managementNm').val(data.userNm);
+			$('#managementCompanyNm').val(data.companyNm);
+			$('#managementPhone1').val(data.phone.split('-')[0]);
+			$('#managementPhone2').val(data.phone.split('-')[1]);
+			$('#managementPhone3').val(data.phone.split('-')[2]);
+			$('#managementPhone').val(data.phone);
+			$('#managementMail1').val(data.email.split('@')[0]);
+			$('#managementMail2').val(data.email.split('@')[1]);
+			$('#managementMail').val(data.email);
+			$('#managementDept').val(data.deptNm);
+			$('#managementPstn').val(data.pstn);
+			isDisabled = false;
+		}else if(type == 2){
+			data = managementData2[$("input[name='userCheck"+type+"']:checked").val()];
+			managerDetailView(data);
+		}
+	}
+	
 	function validation(type){
 		if ($('#'+type+' #supplierCode').val() == '') {
 			alert('공급업체 코드를 입력해 주세요.');
@@ -1275,6 +1611,10 @@
 			return false;
 		}
 		if(type == 'register'){
+			if($('#managementNm').val() == ''){
+				alert('관리 책임자를 선택해 주세요.');
+				return false;
+			}
 			if ($('#'+type+' #managerNm').val() == '') {
 				alert('담당자 이름를 입력해 주세요.');
 				return false;
@@ -1304,29 +1644,29 @@
 	}
 	
 	function validationManager(type){
-			if ($('#'+type+' #managerNm').val() == '') {
-				alert('담당자 이름를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone1').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone2').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone3').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerMail1').val() == '') {
-				alert('담당자 메일을 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerMail2').val() == '') {
-				alert('담당자 메일을 입력해 주세요.');
-				return false;
-			}
+		if ($('#'+type+' #managerNm').val() == '') {
+			alert('담당자 이름를 입력해 주세요.');
+			return false;
+		}
+		if ($('#'+type+' #managerPhone1').val() == '') {
+			alert('담당자 연락처를 입력해 주세요.');
+			return false;
+		}
+		if ($('#'+type+' #managerPhone2').val() == '') {
+			alert('담당자 연락처를 입력해 주세요.');
+			return false;
+		}
+		if ($('#'+type+' #managerPhone3').val() == '') {
+			alert('담당자 연락처를 입력해 주세요.');
+			return false;
+		}
+		if ($('#'+type+' #managerMail1').val() == '') {
+			alert('담당자 메일을 입력해 주세요.');
+			return false;
+		}
+		if ($('#'+type+' #managerMail2').val() == '') {
+			alert('담당자 메일을 입력해 주세요.');
+			return false;
+		}
 	}
 </script>
