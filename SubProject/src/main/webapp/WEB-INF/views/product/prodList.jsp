@@ -82,9 +82,12 @@
 								<td>
 									<div class="btn-group">
 										<a href="#edit" role="button" data-toggle="modal" class="btn-icon">
-										<img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" ></a>
-										<a href="#delete"  onclick="deletePorductItemSet('${list.productCode}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" id="deleteBtn_${list.rownum}" ></a>
+											<img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" >
+										</a>
+										  
+										<a href="#delete"  onclick="deleteProductItemSet('${list.productCode}');" role="button" data-toggle="modal" class="btn-icon">
+											<img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" >
+										</a>
 									</div>
 								</td>
 							</tr>
@@ -668,11 +671,10 @@
 </form>
 
 <form id="frmDelete">
-
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	
-	<input type="hidden" id="delCodeId" name="delCodeId" >
+	<input type="hidden" id="delProductCode" name="delProductCode" >
 
 	<div class="modal-content" style="width:400px">
 		<div class="modal-header">
@@ -683,7 +685,9 @@
 			<div class="row">
 				<div class="col-100">
 					<div class="form-group">
-						<div class="tc">(<em class="text-bold">PEuser01</em>)삭제합니다.</div>
+						<div class="tc">
+						<em class="text-bold delName"></em>코드를 삭제하시겠습니까?</div>
+						<!--(<em class="text-bold">PEuser01</em>)삭제합니다.</div> -->
 					</div>
 				</div>
 			</div>
@@ -1379,29 +1383,29 @@
 	
 	});
 
-		function deletePorductItemSet(productId) {
-		// $('.delName').text(codeId);		
-		$('#delCodeId').val(productId);
+	function deleteProductItemSet(delProductCode) {
+	 	$('.delName').text(delProductCode);		
+		$('#delProductCode').val(delProductCode);
 		$('#delType').val('small');
 		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
 	}
 
 	function deleteProductItem(){
-		$('#delCodeId').val($('#delCodeId').val());
+		$('#delProductCode').val($('#delProductCode').val());
 
 
 		// console.log(delRevision);
 		var action = 'delete';
 		var	param = $('#frmDelete').serialize();
 		
-		// console.log(param);
+		console.log(param);
 
-		// if(isDisabled){
-		// 	return false;
-		// }else{
-			// isDisabled = true;
+		 if(isDisabled){
+		 	return false;
+		 }else{
+			isDisabled = true;
 			deleteAjax(param, action);
-		// }
+		 }
 	}
 	
 		

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
@@ -106,15 +107,15 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/product/delete")
-    public ResponseEntity<String> groupDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/delete")
+    public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    	
         try {            
         	
         	String result = "";
-            ProductModel model = new ProductModel();
             
-            System.out.println("===================productItem delete==================");
-            result = productService.delete(model);
+            System.out.println("===================productItem delete==================" + productModel);
+            result = productService.delete(productModel);
             
             return new ResponseEntity<>(result, HttpStatus.OK);
             
