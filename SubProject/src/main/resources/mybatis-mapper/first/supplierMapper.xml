@@ -293,5 +293,58 @@
 			MANAGER_ID = #{managerId}
 	</update>
 	
+	<update id="updateManagementId" parameterType="com.portal.adm.supplier.model.SupplierModel">
+		UPDATE T_SUPPLIER SET
+			MANAGEMENT_ID = #{managementId}
+			, MODI_ID = #{modiId}
+			, MODI_DT = NOW()
+		WHERE
+			SUPPLIER_CODE = #{supplierCode}
+	</update>
+	
+	<select id="selectUserNmList" parameterType="com.portal.adm.member.model.MemberModel" resultType="com.portal.adm.member.model.MemberModel">
+		select
+			u.user_id,
+			u.user_nm,
+			u.pstn_code,
+			u.email,
+			u.phone,
+			p.pstn_nm,
+			u.dept_code,
+			d.dept_nm,
+			u.company_code,
+			c.company_nm,
+			u.adof_dept_code,
+			ad.dept_nm as adof_dept_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
+			u.use_yn,
+			u.last_log_dt,
+			case
+			when coalesce(to_days(last_log_dt), to_days(now())) + (SELECT CODE_NM FROM T_CODE WHERE GROUP_ID = 'ACCOUNT_LOCK_PD' AND CODE_ID = 'LOCK_PD') <![CDATA[<]]> to_days(now()) then 'Y'
+			else 'N' end as lock_yn,
+			u.start_dt,
+			u.end_dt,
+			'N' as expired_yn,
+			u.rgst_id,
+			u.rgst_dt,
+			u.modi_id,
+			u.modi_dt,
+			u.file_url,
+			u.dt_limit_yn,
+			tga.AUTH_CL 
+		from
+			t_user u
+			left outer join t_pstn p on u.pstn_code = p.pstn_code
+			left outer join t_dept d on u.dept_code = d.dept_code
+			left outer join t_hdept h on u.hdept_code = h.hdept_code
+			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
+			left outer join t_group tgm on u.user_id = tgm.user_id
+			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
+			left outer join t_company c ON c.company_code = u.company_code
+		where
+			u.user_Nm like concat('%',#{userNm},'%') 
+	</select>
 	
 </mapper>

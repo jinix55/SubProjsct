@@ -187,7 +187,7 @@ public class SupplierController {
     }
     
     /**
-     * 코드그룹을 삭제한다.
+     * 공급업체를 삭제한다.
      *
      * @param request
      * @return
@@ -231,7 +231,7 @@ public class SupplierController {
     }
     
     /**
-     * 그룹코드 목록을 조회한다.
+     * 공급업체 목록을 조회한다.
      *
      * @param groupCd
      * @return
@@ -244,7 +244,7 @@ public class SupplierController {
     }
     
     /**
-     * 그룹코드 목록을 조회한다.
+     * 공급업체 책임자를 상세 조회한다.
      *
      * @param groupCd
      * @return
@@ -253,15 +253,29 @@ public class SupplierController {
     @ResponseBody
     public ResponseEntity<MemberModel> selectManagerId(@ModelAttribute SupplierModel supplierModel, @PathVariable("managerId") String managerId) {
     	MemberModel memberModel = new MemberModel();
-    	
     	String memId = managerId;
     	memberModel.setUserId(memId);
     	memberModel = memberService.selectMember(memberModel);
-        return new ResponseEntity<>(memberModel, HttpStatus.OK);
+    	return new ResponseEntity<>(memberModel, HttpStatus.OK);
     }
     
     /**
-     * 그룹코드 목록을 조회한다.
+     * 공급업체 책임자을 조회한다.
+     *
+     * @param groupCd
+     * @return
+     */
+    @RequestMapping(value="/supplier/detail/popup/{userNm}", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<MemberModel>> selectManagerUserNm(@ModelAttribute SupplierModel supplierModel, @PathVariable("userNm") String userNm) {
+    	MemberModel memberModel = new MemberModel();
+    	memberModel.setUserNm(userNm);
+    	List<MemberModel> list = supplierService.selectUserNmList(memberModel);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    
+    /**
+     * 공급업체 담당자을 조회한다.
      *
      * @param groupCd
      * @return
@@ -271,6 +285,23 @@ public class SupplierController {
     public ResponseEntity<List<SupplierModel>> selectManagersBySupplierCode(@ModelAttribute SupplierModel supplierModel, @PathVariable("supplierCode") String supplierCode) {
     	List<SupplierModel> models = supplierService.selectSupplierManagers(supplierCode);
         return new ResponseEntity<>(models, HttpStatus.OK);
+    }
+    
+    /**
+     * 공급업체 저장 및 수정
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/supplier/update/manager/{managerId}")
+    public ResponseEntity<String> updateManagementId(@ModelAttribute SupplierModel supplierModel,  @PathVariable("managerId") String managerId, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+		
+		supplierModel.setManagementId(managerId);
+		supplierModel.setModiId(authUser.getMemberModel().getUserId());
+		System.out.println("supplierModel : "+supplierModel);
+		String result = supplierService.updateManagementId(supplierModel);
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
 }
