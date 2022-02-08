@@ -47,8 +47,8 @@
 						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-						<th scope="col">담당자</th>
-						<th scope="col">관리</th>
+						<th scope="col">관리 책임자</th>
+						<th scope="col">상세</th>
 					</tr>
 				</thead>
 
@@ -60,21 +60,16 @@
 							<td>${list.supplierNm}</td>
 							<td>${list.supplierNo}</td>
 							<td>${list.representativeNm}</td>
-							<td><c:forEach items="${managers }" var="mng"
-									varStatus="status1">
-									<c:if test="${mng.supplierCode eq list.supplierCode }">
-										<a href="#charge" role="button"
-											onclick="selectManager('${mng.managerId}');"
-											data-toggle="modal" class="btn-icon text-point"> <img
-											src="/images/icon_user2.png"> ${mng.managerNm }
-										</a>
-									</c:if>
-								</c:forEach></td>
+							<td>
+								<a href="#charge" role="button" onclick="selectManager('${list.managementId}');" data-toggle="modal" class="btn-icon text-point">
+									<img src="/images/icon_user2.png"> ${list.managementNm }
+								</a>
+							</td>
 							<td>
 								<div class="btn-group">
 									<a href="#edit" role="button" data-toggle="modal"
 										onclick="detailView('${list.supplierId}');" class="btn-icon">
-										<img src="/images/icon_edit.png" alt="상세보기" class="btn-Ticon">
+										<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon">
 									</a> 
 								</div>
 							</td>
