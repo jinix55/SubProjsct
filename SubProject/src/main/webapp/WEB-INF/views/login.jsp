@@ -213,10 +213,11 @@
 	<div class="wrapper">
 		<!-- S_본문-->
 		<section class="container">
-			<h2>PPlus Echo</h2>
-			<div class="login-tltle login">로그인</div>
-			<div class="login-tltle pass_reset">비밀번호 초기화</div>
-			<div class="login-tltle pass_change">비밀번호 변경</div>
+			<div class="logon-logo"><img src="../images/logo_03.png" alt="회사로고" style="width:140px;"></div>
+			<h2 class="com-title" style="margin-bottom:20px;">희성전자</h2>
+			<div class="login-tltle login" style="margin-bottom:20px;">로그인</div>
+			<div class="login-tltle pass_reset" style="margin-bottom:20px;">비밀번호 초기화</div>
+			<div class="login-tltle pass_change" style="margin-bottom:20px;">비밀번호 변경</div>
 			<div class="login-content login">
 				<div class="login-form">
 					<form id="frm" action="/lgn" method="post">
@@ -294,6 +295,7 @@
 					</form>
 				</div>
 			</div>
+			<div class="mt10">Copyright© PPlusEco. All Rights Reserved.</div>
 		</section>
 	  <!-- E_본문-->
 	</div>
