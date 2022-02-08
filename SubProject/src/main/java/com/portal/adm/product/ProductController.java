@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.portal.adm.member.model.MemberModel;
+import com.portal.adm.member.service.MemberService;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
@@ -42,6 +44,9 @@ public class ProductController {
     
     @Resource
 	private SupplierService supplierService;
+    
+	@Resource
+    private MemberService memberService;
 	
     @Resource
     private IdUtil idUtil;
@@ -159,172 +164,28 @@ public class ProductController {
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         
-        List<SupplierModel> managers = new ArrayList<SupplierModel>();
-        
-        for( SupplierModel md : models) {
-        	SupplierModel maModel = new SupplierModel();
-        	String supCode = md.getSupplierCode();
-        	maModel.setSupplierCode(supCode);
-        	maModel = supplierService.selectSupplierMngRepper(maModel);
-        	managers.add(maModel);
+        for( int i = 0 ; i < models.size() ; i++) {
+        	MemberModel memberModel = new MemberModel();
+        	
+        	String memId = models.get(i).getManagementId();
+        	memberModel.setUserId(memId);
+        	memberModel = memberService.selectMember(memberModel);
+        	models.get(i).setManagementId(memId);
+        	models.get(i).setManagementNm(memberModel.getUserNm());
+        	models.get(i).setManagementPhone(memberModel.getPhone());
+        	models.get(i).setManagementMail(memberModel.getEmail());
+        	models.get(i).setManagementDept(memberModel.getDeptNm());
+        	models.get(i).setManagementPstn(memberModel.getPstnNm());
         }
         
         model.addAttribute("suppliers", models);
         model.addAttribute("pages", supplierModel);
-        model.addAttribute("managers", managers);
         
         return "product/supplierView";
     }
 
     /**
-     * 공급업체 저장 및 수정
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/insert")
-    public ResponseEntity<String> supplierInsert(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	try {
-    		
-    		if(supplierModel.getSupplierId() == null || StringUtils.equals(supplierModel.getSupplierId(),"")) {
-    			supplierModel.setSupplierId(idUtil.getSupplierId());
-    			supplierModel.setManagerId(idUtil.getManagerId());
-    		}
-    		if(supplierModel.getManagerRepresent() == null) {
-        		supplierModel.setManagerRepresent("N");
-        	}
-    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
-    		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-    		System.out.println("supplierModel : "+supplierModel);
-            String result = supplierService.save(supplierModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-
-    /**
-     * 공급업체 저장 및 수정
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/insert/manager")
-    public ResponseEntity< List<SupplierModel>> saveManager(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-		
-		if(supplierModel.getManagerId() == null || StringUtils.equals(supplierModel.getManagerId(),"")) {
-			supplierModel.setManagerId(idUtil.getManagerId());
-		}
-		if(supplierModel.getManagerRepresent() == null) {
-			supplierModel.setManagerRepresent("N");
-		}
-		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
-		supplierModel.setUseYn(supplierModel.getMaUseYn());
-		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
-		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-		System.out.println("supplierModel : "+supplierModel);
-		supplierService.saveManager(supplierModel);
-		
-        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
-        
-		return new ResponseEntity<>(models, HttpStatus.OK);
-    }
-    
-    /**
-     * 공급업체 저장 및 수정
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/update/manager")
-    public ResponseEntity< List<SupplierModel>> updateManager(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-		
-		if(supplierModel.getManagerRepresent() == null) {
-			supplierModel.setManagerRepresent("N");
-		}
-		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
-		supplierModel.setUseYn(supplierModel.getMaUseYn());
-		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
-		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-		System.out.println("supplierModel : "+supplierModel);
-		supplierService.updateManager(supplierModel);
-		
-        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
-        
-		return new ResponseEntity<>(models, HttpStatus.OK);
-    }
-    
-    /**
-     * 공급업체 저장 및 수정
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/insert/supplier")
-    public ResponseEntity<String> saveSupplier(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	try {
-    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
-    		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-    		System.out.println("supplierModel : "+supplierModel);
-            String result = supplierService.updateSupplier(supplierModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-    
-    /**
-     * 코드그룹을 삭제한다.
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/delete/supplier")
-    public ResponseEntity<String> groupDelete(@ModelAttribute SupplierModel supplierModel,HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-        try {
-        	SupplierModel model = new SupplierModel();
-        	model.setSupplierId(supplierModel.getDelSupplierId());
-        	model.setModiId(authUser.getMemberModel().getUserId());
-        	
-            String result = supplierService.delete(model);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-    
-    /**
-     * 담장자를 삭제한다.
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping("/supplier/delete/manager")
-    @ResponseBody
-    public ResponseEntity<List<SupplierModel>> supplierManagerDelete(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	SupplierModel model = new SupplierModel();
-    	if(supplierModel.getManagerRepresent() == null) {
-    		supplierModel.setManagerRepresent("N");
-    	}
-    	model.setManagerId(supplierModel.getDelManagerId());
-    	model.setSupplierCode(supplierModel.getDelSupplierCode());
-    	model.setModiId(authUser.getMemberModel().getUserId());
-    	supplierService.deleteManager(model);
-    	
-        List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getDelSupplierCode());
-
-        return new ResponseEntity<>(models, HttpStatus.OK);
-    }
-    
-    /**
-     * 그룹코드 목록을 조회한다.
+     * 공급업체 목록을 상세 조회한다.
      *
      * @param groupCd
      * @return
@@ -337,7 +198,7 @@ public class ProductController {
     }
     
     /**
-     * 그룹코드 목록을 조회한다.
+     * 공급업체 책임자를 상세 조회한다.
      *
      * @param groupCd
      * @return
