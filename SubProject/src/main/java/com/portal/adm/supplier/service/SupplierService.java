@@ -75,6 +75,12 @@ public class SupplierService {
      */
     public String save(SupplierModel supplierModel) {
     	SupplierModel existModel = supplierMapper.select(supplierModel);
+        SupplierModel existManagerModel = supplierMapper.selectSupplierManagerSearch(supplierModel);
+        if(existManagerModel != null) {
+            supplierMapper.updateManager(supplierModel);
+        }else {
+            supplierMapper.insertManager(supplierModel);
+        }
 
         if(existModel != null) {
             long count = supplierMapper.update(supplierModel);

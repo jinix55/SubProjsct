@@ -47,7 +47,7 @@
 						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-						<th scope="col">담당자</th>
+						<th scope="col">관리 책임자</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -140,13 +140,13 @@
 						<label class="col-25 form-label">사업자번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="supplierNo" name="supplierNo" />
 						</div>
@@ -157,13 +157,13 @@
 						<label class="col-25 form-label">연락처<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="telephoneNo" name="telephoneNo" />
 						</div>
@@ -250,13 +250,13 @@
 						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled>
+								<input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<div class="phone-number">
-								<input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+								<input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<div class="phone-number">
-								<input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+								<input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<input type="hidden" id="managementPhone" name="managementPhone" disabled/>
 						</div>
@@ -299,13 +299,13 @@
 						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="managerPhone" name="managerPhone" />
 						</div>
@@ -445,13 +445,13 @@
 										<label class="col-25 form-label">사업자번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+												<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+												<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<input type="hidden" id="supplierNo" name="supplierNo" />
 										</div>
@@ -462,13 +462,13 @@
 										<label class="col-25 form-label">연락처</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<input type="hidden" id="telephoneNo" name="telephoneNo" />
 										</div>
@@ -541,13 +541,13 @@
 										<label class="col-25 form-label"><em>*</em>휴대폰번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<div class="phone-number">
-												<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 											</div>
 											<input type="hidden" id="managerPhone" name="managerPhone" />
 										</div>
@@ -677,13 +677,13 @@
 						<label class="col-25 form-label">휴대폰번호</label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="pop_managerPhone1" name="pop_managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled>
+								<input id="pop_managerPhone1" name="pop_managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<div class="phone-number">
-								<input id="pop_managerPhone2" name="pop_managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+								<input id="pop_managerPhone2" name="pop_managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<div class="phone-number end">
-								<input id="pop_managerPhone3" name="pop_managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)' disabled>
+								<input id="pop_managerPhone3" name="pop_managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
 							</div>
 							<input id="pop_managerPhone" name="pop_managerPhone" type="hidden" class="text-input" value="010-123-4567">
 						</div>
@@ -893,7 +893,7 @@
 	});
 	
 	function userSearch(){
-		var userSearch = $('#managerNm').val();
+		var userSearch = $('#managementNm').val();
 		if(userSearch){
 			$('#chUserNm').val(userSearch);
 			searchUserAction(userSearch);
@@ -932,7 +932,6 @@
 	
 	function managementTableMake(data,type){
 		$('#managementTable'+type).empty();
-		console.log(data.length);
 		if(type == 1){
 			managementData1 = data;	
 		}else if(type == 2){
@@ -1005,7 +1004,6 @@
 			},
 			success : function(result) {
 				isDisabled = false;
-				console.log(result);
 				if (result == 'Insert' || result == 'Update') {
 					location.href = '/supplier/supplier';
 				}
@@ -1013,11 +1011,9 @@
 		});
 	}
 	
-	function checkNumber(event) {
-		if (event.key >= 0 && event.key <= 9) {
-			return true;
-		}
-		return false;
+	function setNumber(objValue){
+		str = objValue.replace(/[^0-9]/gi,"").toUpperCase();
+	    return str;
 	}
 
 	/*공급 업체 삭제를 눌렀을때*/
@@ -1065,7 +1061,6 @@
 			},
 			success : function(result) {
 				isDisabled = false;
-				console.log(result);
 				if (result == 'Delete') {
 					location.href = '/supplier/supplier';
 				}
@@ -1241,7 +1236,6 @@
 	function managersViewMake(data) {
 		setManagerList = data
 		$('#managerTable').empty();
-		console.log(data.length);
 		var html = '';
 		if (data.length > 0) {
 			data.forEach(function(item, index) {
@@ -1359,7 +1353,6 @@
 			},
 			success : function(result) {
 				isDisabled = false;
-				console.log(result);
 				if(setTab == 'M'){
 					managersViewMake(result);
 					resetInput2();
@@ -1505,7 +1498,12 @@
 						$('.pop_save').addClass('pop_edit');
 						$('.pop_save').removeClass('pop_save');
 						$('.overlapMngmt').hide();
-						updateManager($('#pop_managerId').val());
+						if(isDisabled){
+							return false;
+						}else{
+							isDisabled = true;
+							updateManager($('#pop_managerId').val());
+						}
 					}
 				}else{
 					$('.pop_save').text('수정');
@@ -1531,7 +1529,6 @@
 			},
 			success : function(result) {
 				isDisabled = false;
-				console.log(result);
 				if(result == 'Update'){
 					location.href = '/supplier/supplier';
 				}
@@ -1551,6 +1548,7 @@
 		var data = "";
 		if(type == 1){
 			data = managementData1[$("input[name='userCheck"+type+"']:checked").val()];
+			$('#managementId').val(data.userId);
 			$('#managementNm').val(data.userNm);
 			$('#managementCompanyNm').val(data.companyNm);
 			$('#managementPhone1').val(data.phone.split('-')[0]);

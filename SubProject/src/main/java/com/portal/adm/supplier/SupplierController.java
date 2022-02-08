@@ -60,14 +60,11 @@ public class SupplierController {
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         
-        List<SupplierModel> managers = new ArrayList<SupplierModel>();
-        
         for( int i = 0 ; i < models.size() ; i++) {
         	MemberModel memberModel = new MemberModel();
         	
         	String memId = models.get(i).getManagementId();
         	memberModel.setUserId(memId);
-//        	maModel = supplierService.selectSupplierMngRepper(maModel);
         	memberModel = memberService.selectMember(memberModel);
         	models.get(i).setManagementId(memId);
         	models.get(i).setManagementNm(memberModel.getUserNm());
