@@ -37,8 +37,8 @@ public class EnvironmentCodeService {
      * @param groupId
      * @return
      */
-    public List<EnvironmentCodeModel> selectCodeDayList(EnvironmentCodeModel model) {
-        return environmentCodeMapper.selectCodeDayList(model);
+    public List<EnvironmentCodeModel> selectCodeDayList() {
+        return environmentCodeMapper.selectCodeDayList();
     }
 
     public int selectGroupIdListCount(EnvironmentCodeModel model) {

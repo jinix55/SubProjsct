@@ -25,7 +25,7 @@ public interface EnvironmentCodeMapper {
      * @param criteria   "GROUP_ID"기준으로 그룹으로 조회하여 리스트 생성
      * @return          GROUP_ID 기준 갱신 년 월 리턴
      */
-    List<EnvironmentCodeModel> selectCodeDayList(EnvironmentCodeModel model);
+    List<EnvironmentCodeModel> selectCodeDayList();
 
     /**
      * 그룹 ID 리스트 카운트를 가져온다
