@@ -586,9 +586,9 @@
 	
 	function makeBtn(groupId,grpNm,codeId){
 		var html = '';
-		html += '<button type="button" class="button btn-success" id="insertBtn" onclick="insertBtn('+groupId+','+grpNm+');" data-dismiss="modal">신규</button>';
-		html += '<button type="button" class="button btn-success" id="modifyBtn" onclick="insertCode('+groupId+');" data-dismiss="modal">저장</button>';
-		html += '<button type="button" class="button btn-cancel" id="deleteBtn" onclick="deleteBtn('+groupId+');" data-dismiss="modal">삭제</button>';
+		html += '<button type="button" class="button btn-success" id="insertBtn" onclick="insertBtn(\''+groupId+'\',\''+grpNm+'\');" data-dismiss="modal">신규</button>';
+		html += '<button type="button" class="button btn-success" id="modifyBtn" onclick="insertCode(\''+groupId+'\');" data-dismiss="modal">저장</button>';
+		html += '<button type="button" class="button btn-cancel" id="deleteBtn" onclick="deleteBtn(\''+groupId+'\');" data-dismiss="modal">삭제</button>';
 		html += '<button type="button" class="button btn-cancel" id="cancelBtn" onclick="cancelBtn();" data-dismiss="modal">취소</button>';
 		$('#tr_'+groupId+'_btn').append(html);
 		$('#insertBtn').hide();
