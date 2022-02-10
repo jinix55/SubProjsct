@@ -62,7 +62,7 @@ public class EnvironmentCodeController {
     	List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
     	
-    	dayList = environmentCodeService.selectCodeDayList(environmentCodeModel);
+    	dayList = environmentCodeService.selectCodeDayList();
     	if(dayList.size() > 0) {
     		for(int i = 0 ; i < dayList.size() ; i++) {
     			dayList.get(i).setRevision(dayList.get(i).getRevisionYear()+dayList.get(i).getRevisionMonth());
@@ -119,7 +119,7 @@ public class EnvironmentCodeController {
         			environmentCodeModel.getMiddleCategory().equals(environmentCodeModel.getLargeCategory())) {
         		middleCategory = middleModels.get(0).getCodeId();
         	}else {
-        		middleCategory = environmentCodeModel.getLargeCategory();
+        		middleCategory = environmentCodeModel.getMiddleCategory();
         	}
         	model.addAttribute("setMiddleCategory", environmentCodeModel.getLargeCategory());
         	environmentCodeModel.setGroupId(middleCategory);
