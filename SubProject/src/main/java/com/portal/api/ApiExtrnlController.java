@@ -1,17 +1,31 @@
 package com.portal.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.portal.api.mapper.ApiExtrnlMapper;
+import com.portal.adm.code.model.CodeModel;
+import com.portal.adm.code.service.CodeService;
+import com.portal.adm.company.model.CompanyModel;
+import com.portal.adm.company.service.CompanyService;
+import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
+import com.portal.adm.environmentCode.service.EnvironmentCodeService;
+import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.supplier.model.SupplierModel;
+import com.portal.adm.supplier.service.SupplierService;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.api.service.ApiExtrnlService;
 import com.portal.config.security.AuthUser;
@@ -33,7 +47,18 @@ public class ApiExtrnlController {
     
     @Resource
     private MailUtil mailUtil;
+    
+    @Resource
+    private EnvironmentCodeService environmentCodeService;
 
+	@Resource
+	private SupplierService supplierService;
+	
+    @Resource
+    private CodeService codeService;
+    
+    @Resource
+    private CompanyService companyService;
  
 	/**
 	 * 포장 api 발송
@@ -46,10 +71,10 @@ public class ApiExtrnlController {
     	ApiExtrnlModel extrnlModel = new ApiExtrnlModel();
     	
     	//임시 데이터(셋팅 되어야 할 목록)
-        String toCompanyNm = "KAMILL";				// 보내는 회사 명
-        String toCompanyCode = "KM";				// 보내는 회사 코드
-        String fromCompanyNm = "PPLUS";				// 받는 회사 명
-        String fromCompanyCode = "PL";				// 받는 회사 코드
+        String toCompanyNm = "KAMILL";				// 받는 회사 명
+        String toCompanyCode = "KM";				// 받는 회사 코드
+        String fromCompanyNm = "PPLUS";				// 보내는 회사 명
+        String fromCompanyCode = "PL";				// 보내는 회사 코드
         String managerNm = "홍길동";					// 받는 사람(담당자 명)
         String managerId = "mng1";					// 받는 사암 ID(담당자 ID)
         String managerMail = "";	// 받는 사람(담당자 메일)
@@ -72,6 +97,7 @@ public class ApiExtrnlController {
         extrnlModel.setManagerId(managerId);
         extrnlModel.setManagerNm(managerNm);
         extrnlModel.setManagerMail(managerMail);
+        extrnlModel.setPackagingId("test1");
         extrnlModel.setRgstId(authUser.getMemberModel().getUserId());
         extrnlModel.setModiId(authUser.getMemberModel().getUserId());
         
@@ -99,11 +125,66 @@ public class ApiExtrnlController {
         
         model.addAttribute("model", extrnlModel);
         
+        
+        List<EnvironmentCodeModel> dayList = new ArrayList<EnvironmentCodeModel>();
+        List<EnvironmentCodeModel> largeEnv = new ArrayList<EnvironmentCodeModel>();
+        List<CodeModel> middleEnv = new ArrayList<CodeModel>();
+        
         if(extrnlModel != null) {
+        	
+        	// 보낸 회사 정보
+        	CompanyModel companyModels = companyService.selectCompanyCode(extrnlModel.getFromCompanyCode());
+        	
+        	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+        	prodPackagingModel.setPackagingId(extrnlModel.getPackagingId());
+        	prodPackagingModel = apiExtrnlService.selectProdApiInfo(prodPackagingModel);
+        	
+        	dayList = environmentCodeService.selectCodeDayList();
+        	
+        	EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
+        	
+        	environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
+        	environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
+        	
+        	// 재질 유형 정보
+        	environmentCodeModel.setGroupId("GROUP_ID");
+        	largeEnv = environmentCodeService.selectGroupIdList(environmentCodeModel);
+        	
+        	// 부위 구분 정보
+//        	environmentCodeModel.setGroupId(prodPackagingModel.getMatType());
+//        	middleEnv = environmentCodeService.selectGroupIdList(environmentCodeModel);
+        	CodeModel codeModel = new CodeModel();
+        	codeModel.setGroupId("PROD_PACK_TYPE");
+        	middleEnv = codeService.selectGroupIdList(codeModel);
+        	
+        	// 공급업체 담당자 정보
+        	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
+        	
+        	
+        	System.out.println("prodPackagingModel : "+prodPackagingModel);
+        	System.out.println("middleEnv : "+middleEnv);
+        	model.addAttribute("packagingModel",prodPackagingModel);
+        	model.addAttribute("largeEnv",largeEnv);
+        	model.addAttribute("middleEnv",middleEnv);
+        	model.addAttribute("managers",managersModel);
+        	model.addAttribute("company",companyModels);
         	return "/api/emailCf";
         }else {
+        	model.addAttribute("resultCode","fail");
         	return "/api/expired";
         }
     }
     
+	/**
+	 * 포장 api 요청 처리
+	 * @param extrnlId
+	 * @return
+	 */
+    @RequestMapping(value="/setProdPackaging/update" , method= {RequestMethod.GET,RequestMethod.POST})
+    public String updatePackagingData(HttpServletRequest request, ProdPackagingModel prodPackagingModel,Model model, @RequestParam("file") MultipartFile file) {
+    	System.out.println("prodPackagingModel : "+prodPackagingModel.toString());
+        System.out.println("file"+file.getOriginalFilename());
+        model.addAttribute("resultCode","seccess");
+    	return "/api/expired";
+    }
 }

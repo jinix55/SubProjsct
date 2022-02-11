@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.mapper.ApiExtrnlMapper;
 import com.portal.api.model.ApiExtrnlModel;
 
@@ -22,6 +23,16 @@ public class ApiExtrnlService {
 	public ApiExtrnlModel select(ApiExtrnlModel model) {
 		apiExtrnlMapper.updateDate();
 		return apiExtrnlMapper.select(model);
+	}
+	
+	/**
+	 * 포장 api 기준 포장 정보 모델을 조회한다.
+	 *
+	 * @param model 포장 api key를 사용
+	 * @return
+	 */
+	public ProdPackagingModel selectProdApiInfo(ProdPackagingModel model) {
+		return apiExtrnlMapper.selectProdApiInfo(model);
 	}
 	
 	/**

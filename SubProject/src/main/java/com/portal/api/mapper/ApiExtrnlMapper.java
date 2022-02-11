@@ -1,5 +1,6 @@
 package com.portal.api.mapper;
 
+import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
@@ -16,6 +17,14 @@ public interface ApiExtrnlMapper {
 	 * @return
 	 */
 	ApiExtrnlModel select(ApiExtrnlModel model);
+	
+	/**
+	 * 포장 api key 기준 상품 포장 데이터를 조회한다.
+	 *
+	 * @param model 외부시스템ID를 사용
+	 * @return
+	 */
+	ProdPackagingModel selectProdApiInfo(ProdPackagingModel model);
 	
 	/**
 	 * 포장 api 따른 데이터를 저장한다.

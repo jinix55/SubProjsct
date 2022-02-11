@@ -15,7 +15,8 @@ import lombok.Data;
 public class ApiExtrnlModel {
 
     private String rownum;              				// 순번
-    private String ApiKey;            					// 포장 api key
+    private String apiKey;            					// 포장 api key
+    private String packagingId;            				// 포장 api key
     private String fromCompanyCode;            			// 보내는 회사 코드
     private String fromCompanyNm;            			// 보내는 회사 명
     private String toCompanyCode;           			// 포장 api 받는 회사 코드
