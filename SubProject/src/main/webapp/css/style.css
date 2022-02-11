@@ -108,6 +108,7 @@ textarea:-ms-input-placeholder {color: #ddd;font-weight: 500;}
 .mr05 {margin-right: 5px!important;}
 .mr10 {margin-right: 10px!important;}
 .ml10 {margin-left: 10px!important;}
+.ml20 {margin-left: 20px!important;}
 .mt10 {margin-top: 10px!important;}
 .mt60 {margin-top: 60px!important;}
 
@@ -678,3 +679,5 @@ span.fancytree-active span.fancytree-title, span.fancytree-selected span.fancytr
 .phone-number.end {padding-right: 1px;}
 .pwdChangeBtn{padding-right: 1px; float: right; position: relative;}
 .btn-pwdChange{background:#e04b4b87; border: 1px solid #e04b4b87;}
+.leftword{text-align: left; margin-left:3px;}
+.h50{height: 50px;}
