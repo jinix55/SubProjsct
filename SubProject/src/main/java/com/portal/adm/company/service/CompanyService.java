@@ -106,5 +106,15 @@ public class CompanyService {
     public CompanyModel selectCompanyId(String companyId) {
     	return companyMapper.select(companyId);
     }
+    
+    /**
+     * 회사정보를 삭제한다.
+     *
+     * @param companyCode
+     * @return
+     */
+    public CompanyModel selectCompanyCode(String companyCode) {
+    	return companyMapper.selectCompanyCode(companyCode);
+    }
 
 }

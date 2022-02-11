@@ -76,11 +76,19 @@ public interface CompanyMapper {
    String selectCode(String companyCode);
    
    /**
-    * 회사정보를 삭제한다.
+    * 회사정보를 조회한다.
     *
     * @param companyModel
     * @return  회사 삭제
     */
    CompanyModel select(String companyId);
+   
+   /**
+    * 회사정보를 조회한다.
+    *
+    * @param companyModel
+    * @return  회사 삭제
+    */
+   CompanyModel selectCompanyCode(String companyCode);
 
 }

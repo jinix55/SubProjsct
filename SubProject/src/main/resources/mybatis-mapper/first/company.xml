@@ -134,6 +134,28 @@
 			COMPANY_ID = #{companyId}
 	</select>
 	
+	<select id="selectCompanyCode" resultType="com.portal.adm.company.model.CompanyModel" parameterType="string">
+		SELECT
+			COMPANY_ID,
+			COMPANY_CODE,
+			COMPANY_NO,
+			COMPANY_NM,
+			COMPANY_DSC,
+			ADDRESS,
+			TELEPHONE_NO,
+			REPRESENTATIVE_NM,
+			NOTE,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT
+		FROM
+			t_company
+		WHERE
+			COMPANY_CODE = #{companyCode}
+	</select>
+	
 	<select id="selectListAll" resultType="com.portal.adm.company.model.CompanyModel">
 		SELECT
 			COMPANY_ID,
