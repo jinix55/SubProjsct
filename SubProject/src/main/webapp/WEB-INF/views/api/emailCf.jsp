@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/js/plugins/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/plugins/iscroll.js"></script>
 <!-- lnb메뉴스크롤-->
-<title>'PPLUS Echo'(친환경 통합관리 서비스)</title>
+<title>포장재 재질 구조 증명서</title>
 <style>
 body {
 	width: 100%;
@@ -120,19 +120,21 @@ body {
 		/* because sometimes I set all-caps */
 	}
 }
-#MultiFile1{float: right;}
-.MultiFile{float: right;}
-.MultiFile-label{left: 0px;position: absolute;height: 30px;}
+.MultiFile-applied{float: right;}
+.MultiFile-list{float: left;}
+.MultiFile-label{left: 0px;position: relative;height: 30px;}
+/*
+*/
 </style>
 </head>
 <body>
 	<a href="#" class="skip-nav">본문 바로가기</a>
-	<form id="frm">
+	<form id="frm" action="/api/v1/setProdPackaging/update" method="post" enctype="multipart/form-data">
 	<div class="wrapper">
 		<!-- S_본문-->
 		<div class="row">
 			<div class="tab-content-box" style="width: 800px; margin: 0 auto; border: 2px solid #000; padding: 20px;">
-				<h2 class="pt15 tc mb20">포장재 재질.구조 증명서</h2>
+				<h2 class="pt15 tc mb20">포장재 재질 구조 증명서</h2>
 				<div class="tr mb20">
 					<a href="#popup" role="button" data-toggle="modal" class="button btn-modify preView">미리보기 팝업창 띄우기</a>
 				</div>
@@ -141,6 +143,9 @@ body {
 				<input type="hidden" id="representativeNm" name="representativeNm" value="${company.representativeNm }">
 				<input type="hidden" id="telephoneNo" name="telephoneNo" value="${company.telephoneNo }">
 				<input type="hidden" id="address" name="address" value="${company.address }">
+				<input id="packagingId" name="packagingId" type="hidden" class="text-input w200" value="${packagingModel.packagingId }">
+				<input id="packagingOrder" name="packagingOrder" type="hidden" class="text-input w200" value="${packagingModel.packagingOrder }">
+				<input id="productId" name="productId" type="hidden" class="text-input w200" value="${packagingModel.productId }">
 				<div class="tab-in-nav d-flex">
 					<span class="pt10 pr10">ㆍ재질유형</span>
 					<c:forEach items="${largeEnv}" var="list" varStatus="status">
@@ -257,8 +262,8 @@ body {
 							<label class="col-25 form-label">공급업체</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="hidden" class="text-input" value="${packagingModel.supplierCode}">
-									<input type="text" class="text-input" value="${packagingModel.supplierNm}" disabled>
+									<input id="supplierCode" name="supplierCode" type="hidden" class="text-input" value="${packagingModel.supplierCode}">
+									<input id="supplierNm" name="supplierNm"  type="text" class="text-input" value="${packagingModel.supplierNm}" disabled>
 								</div>
 							</div>
 						</div>
@@ -268,7 +273,8 @@ body {
 							<label class="col-25 form-label">담당자</label>
 							<div class="col-75">
 								<div class="form-input">
-									<input type="text" class="text-input" value="${packagingModel.managerNm}" disabled>
+									<input id="managerId" name="managerId"  type="hidden" class="text-input" value="${packagingModel.managerId}">
+									<input id="managerNm" name="managerNm"  type="text" class="text-input" value="${packagingModel.managerNm}" disabled>
 								</div>
 							</div>
 						</div>
@@ -278,7 +284,7 @@ body {
 							<label class="col-25 form-label">이메일</label>
 							<div class="col-75">
 								<div class="search-box">
-									<input type="text" class="text-input" value="${packagingModel.managerMail }" disabled>
+									<input id="managerMail" name="managerMail"  type="text" class="text-input" value="${packagingModel.managerMail }" disabled>
 								</div>
 							</div>
 						</div>
@@ -290,10 +296,10 @@ body {
 				<div class="row">
 					<div class="col-100">
 						<div class="form-group">
-							<label class="col-25 form-label h50">포장재질증명서</label>
+							<label class="col-25 form-label h60">포장재 재질 구조 증명서</label>
 							<div class="col-75">
-								<div class="form-input-txt h50">
-									<input type="file" class="afile-txt" />
+								<div class="form-input-txt h60">
+									<input type="file" name="file" multiple="multiple" class="afile-txt" />
 								</div>
 							</div>
 						</div>
@@ -482,29 +488,40 @@ $(document).ready(function() {
 			if(isDisabled){
 				return false;
 			}else{
+		        event.preventDefault();
+		        
+		        $('#frm input').prop('disabled',false);
 				var action = 'update'; 
-				var param = $('#frm').serialize();
+				var form = $('#frm')[0];
+			    var data = new FormData(form);
+			    
 				isDisabled = true;
-				insertCodeAjax(param, action);
+				$.ajax({
+					type : 'post',
+					enctype: 'multipart/form-data',
+					url : '/api/v1/setProdPackaging/' + action,
+					data : data,
+					dataType : 'TEXT',
+			        processData: false,
+			        contentType: false,
+			        cache: false,
+			        timeout: 600000,
+					error : function(xhr, status, error) {
+						console.log(error);
+					},
+					success : function(result) {
+						if(result == 'success'){
+							location.href = '/api/v1/update/success';
+						}else if(result == 'notFile'){
+							alert("포장재 재질 구조 증명서 파일을 등록해 주세요.");
+							isDisabled = false;
+						}
+					}
+				});
 			}
 		});
 		
 	});
-		
-	function insertCodeAjax(param, action) {
-		$.ajax({
-			type : 'post',
-			enctype: 'multipart/form-data',
-			url : '/api/v1/setProdPackaging/' + action,
-			data : param,
-			error : function(xhr, status, error) {
-				console.log(error);
-			},
-			success : function(result) {
-				isDisabled = false;
-			}
-		});
-	}
 		
 	function valyCheck() {
 		if ($('#weight').val() == '') {
