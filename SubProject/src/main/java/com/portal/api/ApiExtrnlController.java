@@ -87,8 +87,6 @@ public class ApiExtrnlController {
         	managerMail = email;
         }
         
-        log.info("managerMail >> "+managerMail);
-        
         extrnlModel.setToCompanyNm(toCompanyNm);
         extrnlModel.setToCompanyCode(toCompanyCode);
         extrnlModel.setFromCompanyNm(fromCompanyNm);
@@ -124,7 +122,6 @@ public class ApiExtrnlController {
         
         model.addAttribute("model", extrnlModel);
         
-        
         List<EnvironmentCodeModel> dayList = new ArrayList<EnvironmentCodeModel>();
         List<EnvironmentCodeModel> largeEnv = new ArrayList<EnvironmentCodeModel>();
         List<CodeModel> middleEnv = new ArrayList<CodeModel>();
@@ -159,7 +156,6 @@ public class ApiExtrnlController {
         	// 공급업체 담당자 정보
         	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
         	
-        	
         	System.out.println("prodPackagingModel : "+prodPackagingModel);
         	System.out.println("middleEnv : "+middleEnv);
         	model.addAttribute("packagingModel",prodPackagingModel);
@@ -182,7 +178,6 @@ public class ApiExtrnlController {
     @RequestMapping(value="/setProdPackaging/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String updatePackagingData(HttpServletRequest request, ProdPackagingModel prodPackagingModel,Model model,  MultipartRequest multipart) {
-    	System.out.println("prodPackagingModel : "+prodPackagingModel.toString());
     	return apiExtrnlService.upload(request, multipart, prodPackagingModel);
     }
     

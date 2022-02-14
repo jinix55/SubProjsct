@@ -75,6 +75,16 @@ public class ApiExtrnlService {
 	public long updateDate() {
 		return apiExtrnlMapper.updateDate();
 	}
+	
+	/**
+	 * 포장 api 모델을 업데이트 한다.
+	 *
+	 * @param
+	 * @return
+	 */
+	public long updatePackagingInfo(ProdPackagingModel model) {
+		return apiExtrnlMapper.updatePackagingInfo(model);
+	}
 
 	/**
 	 * 파일 신규 생성
@@ -143,6 +153,9 @@ public class ApiExtrnlService {
 			// 파일 생성
 			if (!"fail".equals(result)) {
 				insertFile(f);
+				prodPackagingModel.setMatFileId(fileId);
+				prodPackagingModel.setModiId(prodPackagingModel.getManagerId());
+				updatePackagingInfo(prodPackagingModel);
 
 				Path directoryPath = Paths.get(fileUrl);
 

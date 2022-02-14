@@ -136,7 +136,7 @@ body {
 			<div class="tab-content-box" style="width: 800px; margin: 0 auto; border: 2px solid #000; padding: 20px;">
 				<h2 class="pt15 tc mb20">포장재 재질 구조 증명서</h2>
 				<div class="tr mb20">
-					<a href="#popup" role="button" data-toggle="modal" class="button btn-modify preView">미리보기 팝업창 띄우기</a>
+					<a href="#popup" role="button" data-toggle="modal" class="button btn-modify preView">출력물 확인하기</a>
 				</div>
 				<input type="hidden" id="companyCode" name="companyCode" value="${company.companyCode }">
 				<input type="hidden" id="companyNm" name="companyNm" value="${company.companyNm }">
@@ -299,7 +299,7 @@ body {
 							<label class="col-25 form-label h60">포장재 재질 구조 증명서</label>
 							<div class="col-75">
 								<div class="form-input-txt h60">
-									<input type="file" name="file" multiple="multiple" class="afile-txt" />
+									<input type="file" name="file" multiple="multiple" class="afile-txt"/>
 								</div>
 							</div>
 						</div>

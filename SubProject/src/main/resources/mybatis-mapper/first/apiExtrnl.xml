@@ -108,6 +108,21 @@
 		    ELSE NULL END
 		)
 	</insert>
+	
+	<update id="updatePackagingInfo">
+		UPDATE T_PRODUCT_PACKAGING
+		SET  MAT_TYPE = #{matType}
+		, PART_TYPE = #{partType}
+		, MAT_INFO = #{matInfo}
+		, WEIGHT = #{weight}
+		, STANDARD = #{standard}
+		, COLOR = #{color}
+		, ADD_EXPLAN = #{addExplan}
+		, MAT_FILE_ID = #{matFileId}
+		, MODI_ID = #{modiId}
+		, MODI_DT = NOW()
+		WHERE PACKAGING_ID = #{packagingId};
+	</update>
 
 <!--     <update id="update" parameterType="com.portal.api.model.ApiExtrnlModel"> -->
 <!-- 		update t_extrnl_sys set -->
