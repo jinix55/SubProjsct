@@ -72,11 +72,11 @@ public class ApiExtrnlController {
     	//임시 데이터(셋팅 되어야 할 목록)
         String toCompanyNm = "KAMILL";				// 받는 회사 명
         String toCompanyCode = "KM";				// 받는 회사 코드
-        String fromCompanyNm = "PPLUS";				// 보내는 회사 명
-        String fromCompanyCode = "PL";				// 보내는 회사 코드
-        String managerNm = "홍길동";					// 받는 사람(담당자 명)
-        String managerId = "mng1";					// 받는 사암 ID(담당자 ID)
-        String managerMail = "";	// 받는 사람(담당자 메일)
+        String fromCompanyNm = "(주)알티데이터랩";		// 보내는 회사 명
+        String fromCompanyCode = "RTDATALAB";		// 보내는 회사 코드
+        String managerNm = "아이유";					// 받는 사람(담당자 명)
+        String managerId = "MNG1";					// 받는 사암 ID(담당자 ID)
+        String managerMail = "";					// 받는 사람(담당자 메일)
         String uuid = "";
         
         if(email.equals("1")) {
