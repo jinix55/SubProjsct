@@ -44,5 +44,7 @@ public interface ApiExtrnlMapper {
     long updateDate();
     
     long insertFile(FileModel model);
+    
+    long updatePackagingInfo(ProdPackagingModel model);
 
 }
