@@ -44,6 +44,7 @@ public interface Constant {
 		public static final String UPLOAD = "UPLOAD";
 		public static final String EDITOR = "EDITOR";
 		public static final String EXCEL = "EXCEL";
+		public static final String API = "API";
 	}
 
 	// DB
