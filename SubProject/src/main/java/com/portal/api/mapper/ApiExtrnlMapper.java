@@ -1,5 +1,6 @@
 package com.portal.api.mapper;
 
+import com.portal.adm.file.model.FileModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.common.annotation.ConnMapperFirst;
@@ -41,5 +42,7 @@ public interface ApiExtrnlMapper {
      * @return
      */
     long updateDate();
+    
+    long insertFile(FileModel model);
 
 }

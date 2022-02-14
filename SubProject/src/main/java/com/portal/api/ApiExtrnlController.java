@@ -6,16 +6,15 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.code.service.CodeService;
@@ -175,16 +174,25 @@ public class ApiExtrnlController {
         }
     }
     
+    /**
+     * 포장 api 요청 처리
+     * @param extrnlId
+     * @return
+     */
+    @RequestMapping(value="/setProdPackaging/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String updatePackagingData(HttpServletRequest request, ProdPackagingModel prodPackagingModel,Model model,  MultipartRequest multipart) {
+    	System.out.println("prodPackagingModel : "+prodPackagingModel.toString());
+    	return apiExtrnlService.upload(request, multipart, prodPackagingModel);
+    }
+    
 	/**
-	 * 포장 api 요청 처리
-	 * @param extrnlId
+	 * 포장 api 완료
+	 * @param 
 	 * @return
 	 */
-    @RequestMapping(value="/setProdPackaging/update" , method= {RequestMethod.GET,RequestMethod.POST})
-    public String updatePackagingData(HttpServletRequest request, ProdPackagingModel prodPackagingModel,Model model, @RequestParam("file") MultipartFile file) {
-    	System.out.println("prodPackagingModel : "+prodPackagingModel.toString());
-        System.out.println("file"+file.getOriginalFilename());
-        model.addAttribute("resultCode","seccess");
-    	return "/api/expired";
+    @RequestMapping(value="/update/success" , method= {RequestMethod.GET,RequestMethod.POST})
+    public String updateSuccess(HttpServletRequest request) {
+    	return "/api/success";
     }
 }
