@@ -71,6 +71,17 @@
 			DATE_ADD(RGST_DT, INTERVAL 1 DAY) <![CDATA[<]]> NOW()
     </update>
     
+    <update  id="updateUseYnN" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+    	UPDATE
+			T_API_PRODUCT_PACKAGE
+		SET
+			USE_YN = 'N',
+			MODI_ID = 'SYSTEM',
+			MODI_DT = NOW()
+		WHERE
+			API_KEY = #{apiKey}
+    </update>
+    
     <select id="selectProdApiInfo" parameterType="com.portal.adm.product.model.ProdPackagingModel" resultType="com.portal.adm.product.model.ProdPackagingModel">
     	SELECT 
 			PP.PACKAGING_ID
