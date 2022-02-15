@@ -115,7 +115,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">업체 코드<em>*</em></label>
 						<div class="col-75">
-							<input id="supplierCode" name="supplierCode" type="text" class="text-input">
+							<input id="supplierCode" name="supplierCode" type="text" placeholder="원하시는 업체코드를 입력해 주세요" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -123,7 +123,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">업체명<em>*</em></label>
 						<div class="col-75">
-							<input id="supplierNm" name="supplierNm" type="text" class="text-input">
+							<input id="supplierNm" name="supplierNm" type="text" placeholder="업체명을 입력해 주세요" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -131,7 +131,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">대표자명<em>*</em></label>
 						<div class="col-75">
-							<input id="representativeNm" name="representativeNm" type="text" class="text-input">
+							<input id="representativeNm" name="representativeNm" placeholder="업체 대표자 명을 입력해 주세요" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -140,13 +140,13 @@
 						<label class="col-25 form-label">사업자번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeyup="this.value = setNumber(this.value)">
+								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" placeholder="2자리" maxlength="2" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeyup="this.value = setNumber(this.value)">
+								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" placeholder="5자리" maxlength="5" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="supplierNo" name="supplierNo" />
 						</div>
@@ -157,13 +157,13 @@
 						<label class="col-25 form-label">연락처<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" placeholder="지역번호" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" placeholder="3~4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="telephoneNo" name="telephoneNo" />
 						</div>
@@ -186,7 +186,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">주소<em>*</em></label>
 						<div class="col-75">
-							<input id="address" name="address" type="text" class="text-input">
+							<input id="address" name="address" type="text" placeholder="주소를 입력해 주세요" class="text-input">
 						</div>
 					</div>
 					<div class="form-group">
@@ -211,7 +211,7 @@
 						<label class="col-25 form-label">성명<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="managementNm" name="managementNm" type="text" class="text-input" disabled>
+								<input id="managementNm" name="managementNm" type="text" class="text-input" placeholder="이름을 검색해 주세요" disabled>
 								<span class="">
 									<button type="button" class="button-search" id="userSearch" href="#overlap" data-toggle="modal">찾기
 <!-- 										<a id="userSearchCheck" href="#overlap" role="button" data-toggle="modal">찾기</a> -->
@@ -290,7 +290,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">성명<em>*</em></label>
 						<div class="col-75">
-							<input id="managerNm" name="managerNm" type="text" class="text-input">
+							<input id="managerNm" name="managerNm" placeholder="이름을 입력해 주세요" type="text" class="text-input">
 						</div>
 					</div>
 				</div>
@@ -299,13 +299,13 @@
 						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<div class="phone-number">
-								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
 							</div>
 							<input type="hidden" id="managerPhone" name="managerPhone" />
 						</div>
@@ -332,12 +332,10 @@
 						<label class="col-25 form-label">이메일<em>*</em></label>
 						<div class="col-75">
 							<div class="email-add">
-								<input id="managerMail1" name="managerMail1" type="text"
-									class="text-input email">
+								<input id="managerMail1" name="managerMail1" type="text" placeholder="아이디" class="text-input email">
 							</div>
 							<div class="email-add">
-								<input id="managerMail2" name="managerMail2" type="text"
-									class="text-input email">
+								<input id="managerMail2" name="managerMail2" type="text" placeholder="주소" class="text-input email">
 							</div>
 							<input type="hidden" id="managerMail" name="managerMail" />
 						</div>
@@ -1666,5 +1664,15 @@
 			alert('담당자 메일을 입력해 주세요.');
 			return false;
 		}
+		
+		var exp = '@'; 
+		if($('#'+type+' #managerMail1').val().match(exp) != null){
+			$('#'+type+' #managerMail1').val($('#'+type+' #managerMail1').val().replace('@',''));
+        }
+		if($('#'+type+' #managerMail2').val().match(exp) != null){
+			$('#'+type+' #managerMail2').val($('#'+type+' #managerMail2').val().replace('@',''));
+        }
+		
+		return true;
 	}
 </script>
