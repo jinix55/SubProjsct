@@ -5,6 +5,7 @@
 	<!-- S_검색-->
 	<form id="searchFrm" action="/alarm/alarm" method="POST">
 		<div class="justify-content-between">
+			<input type="hidden" id="page" name="page" value="${pages.page}">
 			<div class="form-group">
 				<div class="form-inline">
 					<select class="select-box w150" id="searchKey" name ="searchKey">
@@ -58,7 +59,7 @@
 				<thead>
 					<tr class="th-bg">
 						<th scope="col">일자</th>
-						<th scope="col">작성자</th>
+						<th scope="col">보낸 사람</th>
 						<th scope="col">제목</th>
 						<th scope="col">내용</th>
 						<th scope="col">확인(유/무)</th>
