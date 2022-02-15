@@ -1,5 +1,6 @@
 package com.portal.api.mapper;
 
+import com.portal.adm.alarm.model.AlarmModel;
 import com.portal.adm.file.model.FileModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.model.ApiExtrnlModel;
@@ -45,6 +46,10 @@ public interface ApiExtrnlMapper {
     
     long insertFile(FileModel model);
     
+    long registAlarm(AlarmModel model);
+    
     long updatePackagingInfo(ProdPackagingModel model);
+    
+    long updateUseYnN(ProdPackagingModel model);
 
 }

@@ -152,7 +152,7 @@ public class ApiExtrnlController {
         	CodeModel codeModel = new CodeModel();
         	codeModel.setGroupId("PROD_PACK_TYPE");
         	middleEnv = codeService.selectGroupIdList(codeModel);
-        	
+        	prodPackagingModel.setApiKey(apiKey);
         	// 공급업체 담당자 정보
         	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
         	

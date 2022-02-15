@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.portal.adm.alarm.mapper.AlarmMapper;
+import com.portal.adm.alarm.model.AlarmModel;
 import com.portal.adm.file.model.FileModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.mapper.ApiExtrnlMapper;
@@ -31,6 +33,9 @@ public class ApiExtrnlService {
 
 	@Resource
 	private ApiExtrnlMapper apiExtrnlMapper;
+	
+    @Resource
+    private AlarmMapper alarmMapper;
 
 	@Resource(name = "idUtil")
 	private IdUtil idUtil;
@@ -85,7 +90,7 @@ public class ApiExtrnlService {
 	public long updatePackagingInfo(ProdPackagingModel model) {
 		return apiExtrnlMapper.updatePackagingInfo(model);
 	}
-
+	
 	/**
 	 * 파일 신규 생성
 	 * 
@@ -94,6 +99,26 @@ public class ApiExtrnlService {
 	 */
 	public long insertFile(FileModel model) {
 		return apiExtrnlMapper.insertFile(model);
+	}
+	
+	/**
+	 * 파일 신규 생성
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public long updateUseYnN(ProdPackagingModel model) {
+		return apiExtrnlMapper.updateUseYnN(model);
+	}
+
+	/**
+	 * 파일 신규 생성
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public long registAlarm(AlarmModel model) {
+		return alarmMapper.insert(model);
 	}
 
 	/**
@@ -114,7 +139,7 @@ public class ApiExtrnlService {
 		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductId() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
 		String result = "success";
 		String resultMessage = "성공";
-		
+		System.out.println("######## prodPackagingModel.getProductNm() : "+prodPackagingModel.toString());
 		MultipartFile file = null;
 		for (String key : files.keySet()) {
 			file = files.get(key);
@@ -201,6 +226,33 @@ public class ApiExtrnlService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				AlarmModel alarm = new AlarmModel();
+				String type = "";
+				if(prodPackagingModel.getPartType().equals("BODY")) {
+					type = "몸체";
+				}else if(prodPackagingModel.getPartType().equals("LABEL")){
+					type = "라벨";
+				}else if(prodPackagingModel.getPartType().equals("COVER")){
+					type = "마개";
+				}else if(prodPackagingModel.getPartType().equals("MISCELLANEOUS")){
+					type = "잡자재";
+				}else if(prodPackagingModel.getPartType().equals("SEPARATELYPACK")){
+					type = "별도포장";
+				}
+				prodPackagingModel.setPartTypeNm(type);
+				
+				alarm.setAlarmId(idUtil.getAlarmId());
+				alarm.setSj("포장재 재질 구조 증명서 등록");
+				alarm.setCn(prodPackagingModel.getSupplierNm()+"에서 "+ prodPackagingModel.getProductNm() + "의 제품인 " + prodPackagingModel.getMatTypeNm() +" "+ prodPackagingModel.getPartTypeNm() + "의 "+prodPackagingModel.getPackagingOrder()+"차 포장재 재질 구조 증명서가 등록 되었습니다.");
+				alarm.setSenderId(prodPackagingModel.getManagerNm());
+				alarm.setRecipientId(prodPackagingModel.getManagementId());
+				alarm.setCheckYn("N");
+				alarm.setRgstId(prodPackagingModel.getManagerNm());
+				alarm.setModiId(prodPackagingModel.getManagerNm());
+				registAlarm(alarm);
+				updateUseYnN(prodPackagingModel);
+				
+				
 			}
 			fileUrl = f.getFileUrl();
 		}
