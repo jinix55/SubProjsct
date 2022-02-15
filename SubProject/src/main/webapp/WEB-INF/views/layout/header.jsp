@@ -8,10 +8,10 @@
 var isDisabled = false;
 
 $(document).ready(function() {
-	var intervalTime = 10000;
-// 	callAlarm();
+	var intervalTime = 60000;
+	callAlarm();
 	setInterval(function() {
-// 		callAlarm();
+		callAlarm();
 	}, intervalTime);
 	
 	$(".dropdown-notification").on("click", function(){
@@ -25,7 +25,6 @@ function callAlarm(){
 		dataType : 'json',
 		success : function(data) {
 			var result = data.alarmList;
-			console.log(result);
 			if(result.length > 0){
 				$('.nav-mark').html(result.length);
 				$('.nav-mark').show();
@@ -97,7 +96,9 @@ function intervalTime(t){
 			</a>
 			<div class="dropdown-no-content">
 				<span class="arrow"></span>
+				<div class="scroll-auto h300auto">
 				<div class="notification"></div>
+				</div>
 				<div class="dropdown-footer">
 				<a href="/alarm/alarm">전체 알림보기</a>
 			</div>
