@@ -25,7 +25,7 @@
 	
 	<select id="selectAlarmList" resultType="com.portal.adm.alarm.model.AlarmModel" parameterType="com.portal.adm.alarm.model.AlarmModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_ID) ASC) AS ROWNUM
+			ROW_NUMBER() OVER (ORDER BY UPPER(RGST_DT) ASC) AS ROWNUM
 			, ALARM_ID
 			, SJ
 			, CN
@@ -39,7 +39,7 @@
 		FROM T_ALARM
 		WHERE RECIPIENT_ID = #{recipientId}
 		<include refid="searchAlarm"></include>
-		ORDER BY ROWNUM ASC
+		ORDER BY RGST_DT DESC
 		<include refid="paging"></include>
 	</select>
 	
@@ -88,6 +88,7 @@
 			count(1)
 		FROM T_ALARM
 		WHERE RECIPIENT_ID = #{recipientId}
+		<include refid="searchAlarm"></include>
 	</select>
 	
 	<select id="selectAlarmListViewCount" resultType="int" parameterType="com.portal.adm.alarm.model.AlarmModel">
