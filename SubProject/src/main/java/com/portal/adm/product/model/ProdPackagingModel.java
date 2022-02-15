@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class ProdPackagingModel extends Criteria{
     private String rownum;          // 순번
+    private String apiKey;
     private String packagingId;
     private String productId;
     private String productNm;
@@ -22,7 +23,9 @@ public class ProdPackagingModel extends Criteria{
     private String packagingDsc;
     private String packagingOrder;
     private String matType;
+    private String matTypeNm;
     private String partType;
+    private String partTypeNm;
     private String matInfo;
     private String weight;
     private String standard;
