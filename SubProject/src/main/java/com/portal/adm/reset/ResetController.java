@@ -48,7 +48,6 @@ public class ResetController {
      */
     @GetMapping("/reset")
     public String reset(@ModelAttribute ResetModel resetModel, Model model) {
-    	log.info(" =============== reset get in ==============");
         List<ResetModel> models = resetService.selectResetList(resetModel);
         resetModel.setTotalCount(resetService.selectResetListCount(resetModel));
         model.addAttribute("resets", models);
@@ -65,7 +64,6 @@ public class ResetController {
      */
     @PostMapping("/reset")
     public String reset(@ModelAttribute ResetModel resetModel, RedirectAttributes attributes) {
-    	log.info(" =============== reset get in ==============");
         List<ResetModel> models = resetService.selectResetList(resetModel);
         resetModel.setTotalCount(resetService.selectResetListCount(resetModel));
         attributes.addAttribute("resets", models);
@@ -88,7 +86,7 @@ public class ResetController {
     			
     			ResetModel resetModel = new ResetModel();
     			for (String key : request.getParameterMap().keySet()) {
-    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+//    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
     			}
     			String resetId = request.getParameter("resetId");
     			String companyNm = request.getParameter("companyNm");

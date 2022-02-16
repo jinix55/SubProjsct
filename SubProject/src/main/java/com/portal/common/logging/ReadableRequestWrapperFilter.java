@@ -65,7 +65,6 @@ public class ReadableRequestWrapperFilter implements Filter {
 
         public ReadableRequestWrapper(HttpServletRequest request) {
             super(request);
-            System.out.println("=============== ReadableRequestWrapper ================");
             this.params.putAll(request.getParameterMap()); // 원래의 파라미터를 저장
 
             String charEncoding = request.getCharacterEncoding(); // 인코딩 설정

@@ -51,12 +51,7 @@ public class HolidayController {
      */
     @GetMapping("/holiday")
     public String list(@ModelAttribute HolidayModel criteria, Model model) {
-    		System.out.println("get totalCount : "+service.selectHolidayListCount(criteria));
-    		System.out.println("get criteria : "+criteria.toString());
     		model.addAttribute("list", service.selectHolidayList(criteria));
-//    		model.addAttribute("holiType", criteria.getHoliType());
-//    		model.addAttribute("useYn", criteria.getUseYn());
-    	
     		criteria.setTotalCount(service.selectHolidayListCount(criteria));
     		model.addAttribute("pages", criteria);
         return "holiday/holidayMgt";
@@ -64,11 +59,7 @@ public class HolidayController {
 
     @PostMapping("/holiday")
     public String list(@ModelAttribute HolidayModel criteria, RedirectAttributes attributes, Model model) {
-    	System.out.println("post totalCount : "+service.selectHolidayListCount(criteria));
-    	System.out.println("post criteria : "+criteria.toString());
 		model.addAttribute("list", service.selectHolidayList(criteria));
-//		model.addAttribute("holiType", criteria.getHoliType());
-//		model.addAttribute("useYn", criteria.getUseYn());
 		criteria.setTotalCount(service.selectHolidayListCount(criteria));
 		model.addAttribute("pages", criteria);
         return "holiday/holidayMgt";
@@ -130,7 +121,6 @@ public class HolidayController {
         	holidayModel.setSolarDate(request.getParameter("solarDate"));
         	holidayModel.setUseYn(request.getParameter("useYn"));
             
-
             String result = service.holidayActive(holidayModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);

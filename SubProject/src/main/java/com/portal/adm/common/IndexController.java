@@ -29,7 +29,6 @@ public class IndexController {
     public String index(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== index ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl(null, authUser.getMemberModel().getAuthId());
     	}
         return result;
@@ -40,7 +39,6 @@ public class IndexController {
     public String admin(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== admin ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/admin",authUser.getMemberModel().getAuthId());
     	}
         return result;
@@ -51,7 +49,6 @@ public class IndexController {
     public String member(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== member ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/member",authUser.getMemberModel().getAuthId());
     	}
     	return result;
@@ -62,7 +59,6 @@ public class IndexController {
     public String system(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== system ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/system",authUser.getMemberModel().getAuthId());
     	}
     	return result;
@@ -73,7 +69,6 @@ public class IndexController {
     public String board(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== board ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/board",authUser.getMemberModel().getAuthId());
     	}
         return result;
@@ -84,7 +79,6 @@ public class IndexController {
     public String menu(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== menu ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/menu",authUser.getMemberModel().getAuthId());
     	}
         return result;
@@ -95,7 +89,6 @@ public class IndexController {
     public String log(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== system ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/log",authUser.getMemberModel().getAuthId());
     	}
         return result;
@@ -106,7 +99,6 @@ public class IndexController {
     public String alarm(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		log.info("=============== alarm ===============");
     		result = "redirect:"+menuService.selectFirstMenuUrl("/alarm",authUser.getMemberModel().getAuthId());
     	}
     	return result;

@@ -172,8 +172,6 @@ public class RoleController {
 	@RequestMapping(value="/role/{authId}/popup", method=RequestMethod.POST)
 	public Map<String,Object> menuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId) {
 		
-		log.info("========== in role popup ==========");
-		
 		Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		

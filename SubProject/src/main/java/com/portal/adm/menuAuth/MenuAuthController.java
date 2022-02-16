@@ -66,7 +66,6 @@ public class MenuAuthController {
 	 */
 	@GetMapping("/menuAuth")
 	public String menu(@ModelAttribute MemberCriteria Mcriteria,@ModelAttribute Criteria criteria ,Model model, @AuthenticationPrincipal AuthUser authUser) {
-		log.info("============= get menuAuth in ===========");
 		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
     	String rootMenuId = null;
     	for (MenuModel menu : list) {
@@ -94,7 +93,6 @@ public class MenuAuthController {
         // 부서 조회
         model.addAttribute("depts", deptService.selectDeptClList());
 
-       log.info("================ : ", authUser.getMemberModel().getAuthId());
         Mcriteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
         Mcriteria.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("members", memberService.selectMemberList(Mcriteria));
@@ -120,8 +118,6 @@ public class MenuAuthController {
 	@ResponseBody
 	@PostMapping(value="/menuAuth/{authId}/popup")
 	public Map<String,Object> menuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId) {
-		
-		log.info("========== in menuAuth popup ==========");
 		
 		Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;

@@ -44,8 +44,6 @@ public class PackagingCodeController {
      */
     @RequestMapping(value="/packagingCode", method= {RequestMethod.GET,RequestMethod.POST})
     public String packagingCode(@ModelAttribute PackagingCodeModel packagingCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	System.out.println("===================packagingCode==================");
-    	System.out.println("=== packagingCodeModel => : "+packagingCodeModel);
     	String largeCategory = "GROUP_ID";
     	if(packagingCodeModel.getGroupId() == null || StringUtils.equals(packagingCodeModel.getGroupId(),"")) {
     		largeCategory = "GROUP_ID";
@@ -56,7 +54,6 @@ public class PackagingCodeController {
     	List<PackagingCodeModel> largeModels = new ArrayList<PackagingCodeModel>();
     	List<PackagingCodeModel> middleModels = new ArrayList<PackagingCodeModel>();
     	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	System.out.println("=== packagingCodeModel 222=> : "+packagingCodeModel);
     	
     	// 대분류 리스트
     	packagingCodeModel.setGroupId(largeCategory);
@@ -79,14 +76,12 @@ public class PackagingCodeController {
         	model.addAttribute("setMiddleCategory", middleCategory);
         	model.addAttribute("setMiddleCategoryNm", middleCategoryNm);
         	packagingCodeModel.setGroupId(middleCategory);
-        	System.out.println("=== packagingCodeModel 333=> : "+packagingCodeModel);
         	middleModels = packagingCodeService.selectGroupIdList(packagingCodeModel);
         	model.addAttribute("middleCodeList", middleModels);
         }
     	
 		model.addAttribute("setLargeCategory", packagingCodeModel.getLargeCategory());
 		model.addAttribute("setSmallCategory", packagingCodeModel.getSmallCategory());
-		System.out.println("== packagingCodeModel => "+packagingCodeModel);
     	
         return "packagingCode/packagingCode";
     }
@@ -102,7 +97,6 @@ public class PackagingCodeController {
     public ResponseEntity<List<PackagingCodeModel>> codesForGroupCd(@ModelAttribute PackagingCodeModel packagingCodeModel, @PathVariable("codeId") String codeId, @AuthenticationPrincipal AuthUser authUser) {
     	packagingCodeModel.setGroupId(codeId);
     	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	System.out.println("=== codesForGroupCd packagingCodeModel => : "+packagingCodeModel);
     	List<PackagingCodeModel> detailCodeList = packagingCodeService.selectList(packagingCodeModel);
     	
     	return new ResponseEntity<>(detailCodeList, HttpStatus.OK);
@@ -124,9 +118,6 @@ public class PackagingCodeController {
             for (String key : request.getParameterMap().keySet()) {
             	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
-            
-            System.out.println("== category => "+category);
-            System.out.println("== packagingCodeModel => "+packagingCodeModel);
             
             String groupId = "";
     		String codeId = "";
@@ -176,8 +167,6 @@ public class PackagingCodeController {
             packagingCodeModel.setRgstId(authUser.getMemberModel().getUserId());
             packagingCodeModel.setModiId(authUser.getMemberModel().getUserId());
             
-            System.out.println("== packagingCodeModel 222 => "+packagingCodeModel);
-
             String result = packagingCodeService.save(packagingCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -200,7 +189,6 @@ public class PackagingCodeController {
         	packagingCodeModel.setRgstId(authUser.getMemberModel().getUserId());
         	packagingCodeModel.setModiId(authUser.getMemberModel().getUserId());
         	packagingCodeModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-        	System.out.println("== groupDelete 222 => "+packagingCodeModel);
             String result = packagingCodeService.delete(packagingCodeModel);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

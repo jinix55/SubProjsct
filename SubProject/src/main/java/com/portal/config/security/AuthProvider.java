@@ -48,8 +48,6 @@ public class AuthProvider extends DaoAuthenticationProvider {
 		// ID : authentication.getName()
 		// PW : authentication.getCredentials().toString()
 		
-		log.info("사용자 입력 : {}, {}",authentication.getName(),authentication.getCredentials().toString());
-		
 		if (util.isProd()) {
 			// 운영
 			if (authUser.isSso()) {

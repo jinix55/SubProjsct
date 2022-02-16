@@ -107,7 +107,6 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 						modelAndView.addObject("subMenuList", subMenuList);
 						modelAndView.addObject("menuGpCnt", menuGpCnt);
 						modelAndView.addObject("myUri", request.getRequestURI());
-						
 						//내정보 셋팅
 						modelAndView.addObject("myInfo", authUser.getMemberModel());
 					} catch (BindingException e) {

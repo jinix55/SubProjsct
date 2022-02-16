@@ -53,10 +53,8 @@ public class SupplierController {
      */
     @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== supplier in ==============");
     	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
     	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
-    	log.info(" ====== supplier get supplierModel =======> {} ",supplierModel);
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         
@@ -100,7 +98,6 @@ public class SupplierController {
     		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
     		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
     		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-    		System.out.println("supplierModel : "+supplierModel);
             String result = supplierService.save(supplierModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -129,7 +126,6 @@ public class SupplierController {
 		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
 		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-		System.out.println("supplierModel : "+supplierModel);
 		supplierService.saveManager(supplierModel);
 		
         List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
@@ -154,7 +150,6 @@ public class SupplierController {
 		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
 		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-		System.out.println("supplierModel : "+supplierModel);
 		supplierService.updateManager(supplierModel);
 		
         List<SupplierModel> models = supplierService.selectSupplierManagers(supplierModel.getSupplierCode());
@@ -174,7 +169,6 @@ public class SupplierController {
     		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
     		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
     		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-    		System.out.println("supplierModel : "+supplierModel);
             String result = supplierService.updateSupplier(supplierModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -295,7 +289,6 @@ public class SupplierController {
 		
 		supplierModel.setManagementId(managerId);
 		supplierModel.setModiId(authUser.getMemberModel().getUserId());
-		System.out.println("supplierModel : "+supplierModel);
 		String result = supplierService.updateManagementId(supplierModel);
 		
 		return new ResponseEntity<>(result, HttpStatus.OK);

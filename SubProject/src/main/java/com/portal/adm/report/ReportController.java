@@ -62,13 +62,10 @@ public class ReportController {
      */
     @GetMapping("/report")
     public String reportGet(@ModelAttribute ReportModel reportModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== report get in ==============");
-    	log.info(" =============== report get in ============== reportModel : "+reportModel.toString());
     	ReportModel repoModel = new ReportModel();
     	repoModel = reportModel;
     	repoModel.setAuthId(authUser.getMemberModel().getAuthId());
     	repoModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	log.info(" =============== report get in ============== reportModel : "+repoModel.toString());
         List<ReportModel> models = reportService.selectReportList(repoModel);
         reportModel.setTotalCount(reportService.selectReportListCount(repoModel));
         RoleModel roleModel = new RoleModel();
@@ -89,7 +86,6 @@ public class ReportController {
      */
     @PostMapping("/report")
     public String reportPost(@ModelAttribute ReportModel reportModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== report Post in ==============");
         List<ReportModel> models = reportService.selectReportList(reportModel);
         reportModel.setTotalCount(reportService.selectReportListCount(reportModel));
         RoleModel roleModel = new RoleModel();

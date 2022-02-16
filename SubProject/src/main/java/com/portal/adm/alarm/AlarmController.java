@@ -54,7 +54,6 @@ public class AlarmController {
      */
     @GetMapping("/alarm")
     public String alarmGet(@ModelAttribute AlarmModel alarmModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== alarm get in ==============");
     	List<AlarmModel> models = null;
     	alarmModel.setRecipientId(authUser.getMemberModel().getUserId());
         models = alarmService.selectAlarmList(alarmModel);
@@ -73,7 +72,6 @@ public class AlarmController {
      */
     @PostMapping("/alarm")
     public String alarmPost(@ModelAttribute AlarmModel alarmModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== alarm get in ==============");
     	List<AlarmModel> models = null;
     	alarmModel.setRecipientId(authUser.getMemberModel().getUserId());
         models = alarmService.selectAlarmList(alarmModel);
@@ -174,7 +172,6 @@ public class AlarmController {
     @GetMapping("/alarm/detail")
     @ResponseBody
     public Map<String,Object> getAjaxAlarmsForUserId(@AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== getAjaxAlarmsForUserId ajax in ==============");
     	Map<String,Object> result = new HashMap<String, Object>();
     	List<AlarmModel> alarmList = alarmService.selectAlarmUserId(authUser.getMemberModel().getUserId());
 //    	apiRequestUtil.requesKakaoAdressGet(null, null);

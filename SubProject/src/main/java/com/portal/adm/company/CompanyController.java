@@ -49,8 +49,6 @@ public class CompanyController {
      */
     @GetMapping("/company")
     public String company(@ModelAttribute CompanyModel companyModel, Model model) {
-    	log.info(" =============== company get in ==============");
-    	log.info(" ====== company get companyModel =======> {} ",companyModel);
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
         model.addAttribute("companys", models);
@@ -67,8 +65,6 @@ public class CompanyController {
      */
     @PostMapping("/company")
     public String companyPost(@ModelAttribute CompanyModel companyModel, Model model) {
-    	log.info(" =============== company post in ==============");
-    	log.info(" ====== company post companyModel =======> {} ",companyModel);
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
         model.addAttribute("companys", models);
@@ -91,7 +87,7 @@ public class CompanyController {
     			
     			CompanyModel companyModel = new CompanyModel();
     			for (String key : request.getParameterMap().keySet()) {
-    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+//    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
     			}
     			String companyId = request.getParameter("companyId");
     			String companyCode = request.getParameter("companyCode");
@@ -143,7 +139,6 @@ public class CompanyController {
     		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
     			String searchCode = request.getParameter("search");
-    			log.info("============== searchCode => "+searchCode);
     			
     			String comapnyCdoe = companyService.selectCode(searchCode);
 				if( comapnyCdoe == null || StringUtils.equals(comapnyCdoe, "")) {
@@ -176,7 +171,6 @@ public class CompanyController {
 	            CompanyModel companyModel = new CompanyModel();
 	
 	            String companyId = request.getParameter("companyId");
-	            log.info("============== companyId => "+companyId);
 	            companyModel.setCompanyId(companyId);
 	
 	            companyModel.setModiId(authUser.getMemberModel().getUserId());

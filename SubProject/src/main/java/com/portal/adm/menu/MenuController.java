@@ -98,7 +98,6 @@ public class MenuController {
 			menuModel.setRgstId(authUser.getMemberModel().getUserId());
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
 			menuModel.setMenuId(idUtil.getMenuId());
-			System.out.println("getMenuId : "+menuModel.getMenuId());
 			long count = menuService.save(menuModel);
 			
 			// 메뉴 등록시 담당관리자 권한 자동 등록 

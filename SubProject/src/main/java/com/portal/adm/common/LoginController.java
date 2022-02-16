@@ -98,9 +98,6 @@ public class LoginController {
 		
 		MemberModel member = new MemberModel();
 		AlarmModel alarmModel = new AlarmModel();
-		log.info(request.getParameter("re_companyNm"));
-		log.info(request.getParameter("re_userId"));
-		log.info(request.getParameter("re_userNm"));
 		member.setCompanyNm(request.getParameter("re_companyNm"));
 		member.setUserId(request.getParameter("re_userId"));
 		member.setUserNm(request.getParameter("re_userNm"));

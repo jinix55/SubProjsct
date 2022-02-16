@@ -70,12 +70,8 @@ public class LoggerAspect {
             
 	            if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AuthUser) {
 	                customAuthUser = (AuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	
-	                //log.info(customAuthUser.getMemberModel().toString());
 	            } else {
 	                token = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	
-	                log.info("=============== " + token.toString());
 	            }
 	
 	            try {
@@ -95,8 +91,6 @@ public class LoggerAspect {
 	            } catch (Exception e) {
 	                log.error("LoggerAspect error", e);
 	            }
-	            log.info("params : {}", params); // param에 담긴 정보들을 한번에 로깅한다.
-	
 	            logService.insert(logUtil.convertLogData(params));
             }
             return result;

@@ -63,9 +63,6 @@ public class MemberController {
     @GetMapping("/member")
     public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
-    	log.info("============= > "+criteria.getSearchKey());
-    	log.info("============= > "+criteria.getSearchValue());
-    	
         // 모든 권한 조회
         model.addAttribute("roles", roleService.selectAllList());
         
@@ -84,11 +81,6 @@ public class MemberController {
     @PostMapping("/member")
     public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, RedirectAttributes attributes, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
-    	log.info(" member post memberModel ==>  {} ",memberModel.toString());
-    	log.info(" member post criteria ==>  {} ",criteria.toString());
-    	log.info(" member post model ==>  {} ",model.toString());
-        log.info("============= > "+criteria.getSearchKey());
-        log.info("============= > "+criteria.getSearchValue());
         attributes.addFlashAttribute("criteria", criteria);
 
         // 모든 권한 조회
@@ -111,7 +103,6 @@ public class MemberController {
     @PostMapping("/member/detail/{memberId}")
     @ResponseBody
     public MemberModel selectPopup(@PathVariable String memberId, Model model) {
-    	log.info("================== select memberId ================");
     	MemberModel memberModel = new MemberModel();
     	memberModel.setUserId(memberId);
     	return memberService.selectMember(memberModel);
@@ -120,7 +111,6 @@ public class MemberController {
     @PostMapping("/member/detail/popup/{memberId}")
     @ResponseBody
     public String select(@PathVariable String memberId, Model model) {
-    	log.info("================== select memberId ================");
         MemberModel memberModel = new MemberModel();
         if(!StringUtils.equals(memberId, "")) {
         	memberModel.setUserId(memberId);
@@ -164,7 +154,7 @@ public class MemberController {
                                        @ModelAttribute MemberModel memberModel,
                                        @AuthenticationPrincipal AuthUser authUser) {
 		for (String key : request.getParameterMap().keySet()) {
-			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+//			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
 		}
         try {
             if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
@@ -272,7 +262,6 @@ public class MemberController {
      */
     @GetMapping("/pwdChange")
     public String pwdChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info("==================== pwdChange in ===================");
     	
     	return "user/pwdChange";
     }
@@ -285,7 +274,6 @@ public class MemberController {
      */
     @GetMapping("/userInfoChange")
     public String userInfoChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info("==================== userInfoChange in ===================");
     	
     	model.addAttribute("memberInfo",memberService.selectMember(authUser.getMemberModel()));
     	
@@ -300,7 +288,6 @@ public class MemberController {
      */
     @PostMapping("member/update/userInfoChange")
     public ResponseEntity<String> updateUserInfo(@ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info("==================== updateUserInfo in ===================");
         try {
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
             memberModel.setModiId(authUser.getMemberModel().getUserId());

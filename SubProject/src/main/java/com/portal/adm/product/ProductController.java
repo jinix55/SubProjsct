@@ -158,10 +158,8 @@ public class ProductController {
      */
     @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	log.info(" =============== supplier in ==============");
     	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
     	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
-    	log.info(" ====== supplier get supplierModel =======> {} ",supplierModel);
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         

@@ -45,8 +45,6 @@ public class EnvironmentCodeController {
      */
     @RequestMapping(value="/environmentCode", method= {RequestMethod.GET,RequestMethod.POST})
     public String environmentCode(@ModelAttribute EnvironmentCodeModel environmentCodeModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	System.out.println("===================environmentCode==================");
-    	System.out.println("=== environmentCodeModel => : "+environmentCodeModel);
     	String largeCategory = "GROUP_ID";
     	if(environmentCodeModel.getLargeCategory() == null || environmentCodeModel.getGroupId() == null || StringUtils.equals(environmentCodeModel.getGroupId(),"")) {
     		largeCategory = "GROUP_ID";
@@ -90,12 +88,9 @@ public class EnvironmentCodeController {
     		}
     	}
     	
-    	System.out.println("=== environmentCodeModel 222=> : "+environmentCodeModel);
     	// 재질 리스트
     	environmentCodeModel.setGroupId(largeCategory);
 		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
-		
-		System.out.println("=== environmentCodeModel 333=> : "+environmentCodeModel);
 		
         largeModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
         model.addAttribute("largeCodeList", largeModels);
@@ -185,11 +180,8 @@ public class EnvironmentCodeController {
     public ResponseEntity<String> save(@ModelAttribute EnvironmentCodeModel environmentCodeModel, HttpServletRequest request, @PathVariable("category") String category, @AuthenticationPrincipal AuthUser authUser) {
     	try {
             for (String key : request.getParameterMap().keySet()) {
-            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+//            	log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
             }
-            
-            System.out.println("== category => "+category);
-            System.out.println("== environmentCodeModel => "+environmentCodeModel);
             
             String groupId = "";
     		String codeId = "";
@@ -251,8 +243,6 @@ public class EnvironmentCodeController {
             environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
             environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
             
-            System.out.println("== environmentCodeModel 222 => "+environmentCodeModel);
-
             String result = environmentCodeService.save(environmentCodeModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -281,7 +271,6 @@ public class EnvironmentCodeController {
         	environmentCodeModel.setRevisionMonth(revisionMonth);
         	environmentCodeModel.setRgstId(authUser.getMemberModel().getUserId());
         	environmentCodeModel.setModiId(authUser.getMemberModel().getUserId());
-        	System.out.println("== groupDelete 222 => "+environmentCodeModel);
             String result = environmentCodeService.delete(environmentCodeModel);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

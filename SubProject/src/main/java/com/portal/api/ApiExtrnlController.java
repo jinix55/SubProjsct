@@ -116,7 +116,6 @@ public class ApiExtrnlController {
     public String apiSelect(HttpServletRequest request, Model model, @PathVariable("apiKey") String apiKey) {
 
         ApiExtrnlModel extrnlModel = new ApiExtrnlModel();
-        System.out.println("apiKey : "+apiKey);
         extrnlModel.setApiKey(apiKey);
         extrnlModel = apiExtrnlService.select(extrnlModel);
         
@@ -156,8 +155,6 @@ public class ApiExtrnlController {
         	// 공급업체 담당자 정보
         	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
         	
-        	System.out.println("prodPackagingModel : "+prodPackagingModel);
-        	System.out.println("middleEnv : "+middleEnv);
         	model.addAttribute("packagingModel",prodPackagingModel);
         	model.addAttribute("largeEnv",largeEnv);
         	model.addAttribute("middleEnv",middleEnv);

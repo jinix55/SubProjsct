@@ -139,7 +139,6 @@ public class ApiExtrnlService {
 		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductId() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
 		String result = "success";
 		String resultMessage = "성공";
-		System.out.println("######## prodPackagingModel.getProductNm() : "+prodPackagingModel.toString());
 		MultipartFile file = null;
 		for (String key : files.keySet()) {
 			file = files.get(key);

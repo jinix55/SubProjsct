@@ -45,7 +45,6 @@ public class LogController {
      */
     @GetMapping("/loginHst")
     public String getLoginLog(@ModelAttribute LogModel logModel, Model model) {
-    		System.out.println("LogModel : "+logModel.toString());
         model.addAttribute("logs", logService.selectMgrLoginList(logModel));
         logModel.setTotalCount(logService.selectMgrLoginCount(logModel));
         model.addAttribute("pages", logModel);
@@ -78,7 +77,6 @@ public class LogController {
      */
     @GetMapping("/jobHst")
     public String getJobHstLog(@ModelAttribute LogModel logModel, Model model) {
-    	System.out.println("LogModel : "+logModel.toString());
     model.addAttribute("logs", logService.selectJobLogList(logModel));
     logModel.setTotalCount(logService.selectJobLogCount(logModel));
     model.addAttribute("pages", logModel);

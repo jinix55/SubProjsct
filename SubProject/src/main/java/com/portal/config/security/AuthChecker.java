@@ -49,29 +49,29 @@ public class AuthChecker {
 			if (StringUtils.isNotBlank(authId) && StringUtils.equals(Constant.YES, user.getMemberModel().getAuthUseYn())) {
 				
 				String uri = request.getRequestURI();
-				
-		        log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info START =========");
-		        
-		        System.out.println("request.getServerName() : " + request.getRequestURI());
-		        System.out.println("request.getServerName() : " + request.getServerName());
-		        System.out.println("request.getProtocol() : " + request.getProtocol());
-		        System.out.println("request.getServerPort() : " + request.getServerPort());
-		        System.out.println("request.getMethod() : " + request.getMethod());
-		        System.out.println("request.getPathInfo() : " + request.getPathInfo());
-		        System.out.println("request.getPathTranslated() : " + request.getPathTranslated());
-		        System.out.println("request.getServletPath() : " + request.getServletPath());
-		        System.out.println("request.getRealPath(\"/\") : " + request.getRealPath("/"));
-		        System.out.println("request.getQueryString() : " + request.getQueryString());
-		        System.out.println("request.getRemoteHost() : " + request.getRemoteHost());
-		        System.out.println("request.getRemoteAddr() : " + request.getRemoteAddr());
-		        System.out.println("request.getAuthType() : " + request.getAuthType());
-		        System.out.println("request.getRemoteUser() : " + request.getRemoteUser());
-		        System.out.println("request.getContentType() : " + request.getContentType());
-		        System.out.println("request.getContentLength() : " + request.getContentLength());
-		        System.out.println("request.getServerPort() : " + request.getServerPort());
-		        
-		        log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info END =========\n");
-			
+				/*
+				 * log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info START =========");
+				 * System.out.println("request.getServerName() : " + request.getRequestURI());
+				 * System.out.println("request.getServerName() : " + request.getServerName());
+				 * System.out.println("request.getProtocol() : " + request.getProtocol());
+				 * System.out.println("request.getServerPort() : " + request.getServerPort());
+				 * System.out.println("request.getMethod() : " + request.getMethod());
+				 * System.out.println("request.getPathInfo() : " + request.getPathInfo());
+				 * System.out.println("request.getPathTranslated() : " +
+				 * request.getPathTranslated());
+				 * System.out.println("request.getServletPath() : " + request.getServletPath());
+				 * System.out.println("request.getRealPath(\"/\") : " +
+				 * request.getRealPath("/")); System.out.println("request.getQueryString() : " +
+				 * request.getQueryString()); System.out.println("request.getRemoteHost() : " +
+				 * request.getRemoteHost()); System.out.println("request.getRemoteAddr() : " +
+				 * request.getRemoteAddr()); System.out.println("request.getAuthType() : " +
+				 * request.getAuthType()); System.out.println("request.getRemoteUser() : " +
+				 * request.getRemoteUser()); System.out.println("request.getContentType() : " +
+				 * request.getContentType()); System.out.println("request.getContentLength() : "
+				 * + request.getContentLength());
+				 * System.out.println("request.getServerPort() : " + request.getServerPort());
+				 * log.info("▶▷▶▷ [printHttpServletRequest] Parameter Info END =========\n");
+				 */
 //				if(uri.equals("") || uri == null) {
 //			    	Map<String,String> param = new HashMap<>();
 //			    	param.put("authId", authId);

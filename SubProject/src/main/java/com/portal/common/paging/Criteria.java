@@ -74,11 +74,7 @@ public class Criteria implements Serializable {
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
 		int tempPage = totalCount / pageSize;
-		System.out.println("totalCount : "+totalCount);
-		System.out.println("pageSize : "+pageSize);
-		System.out.println("tempPage1 : "+tempPage);
 		if (totalCount % pageSize != 0 && totalCount > tempPage*pageSize) tempPage++;
-		System.out.println("tempPage2 : "+tempPage);
 		this.totalPage = tempPage;
     }
 
