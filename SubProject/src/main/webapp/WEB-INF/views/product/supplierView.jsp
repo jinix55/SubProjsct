@@ -245,7 +245,7 @@
 								<input id="managerId" name="managerId" type="hidden" class="text-input">
 								<input id="maSupplierCode" name="maSupplierCode" type="hidden" class="text-input">
 								<div class="col-100 mb10">
-									<input id="managerRepresent" name="managerRepresent" type="checkbox">
+									<input id="managerRepresent" name="managerRepresent" type="checkbox" style="margin:0;">
 									<label for="managerRepresent">대표</label>
 								</div>
 								<div class="col-50">
@@ -333,7 +333,7 @@
 
 <!-- 레이어 팝업 - 담당자  -->
 <div id="charge" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 700px">
+	<div class="modal-content" style="width: 720px">
 		<div class="modal-header">
 			<h4 class="modal-title">담당자 정보</h4>
 			<button type="button" class="close" data-dismiss="modal">

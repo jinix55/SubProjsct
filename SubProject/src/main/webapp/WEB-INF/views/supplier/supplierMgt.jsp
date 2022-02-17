@@ -99,7 +99,7 @@
 <form id="frmRegister">
 <div id="register" class="modal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 900px">
+	<div class="modal-content" style="width: 910px">
 		<div class="modal-header">
 			<h4 class="modal-title">공급업체 등록</h4>
 			<button type="button" class="close" data-dismiss="modal">
@@ -284,7 +284,7 @@
 			</h4>
 			<div class="row">
 				<div class="col-100 mb10">
-					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk">대표 적용
+					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk" style="margin: 0;">대표 적용
 				</div>
 				<div class="col-50">
 					<div class="form-group">
@@ -366,7 +366,7 @@
 <form id="frmEdit">
 	<div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<input id="supplierId" name="supplierId" type="hidden" class="text-input">
-		<div class="modal-content" style="width: 900px">
+		<div class="modal-content" style="width: 900px;">
 			<div class="modal-header">
 				<h4 class="modal-title">공급업체 상세</h4>
 				<button type="button" class="close" data-dismiss="modal">
@@ -523,7 +523,7 @@
 								<input id="managerId" name="managerId" type="hidden" class="text-input">
 								<input id="maSupplierCode" name="maSupplierCode" type="hidden" class="text-input">
 								<div class="col-100 mb10">
-									<input id="managerRepresent" name="managerRepresent" type="checkbox">
+									<input id="managerRepresent" name="managerRepresent" type="checkbox" style="margin: 0;">
 									<label for="managerRepresent">대표 적용</label>
 								</div>
 								<div class="col-50">
@@ -646,7 +646,7 @@
 
 <!-- 레이어 팝업 - 담당자  -->
 <div id="charge" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 700px">
+	<div class="modal-content" style="width: 720px">
 		<div class="modal-header">
 			<h4 class="modal-title">담당자 정보</h4>
 			<button type="button" class="close" data-dismiss="modal">

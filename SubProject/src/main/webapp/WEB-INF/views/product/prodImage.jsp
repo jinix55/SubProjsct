@@ -9,12 +9,12 @@
 
 	<!-- S_본문-->
 		<div class="content">
-			<ul class="page-nav">
+			<!--<ul class="page-nav">
 				<li class="item-nav"><a href="Prod.html" class="link-nav">
 	        제품 목록보기</a></li>
 				<li class="item-nav"><a href="ProdImg.html" class="link-nav active">
 	        이미지 목록보기</a></li>
-			</ul>
+			</ul>-->
 			<!-- S_검색-->
 			<form>
 				<div class="justify-content-between">
@@ -49,7 +49,7 @@
 				</div>
 				<div class="img-cont ellipsis">
 					<ul>
-						<li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+						<li class="text-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>서울우유800ml</span></li>
 						<li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
 						<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue">정상</span></li>
 						<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue">완료</span></li>

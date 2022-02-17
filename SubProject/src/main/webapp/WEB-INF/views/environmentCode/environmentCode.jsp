@@ -6,27 +6,29 @@
 	<input type="hidden" id="middleCategory" name="middleCategory" value="${setMiddleCategory }">
 	<input type="hidden" id="smallCategory" name="smallCategory" value="${setSmallCategory }">
 	<input type="hidden" id="smallCategoryNm" name="smallCategoryNm" value="${setSmallCategoryNm }">
-	<div class="d-flex">
-		<span class="pt10 pr10">ㆍ갱신일</span>
-		<select class="select-box w150" id="revision" name="revision">
+	<div class="d-flex code-edit">
+		<p class="pt10 pr10">ㆍ갱신일</p>
+		<select class="select-box select-box-border2 w150" id="revision" name="revision">
 			<c:forEach items="${dayList }" var="list">
 				<option value="${list.revisionYear}-${list.revisionMonth}" <c:if test="${setRevision eq list.revision}">selected</c:if>>${list.revisionYear}년 ${list.revisionMonth}월</option>
 			</c:forEach>
 		</select>
 	</div>
-	<div class="row pt30">
+	<div class="row mt60">
 		<!-- S_left-area -->
 		<div class="code-left-wrap">
-			<h4 class="code-tit">ㆍ재질 > 부위구분</h4>
 			<div class="left-area">
-				<div class="content">
-					<div class="d-flex">
+				<div class="content" style="padding-top: 0;">
+					<div class="d-flex panel" style="position: relative;">
+					<h4 class="code-tit title-s">재질 > <em>부위구분</em></h4>
+						<div class="d-flex" style="position: absolute;right: 5px;top:5px;">
 						<span class="pt10 pr10">ㆍ재질</span>
 						<select class="select-box w150" id="largeCategory" name="largeCategory">
 							<c:forEach items="${largeCodeList }" var="list" varStatus="status">
 								<option value="${list.codeId }" <c:if test="${setLargeCategory eq list.codeId }">selected</c:if>>${list.codeNm }</option>
 							</c:forEach>
 						</select>
+						</div>
 					</div>
 					<!-- S_그리드-->
 					<div class="content-table">
@@ -92,9 +94,9 @@
 		<!-- E_left-area -->
 		<!-- S_right-area -->
 		<div class="code-right-wrap">
-			<h4 class="code-tit">ㆍ재질 > 부위구분 > 용이성</h4>
 			<div class="right-area">
-				<div class="content">
+				<div class="content" style="padding-top: 0;">
+					<h4 class="code-tit title-s panel">재질 > 부위구분 > <em>용이성</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">

@@ -434,8 +434,8 @@
 		</form>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button type="button" class="button btnEdit" >수정</button>
-			<button type="button" class="button btnCheck btn-success" data-dismiss="modal">확인</button>
+			<button type="button" class="button btnEdit">수정</button>
+			<button type="button" class="button btnCheck btn-cancel" data-dismiss="modal">확인</button>
 		</div>
 	</div>
 </div>
