@@ -10,9 +10,9 @@
 	<div class="row pt30">
 		<!-- S_left-area -->
 		<div class="pack-left-wrap">
-			<h4 class="code-tit">ㆍ분류그룹등록 > 대분류</h4>
 			<div class="left-area">
-				<div class="content">
+				<div class="content" style="padding-top: 0;">
+					<h4 class="code-tit title-s panel">분류그룹등록 > <em>대분류</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto h600auto">
@@ -77,9 +77,9 @@
 		<!-- E_left-area -->
 		<!-- S_right-area -->
 		<div class="pack-right-wrap">
-			<h4 class="code-tit">ㆍ분류그룹등록 > 중분류</h4>
 			<div class="right-area">
-				<div class="content">
+				<div class="content" style="padding-top: 0;">
+					<h4 class="code-tit title-s panel">분류그룹등록 > <em>중분류</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">

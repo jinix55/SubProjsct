@@ -227,11 +227,11 @@
 </c:forEach>
 
 <div class="content">
-	<div class="row">
+	<div class="row panel">
 		<!-- S_left-area -->
-		<div class="col-35-area pr16-area">
+		<div class="menu-left-wrap">
 			<div class="left-area">
-				<h4 class="tree_tab"><span>메뉴목록</span></h4>
+				<h4 class="code-tit title-s panel">메뉴목록</h4>
 				<div class="nav_tree">
 				<script language="javascript" type="text/javaScript">
 					var chk_Object = true;
@@ -317,7 +317,7 @@
 		</div>
 		<!-- E_left-area -->
 		<!-- S_right-area -->
-		<div class="col-65-area">
+		<div class="menu-right-wrap padding-all30">
 			<div class="right-area">
 			<!-- <h4 class="tab"><span>메뉴적용 현황</span></h4> -->
 				<div class="row pt30">
