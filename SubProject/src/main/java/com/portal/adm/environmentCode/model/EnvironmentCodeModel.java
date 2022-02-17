@@ -77,5 +77,13 @@ public class EnvironmentCodeModel extends Criteria{
     private String delCodeId;        //디테일 화면 코드
     private String delRevision;        //디테일 화면 코드
     private String delType;        //디테일 화면 코드
+    
+    private String rptMatStruct;	// 포장재질구조증명서
+    private String rptDevAnal;		// 기기분석증명서
+    private String rptVisualJudg;	// 육안판정서
+    private String rptTest;			// 공인시험성적서
+    private String rptPermission;	// 신고허가서류
+    private String rptEtc;			// 기타서류
+
 }
 
