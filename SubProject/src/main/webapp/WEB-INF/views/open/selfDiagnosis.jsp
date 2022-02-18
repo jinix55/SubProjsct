@@ -235,6 +235,7 @@ var grade = [];
 							<h2 class="choice-title">
 								<span class="title-point">[${list.codeNm }]</span>
 							</h2>
+							<div style="min-height: 180px;max-height:auto;padding-bottom: 20px;">
 							<c:forEach items="${smallCodeList}" var="listLow">
 								<c:if test="${listLow.groupId eq list.codeId }">
 									<div class="choice-box">
@@ -243,10 +244,8 @@ var grade = [];
 											<ul>
 												<c:forEach items="${lastCodeList }" var="lalist" varStatus="status">
 													<c:if test="${lalist.groupId eq listLow.codeId }">
-														<li>
-															<input type="checkbox" id="${list.codeId }-${status.index}" codeKey="${listLow.codeKey }" data-a="${lalist.rptMatStruct}" data-b="${lalist.rptDevAnal}" data-c="${lalist.rptVisualJudg}" data-d="${lalist.rptTest}" data-e="${lalist.rptPermission}" data-f="${lalist.rptEtc}" name="checkbox_${list.codeId }" class="checkbox_${list.codeId }" onclick="chkClick(this);">
-														</li>
-														<li>
+														<li class="d-flex">
+															<div><input type="checkbox"></div>
 															<label for="">${lalist.codeNm}</label>
 														</li>
 													</c:if>
@@ -256,7 +255,7 @@ var grade = [];
 									</div>
 								</c:if>
 							</c:forEach>
-							<div class="choice-box">
+							<div class="choice-box" style="float: right;">
 								<h4 class="line-br">필요서류</h4>
 								<div class="choice-cont">
 									<ul>
@@ -282,6 +281,7 @@ var grade = [];
 										</li>
 									</ul>
 								</div>
+							</div>
 							</div>
 						</c:forEach>
 					</div>
