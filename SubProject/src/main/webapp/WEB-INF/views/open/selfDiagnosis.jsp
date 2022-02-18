@@ -30,6 +30,7 @@
 }
 </style>
 <script type="text/javascript">
+var grade = [];
     //이미지툴팁
     function tools(target, contents, option) {
 
@@ -122,7 +123,76 @@
     	$('#largeCategory').change(function(){
     		$('#frm').submit();
     	});
+    	
+    	$('.saveResult').click(function(){
+    		
+    	});
     });
+    
+    function chkClick(that){
+   		var id = $(that).attr('id');
+   		console.log(id);
+   		if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+	   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+   		}
+   		$('#'+id).prop('checked', true);
+   		
+		var rptMatStruct = $(that).attr('data-a');
+		var rptDevAnal = $(that).attr('data-b');
+		var rptVisualJudg = $(that).attr('data-c');
+		var rptTest = $(that).attr('data-d');
+		var rptPermission = $(that).attr('data-e');
+		var rptEtc = $(that).attr('data-f');
+		$('.word_check-'+id.split('-')[0]).prop('checked',false);
+		if($('#'+id).prop('checked')){
+			if(rptMatStruct == 'Y'){
+				$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptDevAnal == 'Y'){
+				$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptVisualJudg == 'Y'){
+				$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptTest == 'Y'){
+				$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptPermission == 'Y'){
+				$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptEtc == 'Y'){
+				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+			}
+		}
+		
+		var isSeasonChk = false;
+        var chk = $('.checkbox_'+id.split('-')[0]);
+        for(var i=0;i<chk.length;i++){
+            if(chk[i].checked == true) {
+            	if($(that).attr('codeKey') == 'D'){
+                	isSeasonChk = true;
+        			if(grade.indexOf(id.split('-')[0]) == -1){
+        				grade.push(id.split('-')[0]);
+        			}
+                	break;
+            	}else{
+	            	grade.splice(grade.indexOf(id.split('-')[0]));
+            	}
+            }
+        }
+    }
+    
+    function result(){
+        console.log(grade.length);
+        if(grade.length > 0){
+        	$('.fz').text('어려움');
+        }else{
+        	$('.fz').text('양호');
+        }
+        
+        console.log($('.choice-title').length);
+
+    }
   </script>
 <body class="sub">
 	<div class="wrapper">
@@ -171,10 +241,10 @@
 										<h4 class="line-br">재활용-${listLow.codeNm}</h4>
 										<div class="choice-cont">
 											<ul>
-												<c:forEach items="${lastCodeList }" var="lalist">
+												<c:forEach items="${lastCodeList }" var="lalist" varStatus="status">
 													<c:if test="${lalist.groupId eq listLow.codeId }">
 														<li>
-															<input type="checkbox">
+															<input type="checkbox" id="${list.codeId }-${status.index}" codeKey="${listLow.codeKey }" data-a="${lalist.rptMatStruct}" data-b="${lalist.rptDevAnal}" data-c="${lalist.rptVisualJudg}" data-d="${lalist.rptTest}" data-e="${lalist.rptPermission}" data-f="${lalist.rptEtc}" name="checkbox_${list.codeId }" class="checkbox_${list.codeId }" onclick="chkClick(this);">
 														</li>
 														<li>
 															<label for="">${lalist.codeNm}</label>
@@ -191,23 +261,23 @@
 								<div class="choice-cont">
 									<ul>
 										<li>
-											<input type="checkbox" disabled>
+											<input type="checkbox" class="word_check-${list.codeId }"  id="chk_rptDevAnal-${list.codeId }" disabled>
 											<label for="" class="ellipsis">기기분석</label>
 										</li>
 										<li>
-											<input type="checkbox" disabled>
+											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptVisualJudg-${list.codeId }" disabled>
 											<label for="" class="ellipsis">육안판정</label>
 										</li>
 										<li>
-											<input type="checkbox" disabled>
+											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptTest-${list.codeId }" disabled>
 											<label for="" class="ellipsis">공인시험성적서</label>
 										</li>
 										<li>
-											<input type="checkbox" disabled>
+											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptPermission-${list.codeId }" disabled>
 											<label for="" class="ellipsis">신고허가서류</label>
 										</li>
 										<li>
-											<input type="checkbox" disabled>
+											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptEtc-${list.codeId }" disabled>
 											<label for="" class="ellipsis">기타</label>
 										</li>
 									</ul>
@@ -217,7 +287,7 @@
 					</div>
 
 					<div class="modal-footer btn-group">
-						<button type="button" class="button btn-success" href="#score" data-dismiss="modal">
+						<button type="button" class="button btn-success saveResult" onclick="result();" href="#score" data-toggle="modal">
 							결과확인
 						</button>
 					</div>
