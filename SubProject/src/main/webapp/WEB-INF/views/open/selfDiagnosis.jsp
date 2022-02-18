@@ -125,7 +125,11 @@ var grade = [];
     	});
     	
     	$('.saveResult').click(function(){
-    		
+    		result();
+    	});
+    	
+    	$('.isClose,.close').click(function(){
+    		 $('#score').hide();
     	});
     });
     
@@ -176,22 +180,51 @@ var grade = [];
         			}
                 	break;
             	}else{
-	            	grade.splice(grade.indexOf(id.split('-')[0]));
+            		if(grade.indexOf(id.split('-')[0]) > -1){
+	            		for (var i = 0; i < grade.length; i++) {
+	            		    if (grade[i] === id.split('-')[0]) {
+	            		    	grade.splice(i, 1);
+	            		    }
+	            		}
+            		}
             	}
             }
         }
     }
     
     function result(){
-        console.log(grade.length);
-        if(grade.length > 0){
-        	$('.fz').text('어려움');
-        }else{
-        	$('.fz').text('양호');
+        var chkCnt = 0;
+        var sc = $('.choice-title').length;
+        var text = '';
+        var isAlert = true; 
+        for(var i = 0 ; i < sc ; i++){
+        	var id = $('.choice-title')[i].id;
+        	var chkList = $('.checkbox_'+id);
+        	for(var j=0;j<chkList.length;j++){
+        		if(chkList[j].checked == true) {
+        			chkCnt++;
+        			isAlert = false;
+        			break;
+        		}
+        	}
+        	text = $('.choice-title')[i].children[0].innerText;
+        	if(isAlert){
+	        	alert(text+' 항목을 선택하지 않으셨습니다.');
+	        	isAlert = true;
+	        	break;
+        	}
+        	isAlert = true;
         }
-        
-        console.log($('.choice-title').length);
-
+        if(chkCnt == $('.choice-title').length){
+	        if(grade.length > 0){
+	        	$('.fz').text('어려움');
+	        	$('.fz').css('color','red');
+	        }else{
+	        	$('.fz').css('color','black');
+	        	$('.fz').text('양호');
+	        }
+	        $('#score').show();
+        }
     }
   </script>
 <body class="sub">
@@ -232,7 +265,7 @@ var grade = [];
 					<!-- E_검색-->
 					<div>
 						<c:forEach items="${middleCodeList}" var="list">
-							<h2 class="choice-title">
+							<h2 class="choice-title" id="${list.codeId }">
 								<span class="title-point">[${list.codeNm }]</span>
 							</h2>
 							<c:forEach items="${smallCodeList}" var="listLow">
@@ -287,7 +320,7 @@ var grade = [];
 					</div>
 
 					<div class="modal-footer btn-group">
-						<button type="button" class="button btn-success saveResult" onclick="result();" href="#score" data-toggle="modal">
+						<button type="button" class="button btn-success saveResult">
 							결과확인
 						</button>
 					</div>
@@ -317,8 +350,7 @@ var grade = [];
 				</div>
 			</div>
 			<div class="modal-footer btn-group">
-				<button type="button" class="button btn-success"
-					data-dismiss="modal">확인</button>
+				<button type="button" class="button btn-success isClose" data-dismiss="modal">확인</button>
 			</div>
 		</div>
 	</div>
