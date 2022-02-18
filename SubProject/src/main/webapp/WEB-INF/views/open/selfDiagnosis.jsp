@@ -175,7 +175,7 @@ var grade = [];
         var chk = $('.checkbox_'+id.split('-')[0]);
         for(var i=0;i<chk.length;i++){
             if(chk[i].checked == true) {
-            	if($(that).attr('codeKey') == 'D'){
+            	if($(that).attr('data-Key') == 'D'){
                 	isSeasonChk = true;
         			if(grade.indexOf(id.split('-')[0]) == -1){
         				grade.push(id.split('-')[0]);
@@ -195,6 +195,7 @@ var grade = [];
     }
     
     function result(){
+	    var gradeResult = [];
         var chkCnt = 0;
         var sc = $('.choice-title').length;
         var text = '';
@@ -204,6 +205,7 @@ var grade = [];
         	var chkList = $('.checkbox_'+id);
         	for(var j=0;j<chkList.length;j++){
         		if(chkList[j].checked == true) {
+        			gradeResult.push(chkList[j].dataset.key);
         			chkCnt++;
         			isAlert = false;
         			break;
@@ -217,15 +219,36 @@ var grade = [];
         	}
         	isAlert = true;
         }
+        console.log(gradeResult);
         if(chkCnt == $('.choice-title').length){
-        	
-	        if(grade.length > 0){
-	        	$('.fz').text('어려움');
-	        	$('.fz').css('color','red');
-	        }else{
-	        	$('.fz').css('color','black');
-	        	$('.fz').text('양호');
-	        }
+        	var gradeNum = 0;
+        	gradeResult.forEach(function(item){
+		        if(item == 'A'){
+		        	if(gradeNum < 1){
+			        	$('.fz').text('최우수');
+			        	$('.fz').css('color','black');
+			        	gradeNum = 1;
+		        	}
+		        }else if(item == 'B'){
+		        	if(gradeNum < 2){
+			        	$('.fz').text('우수');
+			        	$('.fz').css('color','black');
+			        	gradeNum = 2;
+		        	}
+		        }else if(item == 'C'){
+		        	if(gradeNum < 3){
+			        	$('.fz').text('보통');
+			        	$('.fz').css('color','black');
+			        	gradeNum = 3;
+		        	}
+		        }else if(item == 'D'){
+		        	if(gradeNum < 4){
+			        	$('.fz').text('어려움');
+			        	$('.fz').css('color','red');
+			        	gradeNum = 4;
+		        	}
+		        }
+        	})
 	        $('#score').show();
         }
     }
@@ -289,7 +312,7 @@ var grade = [];
 																<div>
 																	<input type="checkbox"
 																		id="${list.codeId }-${status.index}"
-																		codeKey="${listLow.codeKey }"
+																		data-key="${listLow.codeKey }"
 																		data-a="${lalist.rptMatStruct}"
 																		data-b="${lalist.rptDevAnal}"
 																		data-c="${lalist.rptVisualJudg}"
@@ -354,7 +377,7 @@ var grade = [];
 		<!-- Modal content-->
 		<div class="modal-content" style="width: 400px">
 			<div class="modal-header">
-				<h4 class="modal-title">점수</h4>
+				<h4 class="modal-title">재활용 등급</h4>
 				<button type="button" class="close" data-dismiss="modal">
 					<img src="../images/icon_close.png">
 				</button>
