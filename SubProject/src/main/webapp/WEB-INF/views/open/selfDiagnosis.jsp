@@ -21,12 +21,14 @@
 #body {
 	padding: 0;
 }
+
 .content {
-    padding: 30px 30px 40px 30px;
-    overflow: hidden;
+	padding: 30px 30px 40px 30px;
+	overflow: hidden;
 }
+
 .btn-group, .btn-Tgroup {
-    padding: 20px 20px;
+	padding: 20px 20px;
 }
 </style>
 <script type="text/javascript">
@@ -216,6 +218,7 @@ var grade = [];
         	isAlert = true;
         }
         if(chkCnt == $('.choice-title').length){
+        	
 	        if(grade.length > 0){
 	        	$('.fz').text('어려움');
 	        	$('.fz').css('color','red');
@@ -248,14 +251,18 @@ var grade = [];
 						<div class="justify-content-between pt30">
 							<div class="form-group">
 								<div class="form-inline">
-									<label for="" class="form-label02">갱신일 : </label>
-				                  <input type="text" class="text-input border-line" style="width:100px" value="${dayList.revisionYear}년 ${dayList.revisionMonth}월" readonly="readonly">
+									<label for="" class="form-label02">갱신일 : </label> <input
+										type="text" class="text-input border-line"
+										style="width: 100px"
+										value="${dayList.revisionYear}년 ${dayList.revisionMonth}월"
+										readonly="readonly">
 								</div>
 								<div class="form-inline">
-									<label for="" class="form-label02">포장지유형 </label>
-									 <select id="largeCategory" name="largeCategory"  class="select-box">
-									 	<c:forEach items="${largeCodeList }" var="list" >
-											<option value="${list.codeId }" <c:if test="${setLargeCategory eq list.codeId }">selected</c:if>>${list.codeNm }</option>
+									<label for="" class="form-label02">포장지유형 </label> <select
+										id="largeCategory" name="largeCategory" class="select-box">
+										<c:forEach items="${largeCodeList }" var="list">
+											<option value="${list.codeId }"
+												<c:if test="${setLargeCategory eq list.codeId }">selected</c:if>>${list.codeNm }</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -268,61 +275,73 @@ var grade = [];
 							<h2 class="choice-title" id="${list.codeId }">
 								<span class="title-point">[${list.codeNm }]</span>
 							</h2>
-							<div style="min-height: 180px;max-height:auto;padding-bottom: 20px;">
-							<c:forEach items="${smallCodeList}" var="listLow">
-								<c:if test="${listLow.groupId eq list.codeId }">
-									<div class="choice-box">
-										<h4 class="line-br">재활용-${listLow.codeNm}</h4>
-										<div class="choice-cont">
-											<ul>
-												<c:forEach items="${lastCodeList }" var="lalist" varStatus="status">
-													<c:if test="${lalist.groupId eq listLow.codeId }">
-														<li class="d-flex">
-															<div><input type="checkbox"></div>
-															<label for="">${lalist.codeNm}</label>
-														</li>
-													</c:if>
-												</c:forEach>
-											</ul>
+							<div style="min-height: 180px; max-height: auto; padding-bottom: 20px;">
+								<c:forEach items="${smallCodeList}" var="listLow">
+									<c:if test="${listLow.groupId eq list.codeId }">
+										<div class="choice-box">
+											<h4 class="line-br">재활용-${listLow.codeNm}</h4>
+											<div class="choice-cont">
+												<ul>
+													<c:forEach items="${lastCodeList }" var="lalist"
+														varStatus="status">
+														<c:if test="${lalist.groupId eq listLow.codeId }">
+															<li class="d-flex">
+																<div>
+																	<input type="checkbox"
+																		id="${list.codeId }-${status.index}"
+																		codeKey="${listLow.codeKey }"
+																		data-a="${lalist.rptMatStruct}"
+																		data-b="${lalist.rptDevAnal}"
+																		data-c="${lalist.rptVisualJudg}"
+																		data-d="${lalist.rptTest}"
+																		data-e="${lalist.rptPermission}"
+																		data-f="${lalist.rptEtc}"
+																		name="checkbox_${list.codeId }"
+																		class="checkbox_${list.codeId }"
+																		onclick="chkClick(this);">
+																</div> <label for="">${lalist.codeNm}</label>
+															</li>
+														</c:if>
+													</c:forEach>
+												</ul>
+											</div>
 										</div>
+									</c:if>
+								</c:forEach>
+								<div class="choice-box" style="float: right;">
+									<h4 class="line-br">필요서류</h4>
+									<div class="choice-cont">
+										<ul>
+											<li><input type="checkbox"
+												class="word_check-${list.codeId }"
+												id="chk_rptDevAnal-${list.codeId }" disabled> <label
+												for="" class="ellipsis">기기분석</label></li>
+											<li><input type="checkbox"
+												class="word_check-${list.codeId }"
+												id="chk_rptVisualJudg-${list.codeId }" disabled> <label
+												for="" class="ellipsis">육안판정</label></li>
+											<li><input type="checkbox"
+												class="word_check-${list.codeId }"
+												id="chk_rptTest-${list.codeId }" disabled> <label
+												for="" class="ellipsis">공인시험성적서</label></li>
+											<li><input type="checkbox"
+												class="word_check-${list.codeId }"
+												id="chk_rptPermission-${list.codeId }" disabled> <label
+												for="" class="ellipsis">신고허가서류</label></li>
+											<li><input type="checkbox"
+												class="word_check-${list.codeId }"
+												id="chk_rptEtc-${list.codeId }" disabled> <label
+												for="" class="ellipsis">기타</label></li>
+										</ul>
 									</div>
-								</c:if>
-							</c:forEach>
-							<div class="choice-box" style="float: right;">
-								<h4 class="line-br">필요서류</h4>
-								<div class="choice-cont">
-									<ul>
-										<li>
-											<input type="checkbox" class="word_check-${list.codeId }"  id="chk_rptDevAnal-${list.codeId }" disabled>
-											<label for="" class="ellipsis">기기분석</label>
-										</li>
-										<li>
-											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptVisualJudg-${list.codeId }" disabled>
-											<label for="" class="ellipsis">육안판정</label>
-										</li>
-										<li>
-											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptTest-${list.codeId }" disabled>
-											<label for="" class="ellipsis">공인시험성적서</label>
-										</li>
-										<li>
-											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptPermission-${list.codeId }" disabled>
-											<label for="" class="ellipsis">신고허가서류</label>
-										</li>
-										<li>
-											<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptEtc-${list.codeId }" disabled>
-											<label for="" class="ellipsis">기타</label>
-										</li>
-									</ul>
 								</div>
-							</div>
 							</div>
 						</c:forEach>
 					</div>
 
 					<div class="modal-footer btn-group">
 						<button type="button" class="button btn-success saveResult">
-							결과확인
-						</button>
+							결과확인</button>
 					</div>
 				</div>
 			</section>
@@ -350,7 +369,8 @@ var grade = [];
 				</div>
 			</div>
 			<div class="modal-footer btn-group">
-				<button type="button" class="button btn-success isClose" data-dismiss="modal">확인</button>
+				<button type="button" class="button btn-success isClose"
+					data-dismiss="modal">확인</button>
 			</div>
 		</div>
 	</div>
