@@ -260,7 +260,9 @@ span.alarm {background: url(../../images/icon_notification.png);width: 24px;heig
 span.pro {background: url(../../images/icon_pro.png);width: 24px;height: 24px;}
 span.supplier {background: url(../../images/icon_supplier.png);width: 24px;height: 24px;}
 span.chat {background: url(../../images/icon_billboard.png);width: 24px;height: 24px;}
+span.myself {background: url(../../images/icon_myself.png); width: 24px; height: 24px;}
 span.txtlmg {display: inline-block;margin-right: 12px;vertical-align: middle;}
+
 /* 왼쪽상단 로고*/
 .btn-lnb-comp {width: 100%; height: 70px;display: flex;align-items: center;justify-content: space-between;padding: 0 6px;border-bottom: 1px solid #494c50;}
 .btn-lnb-comp img {width: 90%;height: auto;vertical-align: middle;}
@@ -497,9 +499,10 @@ iframe {height: 100%;left: 0;position: absolute;top: 0;width: 100%;}
 .my_tootip {position: absolute;width: 190px;height: auto;border: 1px solid #ddd;display: none;z-index: 9999;background: #fff;border-radius: 4px;overflow: hidden;}
 .choice-wrapper {border: 1px solid #e3e3e3;border-radius: 2px;}
 .choice-title {font-size: 1.6rem;font-weight: 500;padding-bottom: 10px;}
-.choice-box {display: inline-block;min-height: 100%;font-size:1.2rem;/*border-width:1px 0 1px 1px;margin-bottom: 20px;*/vertical-align: top;width: 24.7%;}
+.choice-box {display: inline-block;min-height: 100%;font-size:1.2rem;/*border-width:1px 0 1px 1px;margin-bottom: 20px;*/vertical-align: top;width: 19.7%;}
+.choice-we>.choice-box:last-child{margin:0 auto}
 .choice-cont {line-height: 24px;}
-.choice-cont ul li{border-bottom: 1px dashed #ddd;}
+.choice-cont ul li{border-bottom: 1px dashed #ddd;margin: 4px;line-height: 1.8;}
 .choice-cont ul li:last-child{border-bottom: 0px dashed #ddd;}
 .choice-cont label {color: #797979;}
 .anw .form-group label {font-size: 1.2rem;}
