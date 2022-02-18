@@ -1653,7 +1653,7 @@ INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,M
 ('mn5000022','mn5000019','QNA','/board/qna','','22','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000023','mn5000001','알람관리','/alarm','','23','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000024','mn5000023','알람관리','/alarm/alarm','','24','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000025','mn5000001','상품','/product','','25','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','myself','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000025','mn5000001','상품','/product','','25','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','pro','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000026','mn5000025','공급 업체','/product/supplier','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000027','mn5000025','상품 관리','/product/prodList','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000028','mn5000025','상품 이미지','/product/prodImage','','28','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
