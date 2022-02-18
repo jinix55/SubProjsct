@@ -500,7 +500,7 @@ iframe {height: 100%;left: 0;position: absolute;top: 0;width: 100%;}
 .choice-wrapper {border: 1px solid #e3e3e3;border-radius: 2px;}
 .choice-title {font-size: 1.6rem;font-weight: 500;padding-bottom: 10px;}
 .choice-box {display: inline-block;min-height: 100%;font-size:1.2rem;/*border-width:1px 0 1px 1px;margin-bottom: 20px;*/vertical-align: top;width: 19.7%;}
-.choice-we>.choice-box:last-child{margin:0 auto}
+/*.choice-we>.choice-box:last-child{margin:0 auto}*/
 .choice-cont {line-height: 24px;}
 .choice-cont ul li{border-bottom: 1px dashed #ddd;margin: 4px;line-height: 1.8;}
 .choice-cont ul li:last-child{border-bottom: 0px dashed #ddd;}

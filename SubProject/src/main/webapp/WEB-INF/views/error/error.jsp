@@ -12,13 +12,14 @@
           방문 원하시는 페이지의 주소가 잘못 입력되었거나,<br>
           변경 혹은 삭제되어 요청하신 페이지를 찾을 수가 없습니다.</p>
         <p class="inspect-text"><em>입력하신 페이지의 주소가 정확한지 다시 한번 확인해 주시기 바랍니다.</em></p>
+        
+        <div class="btn-group pt30">
+			<button type="button" class="button btn-success" onclick="javascript:history.back();">
+				이전화면으로 이동
+			</button>
+		</div>
       </div>
     </section>
     <!-- E_본문-->
   </div>
 </body>
-<script>
-$(function() {
-
-});
-</script>
