@@ -137,7 +137,6 @@ var grade = [];
     
     function chkClick(that){
    		var id = $(that).attr('id');
-   		console.log(id);
    		if($('.checkbox_'+id.split('-')[0]).is(':checked')){
 	   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
    		}
@@ -219,7 +218,6 @@ var grade = [];
         	}
         	isAlert = true;
         }
-        console.log(gradeResult);
         if(chkCnt == $('.choice-title').length){
         	var gradeNum = 0;
         	gradeResult.forEach(function(item){
@@ -274,11 +272,8 @@ var grade = [];
 						<div class="justify-content-between pt30">
 							<div class="form-group">
 								<div class="form-inline">
-									<label for="" class="form-label02">갱신일 : </label> <input
-										type="text" class="text-input border-line"
-										style="width: 100px"
-										value="${dayList.revisionYear}년 ${dayList.revisionMonth}월"
-										readonly="readonly">
+									<label for="" class="form-label02">갱신일 : </label>
+									<input type="text" class="text-input border-line" style="width: 100px" value="${dayList.revisionYear}년 ${dayList.revisionMonth}월" readonly="readonly">
 								</div>
 								<div class="form-inline">
 									<label for="" class="form-label02">포장지유형 </label> <select
