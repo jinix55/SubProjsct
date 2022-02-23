@@ -7,7 +7,7 @@
 	<input type="hidden" id="smallCategory" name="smallCategory" value="${setSmallCategory }">
 	<input type="hidden" id="smallCategoryNm" name="smallCategoryNm" value="${setSmallCategoryNm }">
 	<div class="d-flex code-edit">
-		<p class="pt10 pr10">ㆍ갱신일</p>
+		<p>ㆍ갱신일</p>
 		<select class="select-box select-box-border2 w150" id="revision" name="revision">
 			<c:forEach items="${dayList }" var="list">
 				<option value="${list.revisionYear}-${list.revisionMonth}" <c:if test="${setRevision eq list.revision}">selected</c:if>>${list.revisionYear}년 ${list.revisionMonth}월</option>
@@ -21,8 +21,8 @@
 				<div class="content" style="padding-top: 0;">
 					<div class="d-flex panel" style="position: relative;">
 					<h4 class="code-tit title-s">재질 > <em>부위구분</em></h4>
-						<div class="d-flex" style="position: absolute;right: 5px;top:5px;">
-						<span class="pt10 pr10">ㆍ재질</span>
+						<div class="d-flex" style="position: absolute;right: 5px;top:8px;">
+						<span style="margin: 6px 0 0 0;padding-right: 10px">ㆍ재질</span>
 						<select class="select-box w150" id="largeCategory" name="largeCategory">
 							<c:forEach items="${largeCodeList }" var="list" varStatus="status">
 								<option value="${list.codeId }" <c:if test="${setLargeCategory eq list.codeId }">selected</c:if>>${list.codeNm }</option>
@@ -32,7 +32,7 @@
 					</div>
 					<!-- S_그리드-->
 					<div class="content-table">
-						<div class="scroll-auto h600auto">
+						<div class="scroll-auto">
 							<table class="table">
 								<colgroup>
 									<col style="width: 40px;">

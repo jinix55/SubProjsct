@@ -34,11 +34,11 @@
 				<colgroup>
 					<col style="width: 30px;">
 					<col style="width: 100px;">
-					<col style="width: 180px;">
+					<col style="width: 200px;">
 					<col style="width: 100px;">
 					<col style="width: 80px;">
 					<col style="width: 100px;">
-					<col style="width: 90px;">
+					<col style="width: 70px;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
@@ -224,7 +224,6 @@
 									<col style="width: 10%;">
 									<col style="width: 20%;">
 									<col style="width: 20%;">
-									<col style="width: 5%;">
 								</colgroup>
 								<thead>
 									<tr class="th-bg">
@@ -237,7 +236,7 @@
 								</thead>
 								<tbody id="managerTable">
 									<tr>
-										<td colspan="6">등록된 담당자가 없습니다.</td>
+										<td colspan="5">등록된 담당자가 없습니다.</td>
 									</tr>
 								</tbody>
 							</table>

@@ -284,7 +284,7 @@
 			</h4>
 			<div class="row">
 				<div class="col-100 mb10">
-					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk" style="margin: 0;">대표 적용
+					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk" style="margin-left: 0;">대표 적용
 				</div>
 				<div class="col-50">
 					<div class="form-group">

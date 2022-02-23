@@ -15,7 +15,7 @@
 					<h4 class="code-tit title-s panel">분류그룹등록 > <em>대분류</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
-						<div class="scroll-auto h600auto">
+						<div class="scroll-auto">
 							<table class="table">
 								<colgroup>
 									<col style="width: 40px;">

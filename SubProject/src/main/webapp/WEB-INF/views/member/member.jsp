@@ -129,7 +129,7 @@
 <form id="frm">
 <div id="register" class="modal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 800px">
+	<div class="modal-content" style="width: 810px">
 		<div class="modal-header">
 			<h4 class="modal-title">등록</h4>
 			<button type="button" class="close" data-dismiss="modal">

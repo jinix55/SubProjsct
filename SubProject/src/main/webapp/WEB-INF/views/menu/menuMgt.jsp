@@ -117,7 +117,7 @@
 	            }
 	            var classColor = '';
 	            if(nodeValues[7] == 'N'){
-	            		classColor = 'backColorRed';
+	            		classColor = 'menu-ov';
 	            }
 	            document.write("<a id='ad"+nodeValues[0]+"' class='"+classColor+"' href=javascript:choiceNodes('" + i + "');>");
 	            if (hasChildNode) {

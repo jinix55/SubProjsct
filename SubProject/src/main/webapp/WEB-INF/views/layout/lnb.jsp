@@ -33,7 +33,7 @@
 						<li data-menu="UserMgt" <c:if test="${subMenu.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu.menuUrl}" title="${subMenu.menuNm}"><span class="hexagon"></span>${subMenu.menuNm}</a></li>
 					</c:if>
 					<c:set var="menuhg" value="0" />
-					<c:set var="menuHginit" value="44" />
+					<c:set var="menuHginit" value="45" />
 					<c:forEach var="menuGpCnt" items="${menuGpCnt}" varStatus="status2">
 						<c:if test="${menuGpCnt.key eq subMenu.menuId && fn:startsWith(myUri,subMenu.menuUrl)}">
 							<c:set var="menuhg" value="${menuHginit * menuGpCnt.value}" />

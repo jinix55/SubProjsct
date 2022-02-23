@@ -132,13 +132,13 @@
 </div>
 
 <section class="menu-chat sidebar-animate" id="Sidebar">
-	<div class="modal-header">
+	<div class="modal-header" style="border-left: 2px solid;">
 		<h4 class="modal-title">권한별 메뉴 변경</h4>
 		<a href="javascript:layerPopupClose(sidebar_close);">
 			<img src="/images/icon_close.png">
 		</a>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body" style="border-left: 2px solid;">
 		<!-- 버튼 -->
 		<div class="modal-title rolsId">ROLE_SITE_ADMIN</div>
 		<div class="btn-group line-item">
