@@ -54,6 +54,11 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/code/{1}.jsp" />
 	</definition>
+	
+	<definition name="environPrice/*" extends="default-layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/environPrice/{1}.jsp" />
+	</definition>
 
 	<definition name="menu/*" extends="default-layout">
 		<put-attribute name="body"

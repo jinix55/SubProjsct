@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.environPrice.mapper.EnvironPriceMapper">
+
+	<sql id="paging">
+		limit #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectGroupIdList" resultType="com.portal.adm.environPrice.model.EnvironPriceModel" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, CODE_NM
+			, CODE_DSC
+			, UNIT
+			, RECYCL_DUTY_RATE
+			, UNIT_PRICE
+			, PREMIUM
+			, DISCOUNT
+			, OTHER1
+			, OTHER2
+			, OTHER3
+			, ORD_SEQ
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM T_ENVIRON_PRICE
+		where GROUP_ID = #{groupId}
+		ORDER BY ROWNUM ASC
+		<include refid="paging"></include>
+	</select>
+
+	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		select
+			count(*)
+		from
+			T_ENVIRON_PRICE
+		where
+			group_id = #{groupId}
+	</select>
+
+	<select id="selectGroupIdAllList" resultType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		select
+			row_number() over (order by ord_seq ASC) as rownum,
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, CODE_NM
+			, CODE_DSC
+			, UNIT
+			, RECYCL_DUTY_RATE
+			, UNIT_PRICE
+			, PREMIUM
+			, DISCOUNT
+			, OTHER1
+			, OTHER2
+			, OTHER3
+			, ORD_SEQ
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		from
+			T_ENVIRON_PRICE
+		where
+			group_id = #{groupId}
+		order by rownum
+	</select>
+
+	<select id="select" resultType="com.portal.adm.environPrice.model.EnvironPriceModel" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		select
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, CODE_NM
+			, CODE_DSC
+			, UNIT
+			, RECYCL_DUTY_RATE
+			, UNIT_PRICE
+			, PREMIUM
+			, DISCOUNT
+			, OTHER1
+			, OTHER2
+			, OTHER3
+			, ORD_SEQ
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		from
+			T_ENVIRON_PRICE
+		where
+			group_id = #{groupId}
+		and
+			code_id = #{codeId}
+	</select>
+
+	<insert id="insert" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		insert into T_ENVIRON_PRICE (
+			GROUP_ID
+			, CODE_ID
+			, CODE_KEY
+			, CODE_NM
+			, CODE_DSC
+			, UNIT
+			, RECYCL_DUTY_RATE
+			, UNIT_PRICE
+			, PREMIUM
+			, DISCOUNT
+			, OTHER1
+			, OTHER2
+			, OTHER3
+			, ORD_SEQ
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) values (
+			#{groupId}
+			, #{codeId}
+			, #{codeKey}
+			, #{codeNm}
+			, #{codeDsc}
+			, #{unit}
+			, #{recyclDutyRate}
+			, #{unitPrice}
+			, #{premium}
+			, #{discount}
+			, #{other1}
+			, #{other2}
+			, #{other3}
+			, #{ordSeq}
+			, #{useYn}
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+
+	<update id="update" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		update T_ENVIRON_PRICE
+		set
+			CODE_KEY = #{codeKey}
+			, CODE_NM = #{codeNm}
+			, CODE_DSC = #{codeDsc}
+			, UNIT = #{unit}
+			, RECYCL_DUTY_RATE = #{recyclDutyRate}
+			, UNIT_PRICE = #{unitPrice}
+			, PREMIUM = #{premium}
+			, DISCOUNT = #{discount}
+			, OTHER1 = #{other1}
+			, OTHER2 = #{other2}
+			, OTHER3 = #{other3}
+			, MODI_DT = now()
+			, MODI_ID = #{modiId}
+			, USE_YN = #{useYn}
+			, ORD_SEQ = #{ordSeq}
+		where
+			group_id = #{groupId}
+		and
+			code_id = #{codeId}
+	</update>
+
+	<update id="delete" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		update T_ENVIRON_PRICE
+		set
+			use_yn = 'N'
+		where
+			group_id = #{groupId}
+		and
+			code_id = #{codeId}
+	</update>
+
+	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		select count(*)
+		from T_ENVIRON_PRICE
+		where group_id = #{codeId}
+		and use_yn = 'Y'
+	</select>
+</mapper>
