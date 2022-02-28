@@ -1405,6 +1405,65 @@ ALTER TABLE T_PROD_PACK_SELF ADD CONSTRAINT T_PROD_PACK_SELF_PK PRIMARY KEY(SELF
 TRUNCATE TABLE T_PROD_PACK_SELF;
 
 
+
+-- 공통 환경부담금 단가
+DROP TABLE IF EXISTS T_ENVIRON_PRICE CASCADE;
+CREATE TABLE IF NOT EXISTS T_ENVIRON_PRICE (
+    GROUP_ID VARCHAR(64) NOT NULL COMMENT '그룹 ID'
+  , CODE_ID VARCHAR(64) NOT NULL COMMENT '코드 ID'
+  , CODE_KEY VARCHAR(16) COMMENT '코드 키'
+  , CODE_NM VARCHAR(256) NOT NULL COMMENT '코드 명'
+  , CODE_DSC VARCHAR(1000) COMMENT '코드 설명'
+  , UNIT VARCHAR(16) COMMENT '단위'
+  , RECYCL_DUTY_RATE VARCHAR(16) COMMENT '재활용의무율'
+  , UNIT_PRICE VARCHAR(16) COMMENT '단가'
+  , PREMIUM VARCHAR(16) COMMENT '할증'
+  , DISCOUNT VARCHAR(16) COMMENT '할인'
+  , OTHER1 VARCHAR(16) COMMENT '기타1'
+  , OTHER2 VARCHAR(16) COMMENT '기타2'
+  , OTHER3 VARCHAR(16) COMMENT '기타3'
+  , ORD_SEQ NUMERIC(5,0) COMMENT '정렬 순서'
+  , USE_YN VARCHAR(1) COMMENT '사용 여부'
+  , RGST_ID VARCHAR(32) NOT NULL COMMENT '등록 ID'
+  , RGST_DT TIMESTAMP NOT NULL COMMENT '등록 일시'
+  , MODI_ID VARCHAR(32) NOT NULL COMMENT '수정 ID'
+  , MODI_DT TIMESTAMP NOT NULL COMMENT '수정 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '환경부담금 단가[환경부담금 단가]';
+ALTER TABLE T_ENVIRON_PRICE ADD CONSTRAINT T_ENVIRON_PRICE_PK PRIMARY KEY(GROUP_ID,CODE_ID);
+-- CREATE INDEX T_ENVIRON_PRICE_IX1 ON T_ENVIRON_PRICE(GROUP_ID,CODE_ID);
+
+TRUNCATE TABLE T_ENVIRON_PRICE;
+INSERT INTO T_ENVIRON_PRICE (GROUP_ID,CODE_ID,CODE_KEY,CODE_NM,CODE_DSC,UNIT,RECYCL_DUTY_RATE,UNIT_PRICE,PREMIUM,DISCOUNT,OTHER1,OTHER2,OTHER3,ORD_SEQ,USE_YN,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
+('GROUP_ID','PA','PA','종이팩','종이팩',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','GL','GL','유리병','유리병',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','CA','CA','금속캔','금속캔',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','SY','SY','발포합성수지','발포합성수지',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'4','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','PO','PO','PSP','PSP',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'5','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','PV','PV','PVC','PVC',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'6','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','PE','PE','PET병','PET병',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'7','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','TR','TR','기타합성수지','기타합성수지',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'8','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GROUP_ID','OT','OT','합성수지필름류','합성수지필름류',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'9','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PA','PA_01','01','일반팩','일반팩','KG','0.268','243',NULL,NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PA','PA_02','02','멸균팩','멸균팩','KG','0.268','296',NULL,NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('GL','GL_01','01','유리병','유리병','KG','0.171','37','20',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('CA','CA_01','01','철캔','철캔','KG','0.843','88','20',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('CA','CA_02','02','알루미늄캔','알루미늄캔','KG','0.807','138',NULL,NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('SY','SY_01','01','전자','전자','KG','0.844','69','15',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('SY','SY_02','02','가공,농산물,의약품','가공,농산물,의약품','KG','0.844','79','15',NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('SY','SY_03','03','기타(EPP,EPE등)','기타(EPP,EPE등)','KG','0.844','264','15',NULL,NULL,NULL,NULL,'3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PO','PO_01','01','PSP','PSP','KG','0.523','308','15',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PV','PV_01','01','PVC','PVC','KG','0.85','945',NULL,NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PE','PE_01','01','단일무색','단일무색','KG','0.8','148','20',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PE','PE_02','02','단일유색','단일유색','KG','0.851','246','20',NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('PE','PE_03','03','복합재질','복합재질','KG','0.851','375','20',NULL,NULL,NULL,NULL,'3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('TR','TR_01','01','PET재질','PET재질','KG','0.863','222','15',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('TR','TR_02','02','PET재질 이외','PET재질 이외','KG','0.863','104','20',NULL,NULL,NULL,NULL,'2','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('TR','TR_03','03','복합재질 및 필름〮시트형','복합재질 및 필름〮시트형','KG','0.859','354','10',NULL,NULL,NULL,NULL,'3','Y','SYSTEM',NOW(),'SYSTEM',NOW()),
+('OT','OT_01','01','합성수지재질 필름퓨','합성수지재질 필름퓨','KG','0.859','354','20',NULL,NULL,NULL,NULL,'1','Y','SYSTEM',NOW(),'SYSTEM',NOW());
+
+
+
+
 -- 데이터
  -- -------------------------------------------------------------------------------------------------
 
@@ -1628,7 +1687,8 @@ INSERT INTO T_GROUP_AUTH (AUTH_ID,COMPANY_CODE,AUTH_CL,AUTH_NM,AUTH_DSC,USE_YN,R
 -- 그룹 메뉴
 TRUNCATE TABLE T_GROUP_MENU;
 INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,MENU_SE,MENU_ATTR,USE_YN,ICON_NM,RGST_ID,RGST_DT,MODI_ID,MODI_DT) VALUES
-('mn5000000','mn5000001','비밀번호 변경','/member/pwdChange','','0','F','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn4000001','mn5000001','사용자 정보 변경','/member/userInfoChange','','0','F','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn4000002','mn5000001','비밀번호 변경','/member/pwdChange','','0','F','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000001',NULL,'HOME','/','','1','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000002','mn5000001','계정관리','/member','','2','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','user','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000003','mn5000002','계정관리','/member/member','','3','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
@@ -1638,32 +1698,34 @@ INSERT INTO T_GROUP_MENU (MENU_ID,UP_MENU_ID,MENU_NM,MENU_URL,MENU_DSC,ORD_SEQ,M
 ('mn5000007','mn5000004','공통 코드 관리','/system/code','','7','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000008','mn5000004','제품 코드 관리','/system/packagingCode','','8','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
 ('mn5000009','mn5000004','환경부 코드 관리','/system/environmentCode','','9','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000010','mn5000004','휴일관리','/system/holiday','','10','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000011','mn5000001','메뉴관리','/menu','','11','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000012','mn5000011','메뉴관리','/menu/menu','','12','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000013','mn5000011','레포트관리','/menu/report','','13','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000014','mn5000001','공급 업체','/supplier','','14','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','myself','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000015','mn5000014','공급 업체 관리','/supplier/supplier','공급 업체 관리','15','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000016','mn5000001','로그관리','/log','','16','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000017','mn5000016','로그인이력관리','/log/loginHst','','17','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000018','mn5000016','작업이력관리','/log/jobHst','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000019','mn5000001','게시판관리','/board','','19','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','N','board','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000020','mn5000019','공지사항','/board/notice','','20','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000021','mn5000019','FAQ','/board/faq','','21','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000022','mn5000019','QNA','/board/qna','','22','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000023','mn5000001','알람관리','/alarm','','23','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000024','mn5000023','알람관리','/alarm/alarm','','24','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000025','mn5000001','상품','/product','','25','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','pro','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000026','mn5000025','공급 업체','/product/supplier','','26','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000027','mn5000025','상품 관리','/product/prodList','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000028','mn5000025','상품 이미지','/product/prodImage','','28','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000029','mn5000001','레포트','/report','레포트','29','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000030','mn5000029','A회사 레포트 1번','/report/reportView/test01','레포트 화면','30','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000031','mn5000029','A회사 레포트 2번','/report/reportView/rp2100010','','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000032','mn5000029','A회사 레포트 3번','/report/reportView/rp2100011','','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000033','mn5000029','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
-('mn5000034','mn5000029','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
-('mn5000035','mn5000029','C회사 레포트 1번','/report/reportView/3','','35','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000010','mn5000004','환경부담금 단가','/system/environPrice','','10','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000011','mn5000004','휴일관리','/system/holiday','','11','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000012','mn5000001','메뉴관리','/menu','','12','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','menu','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000013','mn5000012','메뉴관리','/menu/menu','','13','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000014','mn5000012','레포트관리','/menu/report','','14','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000015','mn5000001','공급 업체','/supplier','','15','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','myself','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000016','mn5000015','공급 업체 관리','/supplier/supplier','공급 업체 관리','16','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000017','mn5000001','로그관리','/log','','17','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','N','loglist','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000018','mn5000017','로그인이력관리','/log/loginHst','','18','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000019','mn5000017','작업이력관리','/log/jobHst','','19','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000020','mn5000001','게시판관리','/board','','20','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','N','board','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000021','mn5000020','공지사항','/board/notice','','21','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000022','mn5000020','FAQ','/board/faq','','22','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000023','mn5000020','QNA','/board/qna','','23','M','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000024','mn5000001','알람관리','/alarm','','24','A','{"attr":{"insert":true,"update":true,"delete":true,"detail":true}}','Y','alarm','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000025','mn5000024','알람관리','/alarm/alarm','','25','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000026','mn5000001','상품','/product','','26','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','pro','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000027','mn5000026','공급 업체','/product/supplier','','27','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000028','mn5000026','상품 관리','/product/prodList','','28','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000029','mn5000026','상품 이미지','/product/prodImage','','29','M','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000030','mn5000001','레포트','/report','레포트','30','A','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','chat','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000031','mn5000030','A회사 레포트 1번','/report/reportView/test01','레포트 화면','31','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000032','mn5000030','A회사 레포트 2번','/report/reportView/rp2100010','','32','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000033','mn5000030','A회사 레포트 3번','/report/reportView/rp2100011','','33','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000034','mn5000030','B회사  레포트 1번','/report/reportView/1','B회사 레포트1번','34','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW()),
+('mn5000035','mn5000030','B회사 레포트 2번','/report/reportView/2','B회사 레포트2번','35','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+('mn5000036','mn5000030','C회사 레포트 1번','/report/reportView/3','','36','L','{"attr":{"insert":true,"update":true,"detail":true,"delete":true}}','Y','','SYSTEM',NOW(),'SYSTEM',NOW());
+
 
 
 
