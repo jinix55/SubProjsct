@@ -196,6 +196,8 @@ public interface Constant {
 		public static final String SUPPLIER = "sp";
 		//공급업체 담당자
 		public static final String MANAGER = "mg";
+		//공급업체 담당자
+		public static final String PACKAGING = "pa";
 		
 	}
 	

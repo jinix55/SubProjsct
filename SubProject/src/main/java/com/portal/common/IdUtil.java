@@ -189,4 +189,11 @@ public class IdUtil {
 	public String getManagerId() {
 		return service.getId(Constant.ID.MANAGER);
 	}
+	
+	/**
+	 * 알람 ID : 패키징 ID
+	 */
+	public String getPackagingId() {
+		return service.getId(Constant.ID.PACKAGING);
+	}
 }
