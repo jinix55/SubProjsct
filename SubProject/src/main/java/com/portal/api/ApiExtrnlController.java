@@ -27,6 +27,7 @@ import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.api.service.ApiExtrnlService;
+import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 import com.portal.mail.MailUtil;
 
@@ -46,6 +47,9 @@ public class ApiExtrnlController {
     
     @Resource
     private MailUtil mailUtil;
+    
+    @Resource
+    private IdUtil idUtil;
     
     @Resource
     private EnvironmentCodeService environmentCodeService;
@@ -94,7 +98,7 @@ public class ApiExtrnlController {
         extrnlModel.setManagerId(managerId);
         extrnlModel.setManagerNm(managerNm);
         extrnlModel.setManagerMail(managerMail);
-        extrnlModel.setPackagingId("test1");
+        extrnlModel.setPackagingId(idUtil.getPackagingId());
         extrnlModel.setRgstId(authUser.getMemberModel().getUserId());
         extrnlModel.setModiId(authUser.getMemberModel().getUserId());
         
