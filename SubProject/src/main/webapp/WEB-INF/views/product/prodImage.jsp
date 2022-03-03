@@ -56,7 +56,7 @@
 					</ul>
 				</div>
 				<div class="img-bottom tc">
-						<button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+						<button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
 				 </div>
 		 	</div>
 
@@ -73,7 +73,7 @@
 					 </ul>
 				 </div>
 				 <div class="img-bottom tc">
-						 <button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+						 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
 					</div>
 				</div>
 			<div class="img-box">
@@ -89,7 +89,7 @@
 					</ul>
 				</div>
 				<div class="img-bottom tc">
-						<button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+						<button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
 				 </div>
 		 	</div>
 		 <div class="img-box">
@@ -105,7 +105,7 @@
 				 </ul>
 			 </div>
 			 <div class="img-bottom tc">
-					 <button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
 				</div>
 			</div>
 			<div class="img-box">
@@ -121,7 +121,7 @@
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
- 					 <button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+ 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
  				</div>
  			</div>
 			<div class="img-box">
@@ -137,7 +137,7 @@
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
- 					 <button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+ 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
  				</div>
  			</div>
 			<div class="img-box">
@@ -153,7 +153,7 @@
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
- 					 <button type="button" class="button btn-cancel" data-dismiss="modal">상세</button>
+ 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
  				</div>
  			</div>
 		</div>
