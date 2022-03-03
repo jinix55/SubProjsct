@@ -53,32 +53,43 @@
 				</thead>
 
 				<tbody>
-					<c:forEach items="${suppliers }" var="list" varStatus="status">
-						<tr>
-							<th>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</th>
-							<td>${list.supplierCode}</td>
-							<td>${list.supplierNm}</td>
-							<td>${list.supplierNo}</td>
-							<td>${list.representativeNm}</td>
-							<td>
-								<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point">
-									<img src="/images/icon_user2.png"> ${list.managementNm }
-								</a>
-							</td>
-							<td>
-								<div class="btn-group">
-									<a href="#edit" role="button" data-toggle="modal"
-										onclick="detailView('${list.supplierId}');" class="btn-icon">
-										<img src="/images/icon_edit.png" alt="상세보기" class="btn-Ticon">
-									</a> <a href="#delete" role="button" data-toggle="modal"
-										onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"
-										class="btn-icon"> <img src="/images/icon_delete2.png"
-										alt="삭제하기" class="btn-Ticon02">
-									</a>
-								</div>
-							</td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${not empty suppliers }">
+							<c:forEach items="${suppliers }" var="list" varStatus="status">
+								<tr>
+									<th>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</th>
+									<td>${list.supplierCode}</td>
+									<td>${list.supplierNm}</td>
+									<td>${list.supplierNo}</td>
+									<td>${list.representativeNm}</td>
+									<td>
+										<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point">
+											<img src="/images/icon_user2.png"> ${list.managementNm }
+										</a>
+									</td>
+									<td>
+										<div class="btn-group">
+											<a href="#edit" role="button" data-toggle="modal"
+												onclick="detailView('${list.supplierId}');" class="btn-icon">
+												<img src="/images/icon_edit.png" alt="상세보기" class="btn-Ticon">
+											</a> <a href="#delete" role="button" data-toggle="modal"
+												onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"
+												class="btn-icon"> <img src="/images/icon_delete2.png"
+												alt="삭제하기" class="btn-Ticon02">
+											</a>
+										</div>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="7">
+									등록된 업체가 없습니다.
+								</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 		</div>
