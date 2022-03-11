@@ -67,13 +67,17 @@
 			</div>
 			<div class="col-50">
 				<div class="form-group">
-					<div class="col-100">
-						<div class="pwdChangeBtn">
-							<button type="button" class="button btn-pwdChange" onclick="location.href='/member/pwdChange';" data-dismiss="modal">비밀번호 변경</button>
-						</div>
+					<label class="col-25 form-label">비밀번호</label>
+					<div class="col-75">
+							<button type="button" class="btn-search" onclick="location.href='/member/pwdChange';">비밀번호 변경
+							</button>
+						<!-- <div class="form-input-box">
+							<button type="button" class="btn-form-small" onclick="location.href='/member/pwdChange';" data-dismiss="modal">비밀번호 변경</button>
+						</div> -->
 					</div>
 				</div>
 			</div>
+			
 			<%--<div class="col-50">
 				<div class="form-group">
 					<label class="col-25 form-label">본부</label>
@@ -157,6 +161,7 @@
 			alert('이름를 입력해 주세요.');
 			return false;
 		}
+		
 		if ($('#phone1').val() == '') {
 			alert('연락처를 입력해 주세요.');
 			return false;

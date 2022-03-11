@@ -27,9 +27,6 @@
 	overflow: hidden;
 }
 
-.btn-group, .btn-Tgroup {
-	padding: 20px 20px;
-}
 </style>
 <script type="text/javascript">
 var grade = [];
@@ -76,7 +73,7 @@ var grade = [];
           $('body').append(
             $('<div>').attr({
               id: uniqueId
-            }).addClass('my_tootip').addClass(option.class).append(contents)
+            }).addClass('my-tootip').addClass(option.class).append(contents)
           );
         }
         var position = _type(option.type, $(this).offset(), $(this).css('width'), $(this).css('height'), $('#' +
@@ -223,26 +220,26 @@ var grade = [];
         	gradeResult.forEach(function(item){
 		        if(item == 'A'){
 		        	if(gradeNum < 1){
-			        	$('.fz').text('최우수');
-			        	$('.fz').css('color','black');
+			        	$('.rating').text('최우수');
+			        	$('.rating').css('color','black');
 			        	gradeNum = 1;
 		        	}
 		        }else if(item == 'B'){
 		        	if(gradeNum < 2){
-			        	$('.fz').text('우수');
-			        	$('.fz').css('color','black');
+			        	$('.rating').text('우수');
+			        	$('.rating').css('color','black');
 			        	gradeNum = 2;
 		        	}
 		        }else if(item == 'C'){
 		        	if(gradeNum < 3){
-			        	$('.fz').text('보통');
-			        	$('.fz').css('color','black');
+			        	$('.rating').text('보통');
+			        	$('.rating').css('color','black');
 			        	gradeNum = 3;
 		        	}
 		        }else if(item == 'D'){
 		        	if(gradeNum < 4){
-			        	$('.fz').text('어려움');
-			        	$('.fz').css('color','red');
+			        	$('.rating').text('어려움');
+			        	$('.rating').css('color','red');
 			        	gradeNum = 4;
 		        	}
 		        }
@@ -273,7 +270,7 @@ var grade = [];
 							<div class="form-group">
 								<div class="form-inline">
 									<label for="" class="form-label02">갱신일 : </label>
-									<input type="text" class="text-input border-line" style="width: 100px" value="${dayList.revisionYear}년 ${dayList.revisionMonth}월" readonly="readonly">
+									<input type="text" class="text-input line-border" style="width: 100px" value="${dayList.revisionYear}년 ${dayList.revisionMonth}월" readonly="readonly">
 								</div>
 								<div class="form-inline">
 									<label for="" class="form-label02">포장지유형 </label> <select
@@ -293,11 +290,11 @@ var grade = [];
 							<h2 class="choice-title" id="${list.codeId }">
 								<span class="title-point">[${list.codeNm }]</span>
 							</h2>
-							<div style="min-height: 180px; max-height: auto; padding-bottom: 20px;">
+							<div style="min-height: 230px; max-height: auto; padding-bottom: 20px;border: 1px solid #e3e3e3;">
 								<c:forEach items="${smallCodeList}" var="listLow">
 									<c:if test="${listLow.groupId eq list.codeId }">
 										<div class="choice-box">
-											<h4 class="line-br">재활용-${listLow.codeNm}</h4>
+											<h4 class="box-tit-bg">재활용-${listLow.codeNm}</h4>
 											<div class="choice-cont">
 												<ul>
 													<c:forEach items="${lastCodeList }" var="lalist"
@@ -327,7 +324,7 @@ var grade = [];
 									</c:if>
 								</c:forEach>
 								<div class="choice-box" style="float: right;">
-									<h4 class="line-br">필요서류</h4>
+									<h4 class="box-tit-bg">필요서류</h4>
 									<div class="choice-cont">
 										<ul>
 											<li><input type="checkbox"
@@ -381,7 +378,7 @@ var grade = [];
 				<div class="row">
 					<div class="col-100">
 						<div class="form-group">
-							<div class="fz">양호</div>
+							<div class="rating">양호</div>
 						</div>
 					</div>
 				</div>

@@ -12,7 +12,7 @@
 		<div class="pack-left-wrap">
 			<div class="left-area">
 				<div class="content" style="padding-top: 0;">
-					<h4 class="code-tit title-s panel">분류그룹등록 > <em>대분류</em></h4>
+					<h4 class="code-tit subtitle panel">분류그룹등록 > <em>대분류</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">
@@ -41,11 +41,11 @@
 													<td>${list.codeNm }</td>
 													<td>
 														<div class="btn-group">
-															<a id="setLarge_${list.codeId }" upId="setLarge_${list.groupId }" nm="${list.codeNm }" codeKey="${list.codeKey }" codeDsc="${list.codeDsc }" ordSeq="${list.ordSeq }" href="#coderegister_b" role="button" onclick="largeViewSet(this);" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+															<a id="setLarge_${list.codeId }" upId="setLarge_${list.groupId }" nm="${list.codeNm }" codeKey="${list.codeKey }" codeDsc="${list.codeDsc }" ordSeq="${list.ordSeq }" href="#coderegister_b" role="button" onclick="largeViewSet(this);" data-toggle="modal">
+																<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 															</a>
-															<a href="#delete" role="button" onclick="deleteLargeSet('${list.groupId}','${list.codeId}');" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+															<a href="#delete" role="button" onclick="deleteLargeSet('${list.groupId}','${list.codeId}');" data-toggle="modal">
+																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 															</a>
 														</div>
 													</td>
@@ -79,7 +79,7 @@
 		<div class="pack-right-wrap">
 			<div class="right-area">
 				<div class="content" style="padding-top: 0;">
-					<h4 class="code-tit title-s panel">분류그룹등록 > <em>중분류</em></h4>
+					<h4 class="code-tit subtitle panel">분류그룹등록 > <em>중분류</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">
@@ -109,15 +109,15 @@
 													<td class="text-point">${list.codeId }</td>
 													<td>${list.codeNm }</td>
 <!-- 													<td> -->
-<%-- 														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall" onclick="smallCode(this);">내용 관리</a> --%>
+<%-- 														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="btn-small02" onclick="smallCode(this);">내용 관리</a> --%>
 <!-- 													</td> -->
 													<td>
 														<div class="btn-group">
-															<a id="setMid_${list.codeId }" nm="${list.codeNm }" upId="setMid_${list.groupId }" codeKey="${list.codeKey }" ordSeq="${list.ordSeq }" codeDsc="${list.codeDsc }" onclick="middleViewSet(this);" href="#coderegister_m" role="button" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+															<a id="setMid_${list.codeId }" nm="${list.codeNm }" upId="setMid_${list.groupId }" codeKey="${list.codeKey }" ordSeq="${list.ordSeq }" codeDsc="${list.codeDsc }" onclick="middleViewSet(this);" href="#coderegister_m" role="button" data-toggle="modal">
+																<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 															</a>
-															<a onclick="deleteMiddleSet('${list.groupId}','${list.codeId}');" href="#delete" role="button" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+															<a onclick="deleteMiddleSet('${list.groupId}','${list.codeId}');" href="#delete" role="button" data-toggle="modal">
+																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 															</a>
 														</div>
 													</td>

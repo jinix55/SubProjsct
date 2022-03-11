@@ -15,10 +15,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> <span
 							class="search-box-append searchKeyword">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -65,7 +65,7 @@
 						<th scope="col">사용자 이름</th>
 						<th scope="col">그룹 ID</th>
 						<th scope="col">등록일</th>
-						<th scope="col">사용유무</th>
+						<th scope="col">사용여부</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -81,15 +81,15 @@
 							<td>
 							<c:choose>
 								<c:when test="${member.useYn eq 'Y' }">
-									<button type="button" class="button-yes">YES</button>
+									<button type="button" class="btn-yes">YES</button>
 								</c:when>
 								<c:otherwise>
 									<c:choose>
 									<c:when test="${member.lockYn eq 'Y' }">
-										<button type="button" class="button-no backColorRed">Lock</button>
+										<button type="button" class="btn-no backColorRed">Lock</button>
 									</c:when>
 									<c:otherwise>
-										<button type="button" class="button-no">NO</button>
+										<button type="button" class="btn-no">NO</button>
 									</c:otherwise>
 									</c:choose>
 								</c:otherwise>
@@ -97,11 +97,11 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${member.userId}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+									<a href="#register" onclick="detailView('${member.userId}');" role="button" data-toggle="modal">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 									</a>
-									<a href="#delete" onclick="deleteSet('${member.userId}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+									<a href="#delete" onclick="deleteSet('${member.userId}');" role="button" data-toggle="modal">
+										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 									</a>
 								</div>
 							</td>
@@ -163,9 +163,9 @@
 						<label class="col-25 form-label">사용자 ID<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="userId" name="userId" type="text" class="text-input" placeholder="ID를 입력해 주세요">
+								<input id="userId" name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요">
 								<span class="search-box-append">
-									<button type="button" class="button-search" id="idSearch">
+									<button type="button" class="btn-search" id="idSearch">
 										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
 									</button>
 								</span>
@@ -249,12 +249,12 @@
 						<label class="col-25 form-label">잠금상태</label>
 						<div class="col-75">
 							<div class="form-input-box">
-<!-- 								<button type="button" id="lockYn" name ="lockYn" class="button-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
-								<div class="button-Rsmall d-inblock">
+<!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
+								<div class="btn-form-small">
 									<input id="lockY" name="lockYn" type="radio" value="Y">
 									<label for="lockY" class="mr05">활성화</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="lockN" name="lockYn" type="radio" value="N">
 									<label for="lockN" class="mr05">비활성화</label>
 								</div>
@@ -267,11 +267,11 @@
 						<label class="col-25 form-label">기한적용</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="dtLimitY" name="dtLimitYn" type="radio" value="Y">
 									<label for="dtLimitY" class="mr05">적용</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="dtLimitN" name="dtLimitYn" type="radio" value="N">
 									<label for="dtLimitN" class="mr05">미적용</label>
 								</div>
@@ -284,13 +284,13 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useY" name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">사용</label>
+									<label for="useY" class="mr05">YES</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useN" name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">미사용</label>
+									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
 						</div>
@@ -340,9 +340,9 @@
 						<label class="col-25 form-label">사용자 ID<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="re_userId" name="re_userId" type="text" class="text-input">
+								<input id="re_userId" name="re_userId" type="text" class="text-input w-auto">
 								<span class="search-box-append">
-									<button id="re_idSearch" name="re_idSearch" type="button" class="button-search">
+									<button id="re_idSearch" name="re_idSearch" type="button" class="btn-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
@@ -380,7 +380,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold delName">PEuser01</em> 삭제하시겠습니까?
+							<em class="font-bold delName">PEuser01</em> 삭제하시겠습니까?
 						</div>
 					</div>
 				</div>
@@ -410,7 +410,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold">14 items selected</em><br />삭제하시겠습니까?
+							<em class="font-bold">14 items selected</em><br />삭제하시겠습니까?
 						</div>
 					</div>
 				</div>
@@ -531,12 +531,12 @@
 		$('#authId').val(authId);
 		$('#use'+useYn).prop('checked',true);
 // 		if(data.lockYn == 'Y'){
-// 			$('#lockYn').addClass('button-yes');
+// 			$('#lockYn').addClass('btn-yes');
 // 			$('#lockYn').text('Yes');
 // 			$('#lockYn').css('background','red');
 // 			$('#lockYn').css('cursor',' pointer');
 // 		}else{
-// 			$('#lockYn').addClass('button-no');
+// 			$('#lockYn').addClass('btn-no');
 // 			$('#lockYn').text('No');
 // 			$('#lockYn').css('background','darkgray');
 // 			$('#lockYn').css('background','darkgray');

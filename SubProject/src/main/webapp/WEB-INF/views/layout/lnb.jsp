@@ -65,9 +65,10 @@
 <!-- 				</li> -->
 <%-- 			</c:if> --%>
      	</ul>
+     	<span style="font-size:12px;position: absolute;bottom: 60px;"><a href="https://www.flaticon.com/kr/free-icons/" title="블로거 아이콘">블로거 아이콘  제작자: Freepik - Flaticon</a></span>
 		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
 			<div class="iScrollIndicator" style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);"></div>
-		</div>
+		</div>	
 	</nav>
 </section>
 				

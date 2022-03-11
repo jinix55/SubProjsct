@@ -15,10 +15,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input">
 						 <span class="search-box-append">
-							<button type="submit" class="button-search">
+							<button type="submit" class="btn-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -81,17 +81,17 @@
 							<td>${company.companyNo }</td>
 							<td><spring:eval expression="company.rgstDt" /></td>
 							<td>
-								<button type="button" class="button-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
+								<button type="button" class="btn-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 									</a>
 									<c:if test="${company.useYn eq 'Y'}">
 										<a href="#delete" data-nm="${company.companyNm }" data-id="${company.companyId }" data-code="${company.companyCode }" data-no="${company.companyNo }" role="button" data-toggle="modal"
-											class="btn-Ticon02 deleteBtnAction"><img src="/images/icon_delete2.png"
-											alt="삭제하기" class="btn-Ticon02">
+											class="btn-table-icon02 deleteBtnAction"><img src="/images/icon_delete2.png"
+											alt="삭제하기" class="btn-table-icon02">
 										</a>
 									</c:if>
 								</div>
@@ -141,9 +141,9 @@
 						<div class="col-75">
 							<div class="search-box">
 									<input id="reg_companyCode" name="reg_companyCode" type="text"
-										class="text-input eInput">
+										class="text-input eInput w-auto">
 									<span class="search-box-append">
-									<button id="codeSearch" name="codeSearch" type="button" class="button-search codeSearch">
+									<button id="codeSearch" name="codeSearch" type="button" class="btn-search codeSearch">
 										<a href="#overlap" class="codeSearchBtn" role="button" data-toggle="modal">중복확인</a>
 									</button>
 								</span>
@@ -217,20 +217,28 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">사용여부</label>
-						<div class="col-75">
-							<select id="reg_useYn" name="reg_useYn" class="select-box">
-								<option value="Y">예</option>
-								<option value="N">아니요</option>
-							</select>
-						</div>
-					</div>
-				</div>
 			</div>
 			<div class="row">
 				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">사용여부</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-form-small">
+									<input id="useY" name="useYn" type="radio" value="Y" checked="checked">
+									<label for="useY" class="mr05">YES</label>
+								</div>
+								<div class="btn-form-small">
+									<input id="useN" name="useYn" type="radio" value="N">
+									<label for="useN" class="mr05">NO</label>
+								</div>
+							</div>
+							<!--  <select id="reg_useYn" name="reg_useYn" class="select-box">
+								<option value="Y">예</option>
+								<option value="N">아니요</option>
+							</select> -->
+						</div>
+					</div>
 					<div class="form-group">
 						<label class="col-25 form-label-textarea">회사설명</label>
 						<div class="col-75">
@@ -276,9 +284,9 @@
 						<label class="col-25 form-label">회사 Code<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input type="text" class="text-input" id="re_reg_companyCode" name="re_reg_companyCode">
+								<input type="text" class="text-input w-auto" id="re_reg_companyCode" name="re_reg_companyCode">
 								<span class="search-box-append">
-									<button id="re_codeSearch" name="re_codeSearch" type="button" class="button-search">
+									<button id="re_codeSearch" name="re_codeSearch" type="button" class="btn-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
@@ -364,10 +372,20 @@
 					<div class="form-group">
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
-							<select id="useYn" name="useYn" class="select-box" disabled>
-								<option value="Y">예</option>
-								<option value="N">아니요</option>
-							</select>
+							<div class="form-input-box">
+								<div class="btn-form-small">
+									<input id="useY" name="useYn" type="radio" value="Y">
+									<label for="useY" class="mr05">YES</label>
+								</div>
+								<div class="btn-form-small">
+									<input id="useN" name="useYn" type="radio" value="N">
+									<label for="useN" class="mr05">NO</label>
+								</div>
+							</div>
+							<!-- <select id="useYn" name="useYn" class="select-box" disabled>
+								   <option value="Y">예</option>
+								   <option value="N">아니요</option>
+							//</select> -->
 						</div>
 					</div>
 				</div>
@@ -456,7 +474,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold delCompanyText">Company_ID01</em> 삭제합니다.
+							<em class="font-bold delCompanyText">Company_ID01</em> 삭제합니다.
 						</div>
 					</div>
 				</div>
@@ -485,7 +503,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold">14 items selected</em><br />삭제하시겠습니까?
+							<em class="font-bold">14 items selected</em><br />삭제하시겠습니까?
 						</div>
 					</div>
 				</div>

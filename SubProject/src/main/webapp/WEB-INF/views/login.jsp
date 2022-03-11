@@ -295,7 +295,7 @@
 					</form>
 				</div>
 			</div>
-			<div class="mt10">Copyright© PPlusEco. All Rights Reserved.</div>
+			<div class="mt10 desc02">Copyright© PPlusEco. All Rights Reserved.</div>
 		</section>
 	  <!-- E_본문-->
 	</div>

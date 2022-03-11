@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 62.5%;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'NanumSquareRound', 'NanumSquareRoundB', sans-serif, "나눔고딕", NanumBarunGothic, "맑은 고딕", Malgun Gothic, "Apple SD Gothic Neo", "돋움", dotum, Helvetica, arial, sans-serif;
+      -webkit-text-size-adjust: none;
+      font-size: 1.4rem;
+      color: #333d49;
+      line-height: 16px;
+      min-width: 1023px
+    }
+
+    .button {
+      padding: 0 36px;
+      line-height: 34px;
+      border: 0;
+      color: #fff;
+      margin: 0;
+      /*margin-right: 5px;*/
+      -webkit-appearance: button;
+      -webkit-writing-mode: horizontal-tb !important;
+      text-indent: 0px;
+      display: inline-block;
+      text-align: center;
+      align-items: flex-start;
+      cursor: pointer;
+      border-style: outset;
+    }
+
+    .btn-success {
+      background: #F23E5B;
+      border: 1px solid #cc314a;
+    }
+
+    /*확인,등록*/
+    .tc {
+      text-align: center !important;
+    }
+
+    .pt30 {
+      padding-top: 30px !important;
+    }
+
+    .emailtable {
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      width: 600px
+    }
+
+    .eamiltitle {
+      padding: 40px 0;
+      background: #1B5086;
+      text-align: center;
+    }
+
+    .eamiltitle>div>span>img {
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 20px
+    }
+
+    .emailtable span {
+      color: #fff;
+      font-size: 28px;
+    }
+
+    .emailcont {
+      padding: 25px;
+      line-height: 30px;
+      background: #fff !important;
+    }
+
+    .emailfoot {
+      background: #3e4346;
+      padding: 30px;
+    }
+  </style>
+  <title>'PPLUSEco'(PKG Production&Development)</title>
+</head>
+
+<body>
+  <table cellpadding="0" cellspacing="0" class="emailtable">
+    <tr>
+      <td class="eamiltitle">
+        <div>
+          <span><img src="images/icon_open.png" width="100" height="auto"></span>
+          <span>PPlueEco Email Service</span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="emailcont">
+        <div>
+          홍나리님, 안녕하세요?<br><br>
+
+          한살림(고객사명) 포장재질구조 담당자 입니다. <br>
+          아래 링크를 클릭하시면 환경부 제출서류인 포장재 재질 구조 증명서 입력창이 뜹니다. <br>
+          빈칸을 작성 후 직인 날인 후 PDF로 첨부하여 보내기 버튼을 눌러주세요<br><br>
+          감사합니다.
+          <div class="pt30 tc">
+            <button type="button" class="button btn-success" onclick="location.href='EmailCf.html' ">바로가기</button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="emailfoot">
+        <a href="#"><img src="images/logo_04.png" width="140" height="auto" /></a>
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

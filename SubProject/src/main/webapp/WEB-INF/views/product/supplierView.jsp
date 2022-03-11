@@ -14,10 +14,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchVlaue" name="searchValue" type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -63,15 +63,15 @@
 									<td>${list.supplierNo}</td>
 									<td>${list.representativeNm}</td>
 									<td>
-										<a href="#charge" role="button" onclick="selectManager('${list.managementId}');" data-toggle="modal" class="btn-icon text-point">
+										<a href="#charge" role="button" onclick="selectManager('${list.managementId}');" data-toggle="modal" class="text-point">
 											<img src="/images/icon_user2.png"> ${list.managementNm }
 										</a>
 									</td>
 									<td>
 										<div class="btn-group">
 											<a href="#edit" role="button" data-toggle="modal"
-												onclick="detailView('${list.supplierId}');" class="btn-icon">
-												<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon">
+												onclick="detailView('${list.supplierId}');">
+												<img src="/images/icon_edit.png" alt="상세보기" class="btn-table-icon">
 											</a> 
 										</div>
 									</td>
@@ -147,9 +147,19 @@
 									<div class="form-group">
 										<label class="col-25 form-label">사용여부</label>
 										<div class="col-75">
+										<!-- <div class="form-input-box">
+											<div class="btn-form-small">
+												<input id="useY" name="useYn" type="radio" value="Y">
+												<label for="useY" class="mr05">YES</label>
+											</div>
+											<div class="btn-form-small">
+												<input id="useN" name="useYn" type="radio" value="N">
+												<label for="useN" class="mr05">NO</label>
+											</div>
+										</div> -->
 											<select id="useYn" name="useYn" class="select-box">
-												<option value="Y">예</option>
-												<option value="N">아니요</option>
+												<option value="Y">YES</option>
+												<option value="N">NO</option>
 											</select>
 										</div>
 									</div>
@@ -322,8 +332,8 @@
 										<label class="col-25 form-label">사용여부</label>
 										<div class="col-75">
 											<select id="maUseYn" name="maUseYn" class="select-box">
-												<option value="Y">예</option>
-												<option value="N">아니요</option>
+												<option value="Y">YES</option>
+												<option value="N">NO</option>
 											</select>
 										</div>
 									</div>
