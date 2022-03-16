@@ -14,10 +14,10 @@
 											</select>
 									</div>
 									<div class="form-inline">
-										<div class="search-box w250">
+										<div class="search-box">
 											<input type="text" class="text-input">
 											<span class="search-box-append">
-												<button type="button" class="button-search"><img src="/images/icon_search.png" title="검색"></button>
+												<button type="button" class="btn-search"><img src="/images/icon_search.png" title="검색"></button>
 											</span>
 										</div>
 									</div>
@@ -81,9 +81,9 @@
 											</td>
 											<td>
 												<div class="btn-group">
-                          <a href="#detail" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_detail.png" alt="상세보기" class="tbl-icon"></a>
-													<a href="#edit" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-						              <a href="#delete" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+                          <a href="#detail" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_detail.png" alt="상세보기"></a>
+													<a href="#edit" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02"></a>
+						              <a href="#delete" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02"></a>
 					              </div>
 											</td>
 										</tr>
@@ -102,9 +102,9 @@
 											</td>
 											<td>
 												<div class="btn-group">
-                          <a href="#detail" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_detail.png" alt="상세보기" class="tbl-icon"></a>
-													<a href="#edit" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
-						              <a href="#delete" role="button" data-toggle="modal" class="btn-Ticon02"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+                          <a href="#detail" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_detail.png" alt="상세보기"></a>
+													<a href="#edit" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02"></a>
+						              <a href="#delete" role="button" data-toggle="modal" class="btn-table-icon02"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02"></a>
 					              </div>
 											</td>
 										</tr>
@@ -153,7 +153,7 @@
 									<div class="search-box">
 										<input type="text" class="text-input">
 										<span class="search-box-append">
-											<button type="button" class="button-search"><a href="#overlap" role="button" data-toggle="modal">중복확인</a></button>
+											<button type="button" class="btn-search"><a href="#overlap" role="button" data-toggle="modal">중복확인</a></button>
 										</span>
 									</div>
 								</div>
@@ -272,7 +272,7 @@
 									<div class="search-box">
 										<input type="text" class="text-input">
 										<span class="search-box-append">
-											<button type="button" class="button-search" onclick=;><img src="/images/icon_search.png" title="검색"></button>
+											<button type="button" class="btn-search" onclick=;><img src="/images/icon_search.png" title="검색"></button>
 										</span>
 									</div>
 								</div>
@@ -534,7 +534,7 @@
 					<div class="row">
 						<div class="col-100">
 							<div class="form-group">
-								<div class="tc">(<em class="text-bold">Q&A</em>)삭제합니다.</div>
+								<div class="tc">(<em class="font-bold">Q&A</em>)삭제합니다.</div>
 							</div>
 						</div>
 					</div>
@@ -557,7 +557,7 @@
 					<div class="row">
 	          <div class="col-100">
 							<div class="form-group">
-								<div class="tc"><em class="text-bold">14 items selected</em><br />삭제하시겠습니까?</div>
+								<div class="tc"><em class="font-bold">14 items selected</em><br />삭제하시겠습니까?</div>
 							</div>
 						</div>
 					</div>

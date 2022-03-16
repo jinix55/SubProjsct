@@ -19,10 +19,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input"> 
 						<span class="search-box-append">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -87,27 +87,27 @@
 							<td>
 							<c:choose>
 								<c:when test="${role.useYn eq 'Y' }">
-									<button type="button" class="button-yes">YES</button>
+									<button type="button" class="btn-yes">YES</button>
 								</c:when>
 								<c:otherwise>
-									<button type="button" class="button-no">NO</button>
+									<button type="button" class="btn-no">NO</button>
 								</c:otherwise>
 							</c:choose>
 							</td>
 							<td>
 								<div class="bottom-group">
 									<a href="" onclick="sidebar_open('${role.authNm}','${role.authId}')" role="button" data-toggle="modal" class="btn-icon menuAuthOpen">
-										<img src="/images/icon_genemenu.png" title="메뉴생성" class="btn-Ticon">
+										<img src="/images/icon_genemenu.png" title="메뉴생성" class="btn-table-icon">
 									</a>
 								</div>
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="#register" onclick="detailView('${role.authId}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+									<a href="#register" onclick="detailView('${role.authId}');" role="button" data-toggle="modal">
+										<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 									</a>
-									<a href="#delete" onclick="deleteSet('${role.authId}');" role="button" data-toggle="modal" class="btn-icon">
-										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+									<a href="#delete" onclick="deleteSet('${role.authId}');" role="button" data-toggle="modal">
+										<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 									</a>
 								</div>
 							</td>
@@ -142,9 +142,9 @@
 		<!-- 버튼 -->
 		<div class="modal-title rolsId">ROLE_SITE_ADMIN</div>
 		<div class="btn-group line-item">
-<!-- 			<button type="button" class="button-small btn-success">초기화</button> -->
-			<button type="button" id="saveMenu" class="button-small btn-warning">적용</button>
-			<button type="button" class="button-small btn-cancel"
+<!-- 			<button type="button" class="btn-small btn-success">초기화</button> -->
+			<button type="button" id="saveMenu" class="btn-small btn-warning">적용</button>
+			<button type="button" class="btn-small btn-cancel"
 				onclick="sidebar_close()">취소</button>
 		</div>
 		<form action="javascript:void(0)">
@@ -290,24 +290,26 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-100">
+				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useY" name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">사용</label>
+									<label for="useY" class="mr05">YES</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useN" name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">미사용</label>
+									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-100">
 					<div class="form-group">
 						<label class="col-25 form-label-textarea">그룹 설명</label>
 						<div class="col-75">
@@ -348,7 +350,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold delName">PEuser01</em> 삭제하시겠습니까?
+							<em class="font-bold delName">PEuser01</em> 삭제하시겠습니까?
 						</div>
 					</div>
 				</div>
@@ -378,7 +380,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold">14 items selected</em><br />삭제하시겠습니까?
+							<em class="font-bold">14 items selected</em><br />삭제하시겠습니까?
 						</div>
 					</div>
 				</div>

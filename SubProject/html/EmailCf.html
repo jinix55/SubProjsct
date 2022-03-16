@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="common/css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="common/js/plugins/jquery-3.5.1.js"></script>
+  <script type="text/javascript" src="common/js/plugins/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="common/js/plugins/bootstrap.min.js"></script>
+  <script type="text/javascript" src="common/js/plugins/iscroll.js"></script><!-- lnb메뉴스크롤-->
+  <script type="text/javascript" src="common/js/ui/global_script.js"></script><!-- lnb-->
+  <title>'PPLUSEco'(PKG Production&Development)</title>
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #FAFAFA;
+      font-size: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm;
+      margin: 10mm auto;
+      border: 1px #D3D3D3 solid;
+      border-radius: 5px;
+      background: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .subpage>h1 {
+      text-align: center;
+      padding-bottom: 40px;
+      font-size: 30px;
+      /*ext-decoration: underline;*/
+    }
+
+    .subpage>h2 {
+      padding: 30px 0 20px;
+      font-size: 2px;
+    }
+
+    .table-pk1,
+    .table-pk2 {
+      width: 100%;
+      border: 1px solid #444444;
+      border-collapse: collapse;
+    }
+
+    .table-pk2 {
+      margin-top: 30px;
+    }
+
+    .table-pk1 th,
+    .table-pk1 td,
+    .table-pk2 th,
+    .table-pk2 td {
+      border: 1px solid #444444;
+      vertical-align: middle;
+      text-align: center;
+      box-sizing: border-box;
+      word-break: break-all;
+      background-color: #fff;
+    }
+
+    .table-pk2 th,
+    .table-pk2 td {
+      height: 70px;
+    }
+
+    .table-pk1 th,
+    .table-pk1 td {
+      height: 50px !important;
+    }
+
+    .table-pk1 th {
+      background-color: #f7f7f7;
+    }
+
+    .content-pk {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.8;
+    }
+
+    .content-date {
+      font-size: 18px;
+      text-align: right;
+      font-weight: 600;
+      padding-top: 40px;
+    }
+
+    .explain-pk {
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+      }
+
+      .page {
+        margin: 24px;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 14pt;
+        line-height: 1.5;
+        margin: 0px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      code,
+      pre {
+        color: #000;
+        text-transform: none;
+        /* because sometimes I set all-caps */
+      }
+
+      .subpage>h1 {
+        font-size: 34px;
+      }
+
+      .table-pk1 th,
+      .table-pk1 td {
+        height: 50px !important;
+      }
+
+      .table-pk2 th {
+        height: 60px;
+      }
+
+      .table-pk2 td {
+        height: 100px;
+      }
+
+      .content-pk {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1.8;
+      }
+
+      .content-date {
+        font-size: 22px;
+        text-align: right;
+        font-weight: 600;
+        padding-top: 80px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#" class="skip-nav">본문 바로가기</a>
+  <div class="wrapper">
+    <!-- S_본문-->
+    <div class="row">
+      <div class="tab-content-box" style="width:800px;margin:0 auto;border:2px solid #000;padding:20px;">
+        <h2 class="">포장재 재질.구조 증명서</h2>
+        <div class="tr mb20">
+          <a href="#popup" role="button" data-toggle="modal" class="button btn-modify">미리보기 팝업창 띄우기</a></div>
+        <div class="tab-in-nav d-flex">
+          <span class="pt10 pr10">ㆍ재질유형</span>
+          <select class="select-box w200">
+            <option value="0">종이팩</option>
+            <option value="1">플라스틱</option>
+          </select>
+          <div class=" mr10 tc pt05">
+            <button type="button" class="button btn-radius on"><a href="#tab01">몸체</a></button>
+            <button type="button" class="button btn-radius"><a href="#tab02">라벨</a></button>
+            <button type="button" class="button btn-radius"><a href="#tab03">마개및잡자재</a></button>
+            <button type="button" class="button btn-radius"><a href="#tab04">라벨 마개 및 잡자재</a></button>
+          </div>
+        </div>
+
+        <!-- 몸체 상세-->
+        <h4 class="tl pt15"><span class="title-point">[몸체 상세]</span></h4>
+        <div class="row">
+          <div class="col-100">
+            <div class="form-group">
+              <label class="col-25 form-label">상품명</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <input type="text" class="text-input" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">재질정보</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <input type="text" class="text-input" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">무게</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <input type="text" class="text-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">규격</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <input type="text" class="text-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">색상</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <input type="text" class="text-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-100">
+            <div class="form-group">
+              <label class="col-25 form-label-textarea">추가설명</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <textarea class="textarea"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4 class="tl pt15"><span class="title-point">[업체담당자정보]</span></h4>
+        <div class="row">
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">공급업체</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <select class="select-box">
+                    <option value="">홍길동전</option>
+                    <option value="">상품명</option>
+                    <option value="">포장유형</option>
+                    <option value="">재활용등급</option>
+                    <option value="">상태</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">담당자</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <select class="select-box">
+                    <option value="">홍길동</option>
+                    <option value="">김유신</option>
+                    <option value="">이순신</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-100">
+            <div class="form-group">
+              <label class="col-25 form-label">이메일</label>
+              <div class="col-75">
+                <div class="search-box">
+                  <input type="text" class="text-input" value="홍길동@홍길동전.co.kr">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4 class="tl pt15"><span class="title-point">[첨부파일]</span></h4>
+        <div class="row">
+          <div class="col-100">
+            <div class="form-group">
+              <label class="col-25 form-label">포장재질증명서</label>
+              <div class="col-75">
+                <div class="search-box">
+                  <input type="text" class="text-input" value="파일명">
+                  <span class="search-box-append">
+                    <button type="button" class="button-search">업로드</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer btn-group pt40">
+          <button type="button" class="button btn-success" data-dismiss="modal">저장</button>
+          <button type="button" class="button btn-cancel" data-dismiss="modal">보내기</button>
+        </div>
+      </div>
+    </div>
+    <!-- E_본문-->
+  </div>
+  <div id="popup" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="page">
+      <div class="tr mb20 no-print"><button type="button" class="button btn-modify"
+          onclick="return window.print();">출력하기</button></div>
+      <div class="subpage">
+        <h1>포장재 재질 구조 증명서</h1>
+        <table class="table-pk1">
+          <tr>
+            <th rowspan="3">공급받는자<br>
+              (평가의무자)
+            </th>
+            <th>상호</th>
+            <td>㈜한살림 사업연합</td>
+            <th>대표자 성명</th>
+            <td>조완석</td>
+          </tr>
+          <tr>
+            <th>주소</th>
+            <td colspan="3">경기도 안성시 대덕면 안성대로 1526</td>
+          </tr>
+          <tr>
+            <th>연락처</th>
+            <td colspan="3">1661-0800 </td>
+          </tr>
+          <tr>
+            <th>포장재 정보</th>
+            <th>포장재 종류</th>
+            <td>종이팩</td>
+            <th>대표상품명<br>(평가신청한 상품명)</th>
+            <td>유기농 우유 100ml</td>
+          </tr>
+        </table>
+        <!-- <h2 class="pt40">포장재 재질 구조</h2> -->
+        <table class="table-pk2">
+          <colgroup>
+            <col style="width: 14%;">
+            <col style="width: 57%">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+          </colgroup>
+          <tr>
+            <th>구분</th>
+            <th>포장재 재질 구조 정보</th>
+            <th>무게</th>
+            <th>비고</th>
+          </tr>
+          <tr>
+            <td>몸체</td>
+            <td>
+              dfdsfdfdfdf342343545435454543543543<br>dfdfdf4535354545df<br>Fsdfdsdg<br>efeterewt<br>dfdfdf4535354545df<br>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>라벨</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>마 개
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>잡자재
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>별도포장
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <div class="explain-pk">
+          <ul>
+            <li>1. 두께, 색상감소, 열알칼리성 분리 접착제 여부, 접착제 도포 면적 항목의 경우 기기분석 정보(시험일시, 시험자, 분석장비명 및 분석겨로가 사진)는 별지로 작성 </li>
+            <li>2. 포자용기 또는 부자재 납품업체의 성적서, 포장재 발주규격서 및 납품확인서, 원료를 확인할 수 있는 물질안전보건자료(MSDS) 첨부 </li>
+          </ul>
+        </div>
+
+        <div class="content-date">2022년 10월 12일</div>
+        <div class="content-pk pt30">㈜에버그린패키징 코리아 </div>
+        <div class="content-pk">대표이사 홍 길 동</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src='common/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
+
+</html>

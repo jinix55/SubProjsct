@@ -231,7 +231,7 @@
 		<!-- S_left-area -->
 		<div class="menu-left-wrap">
 			<div class="left-area">
-				<h4 class="code-tit title-s panel">메뉴목록</h4>
+				<h4 class="code-tit subtitle panel">메뉴목록</h4>
 				<div class="nav_tree">
 				<script language="javascript" type="text/javaScript">
 					var chk_Object = true;
@@ -317,7 +317,7 @@
 		</div>
 		<!-- E_left-area -->
 		<!-- S_right-area -->
-		<div class="menu-right-wrap padding-all30">
+		<div class="menu-right-wrap all-padding">
 			<div class="right-area">
 			<!-- <h4 class="tab"><span>메뉴적용 현황</span></h4> -->
 				<div class="row pt30">
@@ -367,19 +367,19 @@
 							<label class="col-25 form-label">메뉴구분</label>
 							<div class="col-75">
 								<div class="form-input-box">
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="radioA" name="menuSe" value="A" disabled>
 										<label for="radioA" class="mr05">폴더(A)</label> 
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="radioM" name="menuSe" value="M" disabled>
 										<label for="radioM" class="mr05">메뉴(M)</label> 
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="radioF" name="menuSe" value="F" disabled>
 										<label for="radioF" class="mr05">기능(F)</label>
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="radioL" name="menuSe" value="L" disabled>
 										<label for="radioL" class="mr05">레포트 링크(L)</label>
 									</div>
@@ -407,19 +407,19 @@
 							<div class="col-75">
 								<input type="hidden" class="text-input" name="menuAttr" id="menuAttr" readonly>
 								<div class="form-input-box">
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="checkbox" name="menuAttrIns" id="menuAttrIns" disabled>
 										<label for="menuAttrIns" class="mr05 pt1">Insert</label>
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="checkbox" name="menuAttrUpd" id="menuAttrUpd" disabled>
 										<label for="menuAttrUpd" class="mr05 pt1">Update</label>
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="checkbox" name="menuAttrDet" id="menuAttrDet" disabled>
 										<label for="menuAttrDet" class="mr05 pt1">Detail</label>
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="checkbox" name="menuAttrDel" id="menuAttrDel" disabled>
 										<label for="menuAttrDel" class="mr05 pt1">Delete</label>
 									</div>
@@ -431,14 +431,14 @@
 							<label class="col-25 form-label">메뉴사용여부</label>
 							<div class="col-75">
 								<div class="form-input-box">
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="useY" name="useYn" value="Y" disabled>
-										<label for="useY" class="mr05">사용(Y)</label>
+										<label for="useY" class="mr05">YES</label>
 										
 									</div>
-									<div class="button-Rsmall d-inblock">
+									<div class="btn-form-small">
 										<input type="radio" id="useN" name="useYn" value="N" disabled>
-										<label for="useN" class="mr05">미사용(N)</label> 
+										<label for="useN" class="mr05">NO</label> 
 									</div>
 								</div>
 							</div>
@@ -455,10 +455,10 @@
 				</div>
 
 				<div class="btn-group tr">
-					<button type="button" class="button-small btn-success newMenu">신규</button>
-					<button type="button" class="button-small btn-success saveMenu">저장</button>
-					<button type="button" class="button-small btn-warning delMenu">삭제</button>
-					<button type="button" class="button-small btn-cancel cancel">취소</button>
+					<button type="button" class="btn-small btn-success newMenu">신규</button>
+					<button type="button" class="btn-small btn-success saveMenu">저장</button>
+					<button type="button" class="btn-small btn-warning delMenu">삭제</button>
+					<button type="button" class="btn-small btn-cancel cancel">취소</button>
 				</div>
 			</div>
 		</div>

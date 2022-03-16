@@ -6,7 +6,7 @@
 	<input type="hidden" id="middleCategory" name="middleCategory" value="${setMiddleCategory }">
 	<input type="hidden" id="smallCategory" name="smallCategory" value="${setSmallCategory }">
 	<input type="hidden" id="smallCategoryNm" name="smallCategoryNm" value="${setSmallCategoryNm }">
-	<div class="d-flex code-edit">
+	<div class="d-flex code-run">
 		<p>ㆍ갱신일</p>
 		<select class="select-box select-box-border2 w150" id="revision" name="revision">
 			<c:forEach items="${dayList }" var="list">
@@ -20,7 +20,7 @@
 			<div class="left-area">
 				<div class="content" style="padding-top: 0;">
 					<div class="d-flex panel" style="position: relative;">
-					<h4 class="code-tit title-s">재질 > <em>부위구분</em></h4>
+					<h4 class="code-tit subtitle">재질 > <em>부위구분</em></h4>
 						<div class="d-flex" style="position: absolute;right: 5px;top:8px;">
 						<span style="margin: 6px 0 0 0;padding-right: 10px">ㆍ재질</span>
 						<select class="select-box w150" id="largeCategory" name="largeCategory">
@@ -58,11 +58,11 @@
 													<td>${list.codeNm }</td>
 													<td>
 														<div class="btn-group">
-															<a id="setMid_${list.codeId }" upId="setMid_${list.groupId }" nm="${list.codeNm }" codeKey="${list.codeKey }" codeDsc="${list.codeDsc }" ordSeq="${list.ordSeq }" href="#coderegister_b" role="button" onclick="middleViewSet(this);" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+															<a id="setMid_${list.codeId }" upId="setMid_${list.groupId }" nm="${list.codeNm }" codeKey="${list.codeKey }" codeDsc="${list.codeDsc }" ordSeq="${list.ordSeq }" href="#coderegister_b" role="button" onclick="middleViewSet(this);" data-toggle="modal">
+																<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 															</a>
-															<a href="#delete" role="button" onclick="deleteMiddleSet('${list.groupId}','${list.codeId}');" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+															<a href="#delete" role="button" onclick="deleteMiddleSet('${list.groupId}','${list.codeId}');" data-toggle="modal">
+																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 															</a>
 														</div>
 													</td>
@@ -96,7 +96,7 @@
 		<div class="code-right-wrap">
 			<div class="right-area">
 				<div class="content" style="padding-top: 0;">
-					<h4 class="code-tit title-s panel">재질 > 부위구분 > <em>용이성</em></h4>
+					<h4 class="code-tit subtitle panel">재질 > 부위구분 > <em>용이성</em></h4>
 					<!-- S_그리드-->
 					<div class="content-table">
 						<div class="scroll-auto">
@@ -126,15 +126,15 @@
 													<td class="text-point">${list.codeId }</td>
 													<td>${list.codeNm }</td>
 													<td>
-														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="button-Csmall" onclick="detailCode(this);">내용 관리</a>
+														<a id="tr_${list.codeId }" nm="${list.codeNm }"href="#coderegister_s" role="button" data-toggle="modal" class="btn-small02" onclick="detailCode(this);">내용 관리</a>
 													</td>
 													<td>
 														<div class="btn-group">
-															<a id="setSml_${list.codeId }" nm="${list.codeNm }" upId="setSml_${list.groupId }" codeKey="${list.codeKey }" ordSeq="${list.ordSeq }" codeDsc="${list.codeDsc }" onclick="smallViewSet(this);" href="#coderegister_m" role="button" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02">
+															<a id="setSml_${list.codeId }" nm="${list.codeNm }" upId="setSml_${list.groupId }" codeKey="${list.codeKey }" ordSeq="${list.ordSeq }" codeDsc="${list.codeDsc }" onclick="smallViewSet(this);" href="#coderegister_m" role="button" data-toggle="modal">
+																<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 															</a>
-															<a onclick="deleteSmallSet('${list.groupId}','${list.codeId}');" href="#delete" role="button" data-toggle="modal" class="btn-icon">
-																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+															<a onclick="deleteSmallSet('${list.groupId}','${list.codeId}');" href="#delete" role="button" data-toggle="modal">
+																<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 															</a>
 														</div>
 													</td>

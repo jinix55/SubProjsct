@@ -29,10 +29,10 @@
 							</select>
 						</div>
 						<div class="form-inline">
-							<div class="search-box w250">
+							<div class="search-box">
 								<input type="text" class="text-input">
 								<span class="search-box-append">
-									<button type="button" class="button-search"><img src="../images/icon_search.png" title="검색"></button>
+									<button type="button" class="btn-search"><img src="../images/icon_search.png" title="검색"></button>
 								</span>
 							</div>
 						</div>
@@ -49,10 +49,10 @@
 				</div>
 				<div class="img-cont ellipsis">
 					<ul>
-						<li class="text-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>서울우유800ml</span></li>
-						<li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
-						<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue">정상</span></li>
-						<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue">완료</span></li>
+						<li class="font-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>서울우유800ml</span></li>
+						<li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+						<li class="font-bold">ㆍ재활용등급 : <span class="fontColorBlue">정상</span></li>
+						<li class="font-bold">ㆍ진행상태 : <span class="fontColorBlue">완료</span></li>
 					</ul>
 				</div>
 				<div class="img-bottom tc">
@@ -66,10 +66,10 @@
 				 </div>
 				 <div class="img-cont ellipsis">
 					 <ul>
-						 <li class="text-bold">ㆍ제품명 : <span>아이스브레이스</span></li>
-						 <li class="text-bold">ㆍ포장유형 : <span>종이</span></li>
-						 <li class="text-bold">ㆍ재활용등급 : <span class="colorRed">나쁨</span></li>
-						 <li class="text-bold">ㆍ진행상태 : <span>진행중</span></li>
+						 <li class="font-bold">ㆍ제품명 : <span>아이스브레이스</span></li>
+						 <li class="font-bold">ㆍ포장유형 : <span>종이</span></li>
+						 <li class="font-bold">ㆍ재활용등급 : <span class="colorRed">나쁨</span></li>
+						 <li class="font-bold">ㆍ진행상태 : <span>진행중</span></li>
 					 </ul>
 				 </div>
 				 <div class="img-bottom tc">
@@ -82,10 +82,10 @@
 				</div>
 				<div class="img-cont ellipsis">
 					<ul>
-						<li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
-						<li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
-						<li class="text-bold">ㆍ재활용등급 : <span>정상</span></li>
-						<li class="text-bold">ㆍ진행상태 : <span>완료</span></li>
+						<li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+						<li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+						<li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
+						<li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
 					</ul>
 				</div>
 				<div class="img-bottom tc">
@@ -98,10 +98,10 @@
 			 </div>
 			 <div class="img-cont ellipsis">
 				 <ul>
-					 <li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
-					 <li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
-					 <li class="text-bold">ㆍ재활용등급 : <span>정상</span></li>
-					 <li class="text-bold">ㆍ진행상태 : <span>완료</span></li>
+					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
+					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
 				 </ul>
 			 </div>
 			 <div class="img-bottom tc">
@@ -114,10 +114,10 @@
  			 </div>
  			 <div class="img-cont ellipsis">
  				 <ul>
- 					 <li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="text-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="text-bold">ㆍ진행상태 : <span>완료</span></li>
+ 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+ 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+ 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
+ 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
@@ -130,10 +130,10 @@
  			 </div>
  			 <div class="img-cont ellipsis">
  				 <ul>
- 					 <li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="text-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="text-bold">ㆍ진행상태 : <span>완료</span></li>
+ 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+ 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+ 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
+ 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
@@ -146,10 +146,10 @@
  			 </div>
  			 <div class="img-cont ellipsis">
  				 <ul>
- 					 <li class="text-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="text-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="text-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="text-bold">ㆍ진행상태 : <span>완료</span></li>
+ 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
+ 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
+ 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
+ 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
  				 </ul>
  			 </div>
  			 <div class="img-bottom tc">
@@ -171,7 +171,7 @@
 			<div class="row">
 				<div class="tab-content-box">
 						<p>
-								<button id="btn-add-tab" type="button" class="button-Rsmall fr">Add Tab</button>
+								<button id="btn-add-tab" type="button" class="btn-form-small fr">Add Tab</button>
 						</p>
 						<!-- Nav tabs -->
 						<ul id="tab-list" class="nav tab-nav" role="tablist">
@@ -297,7 +297,7 @@
 											 <div class="form-group">
 												 <label class="col-25 form-label">보고서 생성</label>
 												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="button-Rsmall">육안판정서</button></div>
+													 <div class="text-input"><button type="button" class="btn-form-small">육안판정서</button></div>
 												 </div>
 											 </div>
 											 <div class="form-group">
@@ -418,7 +418,7 @@
 											 <div class="form-group">
 												 <label class="col-25 form-label">보고서 생성</label>
 												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="button button-Rsmall">육안판정서</button></div>
+													 <div class="text-input"><button type="button" class="button btn-form-small">육안판정서</button></div>
 												 </div>
 											 </div>
 											 <div class="form-group">

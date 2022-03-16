@@ -14,10 +14,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchVlaue" name="searchValue" type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -70,12 +70,12 @@
 									<td>
 										<div class="btn-group">
 											<a href="#edit" role="button" data-toggle="modal"
-												onclick="detailView('${list.supplierId}');" class="btn-icon">
-												<img src="/images/icon_edit.png" alt="상세보기" class="btn-Ticon">
+												onclick="detailView('${list.supplierId}');">
+												<img src="/images/icon_edit.png" alt="상세보기" class="btn-table-icon">
 											</a> <a href="#delete" role="button" data-toggle="modal"
 												onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"
 												class="btn-icon"> <img src="/images/icon_delete2.png"
-												alt="삭제하기" class="btn-Ticon02">
+												alt="삭제하기" class="btn-table-icon02">
 											</a>
 										</div>
 									</td>
@@ -185,8 +185,8 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<select id="useYn" name="useYn" class="select-box">
-								<option value="Y">예</option>
-								<option value="N">아니요</option>
+								<option value="Y">YES</option>
+								<option value="N">NO</option>
 							</select>
 						</div>
 					</div>
@@ -222,9 +222,9 @@
 						<label class="col-25 form-label">성명<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="managementNm" name="managementNm" type="text" class="text-input" placeholder="이름을 검색해 주세요" disabled>
+								<input id="managementNm" name="managementNm" type="text" class="text-input w-auto" placeholder="이름을 검색해 주세요" disabled>
 								<span class="">
-									<button type="button" class="button-search" id="userSearch" href="#overlap" data-toggle="modal">찾기
+									<button type="button" class="btn-search" id="userSearch" href="#overlap" data-toggle="modal">찾기
 <!-- 										<a id="userSearchCheck" href="#overlap" role="button" data-toggle="modal">찾기</a> -->
 									</button>
 								</span>
@@ -357,8 +357,8 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<select id="maUseYn" name="maUseYn" class="select-box">
-								<option value="Y">예</option>
-								<option value="N">아니요</option>
+								<option value="Y">YES</option>
+								<option value="N">NO</option>
 							</select>
 						</div>
 					</div>
@@ -425,8 +425,8 @@
 										<label class="col-25 form-label">사용여부</label>
 										<div class="col-75">
 											<select id="useYn" name="useYn" class="select-box">
-												<option value="Y">예</option>
-												<option value="N">아니요</option>
+												<option value="Y">YES</option>
+												<option value="N">NO</option>
 											</select>
 										</div>
 									</div>
@@ -599,8 +599,8 @@
 										<label class="col-25 form-label">사용여부</label>
 										<div class="col-75">
 											<select id="maUseYn" name="maUseYn" class="select-box">
-												<option value="Y">예</option>
-												<option value="N">아니요</option>
+												<option value="Y">YES</option>
+												<option value="N">NO</option>
 											</select>
 										</div>
 									</div>
@@ -640,7 +640,7 @@
 					<div class="col-100">
 						<div class="form-group">
 							<div class="tc">
-								<em class="text-bold delName"></em> 삭제합니다.
+								<em class="font-bold delName"></em> 삭제합니다.
 							</div>
 						</div>
 					</div>
@@ -672,9 +672,9 @@
 						<label class="col-25 form-label">성명</label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input" value="홍나리" disabled>
+								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input w-auto" value="홍나리" disabled>
 								<span class="overlapMngmt" style="display:none;">
-									<button type="button" class="button-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기
+									<button type="button" class="btn-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기
 									</button>
 								</span>
 							</div>
@@ -758,7 +758,7 @@
 							<div class="search-box">
 								<input id="chUserNm" name="chUserNm" type="text" class="text-input" placeholder="찾으실 이름을 입력해 주세요.">
 								<span>
-									<button id="reUserSearch1" name="reUserSearch1" type="button" class="button-search">
+									<button id="reUserSearch1" name="reUserSearch1" type="button" class="btn-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
@@ -820,7 +820,7 @@
 							<div class="search-box">
 								<input id="reChUserNm" name="reChUserNm" type="text" class="text-input" placeholder="찾으실 담당자를 입력해 주세요.">
 								<span>
-									<button id="reUserSearch2" name="reUserSearch2" type="button" class="button-search">
+									<button id="reUserSearch2" name="reUserSearch2" type="button" class="btn-search">
 										<img src="/images/icon_search.png" title="검색">
 									</button>
 								</span>
@@ -1256,8 +1256,8 @@
 				html += '	<td>' + item.managerMail + '</td>';
 				html += '	<td>';
 				html += '		<div class="btn-group">';
-				html += '			<a href="#delete" role="button" data-toggle="modal" class="btn-icon">';
-				html += '				<img src="/images/icon_delete2.png" onclick="deleteSet(\'' + item.managerNm + '\',\'' + item.managerId + '\');" alt="삭제하기" class="btn-Ticon02">';
+				html += '			<a href="#delete" role="button" data-toggle="modal">';
+				html += '				<img src="/images/icon_delete2.png" onclick="deleteSet(\'' + item.managerNm + '\',\'' + item.managerId + '\');" alt="삭제하기" class="btn-table-icon02">';
 				html += '			</a>';
 				html += '		</div>';
 				html += '	</td>';

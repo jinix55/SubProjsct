@@ -12,10 +12,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input type="text" class="text-input"> <span
 							class="search-box-append">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -73,12 +73,12 @@
 						<td>SITE별 관리자</td>
 						<td>SITE별 관리자</td>
 						<td>
-							<button type="button" class="button-yes">YES</button>
+							<button type="button" class="btn-yes">YES</button>
 						</td>
 						<td>
 							<div class="btn-group">
 								<a href="" onclick="sidebar_open()" role="button"
-									data-toggle="modal" class="btn-Ticon02"><img
+									data-toggle="modal" class="btn-table-icon02"><img
 									src="/images/icon_genemenu.png" title="메뉴생성" class="tbl-icon"></a>
 							</div>
 						</td>
@@ -121,9 +121,9 @@
 		<!-- 버튼 -->
 		<div class="modal-title">ROLE_SITE_ADMIN</div>
 		<div class="btn-group line-item">
-			<button type="button" class="button-small btn-success">초기화</button>
-			<button type="button" class="button-small btn-warning">적용</button>
-			<button type="button" class="button-small btn-cancel"
+			<button type="button" class="btn-small btn-success">초기화</button>
+			<button type="button" class="btn-small btn-warning">적용</button>
+			<button type="button" class="btn-small btn-cancel"
 				onclick="sidebar_close()">취소</button>
 		</div>
 		<form action="javascript:void(0)">

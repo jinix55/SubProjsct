@@ -18,10 +18,10 @@
 							</select>
 						</div>
 						<div class="form-inline">
-							<div class="search-box w250">
+							<div class="search-box">
 								<input type="text" class="text-input">
 								<span class="search-box-append">
-									<button type="button" class="button-search"><img src="../images/icon_search.png" title="검색"></button>
+									<button type="button" class="btn-search"><img src="../images/icon_search.png" title="검색"></button>
 								</span>
 							</div>
 						</div>
@@ -77,16 +77,16 @@
 								<td class="fontColorBlue"><img src="../images/free-icon-emoji-3456813.png" width="26px">우수</td>
 								<td>진행중</td>
 								<td>신청대상</td>
-								<td><a href="#detail" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
-								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
+								<td><a href="#detail" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
+								<td><a href="#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
 								<td>
 									<div class="btn-group">
-										<a href="#edit" role="button" data-toggle="modal" class="btn-icon">
-											<img src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${list.rownum}" >
+										<a href="#edit" role="button" data-toggle="modal">
+											<img src="../images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${list.rownum}" >
 										</a>
 										  
-										<a href="#delete"  onclick="deleteProductItemSet('${list.productCode}');" role="button" data-toggle="modal" class="btn-icon">
-											<img src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" >
+										<a href="#delete"  onclick="deleteProductItemSet('${list.productCode}');" role="button" data-toggle="modal">
+											<img src="../images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
 								</td>
@@ -263,8 +263,8 @@
 			<div class="title-model-s">
 				<h4 class="d-inblock pt10"><span class="title-point">[포장기준]</span></h4>
 				<div class="d-inblock fr">
-					<button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
-					<button id='btn-delete-row' class="button-Rsmall">(-)삭제하기</button>
+					<button id='btn-add-row' class="btn-form-small">(+)추가하기</button>
+					<button id='btn-delete-row' class="btn-form-small">(-)삭제하기</button>
 				</div>
 			</div>
 			<!-- S_추가삭제적용1-->
@@ -378,8 +378,8 @@
 		<div class="title-model-s">
 			<h4 class="d-inblock pt10"><span class="title-point">[별도포장]</span></h4>
 			<div class="d-inblock fr">
-				<button id='btn-add-row2' class="button-Rsmall">(+)추가하기</button>
-				<button id='btn-delete-row2' class="button-Rsmall">(-)삭제하기</button>
+				<button id='btn-add-row2' class="btn-form-small">(+)추가하기</button>
+				<button id='btn-delete-row2' class="btn-form-small">(-)삭제하기</button>
 			</div>
 		</div>
 		<div id="mytable2">
@@ -571,16 +571,16 @@
 									<label class="col-25 form-label">진행상태</label>
 									<div class="col-75">
 										<div class="form-input-box">
-											<div class="button-Rsmall d-inblock">
+											<div class="btn-form-small">
 												<input type="radio" id="radio1" name="radio" checked="checked">
 												<label for="radio1" class="mr05">진행중</label></div>
-											<!--<div class="button-Rsmall d-inblock">
+											<!--<div class="btn-form-small">
 												<input type="radio" id="radio2" name="radio">
 												<label for="radio2" class="mr05">보완</label></div>
-											<div class="button-Rsmall d-inblock">
+											<div class="btn-form-small">
 												<input type="radio" id="radio3" name="radio">
 												<label for="radio3" class="mr05">반려</label></div>-->
-											<div class="button-Rsmall d-inblock">
+											<div class="btn-form-small">
 												<input type="radio" id="radio4" name="radio">
 												<label for="radio4" class="mr05">완료</label></div>
 										</div>
@@ -592,10 +592,10 @@
 									<label class="col-25 form-label">마스터</label>
 									<div class="col-75">
 										<div class="form-input-box">
-											<div class="button-Rsmall d-inblock">
+											<div class="btn-form-small">
 												<input type="radio" id="radio1" name="radio" checked="checked">
 												<label for="radio1" class="mr05">적용</label></div>
-											<div class="button-Rsmall d-inblock">
+											<div class="btn-form-small">
 												<input type="radio" id="radio4" name="radio">
 												<label for="radio4" class="mr05">비적용</label></div>
 										</div>
@@ -686,8 +686,8 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-						<em class="text-bold delName"></em>코드를 삭제하시겠습니까?</div>
-						<!--(<em class="text-bold">PEuser01</em>)삭제합니다.</div> -->
+						<em class="font-bold delName"></em>코드를 삭제하시겠습니까?</div>
+						<!--(<em class="font-bold">PEuser01</em>)삭제합니다.</div> -->
 					</div>
 				</div>
 			</div>
@@ -824,7 +824,7 @@
 			 											 <div class="form-group">
 			 												 <label class="col-25 form-label">보고서 생성</label>
 			 												 <div class="col-75 tl">
-			 													 <div class="text-input"><button type="button" class="button-Rsmall mr05">포장재질구조증명</button><button type="button" class="button-Rsmall">육안판정서</button></div>
+			 													 <div class="text-input"><button type="button" class="btn-form-small mr05">포장재질구조증명</button><button type="button" class="btn-form-small">육안판정서</button></div>
 			 												 </div>
 			 											 </div>
 			 										 </div>
@@ -859,7 +859,7 @@
 																 <div class="search-box">
 																	 <input type="text" class="text-input">
 																	 <span class="search-box-append">
-																		 <button type="button" class="button-search"><a href="../email.html" role="button" data-toggle="modal">이메일보내기</a></button>
+																		 <button type="button" class="btn-search"><a href="../email.html" role="button" data-toggle="modal">이메일보내기</a></button>
 																	 </span>
 																 </div>
 															 </div>
@@ -914,7 +914,7 @@
 																 <div class="anw">
 																	 <ul class="choice-wrapper">
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-최우수/우수</h4>
+																			 <h4 class="box-tit-bg">재활용-최우수/우수</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li><input type="checkbox"><label for="">무색</label></li>
@@ -924,7 +924,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">재활용-어려움</h4>
+																			<h4 class="box-tit-bg">재활용-어려움</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">무색 </label></li>
@@ -934,7 +934,7 @@
 																			</div>
 																		 </li>
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-보통</h4>
+																			 <h4 class="box-tit-bg">재활용-보통</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li><input type="checkbox"><label for="">무색 </label></li>
@@ -942,7 +942,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">판정방법</h4>
+																			<h4 class="box-tit-bg">판정방법</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">기기분석</label></li>
@@ -1007,7 +1007,7 @@
 																 <div class="anw">
 																	 <ul class="choice-wrapper">
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-최우수/우수</h4>
+																			 <h4 class="box-tit-bg">재활용-최우수/우수</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li><input type="checkbox"><label for="">미사용(유통기한 및 제조일자만 표시된 경우 포함)</label></li>
@@ -1017,7 +1017,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">재활용-어려움</h4>
+																			<h4 class="box-tit-bg">재활용-어려움</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">미사용(유통기한 및 제조일자만 표시된 경우 포함)</label></li>
@@ -1027,7 +1027,7 @@
 																			</div>
 																		 </li>
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-보통</h4>
+																			 <h4 class="box-tit-bg">재활용-보통</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li><input type="checkbox"><label for="">절취선을 포함하지 않은 비접(점)착식 합성수지 재질</label></li>
@@ -1038,7 +1038,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">판정방법</h4>
+																			<h4 class="box-tit-bg">판정방법</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">기기분석</label></li>
@@ -1103,7 +1103,7 @@
 																 <div class="anw">
 																	 <ul class="choice-wrapper">
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-최우수/우수</h4>
+																			 <h4 class="box-tit-bg">재활용-최우수/우수</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li><input type="checkbox"><label for="">뚜껑·테 일체형 구조</label></li>
@@ -1112,7 +1112,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">재활용-어려움</h4>
+																			<h4 class="box-tit-bg">재활용-어려움</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">뚜껑·테 일체형 구조</label></li>
@@ -1121,7 +1121,7 @@
 																			</div>
 																		 </li>
 																		 <li class="choice-box">
-																			 <h4 class="line-br">재활용-보통</h4>
+																			 <h4 class="box-tit-bg">재활용-보통</h4>
 																			 <div class="choice-cont">
 																				 <ul>
 																					 <li>
@@ -1132,7 +1132,7 @@
 																			 </div>
 																		 </li>
 																		 <li class="choice-box">
-																			<h4 class="line-br">판정방법</h4>
+																			<h4 class="box-tit-bg">판정방법</h4>
 																			<div class="choice-cont">
 																				<ul>
 																					<li><input type="checkbox"><label for="">기기분석</label></li>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../../common/css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="../../common/js/plugins/jquery-3.5.1.js"></script>
+  <script type="text/javascript" src="../../common/js/plugins/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../../common/js/plugins/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../../common/js/plugins/iscroll.js"></script><!-- lnb메뉴스크롤-->
+  <script type="text/javascript" src="../../common/js/ui/global_script.js"></script><!-- lnb-->
+  <script type="text/javascript" src="../../common/js/plugins/tree-menu.js"></script>
+  <link href="../../common/css/tree-menu.css" rel="stylesheet">
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".dropdown-notification").on("click", function () {
+        $('.dropdown-no-content').toggle();
+      });
+    });
+  </script>
+  <title>'PPLUSEco'(PKG Production&Development)</title>
+</head>
+
+<body class="sub">
+  <a href="#" class="skip-nav">본문 바로가기</a>
+  <div class="wrapper">
+    <div id="body">
+      <!-- S_왼쪽메뉴-->
+      <section id="lnb">
+        <a href="#" class="menu" title="메뉴 열기/닫기"><img src="../../images/arr_menu_left.png" alt="메뉴 열기/닫기" /></a>
+        <div class="btn-lnb-comp">
+          <img src="../../images/logo_p.png" alt="회사로고">
+        </div>
+        <div class="lnb-user">
+          <span class="img"><img src="../../images/icon_user02.png" alt="정보수정"></span>
+          <div class="desc">
+            <a href="../../login/ChangComUser.html" class="depart">희성전자
+              <small class="name">@김희송님</small></a>
+            <a href="../../login/ChangComUser.html" class="depart"><small class="smallc">View your profile</small></a>
+          </div>
+        </div>
+        <nav style="touch-action: none;">
+          <ul style="transform: translate(0px, 0px) translateZ(0px);">
+            <li data-menu="UM">
+              <a href="#" title="계정관리"><span class="txtlmg user"></span>계정관리<span class="sub"></span></a>
+              <ul>
+                <li data-menu="UserMgt" class="on"><a href="../../user/user/UserMgt.html" title="계정관리"><span
+                      class="hexagon"></span>계정관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="SM"><a href="#" title="시스템관리"><span class="txtlmg system"></span>시스템관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="GroupMgt"><a href="../../user/group/GroupMgt.html" title="그룹관리"><span
+                      class="hexagon"></span>그룹관리</a></li>
+                <li data-menu="CGroupMgt"><a href="../../user/group/CGroupMgt.html" title="회사별관리"><span
+                      class="hexagon"></span>회사별관리</a></li>
+                <li data-menu="CompanyCode"><a href="../../code/CompanyCode.html" title="업체별 코드관리"><span
+                      class="hexagon"></span>업체별코드관리</a></li>
+                <li data-menu="CommCode"><a href="../../code/CommCode.html" title="공통코드관리"><span
+                      class="hexagon"></span>공통코드관리</a></li>
+                <li data-menu="HolidayMgt"><a href="../../holiday/HolidayMgt.html" title="휴일관리"><span
+                      class="hexagon"></span>휴일관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="MM" class="open"><a href="#" title="메뉴관리"><span class="txtlmg menu"></span>메뉴관리<span
+                  class="sub"></span></a>
+              <ul style="height: 132px;">
+                <li data-menu="MenuByAuthCreate"><a href="../../menu/auth/MenuByAuthCreate.html" title="권한별메뉴생성"><span
+                      class="hexagon"></span>권한별메뉴생성</a></li>
+                <li data-menu="MenuMgt" class="on"><a href="../../menu/menu/MenuMgt.html" title="메뉴관리"><span
+                      class="hexagon"></span>메뉴관리</a></li>
+                <li data-menu="ReportMgt"><a href="../../report/ReportMgt.html" title="레포트관리"><span
+                      class="hexagon"></span>레포트관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="BM"><a href="#" title="게시판관리"><span class="txtlmg board"></span>게시판관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="BoardMenu"><a href="../../BoardMenu.html" title="게시판관리"><span
+                      class="hexagon"></span>게시판관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="BachM"><a href="#" title="배치작업관리"><span class="txtlmg bach"></span>배치작업관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="BachManage"><a href="../../BachManage.html" title="배치작업관리"><span
+                      class="hexagon"></span>배치작업관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="LM"><a href="#" title="로그관리"><span class="txtlmg loglist"></span>로그관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="UserManageLogList"><a href="../../UserManageLogList.html" title="계정권한로고"><span
+                      class="hexagon"></span>계정권한로고</a></li>
+                <li data-menu="GroupManageLogList"><a href="../../GroupManageLogList.html" title="그룹로그"><span
+                      class="hexagon"></span>그룹로그</a></li>
+                <li data-menu="ReportManageLogList"><a href="../../ReportManageLogList.html" title="통계리포트로그"><span
+                      class="hexagon"></span>통계리포트로그</a></li>
+              </ul>
+            </li>
+            <li data-menu="NT"><a href="#" title="알림기능" style="position:relative;"><span
+                  class="txtlmg alarm"></span>알림기능<span class="lnb-mark">2</span><span class="sub"></span></a>
+              <ul>
+                <li data-menu="Notifiations"><a href="../../Notifiations.html" title="알림관리기능"><span
+                      class="hexagon"></span>알림관리기능</a></li>
+              </ul>
+            </li>
+            <li data-menu="PD"><a href="#" title="상품관리"><span class="txtlmg pro"></span>상품관리<span
+                  class="sub"></span></a>
+              <ul>
+                <!-- <li data-menu="RequestPro"><a href="../RequestPro.html" title="신청상품"><span
+                      class="hexagon"></span>신청상품(마스터)</a></li> -->
+                <li data-menu="Supplier"><a href="../../Supplier2.html" title="공급업체"><span
+                      class="hexagon"></span>공급업체</a>
+                </li>
+                <li data-menu="Prod"><a href="../../product/Prod.html" title="상품관리"><span
+                      class="hexagon"></span>상품관리</a></li>
+                <li data-menu="Prodimg"><a href="../../product/Prodimg.html" title="상품이미지"><span
+                      class="hexagon"></span>상품이미지</a></li>
+              </ul>
+            </li>
+            <li data-menu="SP"><a href="#" title="공급업체"><span class="txtlmg supplier"></span>공급업체<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="Supplier"><a href="../../Supplier.html" title="공급업체"><span
+                      class="hexagon"></span>공급업체관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="Ea"><a href="#" title="이메일"><span class="txtlmg chat"></span>Email<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="Email"><a href="../Email.html" title="이메일만료"><span class="hexagon"></span>Email프린트</a>
+                </li>
+                <li data-menu="EmailExpiration"><a href="../EmailExpiration.html" title="이메일만료"><span
+                      class="hexagon"></span>Email기간만료</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div class="iScrollVerticalScrollbar iScrollLoneScrollbar"
+            style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
+            <div class="iScrollIndicator"
+              style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);">
+            </div>
+          </div>
+        </nav>
+      </section>
+      <!-- E_왼쪽메뉴-->
+      <!-- S_본문-->
+      <section class="container">
+        <header class="header">
+          <div class="top-location">
+            <!--<h2><em>PPLUS Echo</em></h2>-->
+            <ul class="location">
+              <li><a href="#">홈</a></li>
+              <li><a href="#">메뉴관린</a></li>
+              <li><em>메뉴관리</em></li>
+            </ul>
+          </div>
+          <ul class="top-nav">
+            <li><span class="top-nav-bi top-nav-bilink"><a href="../../BIChat.html" title="BI분석플랫품">BI분석플랫품</a></span>
+            </li>
+            <li class="dropdown-notification"><a href="#" title="알림" style="position:relative;"><img
+                  src="../../images/icon_bell.png" alt="알림"><span class="nav-mark">2</span></a>
+              <div class="dropdown-no-content">
+                <span class="arrow"></span>
+                <div class="notification">
+                  <div class="dropdown">
+                    <div class="dropdown-body">
+                      <a href="#">
+                        <p class="text-point">알림1</p> 내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                      </a>
+                    </div>
+                    <div class="meta">2h ago</div>
+                  </div>
+                  <div class="dropdown">
+                    <div class="dropdown-body">
+                      <a href="#">
+                        <p class="text-point">알림2</p> 내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                      </a>
+                    </div>
+                    <div class="meta">2h ago</div>
+                  </div>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="../../Notifiations.html">전체 알림보기</a>
+                </div>
+              </div>
+            </li>
+            <li><a href="../../login/ChangePswdResetLogin.html" title="비밀번호수정"><img src="../../images/icon_user.png"
+                  alt="비밀번호수정"></a></li>
+            <li><a href="../../login/Login.html" title="로그아웃"><img src="../../images/icon_off.png" alt="로그아웃"></a></li>
+          </ul>
+        </header>
+
+        <div class="content">
+          <div class="row panel">
+            <!-- S_left-area -->
+            <div class="menu-left-wrap">
+              <h4 class="code-tit title-s panel"><em>메뉴등록</em></h4>
+              <div class="left-area">
+                <div class="menu-inner">
+                  <form action="javascript:void(0)">
+                    <ul id="tree-checkmenu" class="checktree">
+                      <li id="show-explorer">
+                        <input id="check-explorer" type="checkbox" />Administrator
+                        <span id="count-explorer" class="count"></span>
+                        <ul id="tree-explorer">
+                          <li id="show-iewin">
+                            <input id="check-iewin" type="checkbox" />프로젝트관리
+                            <span id="count-iewin" class="count"></span>
+                            <ul id="tree-iewin">
+                              <li><input type="checkbox" />프로젝트관리</li>
+                              <li><input type="checkbox" />그룹등록</li>
+                              <li><input type="checkbox" />사용자등록</li>
+                            </ul>
+                          </li>
+                          <li id="show-iemac">
+                            <input id="check-iemac" type="checkbox" />시스템관리
+                            <span id="count-iemac" class="count"></span>
+                            <ul id="tree-iemac">
+                              <li><input type="checkbox" />권한목록등록</li>
+                              <li><input type="checkbox" />계정권한부여</li>
+                              <li class="last"><input type="checkbox" />권한별메뉴적용</li>
+                            </ul>
+                          </li>
+                          <li id="show-iemac2">
+                            <input id="check-iemac2" type="checkbox" />메뉴관리
+                            <span id="count-iemac2" class="count"></span>
+                            <ul id="tree-iemac2">
+                              <li><input type="checkbox" />관리자메뉴관리</li>
+                            </ul>
+                          </li>
+                          <li id="show-iemac3">
+                            <input id="check-iemac3" type="checkbox" />로그관리
+                            <span id="count-iemac3" class="count"></span>
+                            <ul id="tree-iemac3">
+                              <li><input type="checkbox" />계정권한정보</li>
+                              <li><input type="checkbox" />레포트</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li id="show-netscape">
+                        <input id="check-netscape" type="checkbox" />Data Visualization
+                        <span id="count-netscape" class="count"></span>
+                        <ul id="tree-netscape">
+                          <li id="show-iemac4">
+                            <input id="check-iemac4" type="checkbox" />데이터분석
+                            <span id="count-iemac4" class="count"></span>
+                            <ul id="tree-iemac4">
+                              <li><input type="checkbox" />대여소 현황</li>
+                              <li><input type="checkbox" />이용현황 분석</li>
+                              <li><input type="checkbox" />회원 분석</li>
+                              <li><input type="checkbox" />수요예측 모델 분석</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li id="show-netscape">
+                        <input id="check-netscape" type="checkbox" />Data Visualization
+                        <span id="count-netscape" class="count"></span>
+                        <ul id="tree-netscape">
+                          <li id="show-iemac4">
+                            <input id="check-iemac4" type="checkbox" />데이터분석
+                            <span id="count-iemac4" class="count"></span>
+                            <ul id="tree-iemac4">
+                              <li><input type="checkbox" />대여소 현황</li>
+                              <li><input type="checkbox" />이용현황 분석</li>
+                              <li><input type="checkbox" />회원 분석</li>
+                              <li><input type="checkbox" />수요예측 모델 분석</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li id="show-netscape">
+                        <input id="check-netscape" type="checkbox" />Data Visualization
+                        <span id="count-netscape" class="count"></span>
+                        <ul id="tree-netscape">
+                          <li id="show-iemac4">
+                            <input id="check-iemac4" type="checkbox" />데이터분석
+                            <span id="count-iemac4" class="count"></span>
+                            <ul id="tree-iemac4">
+                              <li><input type="checkbox" />대여소 현황</li>
+                              <li><input type="checkbox" />이용현황 분석</li>
+                              <li><input type="checkbox" />회원 분석</li>
+                              <li><input type="checkbox" />수요예측 모델 분석</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li id="show-netscape">
+                        <input id="check-netscape" type="checkbox" />Data Visualization
+                        <span id="count-netscape" class="count"></span>
+                        <ul id="tree-netscape">
+                          <li id="show-iemac4">
+                            <input id="check-iemac4" type="checkbox" />데이터분석
+                            <span id="count-iemac4" class="count"></span>
+                            <ul id="tree-iemac4">
+                              <li><input type="checkbox" />대여소 현황</li>
+                              <li><input type="checkbox" />이용현황 분석</li>
+                              <li><input type="checkbox" />회원 분석</li>
+                              <li><input type="checkbox" />수요예측 모델 분석</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="last"><input type="checkbox" />기타</li>
+                    </ul>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- E_left-area -->
+            <!-- S_right-area -->
+            <div class="menu-right-wrap">
+              <h4 class="code-tit title-s panel"><em>메뉴적용</em></h4>
+              <div class="right-area">
+                <div class="row pt30">
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">상위 메뉴ID</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴ID</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴명</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴순서</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴URL</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴속성</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <input type="text" class="text-input">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴구분</label>
+                      <div class="col-75">
+                        <div class="form-input-box">
+                          <div class="button-Rsmall d-inblock">
+                            <input type="radio" id="radio1" name="radio">
+                            <label for="radio1" class="mr05">메뉴(M)</div>
+                          <div class="button-Rsmall d-inblock">
+                            <input type="radio" id="radio2" name="radio" checked="checked">
+                            <label for="radio2" class="mr05">기능(F)</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-50">
+                    <div class="form-group">
+                      <label class="col-25 form-label">메뉴사용여부</label>
+                      <div class="col-75">
+                        <div class="form-input-box">
+                          <div class="button-Rsmall d-inblock">
+                            <input type="radio" id="radio3" name="radio2" checked="checked">
+                            <label for="radio3" class="mr05">사용(Y)</div>
+                          <div class="button-Rsmall d-inblock">
+                            <input type="radio" id="radio4" name="radio2">
+                            <label for="radio4" class="mr05">미사용(N)</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-100">
+                    <div class="form-group">
+                      <label class="col-25 form-label-textarea">설명</label>
+                      <div class="col-75">
+                        <div class="form-input">
+                          <textarea class="textarea" placeholder="그룹 설명그룹 설명"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="btn-group tr">
+                    <button type="button" class="button-small btn-success">저장</button>
+                    <button type="button" class="button-small btn-warning"
+                      onclick=javascript:layerPopup(layerDeletePopup);>삭제</button>
+                    <button type="button" class="button-small btn-cancel" onclick="">취소</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- E_right-area -->
+          </div>
+      </section>
+      <!-- E_본문-->
+    </div>
+  </div>
+</body>
+
+</html>

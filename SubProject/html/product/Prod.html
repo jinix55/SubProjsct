@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../common/css/style.css" rel="stylesheet">
+  <link href="../common/js/plugins/datepicker-ui.css" rel="stylesheet">
+  <script type="text/javascript" src="../common/js/plugins/jquery-3.5.1.js"></script>
+  <script type="text/javascript" src="../common/js/plugins/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../common/js/plugins/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../common/js/plugins/iscroll.js"></script><!-- lnb메뉴스크롤-->
+  <script type="text/javascript" src="../common/js/ui/global_script.js"></script>
+  <script type="text/javascript" src="../common/js/plugins/datepicker-ko.js"></script>
+  <script src="../common/js/plugins/jQuery.MultiFile.min.js"></script><!-- 멀티첨부-->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".dropdown-notification").on("click", function () {
+        $('.dropdown-no-content').toggle();
+      });
+      $(function () {
+        var group = $("#Accordion_wrap");
+        group.each(function () {
+          var _group = new GroupBox(this);
+        });
+        // 사용자 정의 생성자 함수 정의
+        function GroupBox(groupElement) {
+          var box = $(groupElement).find(".Accordion-box");
+          var title = $(groupElement).find(".Accordion-box .que span");
+          box.each(function (idx) {
+            var newBox = new RootBox(this);
+            if (idx > 0) {
+              newBox.siblingsClose();
+            }
+          });
+        }
+        // 사용자 정의 생성자 함수 정의
+        function RootBox(boxElement) {
+          var _this = this;
+          var boxEl = $(boxElement);
+          var target = $(boxEl).find(".que span");
+          var cont = $(boxEl).find(".anw");
+          // _groupParent = $(boxEl).parent();
+          target.on("click", anchorClickEvent);
+
+          function anchorClickEvent() {
+            if (cont.is(':hidden')) {
+              _this.open();
+            } else {
+              _this.close();
+            }
+          }
+          _this.siblingsClose = function () {
+            cont.css('display', 'none');
+          };
+          _this.open = function () {
+            cont.slideDown();
+          };
+          _this.close = function () {
+            cont.slideUp();
+          }
+        }
+      });
+      $('#btn-add-row').click(function () {
+        var trcut = $('#mytable > .addbox').length;
+        if (trcut < 5) {
+          var innerHtml = "";
+          innerHtml += '<div class="addbox pt10">';
+          innerHtml += '<button id=btn-delete-row2 class="button-Rsmall button-del fr">(-)삭제하기</button>';
+          innerHtml += '<h4 class="tl pt15"><span class=title-point>[몸체 상세]</span></h4>';
+          innerHtml += '<div class=row>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">재질정보</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">중량</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">규격</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">색상</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-100>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label-textarea">추가설명</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<textarea class=textarea></textarea>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<h4 class="tl pt15"><span class=title-point>[업체담당자정보]</span></h4>';
+          innerHtml += '<div class=row>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">공급업체</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-50>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">담당자</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=form-input>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<div class=col-100>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">이메일</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=search-box>';
+          innerHtml += '<input type=text class=text-input>';
+          innerHtml += '<span class=search-box-append>';
+          innerHtml +=
+            '<button type=button class=button-search><a href=../email.html role=button data-toggle=moda">이메일보내기</a></button>';
+          innerHtml += '</span>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '<h4 class="tl pt15"><span class=title-point>[첨부파일]</span></h4>';
+          innerHtml += '<div class=row>';
+          innerHtml += '<div class=col-100>';
+          innerHtml += '<div class=form-group>';
+          innerHtml += '<label class="col-25 form-label">포장재질증명서</label>';
+          innerHtml += '<div class=col-75>';
+          innerHtml += '<div class=search-box>';
+          innerHtml += '<input type=text class=text-input value=파일명>';
+          innerHtml += '<span class=search-box-append>';
+          innerHtml += '<button type=button class=button-search>다운로드</button>';
+          innerHtml += '</span>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          innerHtml += '</div>';
+          $('#mytable:last').append(innerHtml);
+        } else {
+          alert("최대5개까지만 가능합니다")
+          return false;
+        }
+        $('.button-del').click(function () {
+          $(this).parent().remove();
+        });
+      });
+      $('#btn-delete-row').click(function () {
+        var trcut = $('#mytable > .addbox').length;
+        if (trcut > 0) {
+          $('#mytable > .addbox:last').remove();
+        } else {
+          return false;
+        }
+      });
+    });
+  </script>
+  <script>
+    $(function () { // wait for page to load
+      //[2] 업로드할수있는 파일수 제한 및 확장자 필터
+      $('.afile-txt').MultiFile({
+        // 옵션 설정
+        max: 3, //업로할수있는 최대 파일 갯수
+        accept: 'txt|pptx|xlsx|pdf|hwp', //허용할수있는 파일 확장자
+        STRING: { //Multi-lingual support : 메시지 수정 가능
+          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+          duplicate: "$file 은 이미 선택된 파일입니다.",
+          denied: "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+          selected: '$file 을 선택했습니다.',
+          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+        }
+      });
+      $('.afile-img').MultiFile({
+        max: 3, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        accept: 'jpg|png|gif', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
+        STRING: { //Multi-lingual support : 메시지 수정 가능
+          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+          duplicate: "$file 은 이미 선택된 파일입니다.",
+          denied: "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+          selected: '$file 을 선택했습니다.',
+          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+        }
+      });
+    });
+  </script>
+  <title>'PPLUSEco'(PKG Production&Development)</title>
+</head>
+
+<body class="sub">
+  <a href="#" class="skip-nav">본문 바로가기</a>
+  <div class="wrapper">
+    <div id="body">
+      <!-- S_왼쪽메뉴-->
+      <section id="lnb">
+        <a href="#" class="menu" title="메뉴 열기/닫기"><img src="../images/arr_menu_left.png" alt="메뉴 열기/닫기" /></a>
+        <div class="btn-lnb-comp">
+          <img src="../images/logo_p.png" alt="회사로고">
+        </div>
+        <div class="lnb-user">
+          <span class="img"><img src="../images/icon_user02.png" alt="정보수정"></span>
+          <div class="desc">
+            <a href="../login/ChangComUser.html" class="depart">희성전자
+              <small class="name">@김희송님</small></a>
+            <a href="../login/ChangComUser.html"><small class="smallc">View your profile</small></a>
+          </div>
+        </div>
+        <nav style="touch-action: none;">
+          <ul style="transform: translate(0px, 0px) translateZ(0px);">
+            <li data-menu="UM">
+              <a href="#" title="계정관리"><span class="txtlmg user"></span>계정관리<span class="sub"></span></a>
+              <ul>
+                <li data-menu="UserMgt" class="on"><a href="../user/user/UserMgt.html" title="계정관리"><span
+                      class="hexagon"></span>계정관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="SM"><a href="#" title="시스템관리"><span class="txtlmg system"></span>시스템관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="GroupMgt"><a href="../user/group/GroupMgt.html" title="그룹관리"><span
+                      class="hexagon"></span>그룹관리</a></li>
+                <li data-menu="CGroupMgt"><a href="../user/group/CGroupMgt.html" title="회사별관리"><span
+                      class="hexagon"></span>회사별관리</a></li>
+                <li data-menu="CompanyCode"><a href="../code/PackagingCode.html" title="업체별 코드관리"><span
+                      class="hexagon"></span>업체별코드관리</a></li>
+                <li data-menu="CommCode"><a href="../code/CommCode.html" title="공통코드관리"><span
+                      class="hexagon"></span>공통코드관리</a></li>
+                <li data-menu="HolidayMgt"><a href="../holiday/HolidayMgt.html" title="휴일관리"><span
+                      class="hexagon"></span>휴일관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="MM"><a href="#" title="메뉴관리"><span class="txtlmg menu"></span>메뉴관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="MenuByAuthCreate"><a href="../menu/auth/MenuByAuthCreate.html" title="권한별메뉴생성"><span
+                      class="hexagon"></span>권한별메뉴생성</a></li>
+                <li data-menu="MenuMgt"><a href="../menu/menu/MenuMgt.html" title="메뉴관리"><span
+                      class="hexagon"></span>메뉴관리</a></li>
+                <li data-menu="ReportMgt"><a href="../report/ReportMgt.html" title="레포트관리"><span
+                      class="hexagon"></span>레포트관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="BM"><a href="#" title="게시판관리"><span class="txtlmg board"></span>게시판관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="BoardMenu"><a href="../BoardMenu.html" title="게시판관리"><span
+                      class="hexagon"></span>게시판관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="BachM"><a href="#" title="배치작업관리"><span class="txtlmg bach"></span>배치작업관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="BachManage"><a href="../BachManage.html" title="배치작업관리"><span
+                      class="hexagon"></span>배치작업관리</a></li>
+              </ul>
+            </li>
+            <li data-menu="LM"><a href="#" title="로그관리"><span class="txtlmg loglist"></span>로그관리<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="UserManageLogList"><a href="../UserManageLogList.html" title="계정권한로고"><span
+                      class="hexagon"></span>계정권한로고</a></li>
+                <li data-menu="GroupManageLogList"><a href="../GroupManageLogList.html" title="그룹로그"><span
+                      class="hexagon"></span>그룹로그</a></li>
+                <li data-menu="ReportManageLogList"><a href="../ReportManageLogList.html" title="통계리포트로그"><span
+                      class="hexagon"></span>통계리포트로그</a></li>
+              </ul>
+            </li>
+            <li data-menu="BC"><a href="#" title="BI챠트"><span class="txtlmg chat"></span>BIChat<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="BIChat"><a href="../BIChat.html" title="BI챠트"><span class="hexagon"></span>BIChat</a>
+                </li>
+              </ul>
+            </li>
+            <li data-menu="NT"><a href="#" title="알림기능" style="position:relative;"><span
+                  class="txtlmg alarm"></span>알림기능<span class="lnb-mark">2</span><span class="sub"></span></a>
+              <ul>
+                <li data-menu="Notifiations"><a href="../Notifiations.html" title="알림관리기능"><span
+                      class="hexagon"></span>알림관리기능</a></li>
+              </ul>
+            </li>
+            <li data-menu="PD" class="open"><a href="#" title="상품관리"><span class="txtlmg pro"></span>상품관리<span
+                  class="sub"></span></a>
+              <ul style="height: 138px;">
+                <!-- <li data-menu="RequestPro"><a href="../RequestPro.html" title="신청상품"><span
+                      class="hexagon"></span>신청상품(마스터)</a></li> -->
+                <li data-menu="Supplier"><a href="../Supplier2.html" title="공급업체"><span
+                      class="hexagon"></span>공급업체</a></li>
+                <li data-menu="Prod" class="on"><a href="../product/Prod.html" title="상품관리"><span
+                      class="hexagon"></span>상품관리</a></li>
+                <li data-menu="Prodimg"><a href="../product/Prodimg.html" title="상품이미지"><span
+                      class="hexagon"></span>상품이미지</a></li>
+              </ul>
+            </li>
+            <li data-menu="SP"><a href="#" title="공급업체"><span class="txtlmg supplier"></span>공급업체<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="Supplier"><a href="../Supplier.html" title="공급업체"><span class="hexagon"></span>공급업체관리</a>
+                </li>
+              </ul>
+            </li>
+            <li data-menu="Ea"><a href="#" title="이메일"><span class="txtlmg chat"></span>Email<span
+                  class="sub"></span></a>
+              <ul>
+                <li data-menu="Email"><a href="../Email.html" title="이메일만료"><span class="hexagon"></span>Email프린트</a>
+                </li>
+                <li data-menu="EmailExpiration"><a href="../EmailExpiration.html" title="이메일만료"><span
+                      class="hexagon"></span>Email기간만료</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div class="iScrollVerticalScrollbar iScrollLoneScrollbar"
+            style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
+            <div class="iScrollIndicator"
+              style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);">
+            </div>
+          </div>
+        </nav>
+      </section>
+      <!-- E_왼쪽메뉴-->
+      <!-- S_본문-->
+      <section class="container">
+        <header class="header">
+          <div class="top-location">
+            <ul class="location">
+              <li><a href="#">홈</a></li>
+              <li><a href="#">상품관리</a></li>
+              <li><em>상품관리</em></li>
+            </ul>
+          </div>
+          <ul class="top-nav">
+            <li><span class="top-nav-bi top-nav-bilink"><a href="../BIChat.html" title="BI분석플랫품">BI분석플랫품</a></span></li>
+            <li class="dropdown-notification"><a href="#" title="알림" style="position:relative;"><img
+                  src="../images/icon_bell.png" alt="알림"><span class="nav-mark">2</span></a>
+              <div class="dropdown-no-content">
+                <span class="arrow"></span>
+                <div class="notification">
+                  <div class="dropdown">
+                    <div class="dropdown-body">
+                      <a href="#">
+                        <p class="text-point">알림1</p> 내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                      </a>
+                    </div>
+                    <div class="meta">2h ago</div>
+                  </div>
+                  <div class="dropdown">
+                    <div class="dropdown-body">
+                      <a href="#">
+                        <p class="text-point">알림2</p> 내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                      </a>
+                    </div>
+                    <div class="meta">2h ago</div>
+                  </div>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="../Notifiations.html">전체 알림보기</a>
+                </div>
+              </div>
+            </li>
+            <li><a href="../login/ChangePswdResetLogin.html" title="비밀번호수정"><img src="../images/icon_user.png"
+                  alt="비밀번호수정"></a></li>
+            <li><a href="../login/Login.html" title="로그아웃"><img src="../images/icon_off.png" alt="로그아웃"></a>
+            </li>
+          </ul>
+        </header>
+
+        <div class="content">
+          <!-- S_검색-->
+          <form>
+            <div class="justify-content-between">
+              <div class="form-group">
+                <div class="form-inline">
+                  <select class="select-box w150">
+                    <option value="">전체</option>
+                    <option value="">상품명</option>
+                    <option value="">포장유형</option>
+                    <option value="">재활용등급</option>
+                    <option value="">상태</option>
+                  </select>
+                </div>
+                <div class="form-inline">
+                  <div class="search-box w250">
+                    <input type="text" class="text-input">
+                    <span class="search-box-append">
+                      <button type="button" class="button-search"><img src="../images/icon_search.png"
+                          title="검색"></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!-- E_검색-->
+
+          <!-- S_그리드-->
+          <div class="content-table">
+            <div class="scroll-auto">
+              <table class="table">
+                <colgroup>
+                  <col style="width: 40px;">
+                  <col style="width: 80px;">
+                  <col style="width: 80px;">
+                  <col style="width: 100px;">
+                  <col style="width: 70px;">
+                  <col style="width: 50px;">
+                  <col style="width: 50px;">
+                  <col style="width: 50px;">
+                  <col style="width: 60px;">
+                  <col style="width: 60px;">
+                  <!-- <col style="width: 40px;"> -->
+                  <col style="width: 40px;">
+                </colgroup>
+                <thead>
+                  <tr class="th-bg">
+                    <th scope="col">번호</th>
+                    <th scope="col">상품코드</th>
+                    <th scope="col">사진</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">포장유형</th>
+                    <th scope="col">재활용등급</th>
+                    <th scope="col">진행상태</th>
+                    <th scope="col">체크</th>
+                    <th scope="col">포장정보</th>
+                    <th scope="col">재활용<br>분담금결과</th>
+                    <!-- <th scope="col">육안판정</th> -->
+                    <th scope="col">관리</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>HSI000000</td>
+                    <td><img src="../images/pro_img04.jpeg" width="70" height="auto"></td>
+                    <td>서울유유 800g</td>
+                    <td>철캔</td>
+                    <td class="fontColorBlue"><img src="../images/free-icon-emoji-3456813.png" width="26px">우수</td>
+                    <td>진행중</td>
+                    <td>신청대상</td>
+                    <td><a href="#detail" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
+                    <td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">재활용분담금결과</a></td>
+                    <!-- <td><a href="" role="button" data-toggle="modal" class="button-Csmall">육안판정</a></td> -->
+                    <td>
+                      <div class="btn-group">
+                        <a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img
+                            src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
+                        <a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img
+                            src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>HSI000000</td>
+                    <td><img src="../images/pro_img01.jpeg" width="70" height="auto"></td>
+                    <td>서울유유 800g</td>
+                    <td>종이팩</td>
+                    <td class="colorRed"><img src="../images/free-icon-angry-1747839.png" width="26px">나쁨</td>
+                    <td class="fontColorBlue">완료</td>
+                    <td class="fontColorBlue">정상</td>
+                    <td><a href="#detail" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
+                    <td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">재활용분담금결과</a></td>
+                    <!-- <td><a href="" role="button" data-toggle="modal" class="button-Csmall">육안판정</a></td> -->
+                    <td>
+                      <div class="btn-group">
+                        <a href="#edit" role="button" data-toggle="modal" class="btn-icon"><img
+                            src="../images/icon_edit.png" alt="수정하기" class="btn-Ticon02"></a>
+                        <a href="#delete" role="button" data-toggle="modal" class="btn-icon"><img
+                            src="../images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02"></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- E_그리드-->
+            <div class="btn-group pt15 tr">
+              <button type="button" class="button btn-success" data-toggle="modal"><a href="#register"
+                  data-toggle="modal">상품관리</a></button>
+            </div>
+            <!-- S_페이징-->
+            <div class="board-paging">
+              <ul>
+                <li><a href="#" class="start">◀</a></li>
+                <li class="on"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">6</a></li>
+                <li><a href="#">7</a></li>
+                <li><a href="#">8</a></li>
+                <li><a href="#">9</a></li>
+                <li><a href="#">10</a></li>
+                <li><a href="#">...20</a></li>
+                <li><a href="#" class="last">▶</a></li>
+              </ul>
+            </div>
+            <!-- E_페이징-->
+          </div>
+        </div>
+      </section>
+      <!-- E_본문-->
+    </div>
+  </div>
+
+  <!-- 레이어 팝업 - 등록  -->
+  <div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-content" style="width:1000px">
+      <div class="modal-header">
+        <h4 class="modal-title">상품기본정보등록</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">상품코드</label>
+              <div class="col-75">
+                <input type="text" class="text-input" value="HSL2100000001" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">상품분류</label>
+              <div class="col-75">
+                <select class="select-box">
+                  <option value="선택없음" selected="">선택없음</option>
+                  <option value="상품분류선택">상품분류선택</option>
+                  <option value="상품분류선택">상품분류선택</option>
+                  <option value="상품분류선택">상품분류선택</option>
+                  <option value="상품분류선택">상품분류선택</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">상품명</label>
+              <div class="col-75">
+                <input type="text" class="text-input" placeholder="예시)건강참기름 가정용">
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">납품기업</label>
+              <div class="col-75">
+                <input type="text" class="text-input">
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">누적판매량(년)</label>
+              <div class="col-75">
+                <input type="text" class="text-input" placeholder="누적판매량(년)">
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">포장재총중량</label>
+              <div class="col-75">
+                <input type="text" class="text-input" placeholder="포장재총중량">
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">상품제조사</label>
+              <div class="col-75">
+                <input type="text" class="text-input" placeholder="예시)아산 제1공장">
+              </div>
+            </div>
+          </div>
+          <div class="col-50">
+            <div class="form-group">
+              <label class="col-25 form-label">재활용분담금</label>
+              <div class="col-75">
+                <input type="text" class="text-input" placeholder="누적판매량 등록시 자동계산">
+              </div>
+            </div>
+          </div> -->
+          <div class="col-100">
+            <div class="form-group">
+              <label class="col-25 form-label-textarea">설명</label>
+              <div class="col-75">
+                <div class="form-input">
+                  <textarea class="textarea"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-25 form-label-img">사진</label>
+              <div class="col-75">
+                <div class="form-input-img">
+                  <input name="files[]" type="file" multiple="multiple" id="our-file01" class="with-preview afile-img">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-25 form-label-txt">도면 및 SPEC</label>
+              <div class="col-75">
+                <div class="form-input-txt">
+                  <input type="file" class="afile-txt" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- 버튼 -->
+        <div class="modal-footer btn-group">
+          <button type="button" class="button btn-success" data-dismiss="modal">저장</button>
+          <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 레이어 팝업 - 결과  -->
+  <div id="envi_result" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-content" style="width:1200px">
+      <div class="modal-header">
+        <h4 class="modal-title">재활용분담금결과등록</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <!--<span class="mt10 pb04">√ 라디오버튼 선택시 상품기본정보의 누적판매량이 표시됩니다.</span>
+			<div class="title-model-s">
+				<h4 class="d-inblock pt10"><span class="title-point">[포장기준]</span></h4>
+			</div> -->
+      <div>
+        <div class="col-35">
+          <div class="form-group">
+            <label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">1차포장</label>
+            <div class="col-55">
+              <select class="select-box">
+                <option value="선택없음" selected="">선택없음</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">출고량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">기준중량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-60 form-label">재활용의무율</label>
+              <div class="col-40">
+                <input type="number" class="text-input" placeholder="1" min="0" max="5">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">단가</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">활증</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-20">
+            <div class="form-group">
+              <label class="col-45 form-label">재활용분담금</label>
+              <div class="col-55">
+                <input type="text" class="text-input" placeholder="자동계산">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      <div>
+        <div class="col-35">
+          <div class="form-group">
+            <label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">2차포장</label>
+            <div class="col-55">
+              <select class="select-box">
+                <option value="선택없음" selected="">선택없음</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">출고량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">기준중량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-60 form-label">재활용의무율</label>
+              <div class="col-40">
+                <input type="number" class="text-input" placeholder="1" min="0" max="5">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">단가</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">활증</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-20">
+            <div class="form-group">
+              <label class="col-45 form-label">재활용분담금</label>
+              <div class="col-55">
+                <input type="text" class="text-input" placeholder="자동계산">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-35">
+          <div class="form-group">
+            <label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">3차포장</label>
+            <div class="col-55">
+              <select class="select-box">
+                <option value="선택없음" selected="">선택없음</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+                <option value="상품분류선택">상품분류선택</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">출고량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">기준중량</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-60 form-label">재활용의무율</label>
+              <div class="col-40">
+                <input type="number" class="text-input" placeholder="1" min="0" max="5">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">단가</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-16">
+            <div class="form-group">
+              <label class="col-40 form-label">활증</label>
+              <div class="col-60">
+                <input type="text" class="text-input" placeholder="1차포장 (입력x)">
+              </div>
+            </div>
+          </div>
+          <div class="col-20">
+            <div class="form-group">
+              <label class="col-45 form-label">재활용분담금</label>
+              <div class="col-55">
+                <input type="text" class="text-input" placeholder="자동계산">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pt30">
+        <div class="col-25">
+          <div class="form-group">
+            <label class="col-60 form-label">누적판매량/수량합계</label>
+            <div class="col-40">
+              <input type="number" class="text-input" placeholder="1" min="0" max="5">
+            </div>
+          </div>
+        </div>
+        <div class="col-25">
+          <div class="form-group">
+            <label class="col-60 form-label">할증</label>
+            <div class="col-40">
+              <input type="number" class="text-input" placeholder="1" min="0" max="5">
+            </div>
+          </div>
+        </div>
+        <div class="col-25">
+          <div class="form-group">
+            <label class="col-35 form-label">할인</label>
+            <div class="col-75">
+              <input type="text" class="text-input" placeholder="4차포장 (입력x)">
+            </div>
+          </div>
+        </div>
+        <div class="col-25">
+          <div class="form-group">
+            <label class="col-40 form-label">재활용분담금 </label>
+            <div class="col-60">
+              <input type="text" class="text-input" placeholder="자동계산">
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="fr pt10 text-point">
+        ※ 재활용분담금 : 누적판매수량/년 x 중량/원 x 재활용의무율 x 단가
+        <ul class="desc02 mt10">할증
+          <li>1. 복합재질 및 필름시티 10%</li>
+          <li>2. 발포합성수지 PSP</li>
+        </ul>
+      </span>
+      <!-- 버튼 -->
+      <div class="modal-footer btn-group">
+        <button type="button" class="button btn-success" data-dismiss="modal">저장</button>
+        <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- 레이어 팝업 - 수정  -->
+  <div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-content" style="width:1000px">
+      <div class="modal-header">
+        <h4 class="modal-title">상품수정</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tab02">
+          <ul class="tabnav02">
+            <li><a href="#tab02_1">상품기본정보</a></li>
+            <li><a href="#tab02_2">문서정보</a></li>
+          </ul>
+          <div class="tabcontent02">
+            <div id="tab02_1">
+              <div class="row">
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">상품코드</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" value="HSL2100000001" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">상품분류</label>
+                    <div class="col-75">
+                      <select class="select-box">
+                        <option value="선택없음" selected="">선택없음</option>
+                        <option value="상품분류선택">상품분류선택</option>
+                        <option value="상품분류선택">상품분류선택</option>
+                        <option value="상품분류선택">상품분류선택</option>
+                        <option value="상품분류선택">상품분류선택</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">상품명</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" placeholder="예시)건강참기름 가정용">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">납품기업</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-33">
+                  <div class="form-group">
+                    <label class="col-40 form-label">누적판매량(년)</label>
+                    <div class="col-60">
+                      <input type="text" class="text-input" placeholder="누적판매량(년)">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-33">
+                  <div class="form-group">
+                    <label class="col-40 form-label">포장재총중량</label>
+                    <div class="col-60">
+                      <input type="text" class="text-input" placeholder="포장재총중량">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-33">
+                  <div class="form-group">
+                    <label class="col-40 form-label">재활용분담금</label>
+                    <div class="col-60">
+                      <input type="text" class="text-input" placeholder="누적판매량 등록시 자동계산">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-100">
+                  <div class="form-group">
+                    <label class="col-25 form-label">상품제조사</label>
+                    <div class="col-75">
+                      <div class="form-input-box">
+                        <a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명1</a>
+                        <a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명2</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-100">
+                  <div class="form-group">
+                    <label class="col-25 form-label-textarea">설명</label>
+                    <div class="col-75">
+                      <div class="form-input">
+                        <textarea class="textarea"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-25 form-label-img">사진</label>
+                    <div class="col-75">
+                      <div class="form-input-img">
+                        <input name="files[]" type="file" multiple="multiple" id="our-file02"
+                          class="multi with-preview">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-25 form-label-txt">도면 및 SPEC</label>
+                    <div class="col-75">
+                      <div class="form-input-txt">
+                        <input type="file" class="afile-txt" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h4 class="tl pt15"><span class="title-point">[환경부 진행상황]</span></h4>
+              <div class="row">
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">진행상태</label>
+                    <div class="col-75">
+                      <div class="form-input-box">
+                        <div class="button-Rsmall d-inblock">
+                          <input type="radio" id="radio1" name="radio" checked="checked">
+                          <label for="radio1" class="mr05">진행중</label></div>
+                        <div class="button-Rsmall d-inblock">
+                          <input type="radio" id="radio4" name="radio">
+                          <label for="radio4" class="mr05">완료</label></div>
+                        <div class="button-Rsmall d-inblock">
+                          <input type="radio" id="radio2" name="radio">
+                          <label for="radio2" class="mr05">환경부 제외 상품</label></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">평가기준</label>
+                    <div class="col-75">
+                      <div class="form-input-box">
+                        <div class="button-Rsmall d-inblock">
+                          <input type="radio" id="radio1" name="radio" checked="checked">
+                          <label for="radio1" class="mr05">적용</label></div>
+                        <div class="button-Rsmall d-inblock">
+                          <input type="radio" id="radio4" name="radio">
+                          <label for="radio4" class="mr05">비적용</label></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">접수번호</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">승인번호</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab02_2">
+              <div class="row">
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">최초 생성일</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" value="2022-01-01" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">최종 변경일</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" value="2022-01-04" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">생성자</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" value="김희영" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-50">
+                  <div class="form-group">
+                    <label class="col-25 form-label">최종변경자</label>
+                    <div class="col-75">
+                      <input type="text" class="text-input" value="김희영" disabled>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 버튼 -->
+        <div class="modal-footer btn-group">
+          <button type="button" class="button btn-success" data-dismiss="modal">저장</button>
+          <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 레이어 팝업 - delete -->
+  <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" data-modal-parent="#myModal">
+    <div class="modal-content" style="width:400px">
+      <div class="modal-header">
+        <h4 class="modal-title">삭제</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-100">
+            <div class="form-group">
+              <div class="tc">(<em class="text-bold">PEuser01</em>)삭제합니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer btn-group">
+        <button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
+        <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+  <!-- 레이어 팝업 - 상세  -->
+  ㄷ<div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-content" style="width:auto;max-width:1100px">
+      <div class="modal-header">
+        <h4 class="modal-title">상품포장정보</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="tab-content-box">
+            <p>
+              <button id="btn-add-tab" type="button" class="button-Rsmall fr">탭 추가</button>
+            </p>
+            <!-- Nav tabs -->
+            <ul id="tab-list" class="nav tab-nav" role="tablist">
+              <li class="active"><a href="#tab1" role="tab" data-toggle="tab"><span>1차 포장</span></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div id="tab-content" class="tab-content">
+              <div class="tab-pane active" id="tab1">
+                <!--S_탭 tab03_1-->
+                <div id="tab03_1">
+                  <div class="row">
+                    <!--S_탭 tab04-->
+                    <div class="tab04">
+                      <ul class="tabnav04 tc mb10">
+                        <li><a href="#tab04_1">재질정보</a></li>
+                        <li><a href="#tab04_2">자가진단</a></li>
+                      </ul>
+                      <!--S_탭 tabcontent04-->
+                      <div class="tabcontent04">
+                        <div id="tab04_1">
+                          <div class="tab-in-nav d-flex">
+                            <div class="tab-in-nav d-flex">
+                              <span class="pt10 pr10">ㆍ재질유형</span>
+                              <select class="select-box w200 mr10">
+                                <option value="0">종이팩</option>
+                                <option value="1">플라스틱</option>
+                              </select>
+                            </div>
+                            <ul class="tabnav04-in d-flex pt05">
+                              <li><a href="#tab04_1_in1">몸체</a></li>
+                              <li><a href="#tab04_1_in2">라벨</a></li>
+                              <li><a href="#tab04_1_in3">마개</a></li>
+                              <li><a href="#tab04_1_in4">잡자재</a></li>
+                              <li><a href="#tab04_1_in4">별도포장</a></li>
+                            </ul>
+                            <div class="add-row">
+                              <button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
+                              <button id='btn-delete-row' class="button-Rsmall">(-)삭제하기</button>
+                            </div>
+                          </div>
+                          <!--S_몸체 -->
+                          <div class="tabcontent04-in">
+                            <div id="tab04_1_in1">
+                              <div id="mytable">
+                                <div style="border: 2px solid #ddd;padding: 0 10px 10px;">
+                                  <h4 class="tl pt15"><span class="title-point">[몸체 상세]</span></h4>
+                                  <div class="row">
+                                    <div class="col-50">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">재질정보</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="LDPE/NYOLON15/PE">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">중량</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="5g">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">규격</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="50x50">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">색상</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="무색 or 갈색">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-100">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label-textarea">추가설명</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <textarea class="textarea" placeholder="백색펄프 사용 or 백색펄프 미사용 or 알루미늄 첩합
+                                          두께값: 33.51±2.6 or 알루미늄두께 : 7
+                                          "></textarea>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <h4 class="tl pt15"><span class="title-point">[업체담당자정보]</span></h4>
+                                  <div class="row">
+                                    <div class="col-30">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">공급업체</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <select class="select-box">
+                                              <option value="">홍길동전</option>
+                                              <option value="">상품명</option>
+                                              <option value="">포장유형</option>
+                                              <option value="">재활용등급</option>
+                                              <option value="">상태</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-30">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">담당자</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <select class="select-box">
+                                              <option value="">홍길동</option>
+                                              <option value="">김유신</option>
+                                              <option value="">이순신</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-40">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">이메일</label>
+                                        <div class="col-75">
+                                          <div class="search-box">
+                                            <input type="text" class="text-input" value="홍길동@홍길동전.co.kr" disabled>
+                                            <span class="search-box-append">
+                                              <button type="button" class="button-search">이메일보내기</button>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <h4 class="tl pt15"><span class="title-point">[첨부파일]</span></h4>
+                                  <div class="row">
+                                    <div class="col-100">
+                                      <div class="form-group">
+                                        <label class="col-25 form-label">포장재질증명서</label>
+                                        <div class="col-75">
+                                          <div class="search-box">
+                                            <input type="text" class="text-input" value="파일명">
+                                            <span class="search-box-append">
+                                              <button type="button" class="button-search">다운로드</button>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="tab04_1_in2">
+                              라벨
+                            </div>
+                            <div id="tab04_1_in3">
+                              마개및 잡자재
+                            </div>
+                            <div id="tab04_1_in4">
+                              라벨마개 및 잡자재
+                            </div>
+                            <!-- 버튼 -->
+                          </div>
+                          <div class="modal-footer btn-group">
+                            <button type="button" class="button btn-success" data-dismiss="modal">저장</button>
+                            <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+                          </div>
+                          <!--E_몸체 -->
+
+                        </div>
+                        <!--S_탭 tab04_2 -->
+                        <div id="tab04_2">
+                          <div class="row">
+                            <span class="pt10 pr10">ㆍ코드변경시점</span>
+                            <select class="select-box w150 mr10">
+                              <option value="0">2021년7월</option>
+                              <option value="1">2021년1월</option>
+                            </select>
+                            <div class="tab-in-nav d-flex">
+                              <span class="pt10 pr10">ㆍ재질유형</span>
+                              <select class="select-box w150 mr10">
+                                <option value="0">종이팩</option>
+                                <option value="1">플라스틱</option>
+                              </select>
+                              <ul class="d-flex pt05">
+                                <li class="button btn-radius on">몸체</li>
+                                <li class="button btn-radius">라벨</li>
+                                <li class="button btn-radius on">마개및잡자재</li>
+                                <li class="button btn-radius">라벨 마개 및 잡자재</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <!--<div class="cb">체크 </div>-->
+                          <div id="Accordion_wrap" class="row100 pt10">
+                            <div class="Accordion-box">
+                              <h4 class="que pt15"><span class="title-point">[몸체]</span></h4>
+                              <div class="anw">
+                                <ul class="choice-wrapper">
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-최우수/우수</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">무색</label></li>
+                                        <li><input type="checkbox"><label for="">녹색
+                                          </label></li>
+                                        <li><input type="checkbox"><label for="">갈색
+                                          </label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-어려움</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">무색
+                                          </label></li>
+                                        <li><input type="checkbox"><label for="">녹색
+                                          </label></li>
+                                        <li><input type="checkbox"><label for="">갈색
+                                          </label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-보통</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">무색
+                                          </label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">판정방법</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">기기분석</label></li>
+                                        <li><input type="checkbox"><label for="">육안판정</label></li>
+                                        <li><input type="checkbox"><label for="">공인시험성적서</label></li>
+                                        <li><input type="checkbox"><label for="">신고허가서류</label></li>
+                                        <li><input type="checkbox"><label for="">기타</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                </ul>
+                                <div class="row">
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">증빙서류</label>
+                                      <div class="col-75">
+                                        <div class="form-input">
+                                          <input type="text" class="text-input"
+                                            placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">첨부파일</label>
+                                      <div class="col-75">
+                                        <input type="file" multiple="multiple" class="text-input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- S_결과확인-->
+                                <div class="result-box">
+                                  <div class="row">
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">몸체평가결과
+                                        </label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="우수">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">필요서류
+                                          목록</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input"
+                                              placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- E_결과확인-->
+                              </div>
+                            </div>
+                            <div class="Accordion-box">
+                              <h4 class="que pt15"><span class="title-point">[라벨]</span></h4>
+                              <div class="anw">
+                                <ul class="choice-wrapper">
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-최우수/우수</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">미사용(유통기한 및 제조일자만 표시된 경우
+                                            포함)</label></li>
+                                        <li><input type="checkbox"><label for="">종이재질</label></li>
+                                        <li><input type="checkbox"><label for="">절취선을 포함한 비접(점)착식 합성수지
+                                            재질</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-어려움</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">미사용(유통기한 및 제조일자만 표시된 경우
+                                            포함)</label></li>
+                                        <li><input type="checkbox"><label for="">종이재질</label></li>
+                                        <li><input type="checkbox"><label for="">절취선을 포함한 비접(점)착식 합성수지
+                                            재질</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-보통</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">절취선을 포함하지 않은 비접(점)착식 합성수지
+                                            재질</label></li>
+                                        <li><input type="checkbox"><label for="">접(점)착제가 사용된 합성수지 재질로서 몸체와
+                                            분리가능한 경우</label></li>
+                                        <li><input type="checkbox"><label for="">몸체에
+                                            직접 인쇄(유통기간 및 제조일자 표시 제외)</label>
+                                        </li>
+                                        <li><input type="checkbox"><label for="">기타</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">판정방법</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">기기분석</label></li>
+                                        <li><input type="checkbox"><label for="">육안판정</label></li>
+                                        <li><input type="checkbox"><label for="">공인시험성적서</label></li>
+                                        <li><input type="checkbox"><label for="">신고허가서류</label></li>
+                                        <li><input type="checkbox"><label for="">기타</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                </ul>
+                                <div class="row">
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">증빙서류</label>
+                                      <div class="col-75">
+                                        <div class="form-input">
+                                          <input type="text" class="text-input"
+                                            placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">첨부파일</label>
+                                      <div class="col-75">
+                                        <input type="file" multiple="multiple" class="text-input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- S_결과확인-->
+                                <div class="result-box">
+                                  <div class="row">
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">몸체평가결과
+                                        </label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="우수">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">필요서류
+                                          목록</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input"
+                                              placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- E_결과확인-->
+                              </div>
+                            </div>
+                            <div class="Accordion-box">
+                              <h4 class="que pt15"><span class="title-point">[마개 및 잡자재]</span>
+                              </h4>
+                              <div class="anw">
+                                <ul class="choice-wrapper">
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-최우수/우수</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">뚜껑·테 일체형 구조</label></li>
+                                        <li><input type="checkbox"><label for="">몸체와
+                                            분리가능한 마개 및 잡자재</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-어려움</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">뚜껑·테 일체형 구조</label></li>
+                                        <li><input type="checkbox"><label for="">몸체와
+                                            분리가능한 마개 및 잡자재</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">재활용-보통</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li>
+                                          <input type="checkbox"><label for="">기타</label>
+                                          <textarea class="textarea"></textarea>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                  <li class="choice-box">
+                                    <h4 class="line-br">판정방법</h4>
+                                    <div class="choice-cont">
+                                      <ul>
+                                        <li><input type="checkbox"><label for="">기기분석</label></li>
+                                        <li><input type="checkbox"><label for="">육안판정</label></li>
+                                        <li><input type="checkbox"><label for="">공인시험성적서</label></li>
+                                        <li><input type="checkbox"><label for="">신고허가서류</label></li>
+                                        <li><input type="checkbox"><label for="">기타</label></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                </ul>
+                                <div class="row">
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">증빙서류</label>
+                                      <div class="col-75">
+                                        <div class="form-input">
+                                          <input type="text" class="text-input"
+                                            placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-50">
+                                    <div class="form-group pb0">
+                                      <label class="col-25 form-label">첨부파일</label>
+                                      <div class="col-75">
+                                        <input type="file" multiple="multiple" class="text-input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- S_결과확인-->
+                                <div class="result-box">
+                                  <div class="row">
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">몸체평가결과
+                                        </label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input" placeholder="우수">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-50">
+                                      <div class="form-group pb0">
+                                        <label class="col-25 form-label">필요서류
+                                          목록</label>
+                                        <div class="col-75">
+                                          <div class="form-input">
+                                            <input type="text" class="text-input"
+                                              placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- E_결과확인-->
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 버튼 -->
+                          <div class="modal-footer btn-group">
+                            <button type="button" class="button btn-success" data-dismiss="modal">결과확인</button>
+                            <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+                          </div>
+                          <!--S_최종결과 -->
+                          <div class="row100 pt10">
+                            <div class="result-box">
+                              <div class="row">
+                                <div class="col-50">
+                                  <div class="form-group pb0">
+                                    <label class="col-25 form-label result-text">최종 결과
+                                    </label>
+                                    <div class="col-75">
+                                      <div class="form-input">
+                                        <input type="text" class="text-input" placeholder="우수">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-50">
+                                  <div class="form-group pb0">
+                                    <label class="col-25 form-label result-text">매핑결과</label>
+                                    <div class="col-75">
+                                      <div class="form-input">
+                                        <input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!--E_최종결과 -->
+                        </div>
+                        <!--E_탭 tab04_2 -->
+                      </div>
+                      <!--E_탭 tabcontent04-->
+                    </div>
+                    <!--E_탭 tab04-->
+                  </div>
+                  <!--E_탭 tab03_1-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+<script>
+  var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
+  var tabID = 1;
+
+  function resetTab() {
+    var tabs = $("#tab-list li:not(:first)");
+    var len = 1
+    $(tabs).each(function (k, v) {
+      len++;
+      $(this).find('a').html(len + '차 포장' + button);
+    })
+    tabID--;
+  }
+
+  $(document).ready(function () {
+    $('#btn-add-tab').click(function () {
+      tabID++;
+      $('#tab-list').append($('<li><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
+        tabID +
+        '차 포장</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+      ));
+      $('#tab-content').append($('<div class="tab-pane fade" id="tab' + tabID + '">Tab ' + tabID +
+        ' content</div>'));
+      $(".edit").click(editHandler);
+    });
+
+    $('#tab-list').on('click', '.tab-close', function () {
+      var tabID = $(this).parents('a').attr('href');
+      $(this).parents('li').remove();
+      $(tabID).remove();
+
+      //display first tab
+      var tabFirst = $('#tab-list a:first');
+      resetTab();
+      tabFirst.tab('show');
+    });
+
+    var list = document.getElementById("tab-list");
+  });
+
+  var editHandler = function () {
+    var t = $(this);
+    t.css("visibility", "hidden");
+    $(this).prev().attr("contenteditable", "true").focusout(function () {
+      $(this).removeAttr("contenteditable").off("focusout");
+      t.css("visibility", "visible");
+    });
+  };
+
+  $(".edit").click(editHandler);
+</script>
+
+</html>

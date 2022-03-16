@@ -14,10 +14,10 @@
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="search-box w250">
+					<div class="search-box">
 						<input id="searchValue" name="searchValue" value="${pages.searchValue }" type="text" class="text-input">
 						<span class="search-box-append">
-							<button type="button" class="button-search">
+							<button type="button" class="btn-search">
 								<img class="searchBtn" src="/images/icon_search.png" title="검색">
 							</button>
 						</span>
@@ -97,20 +97,20 @@
 										<td>
 											<c:choose>
 												<c:when test="${list.useYn eq 'Y' }">
-													<button type="button" class="button-yes">YES</button>
+													<button type="button" class="btn-yes">YES</button>
 												</c:when>
 												<c:otherwise>
-														<button type="button" class="button-no">NO</button>
+														<button type="button" class="btn-no">NO</button>
 												</c:otherwise>
 											</c:choose>
 										</td>
 										<td>
 											<div class="btn-group">
-												<a href="#register" role="button" data-toggle="modal" onclick="detailView('${list.reportId}');" class="btn-icon">
-													<img src="/images/icon_detail.png" alt="상세보기" class="btn-Ticon">
+												<a href="#register" role="button" data-toggle="modal" onclick="detailView('${list.reportId}');">
+													<img src="/images/icon_edit.png" alt="상세보기" class="btn-table-icon">
 												</a>
-												<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${list.reportId}');" class="btn-icon del_data">
-													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+												<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${list.reportId}');" class="del_data">
+													<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 												</a>
 											</div>
 										</td>
@@ -240,13 +240,13 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useY" name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">사용</label>
+									<label for="useY" class="mr05">YES</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input id="useN" name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">미사용</label>
+									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
 						</div>
@@ -288,7 +288,7 @@
 				<div class="col-100">
 					<div class="form-group">
 						<div class="tc">
-							<em class="text-bold delName">PEuser01</em> 삭제합니다.
+							<em class="font-bold delName">PEuser01</em> 삭제합니다.
 						</div>
 					</div>
 				</div>
@@ -356,7 +356,7 @@
 	
 	/*상세을 눌렀을때*/
 	function resetView(){
-		$('#register .modal-title').text('등록');
+		$('#register .modal-title').text('상세');
 		$('#register input').attr('disabled',true);
 		$('#register select').attr('disabled',true);
 		$('#regBtn').removeClass('insert');

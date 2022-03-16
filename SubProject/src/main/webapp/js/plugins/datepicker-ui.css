@@ -1,5 +1,5 @@
 .ui-datepicker-trigger:before {position: absolute;width: 18px;height: 18px;background: url("../../../images/icon_calendar.png") no-repeat;pointer-events: none;content: '';}
-.ui-datepicker-trigger {background: none;width: 30px;height: 100%;position: absolute;right: 3px;top: 8px;}
+.ui-datepicker-trigger {background: none;width: 30px;height: 100%;position: absolute;right: 3px;top: 0px;}
 .ui-datepicker-year, .ui-datepicker-month {height: 30px;border: 1px solid #ddd;}
 .ui-datepicker {width: 17em;padding: .2em .2em 0;display: none;}
 .ui-datepicker .ui-datepicker-header {

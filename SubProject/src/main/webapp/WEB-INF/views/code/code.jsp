@@ -15,10 +15,10 @@
 <!-- 					</select> -->
 <!-- 				</div> -->
 <!-- 				<div class="form-inline"> -->
-<!-- 					<div class="search-box w250"> -->
+<!-- 					<div class="search-box"> -->
 <%-- 						<input type="text" class="text-input" id="searchValue" name="searchValue" value="${pages.searchValue }"> --%>
 <!-- 						<span class="search-box-append"> -->
-<!-- 							<button type="button" class="button-search"> -->
+<!-- 							<button type="button" class="btn-search"> -->
 <!-- 								<img src="/images/icon_search.png" title="검색"> -->
 <!-- 							</button> -->
 <!-- 						</span> -->
@@ -64,20 +64,20 @@
 								<td class="tr-item">
 									<c:choose>
 										<c:when test="${code.useYn eq 'Y' }">
-											<button type="button" class="button-yes">YES</button>
+											<button type="button" class="btn-yes">YES</button>
 										</c:when>
 										<c:otherwise>
-												<button type="button" class="button-no">NO</button>
+												<button type="button" class="btn-no">NO</button>
 										</c:otherwise>
 									</c:choose>
 								</td>
 								<td>
 									<div class="btn-group">
-										<a href="#register" role="button" data-toggle="modal" onclick="detailView('${code.codeId}');"  class="btn-icon">
-											<img src="/images/icon_edit.png" alt="등록하기" class="btn-Ticon02">
+										<a href="#register" role="button" data-toggle="modal" onclick="detailView('${code.codeId}');">
+											<img src="/images/icon_edit.png" alt="등록하기" class="btn-table-icon02">
 										</a>
 										<a href="#delete" role="button" data-toggle="modal" onclick="deleteSet('${code.codeId}');"  class="btn-icon del_data">
-											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02">
+											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">
 										</a>
 									</div>
 								</td>
@@ -205,13 +205,13 @@
 						<label class="col-25 form-label">사용여부</label>
 						<div class="col-75">
 							<div class="form-input-box">
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input type="radio" id="useY" name="useYn" value="Y">
-									<label for="useY" class="mr05">Yes</label>
+									<label for="useY" class="mr05">YES</label>
 								</div>
-								<div class="button-Rsmall d-inblock">
+								<div class="btn-form-small">
 									<input type="radio" id="useN" name="useYn" value="N">
-									<label for="useN" class="mr05">No</label>
+									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
 						</div>
@@ -479,9 +479,9 @@
 				html += '	<td>'+codeDsc+'</td>';
 				html += '	<td>';
 				if(item.useYn == 'Y'){
-					html += '		<button type="button" class="button-yes">YES</button>';
+					html += '		<button type="button" class="btn-yes">YES</button>';
 				}else{
-					html += '		<button type="button" class="button-no">NO</button>';
+					html += '		<button type="button" class="btn-no">NO</button>';
 				}
 				html += '	</td>';
 				html += '</tr>';
@@ -557,13 +557,13 @@
 		html += '			<label class="col-25 form-label">사용여부</label>';
 		html += '			<div class="col-75">';
 		html += '				<div class="form-input-box tl">';
-		html += '					<div class="button-Rsmall d-inblock">';
+		html += '					<div class="btn-form-small">';
 		html += '						<input type="radio" id="code_useY" name="code_useYn" value="Y" checked="checked">';
-		html += '						<label for="code_useY" class="mr05">Yes</label>';
+		html += '						<label for="code_useY" class="mr05">YES</label>';
 		html += '					</div>';
-		html += '					<div class="button-Rsmall d-inblock">';
+		html += '					<div class="btn-form-small">';
 		html += '						<input type="radio" id="code_useN" name="code_useYn" value="N">';
-		html += '						<label for="code_useN" class="mr05">No</label>';
+		html += '						<label for="code_useN" class="mr05">NO</label>';
 		html += '					</div>';
 		html += '				</div>';
 		html += '			</div>';
