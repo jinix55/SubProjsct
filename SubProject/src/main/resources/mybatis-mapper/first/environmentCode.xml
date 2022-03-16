@@ -26,7 +26,7 @@
 	
 	<select id="selectGroupIdList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(ORD_SEQ) ASC) AS ROWNUM,
+			ROW_NUMBER() OVER (ORDER BY ORD_SEQ ASC) AS ROWNUM,
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
@@ -118,6 +118,12 @@
 			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
+			RPT_MAT_STRUCT,
+			RPT_DEV_ANAL,
+			RPT_VISUAL_JUDG,
+			RPT_TEST,
+			RPT_PERMISSION,
+			RPT_ETC,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -139,6 +145,12 @@
 			, UP_COMPANY_CODE
 			, CODE_NM
 			, CODE_DSC
+			, RPT_MAT_STRUCT
+			, RPT_DEV_ANAL
+			, RPT_VISUAL_JUDG
+			, RPT_TEST
+			, RPT_PERMISSION
+			, RPT_ETC
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -154,6 +166,12 @@
 			, #{upCompanyCode}
 			, #{codeNm}
 			, #{codeDsc}
+			, #{rptMatStruct}
+			, #{rptDevAnal}
+			, #{rptVisualJudg}
+			, #{rptTest}
+			, #{rptPermission}
+			, #{rptEtc}
 			, #{useYn}
 			, #{rgstId}
 			, now()
@@ -175,6 +193,12 @@
 			, MODI_ID = #{modiId}
 			, USE_YN = #{useYn}
 			, ORD_SEQ = #{ordSeq}
+			, RPT_MAT_STRUCT = #{rptMatStruct}
+			, RPT_DEV_ANAL = #{rptDevAnal}
+			, RPT_VISUAL_JUDG = #{rptVisualJudg}
+			, RPT_TEST = #{rptTest}
+			, RPT_PERMISSION = #{rptPermission}
+			, RPT_ETC = #{rptEtc}
 		WHERE
 			GROUP_ID = #{groupId}
 		AND

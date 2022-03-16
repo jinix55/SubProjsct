@@ -397,6 +397,26 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group">
+							<div class="col-100 mb10">
+								<input id="rptMatStruct" name="rptMatStruct" type="checkbox" style="margin: 0;" value="">
+								<label for="rptMatStruct">포장재질구조증명서</label>
+								<input id="rptDevAnal" name="rptDevAnal" type="checkbox" style="margin: 0;" value="">
+								<label for="rptDevAnal">기기분석증명서</label>
+								<input id="rptVisualJudg" name="rptVisualJudg" type="checkbox" style="margin: 0;" value="">
+								<label for="rptVisualJudg">육안판정서</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-100 mb10">
+								<input id="rptTest" name="rptTest" type="checkbox" style="margin: 0;" value="">
+								<label for="rptTest">공인시험성적서</label>
+								<input id="rptPermission" name="rptPermission" type="checkbox" style="margin: 0;" value="">
+								<label for="rptPermission">신고허가서류</label>
+								<input id="rptEtc" name="rptEtc" type="checkbox" style="margin: 0;" value="">
+								<label for="rptEtc">기타서류</label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -630,6 +650,12 @@
 		$('#detailCodListInput #deCodeNm').attr('disabled',false);
 		$('#detailCodListInput #deOrdSeq').attr('disabled',false);
 		$('#detailCodListInput #deCodeDsc').attr('disabled',false);
+		$('#detailCodListInput #rptMatStruct').attr('disabled',false);
+		$('#detailCodListInput #rptDevAnal').attr('disabled',false);
+		$('#detailCodListInput #rptVisualJudg').attr('disabled',false);
+		$('#detailCodListInput #rptTest').attr('disabled',false);
+		$('#detailCodListInput #rptPermission').attr('disabled',false);
+		$('#detailCodListInput #rptEtc').attr('disabled',false);
 	}
 	
 	function middleCodeSave(){
@@ -665,6 +691,20 @@
 		}else{
 			$('#deGroupId').attr('disabled',false);
 			var action = 'insert/detail'; 
+			if($('#rptMatStruct').prop('checked')){
+				$('#rptMatStruct').val('Y');
+			}if($('#rptDevAnal').prop('checked')){
+				$('#rptDevAnal').val('Y');
+			}if($('#rptVisualJudg').prop('checked')){
+				$('#rptVisualJudg').val('Y');
+			}if($('#rptTest').prop('checked')){
+				$('#rptTest').val('Y');
+			}if($('#rptPermission').prop('checked')){
+				$('#rptPermission').val('Y');
+			}if($('#rptEtc').prop('checked')){
+				$('#rptEtc').val('Y');
+			}
+			
 			var param = $('#frmDetail').serialize();
 			isDisabled = true;
 			insertCodeAjax(param, action);
@@ -785,6 +825,25 @@
 		$('#detailCodListInput #deCodeKey').val(data.codeKey);
 		$('#detailCodListInput #deOrdSeq').val(data.ordSeq);
 		$('#detailCodListInput #deCodeDsc').val(data.codeDsc);
+		console.log(data);
+		if(data.rptMatStruct == 'Y'){
+			$('#rptMatStruct').prop('checked',true);
+		}
+		if(data.rptDevAnal == 'Y'){
+			$('#rptDevAnal').prop('checked',true);
+		}
+		if(data.rptVisualJudg == 'Y'){
+			$('#rptVisualJudg').prop('checked',true);
+		}
+		if(data.rptTest == 'Y'){
+			$('#rptTest').prop('checked',true);
+		}
+		if(data.rptPermission == 'Y'){
+			$('#rptPermission').prop('checked',true);
+		}
+		if(data.rptEtc == 'Y'){
+			$('#rptEtc').prop('checked',true);
+		}
 		
 	}
 
