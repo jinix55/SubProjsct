@@ -290,7 +290,7 @@ var grade = [];
 							<h2 class="choice-title" id="${list.codeId }">
 								<span class="title-point">[${list.codeNm }]</span>
 							</h2>
-							<div style="min-height: 230px; max-height: auto; padding-bottom: 20px;border: 1px solid #e3e3e3;">
+							<div style="min-height: 250px; max-height: auto; padding-bottom: 20px;border: 1px solid #e3e3e3;">
 								<c:forEach items="${smallCodeList}" var="listLow">
 									<c:if test="${listLow.groupId eq list.codeId }">
 										<div class="choice-box">
@@ -327,26 +327,30 @@ var grade = [];
 									<h4 class="box-tit-bg">필요서류</h4>
 									<div class="choice-cont">
 										<ul>
-											<li><input type="checkbox"
-												class="word_check-${list.codeId }"
-												id="chk_rptDevAnal-${list.codeId }" disabled> <label
-												for="" class="ellipsis">기기분석</label></li>
-											<li><input type="checkbox"
-												class="word_check-${list.codeId }"
-												id="chk_rptVisualJudg-${list.codeId }" disabled> <label
-												for="" class="ellipsis">육안판정</label></li>
-											<li><input type="checkbox"
-												class="word_check-${list.codeId }"
-												id="chk_rptTest-${list.codeId }" disabled> <label
-												for="" class="ellipsis">공인시험성적서</label></li>
-											<li><input type="checkbox"
-												class="word_check-${list.codeId }"
-												id="chk_rptPermission-${list.codeId }" disabled> <label
-												for="" class="ellipsis">신고허가서류</label></li>
-											<li><input type="checkbox"
-												class="word_check-${list.codeId }"
-												id="chk_rptEtc-${list.codeId }" disabled> <label
-												for="" class="ellipsis">기타</label></li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptMatStruct-${list.codeId }" disabled>
+												<label for="chk_rptMatStruct-${list.codeId }" class="ellipsis">포장재질구조증명서</label>
+											</li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptDevAnal-${list.codeId }" disabled>
+												<label for="chk_rptDevAnal-${list.codeId }" class="ellipsis">기기분석</label>
+											</li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptVisualJudg-${list.codeId }" disabled>
+												<label for="chk_rptVisualJudg-${list.codeId }" class="ellipsis">육안판정</label>
+											</li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptTest-${list.codeId }" disabled>
+												<label for="chk_rptTest-${list.codeId }" class="ellipsis">공인시험성적서</label>
+											</li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptPermission-${list.codeId }" disabled>
+												<label for="chk_rptPermission-${list.codeId }" class="ellipsis">신고허가서류</label>
+											</li>
+											<li>
+												<input type="checkbox" class="word_check-${list.codeId }" id="chk_rptEtc-${list.codeId }" disabled>
+												<label for="chk_rptEtc-${list.codeId }" class="ellipsis">기타</label>
+											</li>
 										</ul>
 									</div>
 								</div>
