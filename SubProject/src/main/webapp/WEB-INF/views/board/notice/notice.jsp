@@ -91,8 +91,8 @@
 <!-- 							<td>쓰기/읽기 권한</td> -->
 							<td><spring:eval expression="list.rgstDt"/></td>
 							<td class="form-checkbox">
-								<input type="checkbox" id="checkbox" checked>
-								<label for="checkbox">
+								<input type="checkbox" id="checkbox_${list.noticeId}" checked>
+								<label for="checkbox_${list.noticeId}">
 									<span></span>
 								</label>
 							</td>
