@@ -134,10 +134,27 @@ var grade = [];
     
     function chkClick(that){
    		var id = $(that).attr('id');
-   		if($('.checkbox_'+id.split('-')[0]).is(':checked')){
-	   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+		if(id.split('-')[0].split('_')[1] == 'B'){
+   			if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+		   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+   			}
+   			$('#'+id).prop('checked', true);
+   		}else{
+   			if(!$('.checkbox_'+id.split('-')[0]).is(':checked')){
+   				console.log('>> '+$(that).attr('data-Key'));
+   				if($(that).attr('data-Key') == 'D'){
+        			if(grade.indexOf(id.split('-')[0]) == -1){
+        				grade.push(id.split('-')[0]);
+        			}else{
+        				for (var i = 0; i < grade.length; i++) {
+                		    if (grade[i] === id.split('-')[0]) {
+                		    	grade.splice(i, 1);
+                		    }
+                		}
+        			}
+            	}
+   			}
    		}
-   		$('#'+id).prop('checked', true);
    		
 		var rptMatStruct = $(that).attr('data-a');
 		var rptDevAnal = $(that).attr('data-b');
@@ -204,18 +221,20 @@ var grade = [];
         			gradeResult.push(chkList[j].dataset.key);
         			chkCnt++;
         			isAlert = false;
-        			break;
+        			if(id.split('_')[1] == 'B'){
+	        			break;        				
+        			}
         		}
         	}
         	text = $('.choice-title')[i].children[0].innerText;
         	if(isAlert){
 	        	alert(text+' 항목을 선택하지 않으셨습니다.');
-	        	isAlert = true;
+	        	isAlert = false;
 	        	break;
         	}
         	isAlert = true;
         }
-        if(chkCnt == $('.choice-title').length){
+        if(isAlert){
         	var gradeNum = 0;
         	gradeResult.forEach(function(item){
 		        if(item == 'A'){
@@ -244,7 +263,17 @@ var grade = [];
 		        	}
 		        }
         	})
+        	if($('.checkbox_PE_L')){
+        		var boxs = $('.checkbox_PE_L');
+        		for(var i = 0 ; i < boxs.length ; i++){
+        			if($('#'+boxs[i].id).prop('checked') && $('#'+boxs[i].id).attr('data-key') == 'A' && gradeNum != 4){
+        				$('.rating').text('최우수');
+        				$('.rating').css('color','black');
+        			}
+        		}
+        	}
 	        $('#score').show();
+	        $('.btn-success.isClose').focus();
         }
     }
   </script>
@@ -314,7 +343,7 @@ var grade = [];
 																		name="checkbox_${list.codeId }"
 																		class="checkbox_${list.codeId }"
 																		onclick="chkClick(this);">
-																</div> <label for="">${lalist.codeNm}</label>
+																</div> <label for="${list.codeId }-${status.index}">${lalist.codeNm}</label>
 															</li>
 														</c:if>
 													</c:forEach>
