@@ -93,7 +93,7 @@ public class ProductService {
 		List<ProdPackagingModel> ProdPackagingList = new ArrayList<>() ;
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
 		
-		prodPackagingModel.setPackagingOrder("1");
+		prodPackagingModel.setPackagingOrder(1);
 		prodPackagingModel.setMatType("PA");
 		prodPackagingModel.setMatTypeNm("종이팩");
 		prodPackagingModel.setPartType("PA_B");
@@ -320,4 +320,9 @@ public class ProductService {
 		return outProductModel;
 	}		
 	
+	
+	public int selectMaxProductPackagingOrder(String productId) {
+		
+		return productMapper.selectMaxProductPackagingOrder(productId);
+	}		
 }

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
 import com.portal.adm.file.model.FileModel;
@@ -470,9 +471,9 @@ public class ProductController {
     
     @RequestMapping(value="/detail/packagingOrder", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingModel>> selectProductPackagingOrder(@ModelAttribute ProdPackagingModel productPackagingModel) {
+    public ResponseEntity<List<ProdPackagingModel>> selectProductPackagingOrder(ProdPackagingModel prodPackagingModel) {
     	// 상품 포장 차수 조회
-    	List<ProdPackagingModel> packagingOrder = productService.selectProductPackagingOrder(productPackagingModel);
+    	List<ProdPackagingModel> packagingOrder = productService.selectProductPackagingOrder(prodPackagingModel);
     	
     	for( int i = 0 ; i < packagingOrder.size() ; i++) {
     		EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
@@ -776,6 +777,40 @@ public class ProductController {
 
     	return new ResponseEntity<>(product, HttpStatus.OK);
     }    
-}
 
+    /**
+     * 상품별 등록할 차수를 조회
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/detail/{productId}/getPackagingOrderByNew", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<List<ProdPackagingModel>> getPackagingOrderByNew(@PathVariable("productId") String productId) {
+		// 상품 포장 차수 조회
+		int  maxPackagingOrder = productService.selectMaxProductPackagingOrder(productId);
+		
+	    List<ProdPackagingModel> ProdPackagingList = new ArrayList<>() ;
+	    ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+	    prodPackagingModel.setPackagingOrder(maxPackagingOrder + 1);
+        
+	    if(maxPackagingOrder == 0) {
+	    	prodPackagingModel.setPackagingNm("기준포장");
+	    	ProdPackagingList.add(prodPackagingModel);
+        } else {
+        	prodPackagingModel.setPackagingNm(Integer.toString(maxPackagingOrder + 1) + "차포장");
+	    	ProdPackagingList.add(prodPackagingModel);
+	    	
+		    prodPackagingModel = new ProdPackagingModel();
+		    prodPackagingModel.setPackagingOrder(9);
+		    prodPackagingModel.setPackagingNm("부속포장");
+		    ProdPackagingList.add(prodPackagingModel);
+        }
+	    
+		return new ResponseEntity<>(ProdPackagingList, HttpStatus.OK);
+	}
+	
+	
+	
+}
 

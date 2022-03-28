@@ -373,5 +373,18 @@
 		    
 	</insert>
 	
+	<select id="selectMaxProductPackagingOrder" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT
+			    ifnull(max(packaging_order), 0) packaging_order
+			FROM
+				T_PRODUCT_PACKAGING
+	        WHERE use_yn = 'Y'
+	         AND  product_id = #{productId}
+		     AND  packaging_order <> 9
+		]]>			 
+	</select>
+
+	
 		
 </mapper>

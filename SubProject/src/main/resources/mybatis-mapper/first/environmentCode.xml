@@ -221,4 +221,49 @@
 		WHERE GROUP_ID = #{codeId}
 		AND USE_YN = 'Y'
 	</select>
+	
+	
+	<select id="selectMatTypeList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
+		select  
+			  b.group_id
+			, b.code_id
+			, a.code_nm
+			, b.code_nm code_nm2
+		from    
+			  T_ENVIRON_PRICE a
+			, T_ENVIRON_PRICE b
+		where   1 = 1
+		  and   a.use_yn = 'Y'
+	   	  and   b.use_yn = 'Y'
+		  and   a.group_id = 'group_id'
+  	  	  and   a.code_id = b.group_id
+        order by 
+        		a.ord_seq , b.ord_seq
+	</select>	
+	
+	<select id="getPartList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel"  parameterType="String">
+		select 
+			  a.code_id
+		    , a.code_nm
+		from 
+			  t_environment_code a
+			, t_code y
+			, t_code m
+		where 1 = 1
+		and   a.USE_YN = 'Y'
+		and   y.USE_YN = 'Y'
+		and   m.USE_YN = 'Y'
+		and   a.GROUP_ID = #{groupId}
+	
+		and   y.GROUP_ID = 'REVISION_YEAR_MONTH'
+		and   y.CODE_ID  = 'REVISION_YEAR'
+		and   a.REVISION_YEAR = y.CODE_NM
+		and   m.GROUP_ID = 'REVISION_YEAR_MONTH'
+		and   m.CODE_ID  = 'REVISION_MONTH'
+		and   a.REVISION_MONTH = m.CODE_NM
+		ORDER BY a.ORD_SEQ
+		 
+		
+
+	</select>		
 </mapper>

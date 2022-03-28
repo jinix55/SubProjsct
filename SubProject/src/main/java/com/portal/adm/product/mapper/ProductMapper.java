@@ -129,4 +129,13 @@ public interface ProductMapper {
      * @return
      */
     long  mergeProductRecyleContributions(ProductModel productModel);    
+    
+	 /**
+     * 상품별 max 포장 찻수를 반환한다
+     *
+     * @param productModel
+     * @return
+     */
+    
+    int selectMaxProductPackagingOrder(String productId);
 }

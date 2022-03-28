@@ -131,4 +131,5 @@
 		where group_id = #{codeId}
 		and use_yn = 'Y'
 	</select>
+	
 </mapper>

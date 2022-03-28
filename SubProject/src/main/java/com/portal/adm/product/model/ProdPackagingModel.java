@@ -21,7 +21,8 @@ public class ProdPackagingModel extends Criteria{
     private String productNm;
     private String packagingNm;
     private String packagingDsc;
-    private String packagingOrder;
+    private int packagingOrder;
+    private String packagingOrderNm;
     private int packagingOrderCnt;
     private String matType;
     private String matTypeNm;
