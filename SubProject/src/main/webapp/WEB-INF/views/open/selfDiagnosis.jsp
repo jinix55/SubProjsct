@@ -132,6 +132,7 @@ var grade = [];
     	});
     });
     
+    var aJsonArray = new Array();
     function chkClick(that){
    		var id = $(that).attr('id');
 		if(id.split('-')[0].split('_')[1] == 'B'){
@@ -155,7 +156,7 @@ var grade = [];
             	}
    			}
    		}
-   		
+		
 		var rptMatStruct = $(that).attr('data-a');
 		var rptDevAnal = $(that).attr('data-b');
 		var rptVisualJudg = $(that).attr('data-c');
@@ -163,7 +164,9 @@ var grade = [];
 		var rptPermission = $(that).attr('data-e');
 		var rptEtc = $(that).attr('data-f');
 		$('.word_check-'+id.split('-')[0]).prop('checked',false);
-		if($('#'+id).prop('checked')){
+		
+		// 몸체는 단독체크, 그외 멀티체크 분리
+		if(id.split('-')[0].split('_')[1] == 'B'){
 			if(rptMatStruct == 'Y'){
 				$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
 			}
@@ -182,7 +185,60 @@ var grade = [];
 			if(rptEtc == 'Y'){
 				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
 			}
+		}else{
+			var aJson = new Object();
+			var bJson = new Object();
+			bJson.rptMatStruct = rptMatStruct;
+			bJson.rptDevAnal = rptDevAnal;
+			bJson.rptVisualJudg = rptVisualJudg;
+			bJson.rptTest = rptTest;
+			bJson.rptPermission = rptPermission;
+			bJson.rptEtc = rptEtc;
+			aJson.codeId = id;
+			
+			var chk = false;
+			console.log(aJsonArray.length);
+			aJsonArray.forEach(function(item,index){
+				console.log(index);
+				if(item.codeId == id){
+					console.log(item.codeId);
+					console.log(id);
+					chk = true;
+					aJsonArray.splice(index, 1);
+				}
+			})
+			if(aJsonArray.length == 0 && !chk){
+				aJson.value = bJson;
+				aJsonArray.push(aJson);
+			}else{
+				if(!chk){
+					aJson.value = bJson;
+					aJsonArray.push(aJson);
+				}
+			}
+			
+			aJsonArray.forEach(function(item){
+				if(item.value.rptMatStruct == 'Y'){
+					$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptDevAnal == 'Y'){
+					$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptVisualJudg == 'Y'){
+					$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptTest == 'Y'){
+					$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptPermission == 'Y'){
+					$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptEtc == 'Y'){
+					$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+				}
+			})
 		}
+		
 		
 		var isSeasonChk = false;
         var chk = $('.checkbox_'+id.split('-')[0]);
