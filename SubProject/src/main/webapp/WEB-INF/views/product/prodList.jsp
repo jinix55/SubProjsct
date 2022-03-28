@@ -755,7 +755,7 @@
 					  <div class="form-group">
 						<label class="col-20 form-label">진행상태</label>
 						<div class="col-80">
-						  <div class="form-input-box">
+						  <div class="form-input-box" id="edit_completeStatus">
 							<div class="button-Rsmall d-inblock">
 							  <input type="radio"  name="completeStatus" value="미진행">
 							  <label for="completeStatus" class="mr05">미진행</label></div>
@@ -776,7 +776,7 @@
 					  <div class="form-group">
 						<label class="col-20 form-label">매핑상태</label>
 						<div class="col-80">
-						  <div class="form-input-box">
+						  <div class="form-input-box" id="edit_masterApply">
 							<div class="button-Rsmall d-inblock">
 							  <input type="radio"  name="masterApply" value="미매핑">
 							  <label for="masterApply" class="mr05">미매핑</label></div>
@@ -806,13 +806,13 @@
 					</div>
 					<div class="col-50">
 					  <div class="form-group">
-						<label class="col-20 form-label">매핑상품코드</label>
+						<label class="col-20 form-label">매핑상품번호</label>
 						<div class="col-30">
-						  <input id="edit_" name="" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_mappingProductId" name="mappingProductId" type="text" class="text-input"  autocomplete="off">
 						</div>
 						<label class="col-20 form-label">매핑상품명</label>
 						<div class="col-30">
-						  <input id="edit_" name="" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_mappingProductNm" name="mappingProductNm" type="text" class="text-input"  autocomplete="off">
 						</div>
 					  </div>
 					</div>
@@ -1131,35 +1131,36 @@
 			  <div class="tab-in-nav d-flex">
 				  <span class="pt10 pr10">포장차수</span>
 				  <select id="packagingOrderNmApply" name="packagingOrderNmApply" class="select-box w200 mr10">
-					<option value="">선택</option>
-					<option value="1">기준포장</option>
-					<option value="2">2차포장</option>
-					<option value="3">3차포장</option>
-					<option value="4">4차포장</option>
-					<option value="5">5차보장</option>
-					<option value="9">부속포장</option>
+<!-- 					<option value="">선택</option> -->
+<!-- 					<option value="1">기준포장</option> -->
+<!-- 					<option value="2">2차포장</option> -->
+<!-- 					<option value="3">3차포장</option> -->
+<!-- 					<option value="4">4차포장</option> -->
+<!-- 					<option value="5">5차보장</option> -->
+<!-- 					<option value="9">부속포장</option> -->
 				  </select>
 				</div>
 			</div>
 		  </div>
-		  <div class="col-100" id="matTypeSelectProductCode">
+		  <div class="col-100" id="matTypeSelectProductCode" style="display:none;">
 			<div class="form-group">
 			  <div class="tab-in-nav d-flex">
 				  <span class="pt10 pr10">상품코드</span>
-				  <input type="text" id="matTypeSelectProductCode" name="matTypeSelectProductCode" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요.">
-				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCode');">상품정보 확인</button>
+				  <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped">
+				  <input type="text" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요.">
+				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCodeVal');">상품정보 확인</button>
 				</div>
 			</div>
 		  </div>
-		  <div class="col-100" id="matTypeSelectProductMatType">
+		  <div class="col-100" id="matTypeSelectProductMatType"  style="display:none;">
 			<div class="form-group">
 			  <div class="tab-in-nav d-flex">
 				  <span class="pt10 pr10">재질유형</span>
 				  <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box w200 mr10">
-					<option value="">선택</option>
-					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status">
-						<option value="${productMatType.codeId}">${productMatType.codeNm}</option>
-					</c:forEach>
+<!-- 					<option value="">선택</option> -->
+<%-- 					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%>
+<%-- 						<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%>
+<%-- 					</c:forEach> --%>
 				  </select>
 				</div>
 			</div>
@@ -1204,21 +1205,77 @@
       $("#page").val(num);
 	  $("#searchFrm").submit();
   });
+
+  function getPackagingOrderByNew(id){
+		console.log('getPackagingOrderByNew');
+		 $.ajax({
+			type : 'post',
+			url : '/product/detail/'+id+'/getPackagingOrderByNew/',
+			dataType : 'json',
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(result) {
+				$("#packagingOrderNmApply").empty();
+				$("#packagingOrderNmApply").append('<option value="">선택</option>');
+				if (result.length > 0) {
+					result.forEach(function(item, index) {
+						// loop
+						$('#packagingOrderNmApply').append('<option value="'+item.packagingOrder+'">'+item.packagingNm+'</option>');
+					});
+					$("#matTypeSelect").modal('show');
+				}
+			}
+		});
+  }
   
-  function mapProductCode(id){
+  function mapProductCodeApply(id){
 	 var productCode = $('#'+id).val();
-// 	 var productId = $('#'+id).val();
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
-				url : '/detail/'+productCode+'/mapping/',
-				data : param,
-				dataType : 'text',
+				url : '/product/detail/'+productCode+'/apply/',
+				dataType : 'json',
 				error : function(xhr, status, error) {
 					console.log(error);
 				},
 				success : function(result) {
-					isDisabled = false;
+					if(result.masterMapping === 'MAPPING') {
+						$('#matTypeSelectProductMatType').hide();
+					}else {
+						$('#matTypeSelectProductMatType').show();
+					}
+				}
+			});
+	 }
+  }
+  
+  function mapProductCode(id){
+	 var productCode = $('#'+id).val();
+	 if(productCode && productCode != '' && productCode != null) {
+		 $.ajax({
+				type : 'post',
+				url : '/product/detail/'+productCode+'/mapping/',
+				dataType : 'json',
+				error : function(xhr, status, error) {
+					console.log(error);
+				},
+				success : function(result) {
+					if(id === 'matTypeSelectProductCodeVal'){
+						if(result.masterMapping !== 'MAPPING') {
+							$('#matTypeSelectProductMatType').show();
+						}else {
+							$('#matTypeSelectProductMatTypeMapped').val('MAPPING');
+							$('#matTypeSelectProductMatType').hide();
+						}
+					}else {
+						$("#frmUpdate input[name=completeStatus]").val([result.masterApply]);
+						$("#frmUpdate input[name=masterApply]").val([result.masterMapping]);
+						$('#edit_receiptNumber').val(result.receiptNumber);
+						$('#edit_approvalNumber').val(result.approvalNumber);
+						$('#edit_mappingProductId').val(result.mappingProductId);
+						$('#edit_mappingProductNm').val(result.mappingProductNm);
+					}
 				}
 			});
 	 }
@@ -1421,32 +1478,52 @@
 	  var selectedVal = $("#matTypeSelectBox").val();
 	  var packagingOrderNmApplyVal = $("#packagingOrderNmApply").val();
 	  var matTypeSelectProductCodeVal = $("#matTypeSelectProductCode").val();
-	  
+	  var matTypeSelectProductMatTypeMapped = $("#matTypeSelectProductMatTypeMapped").val();
+
 	  console.log(packagingOrderNmApplyVal);
 	  console.log(matTypeSelectProductCodeVal);
-	  
-	  if(selectedVal) {
-		$('#matType').val(selectedVal); 
-		var selectedText = $( "#matTypeSelectBox option:selected" ).text();
-// 		  productPackagingOrder();
-		tabID++;
-		$("#matTypeSelectTab").empty();		
-		$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
-		$('#tab-list li.active').removeClass('active');
-		$('#tab-list').append($('<li class="active"><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
-	     tabID +
-	     '차 포장 ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
-	    ));
-        
-		$("#tab" + tabID).modal("show");
-// 		$('#tab-list').append($('<li><a href="#tab1" role="tab" data-toggle="tab"><span>'+tabID+'차 포장 <br>'+selectedText+'</span></a></li>'));
-		//기존 정보 초기화
-		getSelfCodeList(selectedVal, 'tab-list', 'selfPartType1');
-		
+	  if(matTypeSelectProductMatTypeMapped == 'MAPPING' && packagingOrderNmApplyVal == '9') {
+		  mapProductCodeApply('matTypeSelectProductCodeVal');
+		    $('#matType').val(selectedVal); 
+			var selectedText = $( "#matTypeSelectBox option:selected" ).text();
+	// 		  productPackagingOrder();
+			tabID++;
+			$("#matTypeSelectTab").empty();		
+			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
+			$('#tab-list li.active').removeClass('active');
+			$('#tab-list').append($('<li class="active"><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
+		     tabID +
+		     '차 포장 ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+		    ));
+	        
+			$("#tab" + tabID).modal("show");
+	// 		$('#tab-list').append($('<li><a href="#tab1" role="tab" data-toggle="tab"><span>'+tabID+'차 포장 <br>'+selectedText+'</span></a></li>'));
+			//기존 정보 초기화
+			getSelfCodeList(selectedVal, 'tab-list', 'selfPartType1');
 	  }else {
-		 alert('재질유형을 선택해주세요');
-// 		 return false;
-// 		  $("#matTypeSelect").modal('show');
+		  if(selectedVal) {
+			$('#matType').val(selectedVal); 
+			var selectedText = $( "#matTypeSelectBox option:selected" ).text();
+	// 		  productPackagingOrder();
+			tabID++;
+			$("#matTypeSelectTab").empty();		
+			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
+			$('#tab-list li.active').removeClass('active');
+			$('#tab-list').append($('<li class="active"><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
+		     tabID +
+		     '차 포장 ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+		    ));
+	        
+			$("#tab" + tabID).modal("show");
+	// 		$('#tab-list').append($('<li><a href="#tab1" role="tab" data-toggle="tab"><span>'+tabID+'차 포장 <br>'+selectedText+'</span></a></li>'));
+			//기존 정보 초기화
+			getSelfCodeList(selectedVal, 'tab-list', 'selfPartType1');
+			
+		  }else {
+			 alert('재질유형을 선택해주세요');
+	// 		 return false;
+	// 		  $("#matTypeSelect").modal('show');
+		  }
 	  }
   }
   
@@ -1500,6 +1577,27 @@
 	$('#edit_spec').val(data.spec);
 	getFileList('photos_'+data.productId, "edit_photos", data.photo);
 	getFileList('specs_'+data.productId, "edit_specs", data.spec);
+
+	$('#edit_completeStatus').empty();
+	console.log(data.environmentProceedStatCode.length);
+	//진행상태
+	if (data.environmentProceedStatCode.length > 0) {
+		data.environmentProceedStatCode.forEach(function(item, index) {
+			console.log(item);
+			$('#edit_completeStatus').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="completeStatus" value="'+item.codeId+'"><label for="completeStatus" class="mr05">'+item.codeNm+'</label></div>');
+		});
+	}
+
+	$('#edit_masterApply').empty();
+	console.log(data.mappingStatCode.length);
+	//매핑정보
+	if (data.mappingStatCode.length > 0) {
+		data.mappingStatCode.forEach(function(item, index) {
+			console.log(item);
+			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
+		});
+		$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
+	}
 	
 	$("#frmUpdate input[name=completeStatus]").val([data.completeStatus]);
 	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
@@ -1628,7 +1726,8 @@
 						}
 					});
 				}else {
-					$("#matTypeSelect").modal('show');
+					getPackagingOrderByNew(id);
+					getgetMatTypeList();
 // 					addPackagingTab(id);
 				}
 			}
@@ -1873,6 +1972,29 @@
 			$('#tab04_1').hide();
 			$('#tab04_2').show();
 		}
+  }
+
+  
+//재질유형 조회
+  function getgetMatTypeList() {
+    $.ajax({
+		url : '/system/environmentCode/detail/getMatTypeList',
+		dataType : 'JSON',
+		type : "POST",
+		error : function(xhr, status, error) {
+			console.log(error);
+		},
+		success : function(data) {
+			console.log(data);
+			$('#matTypeSelectBox').empty();
+			$('#matTypeSelectBox').append("<option value=''>선택</option>");
+			if (data.length > 0) {
+				data.forEach(function(item, index) {
+					$('#matTypeSelectBox').append("<option value=" + item.codeId +">" + item.str + "</option>");
+				});
+			}
+		}
+	});
   }
   
 //자가진단 코드변경시점정보 ㅈ회
@@ -2277,9 +2399,22 @@
 			getSelfCodeList(this.value, 'selfMatType', 'selfPartType');
 		}	
 	});
+
+	$(document).on('change', '#packagingOrderNmApply', function () {
+		if(this.value && this.value === '9'){
+			$('#matTypeSelectProductMatType').hide();
+			$('#matTypeSelectProductCode').show();
+// 			getSelfCodeList(this.value, 'selfMatType', 'selfPartType');
+		}else {
+			$('#matTypeSelectProductCode').hide();
+			$('#matTypeSelectProductMatType').show();
+		}
+	});
 	
 	$('#btn-add-tab').click(function () {
-		$("#matTypeSelect").modal('show');
+		getPackagingOrderByNew(selectedProdId);
+		getgetMatTypeList();
+// 		$("#matTypeSelect").modal('show');
     });
 
     $('#tab-list').on('click', '.tab-close', function () {
