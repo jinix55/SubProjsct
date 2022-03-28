@@ -713,9 +713,9 @@
 					  <div class="form-group">
 						<label class="col-25 form-label">상품제조사</label>
 						<div class="col-75">
-						  <div class="form-input-box" id="edit_productMaker">
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명1</a> -->
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명2</a> -->
+						  <div class="form-input-box">
+							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명1</a>
+							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명2</a>
 						  </div>
 						</div>
 					  </div>
@@ -1208,7 +1208,7 @@
   function mapProductCode(id){
 	 var productCode = $('#'+id).val();
 // 	 var productId = $('#'+id).val();
-	 if(productCode && productCode != '' && productCode != null) {
+	 if(!productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
 				url : '/detail/'+productCode+'/mapping/',
@@ -1478,22 +1478,8 @@
 	$('#edit_packingTotalWeight_2').val(data.packingTotalWeight_2);
 	$('#edit_recyleContributions_2').val(data.recyleContributions_2);
 	
-	$('#edit_productMaker').empty();
-	console.log(data.prodPackagingList.length);
-	//상품제조사정보
-	if (data.prodPackagingList.length > 0) {
-		data.prodPackagingList.forEach(function(item, index) {
-			console.log(item);
-			// loop으로 상품제조사 정보 출력
-// 			productMatInfoViewDetail(id, packagingId, obj, partTypeId, partTypeNm)
-			$('#edit_productMaker').append('<a href="#" onclick=\'productMatInfoViewDetail("'+data.productId+'", this);\' class="button-Csmall d-inblock" style="padding: 0 10px;">'+item.str+'</a>');
-// 			$('#edit_productMaker').append(<a href="#" role="button" onclick=\'productMatInfoView("'+item.packagingOrder+'", this);\' data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">'+ item.str + '</a>');
-		});
-	}
-	
-	
+	$('#edit_productMaker').val(data.productMaker);
 	$('#edit_summary').val(data.summary);
-
 	
 	//photos and specs 정보 있으면 뿌려줌
 	$('#edit_photo').val(data.photo);
