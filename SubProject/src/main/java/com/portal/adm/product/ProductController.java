@@ -744,11 +744,12 @@ public class ProductController {
     
     
     /**
-     * 환경부 승인번호 상품 매핑
-     *
+     * 환경부 승인번호 상품 매핑 ##########
+     *  1
      * @param 
      * @return
      */
+    //todo productId => productCode
     @RequestMapping(value="/detail/{productId}/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<ProductModel> mapping(@PathVariable("productId") String productId) {
@@ -767,6 +768,7 @@ public class ProductController {
      * @param 
      * @return
      */
+  //todo productId => productCode
     @RequestMapping(value="/detail/{productId}/apply/", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<ProductModel> apply(@PathVariable("productId") String productId) {
