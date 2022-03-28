@@ -16,23 +16,24 @@
 	        이미지 목록보기</a></li>
 			</ul>-->
 			<!-- S_검색-->
-			<form>
+			<form  id="searchFrm" action="/product/prodImage" method="POST">
+            	<input type="hidden" id="page" name="page" value="${pages.page}">
 				<div class="justify-content-between">
 					<div class="form-group">
 						<div class="form-inline">
-							<select class="select-box w150">
-								<option value="">전체</option>
-								<option value="">제품명</option>
-								<option value="">포장유형</option>
-								<option value="">재활용등급</option>
-								<option value="">상태</option>
-							</select>
+							<select id="searchKey" name="searchKey" class="select-box w150">
+			                    <option value="ALL">전체</option>
+								<option value="productNm">상품명</option>
+								<option value="packingType">포장유형</option>
+								<option value="recycleGrade">재활용등급</option>
+								<option value="completeStatus">상태</option>
+			                 </select>
 						</div>
 						<div class="form-inline">
-							<div class="search-box">
-								<input type="text" class="text-input">
+							<div class="search-box w250">
+								<input id="searchValue" name="searchValue" value="${pages.searchValue}" type="text" class="text-input">
 								<span class="search-box-append">
-									<button type="button" class="btn-search"><img src="../images/icon_search.png" title="검색"></button>
+									<button type="button" class="button-search"><img src="/images/icon_search.png" title="검색"></button>
 								</span>
 							</div>
 						</div>
@@ -43,120 +44,37 @@
 
 		<!-- S_그리드-->
 		<div class="row mt10">
-			<div class="img-box">
-				<div class="img-view">
-					<img src=../images/pro_img04.jpeg>
-				</div>
-				<div class="img-cont ellipsis">
-					<ul>
-						<li class="font-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>서울우유800ml</span></li>
-						<li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
-						<li class="font-bold">ㆍ재활용등급 : <span class="fontColorBlue">정상</span></li>
-						<li class="font-bold">ㆍ진행상태 : <span class="fontColorBlue">완료</span></li>
-					</ul>
-				</div>
-				<div class="img-bottom tc">
-						<button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
-				 </div>
-		 	</div>
-
-			 <div class="img-box">
-				 <div class="img-view">
-					 <img src=../images/pro_img01.jpeg>
-				 </div>
-				 <div class="img-cont ellipsis">
-					 <ul>
-						 <li class="font-bold">ㆍ제품명 : <span>아이스브레이스</span></li>
-						 <li class="font-bold">ㆍ포장유형 : <span>종이</span></li>
-						 <li class="font-bold">ㆍ재활용등급 : <span class="colorRed">나쁨</span></li>
-						 <li class="font-bold">ㆍ진행상태 : <span>진행중</span></li>
-					 </ul>
-				 </div>
-				 <div class="img-bottom tc">
-						 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
+			<c:choose>
+			    <c:when test="${products.size() > 0 }">
+					<c:forEach items="${products }" var="product" varStatus="status">
+						<div class="img-box">
+							<div class="img-view">
+								<img src="/file/view/${product.photo}">
+							</div>
+							<div class="img-cont ellipsis">
+								<ul>
+									<li class="text-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>${product.productNm}</span></li>
+									<li class="text-bold">ㆍ포장유형 : <span>${product.packingType}</span></li>
+									<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue">${product.recycleGrade}</span></li>
+									<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue">${product.completeStatus}</span></li>
+								</ul>
+							</div>
+							<div class="img-bottom tc">
+									<button type="button" onclick="goToProductPage('${product.rownum}');" class="btn-none" data-dismiss="modal">상세보기</button>
+							 </div>
+					 	</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="img-box">
+						재질을 선택하지 않았거나 등록된 데이터가 없습니다.
 					</div>
-				</div>
-			<div class="img-box">
-				<div class="img-view">
-					<img src=../images/pro_img02.jpeg>
-				</div>
-				<div class="img-cont ellipsis">
-					<ul>
-						<li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
-						<li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
-						<li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
-						<li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
-					</ul>
-				</div>
-				<div class="img-bottom tc">
-						<button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
-				 </div>
-		 	</div>
-		 <div class="img-box">
-			 <div class="img-view">
-				 <img src=../images/pro_img03.jpeg>
-			 </div>
-			 <div class="img-cont ellipsis">
-				 <ul>
-					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
-					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
-					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
-					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
-				 </ul>
-			 </div>
-			 <div class="img-bottom tc">
-					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
-				</div>
-			</div>
-			<div class="img-box">
- 			 <div class="img-view">
- 				 <img src=../images/pro_img04.jpeg>
- 			 </div>
- 			 <div class="img-cont ellipsis">
- 				 <ul>
- 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
- 				 </ul>
- 			 </div>
- 			 <div class="img-bottom tc">
- 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
- 				</div>
- 			</div>
-			<div class="img-box">
- 			 <div class="img-view">
- 				 <img src=../images/pro_img05.jpeg>
- 			 </div>
- 			 <div class="img-cont ellipsis">
- 				 <ul>
- 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
- 				 </ul>
- 			 </div>
- 			 <div class="img-bottom tc">
- 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
- 				</div>
- 			</div>
-			<div class="img-box">
- 			 <div class="img-view">
- 				 <img src=../images/pro_img06.jpeg>
- 			 </div>
- 			 <div class="img-cont ellipsis">
- 				 <ul>
- 					 <li class="font-bold">ㆍ제품명 : <span>서울우유800ml</span></li>
- 					 <li class="font-bold">ㆍ포장유형 : <span>유리병</span></li>
- 					 <li class="font-bold">ㆍ재활용등급 : <span>정상</span></li>
- 					 <li class="font-bold">ㆍ진행상태 : <span>완료</span></li>
- 				 </ul>
- 			 </div>
- 			 <div class="img-bottom tc">
- 					 <button type="button" class="btn-none" data-dismiss="modal">상세보기</button>
- 				</div>
- 			</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
+		 <!-- S_페이징-->
+            <div class="board-paging"></div>
+            <!-- E_페이징-->
 		</div>
 	<!-- E_본문-->
 
@@ -165,13 +83,13 @@
 	<div class="modal-content" style="width:1200px">
 		<div class="modal-header">
 			<h4 class="modal-title">상세</h4>
-			<button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		</div>
 		<div class="modal-body">
 			<div class="row">
 				<div class="tab-content-box">
 						<p>
-								<button id="btn-add-tab" type="button" class="btn-form-small fr">Add Tab</button>
+								<button id="btn-add-tab" type="button" class="button-Rsmall fr">Add Tab</button>
 						</p>
 						<!-- Nav tabs -->
 						<ul id="tab-list" class="nav tab-nav" role="tablist">
@@ -297,7 +215,7 @@
 											 <div class="form-group">
 												 <label class="col-25 form-label">보고서 생성</label>
 												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="btn-form-small">육안판정서</button></div>
+													 <div class="text-input"><button type="button" class="button-Rsmall">육안판정서</button></div>
 												 </div>
 											 </div>
 											 <div class="form-group">
@@ -418,7 +336,7 @@
 											 <div class="form-group">
 												 <label class="col-25 form-label">보고서 생성</label>
 												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="button btn-form-small">육안판정서</button></div>
+													 <div class="text-input"><button type="button" class="button button-Rsmall">육안판정서</button></div>
 												 </div>
 											 </div>
 											 <div class="form-group">
@@ -439,9 +357,9 @@
 							<button type="button" class="button btn-radius"><a href="#tab01">이미지</a></button>
 						</div>
 						<ul>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="../images/icon_edit.png" alt=""></li>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="../images/icon_edit.png" alt=""></li>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="../images/icon_edit.png" alt=""></li>
+							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
+							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
+							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
 						</ul>
 					</div>
 					</div>
@@ -470,7 +388,7 @@
 	<div class="modal-content" style="width:400px">
 		<div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
-			<button type="button" class="close" data-dismiss="modal"><img src="../images/icon_close.png"></button>
+			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		</div>
 		<div class="modal-body">
 			<div class="row">
@@ -487,4 +405,29 @@
 		</div>
 	</div>
 </div>
- 
+<script>
+	var totalPage = ${pages.totalPage};
+	var page = ${pages.page};
+	var pageSize = ${pages.pageSize}; 
+	
+	$('.board-paging').bootpag({        // 페이징을 표시할 div의 클래스
+		total: totalPage,  // 페이징모델의 전체페이지수
+		page: page,        // 페이징모델의 현재페이지번호
+		maxVisible: pageSize,  // 보여질 최대 페이지수
+		firstLastUse: true,             // first와 last사용유무
+		wrapClass: 'paging',              // 페이징을 감싼 클래스명
+		activeClass: 'on',              // 현재페이지의 클래스명
+		disabledClass: 'disabled',      // 각 항목별 클래스 지정
+		nextClass: 'next',
+		prevClass: 'prev',
+		lastClass: 'last',
+		firstClass: 'first',
+	}).on("page", function(event, num){
+	    $("#page").val(num);
+		  $("#searchFrm").submit();
+	});
+	
+	function goToProductPage(id) {
+		window.location.href = '/product/prodList?productId='+id;
+	}
+</script>
