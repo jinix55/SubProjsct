@@ -1117,63 +1117,6 @@
   </form>
   
   <!-- 레이어 팝업 - 재질유형 정보 조회 -->
-<!--   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" -->
-<!-- 	aria-hidden="true" data-modal-parent="#myModal"> -->
-<!-- 	<div class="modal-content" style="width:400px"> -->
-<!-- 	  <div class="modal-header"> -->
-<!-- 		<h4 class="modal-title" id="matTypeSelectTab"></h4> -->
-<!-- 		<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button> -->
-<!-- 	  </div> -->
-<!-- 	  <div class="modal-body"> -->
-<!-- 		<div class="row"> -->
-<!-- 		  <div class="col-100" id="matTypeSelectpackagingOrderNm"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 			  <div class="tab-in-nav d-flex"> -->
-<!-- 				  <span class="pt10 pr10">포장차수</span> -->
-<!-- 				  <select id="packagingOrderNmApply" name="packagingOrderNmApply" class="select-box w200 mr10"> -->
-<!-- <!-- 					<option value="">선택</option> --> -->
-<!-- <!-- 					<option value="1">기준포장</option> --> -->
-<!-- <!-- 					<option value="2">2차포장</option> --> -->
-<!-- <!-- 					<option value="3">3차포장</option> --> -->
-<!-- <!-- 					<option value="4">4차포장</option> --> -->
-<!-- <!-- 					<option value="5">5차보장</option> --> -->
-<!-- <!-- 					<option value="9">부속포장</option> --> -->
-<!-- 				  </select> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		  </div> -->
-<!-- 		  <div class="col-100" id="matTypeSelectProductCode" style="display:none;"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 			  <div class="tab-in-nav d-flex"> -->
-<!-- 				  <span class="pt10 pr10">상품코드</span> -->
-<!-- 				  <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped"> -->
-<!-- 				  <input type="text" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요."> -->
-<!-- 				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCodeVal');">상품정보 확인</button> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		  </div> -->
-<!-- 		  <div class="col-100" id="matTypeSelectProductMatType"  style="display:none;"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 			  <div class="tab-in-nav d-flex"> -->
-<!-- 				  <span class="pt10 pr10">재질유형</span> -->
-<!-- 				  <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box w200 mr10"> -->
-<!-- <!-- 					<option value="">선택</option> --> -->
-<%-- <%-- 					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%> --%>
-<%-- <%-- 						<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%> --%>
-<%-- <%-- 					</c:forEach> --%> --%>
-<!-- 				  </select> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		  </div> -->
-<!-- 		</div> -->
-<!-- 	  </div> -->
-<!-- 	  <div class="modal-footer btn-group"> -->
-<!-- 		<button type="button" class="button btn-warning" onclick="addPackagingTab();">젹용</button> -->
-<!-- 		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button> -->
-<!-- 	  </div> -->
-<!-- 	</div> -->
-<!--   </div> -->
-  
   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true" data-modal-parent="#myModal">
     <div class="modal-content" style="width:400px">
@@ -1188,9 +1131,6 @@
               <label class="col-25 form-label">포장차수</label>
               <div class="col-75">
                 <select class="select-box" id="packagingOrderNmApply" name="packagingOrderNmApply">
-<!--                   <option value="1">1차포장</option> -->
-<!--                   <option value="2">2차포장</option> -->
-<!--                   <option value="3">3차포장</option> -->
                 </select>
               </div>
             </div>
@@ -1200,8 +1140,6 @@
               <label class="col-25 form-label">재질유형</label>
               <div class="col-75">
                 <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box">
-<!--                   <option value="1">종이팩</option> -->
-<!--                   <option value="2">플라스틱</option> -->
                 </select>
               </div>
             </div>
@@ -1801,7 +1739,7 @@
 						
 						// 텝 추가후 1차 포장정보 서버에서 조회 함
 						if(index == 0) {
-							getSelfCodeList(item.matType, 'tab-list', 'selfPartType1', item.matTypeNm, item);
+							getSelfCodeList(item.matType.slice(0, item.matType.indexOf('_')), 'tab-list', 'selfPartType1', item.matTypeNm, item);
 							tabID = item.packagingOrder;
 						}
 					});
