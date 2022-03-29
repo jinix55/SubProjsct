@@ -468,15 +468,15 @@ $(document).ready(function() {
 		$('.preView').click(function() {
 			var tr = $('.partTypeCheck.on').val();
 			var target = '';
-			if (tr == 'BODY') {
+			if (tr == 'B') {
 				target = 'b_';
-			} else if (tr == 'LABEL') {
+			} else if (tr == 'L') {
 				target = 'l_';
-			} else if (tr == 'COVER') {
+			} else if (tr == 'C') {
 				target = 'c_';
-			} else if (tr == 'MISCELLANEOUS') {
+			} else if (tr == 'M') {
 				target = 'm_';
-			} else if (tr == 'SEPARATELYPACK') {
+			} else if (tr == 'S') {
 				target = 's_';
 			}
 			$('.' + target + 'weight').text($('#weight').val());
