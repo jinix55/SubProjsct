@@ -142,11 +142,6 @@ public class ProductController {
     @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
-    	if (productModel.getProductId() == null) {
-    		return new ResponseEntity<>("aaaa", HttpStatus.NOT_ACCEPTABLE);
-    	}
-    	
-    	
     	try {
     		productModel.setProductId(idUtil.getProductId());
     		productModel.setRgstId(authUser.getMemberModel().getUserId());

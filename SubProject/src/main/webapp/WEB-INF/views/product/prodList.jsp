@@ -1117,68 +1117,117 @@
   </form>
   
   <!-- 레이어 팝업 - 재질유형 정보 조회 -->
+<!--   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" -->
+<!-- 	aria-hidden="true" data-modal-parent="#myModal"> -->
+<!-- 	<div class="modal-content" style="width:400px"> -->
+<!-- 	  <div class="modal-header"> -->
+<!-- 		<h4 class="modal-title" id="matTypeSelectTab"></h4> -->
+<!-- 		<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button> -->
+<!-- 	  </div> -->
+<!-- 	  <div class="modal-body"> -->
+<!-- 		<div class="row"> -->
+<!-- 		  <div class="col-100" id="matTypeSelectpackagingOrderNm"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 			  <div class="tab-in-nav d-flex"> -->
+<!-- 				  <span class="pt10 pr10">포장차수</span> -->
+<!-- 				  <select id="packagingOrderNmApply" name="packagingOrderNmApply" class="select-box w200 mr10"> -->
+<!-- <!-- 					<option value="">선택</option> --> -->
+<!-- <!-- 					<option value="1">기준포장</option> --> -->
+<!-- <!-- 					<option value="2">2차포장</option> --> -->
+<!-- <!-- 					<option value="3">3차포장</option> --> -->
+<!-- <!-- 					<option value="4">4차포장</option> --> -->
+<!-- <!-- 					<option value="5">5차보장</option> --> -->
+<!-- <!-- 					<option value="9">부속포장</option> --> -->
+<!-- 				  </select> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		  </div> -->
+<!-- 		  <div class="col-100" id="matTypeSelectProductCode" style="display:none;"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 			  <div class="tab-in-nav d-flex"> -->
+<!-- 				  <span class="pt10 pr10">상품코드</span> -->
+<!-- 				  <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped"> -->
+<!-- 				  <input type="text" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요."> -->
+<!-- 				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCodeVal');">상품정보 확인</button> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		  </div> -->
+<!-- 		  <div class="col-100" id="matTypeSelectProductMatType"  style="display:none;"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 			  <div class="tab-in-nav d-flex"> -->
+<!-- 				  <span class="pt10 pr10">재질유형</span> -->
+<!-- 				  <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box w200 mr10"> -->
+<!-- <!-- 					<option value="">선택</option> --> -->
+<%-- <%-- 					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%> --%>
+<%-- <%-- 						<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%> --%>
+<%-- <%-- 					</c:forEach> --%> --%>
+<!-- 				  </select> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		  </div> -->
+<!-- 		</div> -->
+<!-- 	  </div> -->
+<!-- 	  <div class="modal-footer btn-group"> -->
+<!-- 		<button type="button" class="button btn-warning" onclick="addPackagingTab();">젹용</button> -->
+<!-- 		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button> -->
+<!-- 	  </div> -->
+<!-- 	</div> -->
+<!--   </div> -->
+  
   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	aria-hidden="true" data-modal-parent="#myModal">
-	<div class="modal-content" style="width:400px">
-	  <div class="modal-header">
-		<h4 class="modal-title" id="matTypeSelectTab"></h4>
-		<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
-	  </div>
-	  <div class="modal-body">
-		<div class="row">
-		  <div class="col-100" id="matTypeSelectpackagingOrderNm">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">포장차수</span>
-				  <select id="packagingOrderNmApply" name="packagingOrderNmApply" class="select-box w200 mr10">
-<!-- 					<option value="">선택</option> -->
-<!-- 					<option value="1">기준포장</option> -->
-<!-- 					<option value="2">2차포장</option> -->
-<!-- 					<option value="3">3차포장</option> -->
-<!-- 					<option value="4">4차포장</option> -->
-<!-- 					<option value="5">5차보장</option> -->
-<!-- 					<option value="9">부속포장</option> -->
-				  </select>
-				</div>
-			</div>
-		  </div>
-		  <div class="col-100" id="matTypeSelectProductCode" style="display:none;">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">상품코드</span>
-				  <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped">
-				  <input type="text" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요.">
-				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCodeVal');">상품정보 확인</button>
-				</div>
-			</div>
-		  </div>
-		  <div class="col-100" id="matTypeSelectProductMatType"  style="display:none;">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">재질유형</span>
-				  <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box w200 mr10">
-<!-- 					<option value="">선택</option> -->
-<%-- 					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%>
-<%-- 						<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%>
-<%-- 					</c:forEach> --%>
-				  </select>
-				</div>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	  <div class="modal-footer btn-group">
-		<button type="button" class="button btn-warning" onclick="addPackagingTab();">젹용</button>
-		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-	  </div>
-	</div>
+    aria-hidden="true" data-modal-parent="#myModal">
+    <div class="modal-content" style="width:400px">
+      <div class="modal-header">
+        <h4 class="modal-title">포장정보</h4>
+        <button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-100">
+            <div class="form-group" id="matTypeSelectpackagingOrderNm">
+              <label class="col-25 form-label">포장차수</label>
+              <div class="col-75">
+                <select class="select-box" id="packagingOrderNmApply" name="packagingOrderNmApply">
+<!--                   <option value="1">1차포장</option> -->
+<!--                   <option value="2">2차포장</option> -->
+<!--                   <option value="3">3차포장</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="form-notice" id="showMappedProductCode" style="display:none;"><input type="checkbox" id="mappedProductCode" name="mappedProductCode" value="Y"><label for="mappedProductCode"> * 동록된 상품코드가 있습니다.</label></div>
+<!--             <div class="form-notice">* [1차포장]은 등록되어있습니다.</div> -->
+            <div class="form-group" id="matTypeSelectProductMatType"  style="display:none;">
+              <label class="col-25 form-label">재질유형</label>
+              <div class="col-75">
+                <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box">
+<!--                   <option value="1">종이팩</option> -->
+<!--                   <option value="2">플라스틱</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="form-group" id="matTypeSelectProductCode" style="display:none;">
+              <label class="col-25 form-label">상품코드</label>
+              <div class="form-input">
+                <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped">
+                <input type="text" class="text-input" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 버튼 -->
+      <div class="modal-footer btn-group">
+        <button type="button" class="button btn-success" onclick="addPackagingTab();">적용</button>
+        <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+      </div>
+    </div>
   </div>
   
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script>
   var selectedPartType ="";
   var selectedPartTypeNm ="";
-  
+
   var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
   var tabID = 0;
   var selectedProdId = "";
@@ -1222,20 +1271,22 @@
 					result.forEach(function(item, index) {
 						// loop
 						$('#packagingOrderNmApply').append('<option value="'+item.packagingOrder+'">'+item.packagingNm+'</option>');
-						$('#matTypeSelectTab').empty();
+// 						$('#matTypeSelectTab').empty();
 						if(result.length == 1) {
 							$('#packagingOrderNmApply option[value="'+item.packagingOrder+'"]').attr("selected", "selected");
 							if(item.packagingOrder > 8){
 								$('#matTypeSelectProductCode').show();
+								$('#showMappedProductCode').show();
 								$('#matTypeSelectProductMatType').hide();
-								$('#matTypeSelectTab').text(item.packagingNm+' 정보를 매핑하세요.');
+// 								$('#matTypeSelectTab').text(item.packagingNm+' 정보를 매핑하세요.');
 							}else {
 								$('#matTypeSelectProductMatType').show();
 								$('#matTypeSelectProductCode').hide();
-								$('#matTypeSelectTab').text(item.packagingNm+' 재잴 유형을 선택 하세요');
+								$('#showMappedProductCode').hide();
+// 								$('#matTypeSelectTab').text(item.packagingNm+' 재잴 유형을 선택 하세요');
 							}
 						}else {
-							$('#matTypeSelectTab').text('포장 차수 및 재질 정보를 선택하세요.');
+// 							$('#matTypeSelectTab').text('포장 차수 및 재질 정보를 선택하세요.');
 						}
 					});
 					$("#matTypeSelect").modal('show');
@@ -1502,13 +1553,24 @@
 	  var selectedPackagingOrderNmText = $("#packagingOrderNmApply option:selected").text();
 	  var matTypeSelectProductCodeVal = $("#matTypeSelectProductCode").val();
 	  var matTypeSelectProductMatTypeMapped = $("#matTypeSelectProductMatTypeMapped").val();
+	  var mappedProductCodeChecked = $('#mappedProductCode').is(':checked');
 	  console.log(selectedVal);
 	  console.log(packagingOrderNmApplyVal);
 	  console.log(matTypeSelectProductCodeVal);
 	  console.log(matTypeSelectProductMatTypeMapped);
 	  console.log(selectedPackagingOrderNmText);
-	  if(matTypeSelectProductMatTypeMapped === 'MAPPING' && packagingOrderNmApplyVal > 8) {
-		    mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+	  if(!packagingOrderNmApplyVal) {
+		alert('포장차수를 선택해주세요.');
+		return;
+	  }
+	  
+	  if(packagingOrderNmApplyVal > 8 && mappedProductCodeChecked === true) {
+			if($("#matTypeSelectProductCode").val() !== '') {
+		    	mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+			}else {
+				alert('등록된 부속상품코드를 입력해주세요.');
+				return;
+			}
 	  }else {
 		  if(selectedVal) {
 			$('#matType').val(selectedVal); 
@@ -2419,13 +2481,26 @@
 		}	
 	});
 
+	$('#mappedProductCode').change(function() {
+        if(this.checked) {
+        	$('#matTypeSelectProductCode').show();
+        	$('#matTypeSelectProductMatType').hide();
+        }else {
+        	$('#matTypeSelectProductCode').hide();
+        	$('#matTypeSelectProductMatType').show();
+        }
+    });
+    
 	$(document).on('change', '#packagingOrderNmApply', function () {
 		if(this.value && this.value > 8){
 			$('#matTypeSelectProductMatType').hide();
-			$('#matTypeSelectProductCode').show();
+// 			$('#matTypeSelectProductCode').show();
+			$('#showMappedProductCode').show();
+			$('#matTypeSelectProductMatType').show();
 // 			getSelfCodeList(this.value.slice(0, this.value.indexOf('_')), 'selfMatType', 'selfPartType');
 		}else {
 			$('#matTypeSelectProductCode').hide();
+			$('#showMappedProductCode').hide();
 			$('#matTypeSelectProductMatType').show();
 		}
 	});
