@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
 import com.portal.config.security.AuthUser;
@@ -298,5 +299,42 @@ public class EnvironmentCodeController {
         }
     }
 
+    
+    /**
+     * 
+     * 재질유형, 환경부담금 관계로 환경부담금 단가[환경부담금 단가] 에서 조회
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/environmentCode/detail/getMatTypeList", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<List<EnvironmentCodeModel>> getMatTypeList() {
+		
+	    List<EnvironmentCodeModel> environmentCodeList = new ArrayList<>() ;
+
+	    environmentCodeList = environmentCodeService.selectMatTypeList();
+	    
+	    
+		return new ResponseEntity<>(environmentCodeList, HttpStatus.OK);
+	}
+    
+    /**
+     * 
+     * 재질별 부위유형
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/environmentCode/detail/{groupId}/getPartList", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<List<EnvironmentCodeModel>> getPartList(@PathVariable("groupId") String groupId) {
+		
+		List<EnvironmentCodeModel> environmentCodeList = new ArrayList<>() ;
+
+	    environmentCodeList = environmentCodeService.getPartList(groupId);
+	    
+		return new ResponseEntity<>(environmentCodeList, HttpStatus.OK);
+	}    
 
 }

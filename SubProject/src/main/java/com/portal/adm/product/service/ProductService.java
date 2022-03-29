@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.portal.adm.code.model.CodeModel;
+import com.portal.adm.code.service.CodeService;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.mapper.ProductMapper;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -24,6 +26,9 @@ public class ProductService {
     @Resource
     private ProductMapper productMapper;
 
+    @Resource
+    private CodeService codeService;
+    
     /**
 	 * 상품관리 목록을 조회한다.
 	 *
@@ -93,7 +98,7 @@ public class ProductService {
 		List<ProdPackagingModel> ProdPackagingList = new ArrayList<>() ;
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
 		
-		prodPackagingModel.setPackagingOrder("1");
+		prodPackagingModel.setPackagingOrder(1);
 		prodPackagingModel.setMatType("PA");
 		prodPackagingModel.setMatTypeNm("종이팩");
 		prodPackagingModel.setPartType("PA_B");
@@ -107,6 +112,10 @@ public class ProductService {
 		
 		outProductModel.setProdPackagingList(ProdPackagingList);
 		
+		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
+		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
+		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
+		outProductModel.setMappingStatCode(mappingStatCode);
 		
 		return outProductModel;
 	}
@@ -320,4 +329,9 @@ public class ProductService {
 		return outProductModel;
 	}		
 	
+	
+	public int selectMaxProductPackagingOrder(String productId) {
+		
+		return productMapper.selectMaxProductPackagingOrder(productId);
+	}		
 }

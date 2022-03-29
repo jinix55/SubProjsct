@@ -2,6 +2,7 @@ package com.portal.adm.environmentCode.mapper;
 
 import java.util.List;
 
+import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
@@ -94,4 +95,20 @@ public interface EnvironmentCodeMapper {
      * @return
      */
     int selectCodeCountForGroupId(EnvironmentCodeModel model);
+    
+    /**
+     * 재질유형을 조회 , 환경부담금 관계로 환경부담금 단가[환경부담금 단가]에서 조회
+     *
+     * @param model 그룹ID를 사용
+     * @return
+     */
+    List<EnvironmentCodeModel> selectMatTypeList();    
+    
+    /**
+     * 부위휴형 
+     *
+     * @param model 그룹ID를 사용
+     * @return
+     */
+    List<EnvironmentCodeModel>  getPartList(String groupId);        
 }

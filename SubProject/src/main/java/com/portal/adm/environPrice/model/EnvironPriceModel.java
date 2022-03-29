@@ -41,4 +41,6 @@ public class EnvironPriceModel extends Criteria{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modiDt; // 수정일시
     private Integer ordSeq;			//정렬순서
+    
+   
 }

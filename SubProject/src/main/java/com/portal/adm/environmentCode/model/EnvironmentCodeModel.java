@@ -84,6 +84,8 @@ public class EnvironmentCodeModel extends Criteria{
     private String rptTest;			// 공인시험성적서
     private String rptPermission;	// 신고허가서류
     private String rptEtc;			// 기타서류
-
+   
+    private String codeNm2;          
+    private String str;     //종이팩(일반팩), PSV   
 }
 

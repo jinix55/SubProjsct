@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.adm.code.model.CodeModel;
 import com.portal.common.paging.Criteria;
 
 import lombok.Data;
@@ -78,6 +79,8 @@ public class ProductModel extends Criteria{
     
     
     private List<ProdPackagingModel> ProdPackagingList;  
+    private List<CodeModel> environmentProceedStatCode; 
+    private List<CodeModel> mappingStatCode;
     
     
 }
