@@ -215,10 +215,10 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="email-add">
-									<input id="email1" name="email1" type="text" class="text-input email">
+									<div class="pr28"><input id="email1" name="email1" type="text" class="text-input email"></div>
 								</div>
 								<div class="email-add">
-									<input id="email2" name="email2" type="text" class="text-input email">
+									<div><input id="email2" name="email2" type="text" class="text-input email"></div>
 								</div>
 								<input type="hidden" id="email" name="email" />
 							</div>
@@ -232,13 +232,13 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="phone-number">
-									<input id="phone1" name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3">
+									<div class="pr16"><input id="phone1" name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3"></div>
 								</div>
 								<div class="phone-number">
-									<input id="phone2" name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4">
+									<div class="pr16"><input id="phone2" name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 								<div class="phone-number">
-									<input id="phone3" name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4">
+									<div><input id="phone3" name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 							</div>
 						</div>

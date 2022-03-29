@@ -187,13 +187,13 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="phone-number">
-									<input id="reg_companyNo1" name="reg_companyNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="reg_companyNo1" name="reg_companyNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="reg_companyNo2" name="reg_companyNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="reg_companyNo2" name="reg_companyNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="reg_companyNo3" name="reg_companyNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+									<div><input id="reg_companyNo3" name="reg_companyNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'></div>
 								</div>
 							</div>
 						</div>
@@ -205,13 +205,13 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="phone-number">
-									<input id="reg_telephoneNo1" name="reg_telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="reg_telephoneNo1" name="reg_telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="reg_telephoneNo2" name="reg_telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="reg_telephoneNo2" name="reg_telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="reg_telephoneNo3" name="reg_telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+									<div><input id="reg_telephoneNo3" name="reg_telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 								</div>
 							</div>
 						</div>
@@ -396,13 +396,13 @@
 							<div class="form-input">
 								<input type="hidden" id="companyNo" name="companyNo" />
 								<div class="phone-number">
-									<input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'>
+									<div class="pr16"><input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'></div>
 								</div>
 								<div class="phone-number">
-									<input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'>
+									<div><input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'></div>
 								</div>
 							</div>
 						</div>
@@ -415,13 +415,13 @@
 							<div class="form-input">
 								<input type="hidden" id="telephoneNo" name="telephoneNo" />
 								<div class="phone-number">
-									<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled>
+									<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled></div>
 								</div>
 								<div class="phone-number">
-									<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled>
+									<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
 								</div>
 								<div class="phone-number">
-									<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled>
+									<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
 								</div>
 							</div>
 						</div>

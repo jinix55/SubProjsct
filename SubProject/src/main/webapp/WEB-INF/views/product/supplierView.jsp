@@ -187,13 +187,13 @@
 										<label class="col-25 form-label">사업자번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<div class="phone-number">
-												<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeypress='return checkNumber(event)'></div>
 											</div>
-											<div class="phone-number">
-												<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'>
+											<div class="phone-number end">
+												<div><input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<input type="hidden" id="supplierNo" name="supplierNo" />
 										</div>
@@ -204,13 +204,13 @@
 										<label class="col-25 form-label">연락처</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<div class="phone-number">
-												<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 											</div>
-											<div class="phone-number">
-												<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											<div class="phone-number end">
+												<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<input type="hidden" id="telephoneNo" name="telephoneNo" />
 										</div>
@@ -281,13 +281,13 @@
 										<label class="col-25 form-label"><em>*</em>휴대폰번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<div class="phone-number">
-												<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+												<div class="pr16"><input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 											</div>
-											<div class="phone-number">
-												<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'>
+											<div class="phone-number end">
+												<div><input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeypress='return checkNumber(event)'></div>
 											</div>
 											<input type="hidden" id="managerPhone" name="managerPhone" />
 										</div>
@@ -315,16 +315,18 @@
 									<div class="form-group">
 										<label class="col-25 form-label"><em>*</em>이메일</label>
 										<div class="col-75">
-											<div class="email-add">
-												<input id="managerMail1" name="managerMail1" type="text"
-													class="text-input email">
+											<div class="form-input">
+												<div class="email-add">
+													<div class="pr28"><input id="managerMail1" name="managerMail1" type="text"
+													class="text-input email"></div>
+												</div>
+												<div class="email-add">
+													<div><input id="managerMail2" name="managerMail2" type="text"
+													class="text-input email"></div>
+												</div>
+												<input type="hidden" id="managerMail" name="managerMail" />
 											</div>
-											<div class="email-add">
-												<input id="managerMail2" name="managerMail2" type="text"
-													class="text-input email">
-											</div>
-											<input type="hidden" id="managerMail" name="managerMail" />
-										</div>
+										</div>	
 									</div>
 								</div>
 								<div class="col-50">
