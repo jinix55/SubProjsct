@@ -1733,7 +1733,7 @@
 							packagingOrder = item.packagingOrder +'차 포장';
 						}
 						$('#tab-list').append('<li class="active"><a href="#" onclick=\'productMatInfoView("'+item.productId+'", "'+item.packagingOrder+'", this);\' role="tab" data-toggle="tab"><span>' +
-								item.packagingOrder +
+								packagingOrder +
 						        ' ('+item.matTypeNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingInfo("'+ item.productId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 						     );
 						
