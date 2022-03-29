@@ -1256,6 +1256,7 @@
 				},
 				success : function(result) {
 					$('#matType').val(result.packingType); 
+					tabID = packagingOrderNmApplyVal;
 					var selectedText = result.packingTypeNm;
 					$('#tab-list li.active').removeClass('active');
 					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" role="tab" data-toggle="tab"><span>' +
@@ -1506,14 +1507,15 @@
 	  console.log(matTypeSelectProductCodeVal);
 	  console.log(matTypeSelectProductMatTypeMapped);
 	  console.log(selectedPackagingOrderNmText);
-	  if(matTypeSelectProductMatTypeMapped === 'MAPPING') {
+	  if(matTypeSelectProductMatTypeMapped === 'MAPPING' && packagingOrderNmApplyVal > 8) {
 		    mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
 	  }else {
 		  if(selectedVal) {
 			$('#matType').val(selectedVal); 
 			var selectedText = $( "#matTypeSelectBox option:selected" ).text();
 	// 		  productPackagingOrder();
-			tabID++;
+// 			tabID++;
+			tabID = packagingOrderNmApplyVal;
 // 			$("#matTypeSelectTab").empty();		
 // 			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
 			$('#tab-list li.active').removeClass('active');
@@ -1706,7 +1708,7 @@
   
   function productPackagingOrder(id){
 	  selectedProdId = id;
-	  tabID = 0;
+// 	  tabID = 0;
 	  $('#tab-list').empty();
 	  $('#tab-list li.active').removeClass('active');
 	  $('.tabnav04 a:first').addClass('active');
@@ -1723,15 +1725,22 @@
 				if (data.length > 0) {
 					data.forEach(function(item, index) {
 						// loop으로 포장 차 탭 출력
-						tabID++;
+// 						tabID++;
+						var packagingOrder = item.packagingOrder;
+						if(packagingOrder > 8) {
+							packagingOrder = '부속포장';
+						}else {
+							packagingOrder = packagingOrder +'차 포장;
+						}
 						$('#tab-list').append('<li class="active"><a href="#" onclick=\'productMatInfoView("'+item.productId+'", "'+item.packagingOrder+'", this);\' role="tab" data-toggle="tab"><span>' +
-						        tabID +
-						        '차 포장 ('+item.matTypeNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingInfo("'+ item.productId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
+								packagingOrder +
+						        ' ('+item.matTypeNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingInfo("'+ item.productId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 						     );
 						
 						// 텝 추가후 1차 포장정보 서버에서 조회 함
 						if(index == 0) {
 							getSelfCodeList(item.matType, 'tab-list', 'selfPartType1', item.matTypeNm, item);
+							tabID = item.packagingOrder;
 						}
 					});
 				}else {
