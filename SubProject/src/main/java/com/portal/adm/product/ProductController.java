@@ -534,8 +534,8 @@ public class ProductController {
 			productPackaging.setMatFileNm("");
     	}
     	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
-    	environmentCode.setCodeId(productPackaging.getPartType().split("_")[0]);
-    	environmentCode.setGroupId(productPackaging.getMatType());
+    	environmentCode.setCodeId(productPackaging.getPartType());
+    	environmentCode.setGroupId(productPackaging.getMatType().split("_")[0]);
     	environmentCode.setRevisionYear("2022");
     	environmentCode.setRevisionMonth("03");
     	
