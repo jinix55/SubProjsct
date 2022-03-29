@@ -1727,13 +1727,13 @@
 						// loop으로 포장 차 탭 출력
 // 						tabID++;
 						var packagingOrder = item.packagingOrder;
-						if(packagingOrder > 8) {
+						if(item.packagingOrder > 8) {
 							packagingOrder = '부속포장';
 						}else {
-							packagingOrder = packagingOrder +'차 포장;
+							packagingOrder = item.packagingOrder +'차 포장';
 						}
 						$('#tab-list').append('<li class="active"><a href="#" onclick=\'productMatInfoView("'+item.productId+'", "'+item.packagingOrder+'", this);\' role="tab" data-toggle="tab"><span>' +
-								packagingOrder +
+								item.packagingOrder +
 						        ' ('+item.matTypeNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingInfo("'+ item.productId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 						     );
 						
