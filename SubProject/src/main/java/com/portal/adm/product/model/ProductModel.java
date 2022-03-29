@@ -1,13 +1,15 @@
 package com.portal.adm.product.model;
 
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.adm.code.model.CodeModel;
 import com.portal.common.paging.Criteria;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import lombok.Data;
 
 /**
  * 코드관리 모델
@@ -38,10 +40,47 @@ public class ProductModel extends Criteria{
     private String productId;
     private String productNm;
     private String productCode;
+    private String supplierInfo;
+    private String productClass;
     private String packingType;
-    private String recyleGrade;
+    private String recycleGrade;
     private String completeStatus;
+    
+    private String inBaseYear;	
+    private String baseYear;			        //기준 년 
+    private Integer accumulateSaleQty;			//누적판매량
+    private Integer packingTotalWeight;			//포장재총중량
+    private String recyleContributions;         //재활용 분담금
+
+    private String baseYear_1;		
+    private Integer accumulateSaleQty_1;			
+    private Integer packingTotalWeight_1;			
+    private String recyleContributions_1;         
+
+    private String baseYear_2;		
+    private Integer accumulateSaleQty_2;		 
+    private Integer packingTotalWeight_2;		
+    private String recyleContributions_2;       
+    
+    
+    private String productMaker;
+    private String summary;
     private String check1;
+    private String photo;
+    private String spec;
+    
+    private String masterApply;      //진행상태
+    private String receiptNumber;    //접수번호
+    private String approvalNumber;   //승인번호
+    
+    private String masterMapping;      //매핑상태
+    private String mappingProductId;  //매핑상품코드
+    private String mappingProductNm;    //매핑상품명
+    
+    
+    private List<ProdPackagingModel> ProdPackagingList;  
+    private List<CodeModel> environmentProceedStatCode; 
+    private List<CodeModel> mappingStatCode;
     
     
 }

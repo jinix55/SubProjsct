@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.environmentCode.mapper.EnvironmentCodeMapper;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.common.Constant;
@@ -130,4 +131,21 @@ public class EnvironmentCodeService {
     public int selectCodeCountForGroupId(EnvironmentCodeModel model) {
         return environmentCodeMapper.selectCodeCountForGroupId(model);
     }
+    
+    
+    public List<EnvironmentCodeModel> selectMatTypeList() {
+    	List<EnvironmentCodeModel> environmentCodeList = environmentCodeMapper.selectMatTypeList();
+    	for(EnvironmentCodeModel e : environmentCodeList) {
+    		if(e.getCodeNm().equals(e.getCodeNm2())){
+    			e.setStr(e.getCodeNm());
+    		} else {
+    			e.setStr(e.getCodeNm() + "(" + e.getCodeNm2() + ")");
+    		}
+    	}
+        return environmentCodeList;
+    }       
+    
+    public List<EnvironmentCodeModel> getPartList(String groupId) {
+        return environmentCodeMapper.getPartList(groupId);
+    }     
 }

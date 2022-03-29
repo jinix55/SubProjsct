@@ -4,77 +4,43 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.portal.adm.product.mapper.ProductMapper">
 
+	<sql id="searchProduct">
+		<where>
+			and USE_YN = 'Y'
+			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%') or upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%') or (upper(RECYCLE_GRADE) like concat('%',upper(#{searchValue}),'%')) or upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
+				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+			<if test="searchKey != '' and searchKey == 'packingType' and searchValue != ''">
+				and (upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
+				and (upper(RECYCLE_GRADE) = upper(#{searchValue}))
+			</if>
+			<if test="searchKey != '' and searchKey == 'completeStatus' and searchValue != ''">
+				and (upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
+			</if>
+		</where>
+	</sql>
+	
 	<sql id="paging">
 		LIMIT #{offSet}, #{pageSize}
 	</sql>
 
-	<select id="selectGroupIdList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY UPPER(CODE_NM) ASC) AS ROWNUM,
-			GROUP_ID,
-			CODE_ID,
-			<if test="authId == 'au2000001'">
-				UP_COMPANY_CODE,
-			</if>
-			CODE_KEY,
-			CODE_NM,
-			CODE_DSC,
-			USE_YN,
-			RGST_ID,
-			RGST_DT,
-			MODI_ID,
-			MODI_DT
-		FROM T_PACKAGING_CODE
-		where GROUP_ID = #{groupId} 
-		<if test="authId != 'au2000001'">
-			<if test="upCompanyCode != null and upCompanyCode != ''">
-				AND UP_COMPANY_CODE = #{upCompanyCode}
-			</if>
-		</if>
-		ORDER BY ROWNUM ASC
-		<include refid="paging"></include>
-	</select>
-
-	<select id="selectGroupIdListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
-		SELECT
-			COUNT(*)
-		FROM
-			T_PACKAGING_CODE
-		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
-	</select>
-
-	<select id="selectGroupIdAllList" resultType="com.portal.adm.product.model.ProductModel">
-		SELECT
-			ROW_NUMBER() OVER (ORDER BY ORD_SEQ ASC) AS ROWNUM,
-			GROUP_ID,
-			CODE_ID,
-			CODE_KEY,
-			CODE_NM,
-			CODE_DSC,
-			USE_YN,
-			RGST_ID,
-			RGST_DT,
-			MODI_ID,
-			MODI_DT,
-			ORD_SEQ
-		FROM
-			T_PACKAGING_CODE
-		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
-		ORDER BY ROWNUM
-	</select>
-
-	<select id="selectList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
-		SELECT
-		    ROW_NUMBER() OVER (ORDER BY PRODUCT_ID ASC) AS ROWNUM,
+		    ROW_NUMBER() OVER (ORDER BY PRODUCT_ID DESC) AS ROWNUM,
 			PRODUCT_ID,
 			PRODUCT_NM,
 			PRODUCT_CODE,
 			PACKING_TYPE,
 			RECYCLE_GRADE,
-			COMPLITE_STATUS,
+			COMPLETE_STATUS,
 			CHECK1,
+			PHOTO,
+			SPEC,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -82,69 +48,343 @@
 			MODI_DT
 		FROM
 			T_PRODUCT 
-        ORDER BY ROWNUM			
+		<include refid="searchProduct"></include>	
+        ORDER BY PRODUCT_ID DESC, ROWNUM	
+        <include refid="paging"></include>		
 	</select>
-
-	<insert id="insert" parameterType="com.portal.adm.product.model.ProductModel">
-		INSERT INTO T_PACKAGING_CODE (
-			GROUP_ID
-			, CODE_ID
-			, CODE_KEY
-			, UP_COMPANY_CODE
-			, CODE_NM
-			, CODE_DSC
+	
+	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT COUNT(*)
+		FROM T_PRODUCT
+		<include refid="searchProduct"></include>	
+	</select>	
+	
+	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+			  PRODUCT_ID
+			, PRODUCT_NM
+			, PRODUCT_CODE
+			, PRODUCT_CLASS
+			, SUPPLIER_INFO
+			, PRODUCT_MAKER
+			, SUMMARY
+			, PHOTO
+			, COMPLETE_STATUS
+			, CHECK1
+			, MASTER_APPLY
+			, RECEIPT_NUMBER
+			, APPROVAL_NUMBER
+			
+			, MASTER_MAPPING
+			, MAPPING_PRODUCT_ID
+			
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
 			, MODI_ID
 			, MODI_DT
-			, ORD_SEQ
+		FROM
+			T_PRODUCT 
+		WHERE upper(PRODUCT_ID) = upper(#{productId})
+		  AND USE_YN = 'Y'
+	</select>
+	
+	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
+		INSERT INTO T_PRODUCT (
+			  PRODUCT_ID
+			, PRODUCT_NM
+			, PRODUCT_CODE
+			, PRODUCT_CLASS
+			, SUPPLIER_INFO
+			, PRODUCT_MAKER
+			, SUMMARY
+			, PHOTO
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
 		) VALUES (
-			#{groupId}
-			, #{codeId}
-			, #{codeKey}
-			, #{upCompanyCode}
-			, #{codeNm}
-			, #{codeDsc}
-			, #{useYn}
+			  #{productId}
+			, #{productNm}
+			, #{productCode}
+			, #{productClass}
+			, #{supplierInfo}
+			, #{productMaker}
+			, #{summary}
+			, #{photo}
+			, 'Y'
 			, #{rgstId}
 			, now()
 			, #{modiId}
 			, now()
-			, #{ordSeq}
 		)
 	</insert>
-
-	<update id="update" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T_PACKAGING_CODE
+	
+	<update id="updateProduct" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T_PRODUCT
 		SET
-			CODE_NM = #{codeNm}
-			, CODE_KEY = #{codeKey}
-			, CODE_DSC = #{codeDsc}
-			, MODI_DT = now()
-			, MODI_ID = #{modiId}
-			, USE_YN = #{useYn}
-			, ORD_SEQ = #{ordSeq}
+			  PRODUCT_NM    = #{productNm}
+			, PRODUCT_CLASS    = #{productClass}
+			, SUPPLIER_INFO    = #{supplierInfo}
+			, PRODUCT_MAKER    = #{productMaker}
+			, SUMMARY    = #{summary}
+			, PHOTO    = #{photo}
+			, PACKING_TYPE  = #{packingType}
+			, RECYCLE_GRADE = #{recycleGrade}
+			, COMPLETE_STATUS  = #{completeStatus}
+			, CHECK1   = #{check1}
+			, MASTER_APPLY   = #{masterApply}
+			, RECEIPT_NUMBER   = #{receiptNumber}
+			, APPROVAL_NUMBER   = #{approvalNumber}
+			
+			, MASTER_MAPPING   = #{masterMapping}
+			, MAPPING_PRODUCT_ID   = #{mappingProductId}
 		WHERE
-			GROUP_ID = #{groupId} AND UP_COMPANY_CODE = #{upCompanyCode}
-		AND
-			CODE_ID = #{codeId}
+			PRODUCT_ID = #{productId}
 	</update>
-
-	<update id="delete" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T_PACKAGING_CODE
+	
+	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T_PRODUCT
 		SET
 			USE_YN = 'N'
 		WHERE
-			GROUP_ID = #{groupId}
-		AND
-			CODE_ID = #{codeId}
+			PRODUCT_ID = #{productId}
 	</update>
-
-	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
-		SELECT COUNT(*)
-		FROM T_PACKAGING_CODE
-		WHERE GROUP_ID = #{codeId} AND UP_COMPANY_CODE = #{upCompanyCode}
+	
+	<select id="selectProductPackagingOrder" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT PRODUCT_ID, PACKAGING_ORDER, MAT_TYPE
+		FROM t_product_packaging
+		WHERE upper(PRODUCT_ID) = upper(#{productId})
 		AND USE_YN = 'Y'
+		GROUP BY PACKAGING_ORDER
+	</select>	
+	
+	<select id="selectProductPackaging" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT
+			  PACKAGING_ID
+			, PRODUCT_ID
+			, PRODUCT_NM
+			, PACKAGING_NM
+			, PACKAGING_DSC
+			, PACKAGING_ORDER
+			, MAT_TYPE
+			, PART_TYPE
+			, PART_TYPE_ORDER
+			, MAT_INFO
+			, WEIGHT
+			, STANDARD
+			, COLOR
+			, ADD_EXPLAN
+			, MAT_FILE_ID
+			, SUPPLIER_CODE
+			, MANAGER_ID
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t_product_packaging 
+		WHERE upper(PRODUCT_ID) = upper(#{productId})
+		  AND USE_YN = 'Y'
+		  <if test="packagingOrder  != null and packagingOrder != ''">
+				and (PACKAGING_ORDER = #{packagingOrder})
+		  </if>
+		  <if test="packagingId  != null and packagingId != ''">
+				and (PACKAGING_ID = #{packagingId})
+		  </if>
 	</select>
+	
+	<select id="selectProductPackagingDetail" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT
+			  PACKAGING_ID
+			, PRODUCT_ID
+			, PRODUCT_NM
+			, PACKAGING_NM
+			, PACKAGING_DSC
+			, PACKAGING_ORDER
+			, MAT_TYPE
+			, PART_TYPE
+			, PART_TYPE_ORDER
+			, MAT_INFO
+			, WEIGHT
+			, STANDARD
+			, COLOR
+			, ADD_EXPLAN
+			, MAT_FILE_ID
+			, SUPPLIER_CODE
+			, MANAGER_ID
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t_product_packaging 
+		WHERE upper(PRODUCT_ID) = upper(#{productId})
+		  AND USE_YN = 'Y'
+		  AND (PACKAGING_ID = #{packagingId})
+	</select>
+	
+	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		INSERT INTO t_product_packaging (
+			  PACKAGING_ID   
+			, PRODUCT_ID     
+			, PRODUCT_NM     
+			, PACKAGING_NM   
+			, PACKAGING_DSC  
+			, PACKAGING_ORDER
+			, MAT_TYPE       
+			, PART_TYPE      
+			, MAT_INFO       
+			, WEIGHT         
+			, STANDARD       
+			, COLOR          
+			, ADD_EXPLAN     
+			, MAT_FILE_ID    
+			, SUPPLIER_CODE 
+			, MANAGER_ID 
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingId}
+			, #{productId}
+			, #{productNm}
+			, #{packagingNm}
+			, #{packagingDsc}
+			, #{packagingOrder}
+			, #{matType}
+			, #{partType}
+			, #{matInfo}
+			, #{weight}
+			, #{standard}
+			, #{color}
+			, #{addExplan}
+			, #{matFileId}
+			, #{supplierCode}
+			, #{managerId}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+	
+	<update id="updateProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		UPDATE t_product_packaging
+		SET
+			  PACKAGING_ID         = #{packagingId}      
+			, PRODUCT_ID           = #{productId}        
+			, PRODUCT_NM           = #{productNm}        
+			, PACKAGING_NM         = #{packagingNm}      
+			, PACKAGING_DSC        = #{packagingDsc}     
+			, PACKAGING_ORDER      = #{packagingOrder}   
+			, MAT_TYPE             = #{matType}          
+			, PART_TYPE            = #{partType}         
+			, MAT_INFO             = #{matInfo}          
+			, WEIGHT               = #{weight}           
+			, STANDARD             = #{standard}         
+			, COLOR                = #{color}        
+			, ADD_EXPLAN           = #{addExplan}      
+			, MAT_FILE_ID          = #{matFileId}     
+			, SUPPLIER_CODE        = #{supplierCode} 
+			, MANAGER_ID           = #{managerId} 
+			, MODI_ID              = #{modiId}           
+			, MODI_DT              = now()         
+		WHERE
+			PACKAGING_ID = #{packagingId}
+	</update>
+	
+	<update id="deleteProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		UPDATE t_product_packaging
+		SET
+			  USE_YN = 'N'
+			, MODI_ID              = #{modiId}           
+			, MODI_DT              = now()   
+		WHERE
+			PRODUCT_ID           = #{productId}
+		  <if test="packagingOrder  != null and packagingOrder != ''">
+				and (PACKAGING_ORDER = #{packagingOrder})
+		  </if>
+		  <if test="packagingId  != null and packagingId != ''">
+				and (PACKAGING_ID = #{packagingId})
+		  </if>
+			
+	</update>	
+	
+	<select id="selectProductMatType" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel">
+		SELECT  concat(a.code_nm,'-', b.code_nm) AS codeNm
+				, b.code_id AS codeId
+		  FROM  t_environ_price a, 
+		        t_environ_price b
+		  WHERE a.code_id = b.group_id
+	</select>
+	
+	
+	<select id="selectProductRecyleContributions" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+		    BASE_YEAR
+			, ACCUMULATE_SALE_QTY
+			, PACKING_TOTAL_WEIGHT
+			, RECYLE_CONTRIBUTIONS
+		FROM
+			T_PRODUCT_RECYLE_CONTRIBUTIONS 
+		WHERE upper(PRODUCT_ID) = upper(#{productId})
+		  AND BASE_YEAR = #{inBaseYear}
+		  
+	</select>
+	
+	
+	<insert id="mergeProductRecyleContributions" parameterType="com.portal.adm.product.model.ProductModel">
+		INSERT INTO T_PRODUCT_RECYLE_CONTRIBUTIONS (
+			  PRODUCT_ID
+			, BASE_YEAR
+			, ACCUMULATE_SALE_QTY
+			, PACKING_TOTAL_WEIGHT
+			, RECYLE_CONTRIBUTIONS
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			  #{productId}
+			, #{baseYear}
+			, #{accumulateSaleQty}
+			, #{packingTotalWeight}
+			, #{recyleContributions}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)   
+		ON DUPLICATE KEY UPDATE
+		      ACCUMULATE_SALE_QTY   = #{accumulateSaleQty} 
+		    , PACKING_TOTAL_WEIGHT  = #{packingTotalWeight} 
+		    , RECYLE_CONTRIBUTIONS  = #{recyleContributions}
+		    , MODI_ID               = #{modiId}           
+			, MODI_DT               = now()   
+		    
+	</insert>
+	
+	<select id="selectMaxProductPackagingOrder" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT
+			    ifnull(max(packaging_order), 0) packaging_order
+			FROM
+				T_PRODUCT_PACKAGING
+	        WHERE use_yn = 'Y'
+	         AND  product_id = #{productId}
+		     AND  packaging_order <> 9
+		]]>			 
+	</select>
+
+	
+		
 </mapper>

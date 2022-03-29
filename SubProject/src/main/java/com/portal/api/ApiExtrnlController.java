@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,6 +64,49 @@ public class ApiExtrnlController {
     @Resource
     private CompanyService companyService;
  
+    /**
+	 * 포장 api 발송
+	 * @param extrnlId
+	 * @return
+	 */
+    @RequestMapping(value="/call/sendMail" , method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public String sendMail(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @ModelAttribute ProdPackagingModel prodPackagingModel) {
+    	ApiExtrnlModel extrnlModel = new ApiExtrnlModel();
+    	
+    	//임시 데이터(셋팅 되어야 할 목록)
+        String fromCompanyNm = authUser.getMemberModel().getCompanyNm();		// 보내는 회사 명
+        String fromCompanyCode = authUser.getMemberModel().getCompanyCode();		// 보내는 회사 코드
+        
+        String toCompanyNm = prodPackagingModel.getSupplierNm();				// 받는 회사 명
+        String toCompanyCode = prodPackagingModel.getSupplierCode();				// 받는 회사 코드
+        String managerNm = prodPackagingModel.getManagerNm();					// 받는 사람(담당자 명)
+        int x= prodPackagingModel.getManagerId().indexOf("||");
+		String managerId = prodPackagingModel.getManagerId().substring(0, x);
+//		String managerId = prodPackagingModel.getManagerId();// 받는 사암 ID(담당자 ID)
+        String managerMail = prodPackagingModel.getManagerMail();					// 받는 사람(담당자 메일)
+        String uuid = "";
+        
+        extrnlModel.setToCompanyNm(toCompanyNm);
+        extrnlModel.setToCompanyCode(toCompanyCode);
+        extrnlModel.setFromCompanyNm(fromCompanyNm);
+        extrnlModel.setFromCompanyCode(fromCompanyCode);
+        extrnlModel.setManagerId(managerId);
+        extrnlModel.setManagerNm(managerNm);
+        extrnlModel.setManagerMail(managerMail);
+        extrnlModel.setPackagingId(prodPackagingModel.getPackagingId());
+        extrnlModel.setRgstId(authUser.getMemberModel().getUserId());
+        extrnlModel.setModiId(authUser.getMemberModel().getUserId());
+        
+        uuid = mailUtil.gmailSend(request,extrnlModel);
+        
+        extrnlModel.setApiKey(uuid);
+        
+        apiExtrnlService.insert(extrnlModel);
+        
+        return "success";
+    }
+    
 	/**
 	 * 포장 api 발송
 	 * @param extrnlId

@@ -196,4 +196,11 @@ public class IdUtil {
 	public String getPackagingId() {
 		return service.getId(Constant.ID.PACKAGING);
 	}
+	
+	/**
+	 * 알람 ID : 상품 ID
+	 */
+	public String getProductId() {
+		return service.getId(Constant.ID.PRODUCT);
+	}
 }

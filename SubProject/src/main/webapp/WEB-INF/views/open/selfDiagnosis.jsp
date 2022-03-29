@@ -132,13 +132,31 @@ var grade = [];
     	});
     });
     
+    var aJsonArray = new Array();
     function chkClick(that){
    		var id = $(that).attr('id');
-   		if($('.checkbox_'+id.split('-')[0]).is(':checked')){
-	   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+		if(id.split('-')[0].split('_')[1] == 'B'){
+   			if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+		   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+   			}
+   			$('#'+id).prop('checked', true);
+   		}else{
+   			if(!$('.checkbox_'+id.split('-')[0]).is(':checked')){
+   				console.log('>> '+$(that).attr('data-Key'));
+   				if($(that).attr('data-Key') == 'D'){
+        			if(grade.indexOf(id.split('-')[0]) == -1){
+        				grade.push(id.split('-')[0]);
+        			}else{
+        				for (var i = 0; i < grade.length; i++) {
+                		    if (grade[i] === id.split('-')[0]) {
+                		    	grade.splice(i, 1);
+                		    }
+                		}
+        			}
+            	}
+   			}
    		}
-   		$('#'+id).prop('checked', true);
-   		
+		
 		var rptMatStruct = $(that).attr('data-a');
 		var rptDevAnal = $(that).attr('data-b');
 		var rptVisualJudg = $(that).attr('data-c');
@@ -146,7 +164,9 @@ var grade = [];
 		var rptPermission = $(that).attr('data-e');
 		var rptEtc = $(that).attr('data-f');
 		$('.word_check-'+id.split('-')[0]).prop('checked',false);
-		if($('#'+id).prop('checked')){
+		
+		// 몸체는 단독체크, 그외 멀티체크 분리
+		if(id.split('-')[0].split('_')[1] == 'B'){
 			if(rptMatStruct == 'Y'){
 				$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
 			}
@@ -165,7 +185,60 @@ var grade = [];
 			if(rptEtc == 'Y'){
 				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
 			}
+		}else{
+			var aJson = new Object();
+			var bJson = new Object();
+			bJson.rptMatStruct = rptMatStruct;
+			bJson.rptDevAnal = rptDevAnal;
+			bJson.rptVisualJudg = rptVisualJudg;
+			bJson.rptTest = rptTest;
+			bJson.rptPermission = rptPermission;
+			bJson.rptEtc = rptEtc;
+			aJson.codeId = id;
+			
+			var chk = false;
+			console.log(aJsonArray.length);
+			aJsonArray.forEach(function(item,index){
+				console.log(index);
+				if(item.codeId == id){
+					console.log(item.codeId);
+					console.log(id);
+					chk = true;
+					aJsonArray.splice(index, 1);
+				}
+			})
+			if(aJsonArray.length == 0 && !chk){
+				aJson.value = bJson;
+				aJsonArray.push(aJson);
+			}else{
+				if(!chk){
+					aJson.value = bJson;
+					aJsonArray.push(aJson);
+				}
+			}
+			
+			aJsonArray.forEach(function(item){
+				if(item.value.rptMatStruct == 'Y'){
+					$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptDevAnal == 'Y'){
+					$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptVisualJudg == 'Y'){
+					$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptTest == 'Y'){
+					$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptPermission == 'Y'){
+					$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptEtc == 'Y'){
+					$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+				}
+			})
 		}
+		
 		
 		var isSeasonChk = false;
         var chk = $('.checkbox_'+id.split('-')[0]);
@@ -204,18 +277,20 @@ var grade = [];
         			gradeResult.push(chkList[j].dataset.key);
         			chkCnt++;
         			isAlert = false;
-        			break;
+        			if(id.split('_')[1] == 'B'){
+	        			break;        				
+        			}
         		}
         	}
         	text = $('.choice-title')[i].children[0].innerText;
         	if(isAlert){
 	        	alert(text+' 항목을 선택하지 않으셨습니다.');
-	        	isAlert = true;
+	        	isAlert = false;
 	        	break;
         	}
         	isAlert = true;
         }
-        if(chkCnt == $('.choice-title').length){
+        if(isAlert){
         	var gradeNum = 0;
         	gradeResult.forEach(function(item){
 		        if(item == 'A'){
@@ -244,7 +319,17 @@ var grade = [];
 		        	}
 		        }
         	})
+        	if($('.checkbox_PE_L')){
+        		var boxs = $('.checkbox_PE_L');
+        		for(var i = 0 ; i < boxs.length ; i++){
+        			if($('#'+boxs[i].id).prop('checked') && $('#'+boxs[i].id).attr('data-key') == 'A' && gradeNum != 4){
+        				$('.rating').text('최우수');
+        				$('.rating').css('color','black');
+        			}
+        		}
+        	}
 	        $('#score').show();
+	        $('.btn-success.isClose').focus();
         }
     }
   </script>
@@ -314,7 +399,7 @@ var grade = [];
 																		name="checkbox_${list.codeId }"
 																		class="checkbox_${list.codeId }"
 																		onclick="chkClick(this);">
-																</div> <label for="">${lalist.codeNm}</label>
+																</div> <label for="${list.codeId }-${status.index}">${lalist.codeNm}</label>
 															</li>
 														</c:if>
 													</c:forEach>

@@ -1,13 +1,21 @@
 package com.portal.adm.product;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,10 +25,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.portal.adm.code.model.CodeModel;
+import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
+import com.portal.adm.environmentCode.service.EnvironmentCodeService;
+import com.portal.adm.file.model.FileModel;
+import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
+import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
@@ -51,6 +67,12 @@ public class ProductController {
     @Resource
     private IdUtil idUtil;
     
+    @Resource(name="fileService")
+	private FileService fileService;
+    
+    @Resource
+    private EnvironmentCodeService environmentCodeService;
+    
     /**
      * 상품 페이지로 이동
      *
@@ -58,46 +80,369 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value="/prodList", method= {RequestMethod.GET,RequestMethod.POST})
-    public String code(@ModelAttribute ProductModel productMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	System.out.println("===================prodList==================");
-    	List<ProductModel> productList = new ArrayList<>();
+    public String product(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	// 상품 목록 조회
+    	List<ProductModel> models = productService.selectProductList(productModel);
+    	productModel.setTotalCount(productService.selectProductListCount(productModel));
+        model.addAttribute("products", models);
+        model.addAttribute("pages", productModel);
     	
-    	productList = productService.selectList();
-        model.addAttribute("productList", productList);
-    	
+        //상품분류 정보 조회
     	List<String> productTypeList = new ArrayList<>();
-    	
     	productTypeList.add("제품분류113");
     	productTypeList.add("제품분류223");
-        model.addAttribute("productTypeList", productTypeList);        
+    	model.addAttribute("productTypeList", productTypeList);        
+    	
+    	//재질 정보 조회
+//    	List<PackagingCodeModel> productMatType = productService.selectProductMatType();
+    	EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
+    	environmentCodeModel.setGroupId("GROUP_ID");
+    	environmentCodeModel.setRevisionYear("2022");
+    	environmentCodeModel.setRevisionMonth("03");
+//    	if(environmentCodeModel.getRevision() != null && !StringUtils.equals(environmentCodeModel.getRevision(), "")) {
+//    		String[] revision = environmentCodeModel.getRevision().split("-");
+//    	}
+    	List<EnvironmentCodeModel> productMatType = environmentCodeService.selectList(environmentCodeModel);
+    	model.addAttribute("productMatTypeList", productMatType);  
+    	
+    	//공급업체 정보 조회
+    	SupplierModel supplierModel = new SupplierModel();
+    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	supplierModel.setOffSet(0);
+    	supplierModel.setPageSize(9999);
+        List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
+        model.addAttribute("suppliers", supplierList);
         
         return "product/prodList";
     }
 
     /**
-     * 상품 페이지로 이동
+     * 상품 상세정보를 조회한다.
      *
-     * @param criteria
+     * @param productId
      * @return
      */
-    @RequestMapping(value="/prodImage", method= {RequestMethod.GET,RequestMethod.POST})
-    public String codePost(@ModelAttribute ProductModel productMapper, Model model, @AuthenticationPrincipal AuthUser authUser) {
-
-        return "product/prodImage";
+    @RequestMapping(value="/detail/{productId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProductModel> selectProduct(@PathVariable("productId") String productId) {
+    	//상품 상세정보 조회
+    	ProductModel productModel = new ProductModel();
+    	productModel.setProductId(productId);
+    	ProductModel product = productService.selectProduct(productModel);
+		
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
+    
     /**
      * 상품을 저장한다.
      *
      * @param request
      * @return
      */
-    @PostMapping("/product/insert")
-    public ResponseEntity<String> groupSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
+    	if (productModel.getProductId() == null) {
+    		return new ResponseEntity<>("aaaa", HttpStatus.NOT_ACCEPTABLE);
+    	}
+    	
+    	
     	try {
-            ProductModel productMapper = new ProductModel();
+    		productModel.setProductId(idUtil.getProductId());
+    		productModel.setRgstId(authUser.getMemberModel().getUserId());
+    		productModel.setModiId(authUser.getMemberModel().getUserId());
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductId() + "/";
+    		String result = "success";
+    		String resultMessage = "성공";
+    		//사진 업로드
+    		for(MultipartFile photo : photos) {
+    			if(photo.getOriginalFilename().equals("")) {
+    				continue;
+    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
+    			}
+    			
+    			FileModel f = new FileModel();
+				f.setFileId(idUtil.getFileId());
+				
+				// s3 기본 처리
+    			f.setStorageSe("LOCAL");
+    			f.setFileNm(photo.getOriginalFilename());
+    			f.setFileExtsn(FilenameUtils.getExtension(photo.getOriginalFilename()));
+    			f.setFileSize(photo.getSize());
+    			f.setFileUrl(fileUrl+f.getFileId() + "/");
+    			f.setUseYn("Y");
+    			f.setRefId("photos_"+productModel.getProductId());
+    			f.setRgstId(productModel.getRgstId());
+    			f.setModiId(productModel.getRgstId());
+    			f.setFileCl(Constant.File.API);
+    			
+    			try {
+    				f.setInputStream(photo.getResource().getInputStream());
+    			} catch (IOException e) {
+    				result = "fail";
+    				resultMessage = "실패";
+    			}
+    			
+    			// 파일 생성
+    			if (!"fail".equals(result)) {
+    				fileService.insertFile(f);
+    				if(productModel.getPhoto() == null || "".equals(productModel.getPhoto())) {
+    					productModel.setPhoto(f.getFileId());
+    				}
+    				
+    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
 
-            String result = "";
+    				try {
+    					Files.createDirectories(directoryPath);
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
+
+    				try {
+    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + photo.getOriginalFilename());
+
+    					InputStream is = photo.getInputStream();
+
+    					int readCount = 0;
+    					byte[] buffer = new byte[1024];
+    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+    					while ((readCount = is.read(buffer)) != -1) {
+    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+    						fos.write(buffer, 0, readCount);
+    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+    					}
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				}
+    				catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		
+    		//도면첨부파일 업로드
+    		for(MultipartFile spec : specs) {
+    			if(spec.getOriginalFilename().equals("")) {
+    				continue;
+    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
+    			}
+
+    			FileModel f = new FileModel();
+				f.setFileId(idUtil.getFileId());
+				
+				// s3 기본 처리
+    			f.setStorageSe("LOCAL");
+    			f.setFileNm(spec.getOriginalFilename());
+    			f.setFileExtsn(FilenameUtils.getExtension(spec.getOriginalFilename()));
+    			f.setFileSize(spec.getSize());
+    			f.setFileUrl(fileUrl+f.getFileId() + "/");
+    			f.setUseYn("Y");
+    			f.setRefId("specs_"+productModel.getProductId());
+    			f.setRgstId(productModel.getRgstId());
+    			f.setModiId(productModel.getRgstId());
+    			f.setFileCl(Constant.File.API);
+    			
+    			try {
+    				f.setInputStream(spec.getResource().getInputStream());
+    			} catch (IOException e) {
+    				result = "fail";
+    				resultMessage = "실패";
+    			}
+    			
+    			// 파일 생성
+    			if (!"fail".equals(result)) {
+    				fileService.insertFile(f);
+    				
+    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
+
+    				try {
+    					Files.createDirectories(directoryPath);
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
+
+    				try {
+    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + spec.getOriginalFilename());
+
+    					InputStream is = spec.getInputStream();
+
+    					int readCount = 0;
+    					byte[] buffer = new byte[1024];
+    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+    					while ((readCount = is.read(buffer)) != -1) {
+    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+    						fos.write(buffer, 0, readCount);
+    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+    					}
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				}
+    				catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		
+            result = productService.insertProduct(productModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+//    @PostMapping("/update")
+    @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> update(HttpServletRequest request,
+                                       @ModelAttribute ProductModel productModel,
+                                       @AuthenticationPrincipal AuthUser authUser
+                                       , @RequestParam("photos") MultipartFile[] photos
+                                       , @RequestParam("specs") MultipartFile[] specs) {
+
+        try {
+    		productModel.setModiId(authUser.getMemberModel().getUserId());
+    		String result = "";
+    		String resultMessage = "성공";
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductId() + "/";
+    		int count = 0;
+    		//사진 업로드
+    		for(MultipartFile photo : photos) {
+    			System.out.println("----"+count+"---");
+    			System.out.println(photo.getOriginalFilename());
+    			count++;
+    			if(photo.getOriginalFilename().equals("")) {
+    				continue;
+    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
+    			}
+    			
+    			FileModel f = new FileModel();
+				f.setFileId(idUtil.getFileId());
+				
+				// s3 기본 처리
+    			f.setStorageSe("LOCAL");
+    			f.setFileNm(photo.getOriginalFilename());
+    			f.setFileExtsn(FilenameUtils.getExtension(photo.getOriginalFilename()));
+    			f.setFileSize(photo.getSize());
+    			f.setFileUrl(fileUrl+f.getFileId() + "/");
+    			f.setUseYn("Y");
+    			f.setRefId("photos_"+productModel.getProductId());
+    			f.setRgstId(productModel.getModiId());
+    			f.setModiId(productModel.getModiId());
+    			f.setFileCl(Constant.File.API);
+    			
+    			try {
+    				f.setInputStream(photo.getResource().getInputStream());
+    			} catch (IOException e) {
+    				result = "fail";
+    				resultMessage = "실패";
+    			}
+    			
+    			// 파일 생성
+    			if (!"fail".equals(result)) {
+    				fileService.insertFile(f);
+    				if(productModel.getPhoto() == null || "".equals(productModel.getPhoto())) {
+    					productModel.setPhoto(f.getFileId());
+    				}
+    				
+    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
+
+    				try {
+    					Files.createDirectories(directoryPath);
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
+
+    				try {
+    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + photo.getOriginalFilename());
+
+    					InputStream is = photo.getInputStream();
+
+    					int readCount = 0;
+    					byte[] buffer = new byte[1024];
+    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+    					while ((readCount = is.read(buffer)) != -1) {
+    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+    						fos.write(buffer, 0, readCount);
+    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+    					}
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				}
+    				catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		
+    		//도면첨부파일 업로드
+    		for(MultipartFile spec : specs) {
+    			if(spec.getOriginalFilename().equals("")) {
+    				continue;
+    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
+    			}
+
+    			FileModel f = new FileModel();
+				f.setFileId(idUtil.getFileId());
+				
+				// s3 기본 처리
+    			f.setStorageSe("LOCAL");
+    			f.setFileNm(spec.getOriginalFilename());
+    			f.setFileExtsn(FilenameUtils.getExtension(spec.getOriginalFilename()));
+    			f.setFileSize(spec.getSize());
+    			f.setFileUrl(fileUrl+f.getFileId() + "/");
+    			f.setUseYn("Y");
+    			f.setRefId("specs_"+productModel.getProductId());
+    			f.setRgstId(productModel.getModiId());
+    			f.setModiId(productModel.getModiId());
+    			f.setFileCl(Constant.File.API);
+    			
+    			try {
+    				f.setInputStream(spec.getResource().getInputStream());
+    			} catch (IOException e) {
+    				result = "fail";
+    				resultMessage = "실패";
+    			}
+    			
+    			// 파일 생성
+    			if (!"fail".equals(result)) {
+    				fileService.insertFile(f);
+    				
+    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
+
+    				try {
+    					Files.createDirectories(directoryPath);
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
+
+    				try {
+    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + spec.getOriginalFilename());
+
+    					InputStream is = spec.getInputStream();
+
+    					int readCount = 0;
+    					byte[] buffer = new byte[1024];
+    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+    					while ((readCount = is.read(buffer)) != -1) {
+    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+    						fos.write(buffer, 0, readCount);
+    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+    					}
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				}
+    				catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		
+            result = productService.updateProduct(productModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -111,43 +456,199 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("prodList/delete")
+    @PostMapping("/delete")
     public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    	
         try {            
-        	
-        	String result = "";
-            
-            System.out.println("===================productItem delete==================\n" + productModel);
-            System.out.println(productModel.getProductCode());
-            result = productService.delete(productModel);
+            productModel.setModiId(authUser.getMemberModel().getUserId());
+            String result = productService.deleteProduct(productModel);
             
             return new ResponseEntity<>(result, HttpStatus.OK);
-            
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
-        
-                
-        
     }    
     
     
+    @RequestMapping(value="/detail/packagingOrder", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingModel>> selectProductPackagingOrder(ProdPackagingModel prodPackagingModel) {
+    	// 상품 포장 차수 조회
+    	List<ProdPackagingModel> packagingOrder = productService.selectProductPackagingOrder(prodPackagingModel);
+    	
+    	for( int i = 0 ; i < packagingOrder.size() ; i++) {
+    		EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
+        	environmentCode.setCodeId(packagingOrder.get(i).getMatType());
+        	environmentCode.setGroupId("GROUP_ID");
+        	environmentCode.setRevisionYear("2022");
+        	environmentCode.setRevisionMonth("03");
+        	
+        	EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCode);
+        	if(detailCodeList != null) {
+        		packagingOrder.get(i).setMatTypeNm(detailCodeList.getCodeNm());
+        	}
+        }
+    	
+        return new ResponseEntity<>(packagingOrder, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/detail/packaging", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@ModelAttribute ProdPackagingModel productPackagingModel) {
+    	// 상품 목록 조회
+    	List<ProdPackagingModel> models = productService.selectProductPackaging(productPackagingModel);
+    	for( int i = 0 ; i < models.size() ; i++) {
+	    	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
+	    	environmentCode.setCodeId(models.get(i).getPartType());
+	    	environmentCode.setGroupId(models.get(i).getMatType());
+	    	environmentCode.setRevisionYear("2022");
+	    	environmentCode.setRevisionMonth("03");
+	    	EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCode);
+	    	if(detailCodeList != null) {
+	    		models.get(i).setPartTypeNm(detailCodeList.getCodeNm());
+	    	}
+    	}
+        return new ResponseEntity<>(models, HttpStatus.OK);
+    }
+
     /**
-     * 상품 목록을 조회한다.
+     * 상품포장정보 상세정보를 조회한다.
      *
-     * @param groupCd
+     * @param productId
      * @return
      */
-    @RequestMapping(value="/product/detail/{prodId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/detail/{productId}/packaging/{packagingId}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProductModel> codesForGroupCd(@ModelAttribute ProductModel productMapper, @PathVariable("prodId") String prodId) {
-    	productMapper.setCodeId(prodId);
-    	productMapper.setGroupId("GROUP_ID");
-        productMapper = productService.select(productMapper);
-
-        return new ResponseEntity<>(productMapper, HttpStatus.OK);
+    public ResponseEntity<ProdPackagingModel> selectProduct(@PathVariable("productId") String productId, @PathVariable("packagingId") String packagingId) {
+    	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+    	prodPackagingModel.setPackagingId(packagingId);
+    	prodPackagingModel.setProductId(productId);
+    	ProdPackagingModel productPackaging = productService.selectProductPackagingDetail(prodPackagingModel);
+    	if(productPackaging.getMatFileId() != null && !"".equals(productPackaging.getMatFileId())) {
+    		FileModel f = new FileModel();
+    		f.setFileId(productPackaging.getMatFileId());
+    		FileModel f1 = fileService.selectFile(f);
+    		if(f1 != null) {
+    			productPackaging.setMatFileNm(f1.getFileNm());
+//    			productPackaging.setMatFileId(f1.getFileUrl());
+    		}else {
+    			productPackaging.setMatFileId("");
+    			productPackaging.setMatFileNm("");
+    		}
+    	}else {
+    		productPackaging.setMatFileId("");
+			productPackaging.setMatFileNm("");
+    	}
+    	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
+    	environmentCode.setCodeId(productPackaging.getPartType());
+    	environmentCode.setGroupId(productPackaging.getMatType());
+    	environmentCode.setRevisionYear("2022");
+    	environmentCode.setRevisionMonth("03");
+    	
+    	EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCode);
+    	if(detailCodeList != null) {
+    		productPackaging.setPartTypeNm(detailCodeList.getCodeNm());
+    	}
+    	
+        return new ResponseEntity<>(productPackaging, HttpStatus.OK);
     }
+    
+    /**
+     * 상품포장정보을 저장한다.
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/insert/{productId}/packaging")
+    public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @PathVariable("productId") String productId, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+    	try {
+    		
+			prodPackagingModel.setRgstId(authUser.getMemberModel().getUserId());
+			prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
+			prodPackagingModel.setProductId(productId);
+			prodPackagingModel.setProductNm("상품1");
+			prodPackagingModel.setPackagingNm("1차포장");
+			prodPackagingModel.setPackagingId(idUtil.getPackagingId());
+			int x= prodPackagingModel.getManagerId().indexOf("||");
+			String managerId = prodPackagingModel.getManagerId().substring(0, x);
+        	prodPackagingModel.setManagerId(managerId);
+			productService.insertProductPackaging(prodPackagingModel);
+
+            return new ResponseEntity<>(prodPackagingModel, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ProdPackagingModel(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+    @PostMapping("/update/{productId}/packaging")
+    public ResponseEntity<ProdPackagingModel> updateProductPackaging(HttpServletRequest request, @PathVariable("productId") String productId,
+                                       @ModelAttribute ProdPackagingModel prodPackagingModel,
+                                       @AuthenticationPrincipal AuthUser authUser) {
+
+        try {
+        	prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
+        	prodPackagingModel.setProductNm("상품1");
+			prodPackagingModel.setPackagingNm("1차포장");
+			int x= prodPackagingModel.getManagerId().indexOf("||");
+			String managerId = prodPackagingModel.getManagerId().substring(0, x);
+        	prodPackagingModel.setManagerId(managerId);
+            productService.updateProductPackaging(prodPackagingModel);
+
+            return new ResponseEntity<>(prodPackagingModel, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ProdPackagingModel(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+    /**
+     * 상품포장정보을 삭제한다.
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/delete/{productId}/packaging")
+    public ResponseEntity<String> deleteProductPackaging(@ModelAttribute ProdPackagingModel prodPackagingModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+        try {            
+        	prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
+            String result = productService.deleteProductPackaging(prodPackagingModel);
+            
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    } 
+    
+    /**
+     * 코드변경시점정보를 조회한다.
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value="/detail/getCodeDayList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<EnvironmentCodeModel>> getCodeDayList() {
+    	List<EnvironmentCodeModel> dayList = environmentCodeService.selectCodeDayList();
+    	
+        return new ResponseEntity<>(dayList, HttpStatus.OK);
+    }
+    
+    /**
+     * 상품 페이지로 이동
+     *
+     * @param criteria
+     * @return
+     */
+    @RequestMapping(value="/prodImage", method= {RequestMethod.GET,RequestMethod.POST})
+    public String codePost(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+
+    	// 상품 목록 조회
+    	List<ProductModel> models = productService.selectProductList(productModel);
+    	productModel.setTotalCount(productService.selectProductListCount(productModel));
+        model.addAttribute("products", models);
+        model.addAttribute("pages", productModel);
+        
+        return "product/prodImage";
+    }
+
     
     
     /**
@@ -222,4 +723,96 @@ public class ProductController {
         return new ResponseEntity<>(models, HttpStatus.OK);
     }
     
+    
+    /**
+     * 재활용분담금 계산.
+     *
+     * @param 
+     * @return
+     */
+    @RequestMapping(value="/detail/{productId}/recyle_contributions/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public String calcRecyleContributions1(@ModelAttribute ProductModel productModel, @PathVariable("productId") String productId) {
+    	
+//    	ProductModel productModel = new ProductModel();
+//    	productModel.setBaseYear("2022");
+//    	productModel.setAccumulateSaleQty(123);
+//    	productModel.setPackingTotalWeight(456);
+
+        return productService.calcRecyleContributions(productModel);
+    }    
+    
+    
+    /**
+     * 환경부 승인번호 상품 매핑 ##########
+     *  1
+     * @param 
+     * @return
+     */
+    //todo productId => productCode
+    @RequestMapping(value="/detail/{productId}/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProductModel> mapping(@PathVariable("productId") String productId) {
+    	
+    	ProductModel productModel = new ProductModel();
+    	productModel.setProductId(productId);
+    	ProductModel product = productService.mapping(productModel);
+
+    	return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+    
+    
+    /**
+     * 환경부 승인번호 상품 매핑
+     *
+     * @param 
+     * @return
+     */
+  //todo productId => productCode
+    @RequestMapping(value="/detail/{productId}/apply/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProductModel> apply(@PathVariable("productId") String productId) {
+    	
+    	ProductModel productModel = new ProductModel();
+    	productModel.setProductId(productId);
+    	ProductModel product = productService.mapping(productModel);
+
+    	return new ResponseEntity<>(product, HttpStatus.OK);
+    }    
+
+    /**
+     * 상품별 등록할 차수를 조회
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/detail/{productId}/getPackagingOrderByNew", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<List<ProdPackagingModel>> getPackagingOrderByNew(@PathVariable("productId") String productId) {
+		// 상품 포장 차수 조회
+		int  maxPackagingOrder = productService.selectMaxProductPackagingOrder(productId);
+		
+	    List<ProdPackagingModel> ProdPackagingList = new ArrayList<>() ;
+	    ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+	    prodPackagingModel.setPackagingOrder(maxPackagingOrder + 1);
+        
+	    if(maxPackagingOrder == 0) {
+	    	prodPackagingModel.setPackagingNm("기준포장");
+	    	ProdPackagingList.add(prodPackagingModel);
+        } else {
+        	prodPackagingModel.setPackagingNm(Integer.toString(maxPackagingOrder + 1) + "차포장");
+	    	ProdPackagingList.add(prodPackagingModel);
+	    	
+		    prodPackagingModel = new ProdPackagingModel();
+		    prodPackagingModel.setPackagingOrder(9);
+		    prodPackagingModel.setPackagingNm("부속포장");
+		    ProdPackagingList.add(prodPackagingModel);
+        }
+	    
+		return new ResponseEntity<>(ProdPackagingList, HttpStatus.OK);
+	}
+	
+	
+	
 }
+
