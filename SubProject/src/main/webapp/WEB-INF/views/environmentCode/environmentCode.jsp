@@ -399,21 +399,21 @@
 						</div>
 						<div class="form-group">
 							<div class="col-100 mb10">
-								<input id="rptMatStruct" name="rptMatStruct" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox" id="rptMatStruct" name="rptMatStruct" type="checkbox" style="margin: 0;" value="">
 								<label for="rptMatStruct">포장재질구조증명서</label>
-								<input id="rptDevAnal" name="rptDevAnal" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox"  id="rptDevAnal" name="rptDevAnal" type="checkbox" style="margin: 0;" value="">
 								<label for="rptDevAnal">기기분석증명서</label>
-								<input id="rptVisualJudg" name="rptVisualJudg" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox"id="rptVisualJudg" name="rptVisualJudg" type="checkbox" style="margin: 0;" value="">
 								<label for="rptVisualJudg">육안판정서</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-100 mb10">
-								<input id="rptTest" name="rptTest" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox" id="rptTest" name="rptTest" type="checkbox" style="margin: 0;" value="">
 								<label for="rptTest">공인시험성적서</label>
-								<input id="rptPermission" name="rptPermission" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox" id="rptPermission" name="rptPermission" type="checkbox" style="margin: 0;" value="">
 								<label for="rptPermission">신고허가서류</label>
-								<input id="rptEtc" name="rptEtc" type="checkbox" style="margin: 0;" value="">
+								<input class="de_checkbox" id="rptEtc" name="rptEtc" type="checkbox" style="margin: 0;" value="">
 								<label for="rptEtc">기타서류</label>
 							</div>
 						</div>
@@ -511,6 +511,7 @@
 			$('.detailCodeInsert').removeClass('save');
 			$('.detailCodeInsert').removeClass('edit');
 			$('.detailCodeDelete').hide();
+			$('.de_checkbox').prop('checked',false);
 		});
 		
 		$('.middleCodeInsert').click(function(){
