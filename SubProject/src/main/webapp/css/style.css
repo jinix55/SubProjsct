@@ -153,6 +153,7 @@ textarea:-ms-input-placeholder {color: #ddd;font-weight: 500;}
 .col-12 {-ms-flex: 0 0 12.5%;flex: 0 0 12.5%;max-width: 12.5%;}
 .col-10 {-ms-flex: 0 0 10%;flex: 0 0 10%;max-width: 10%;}
 .col-15 {-ms-flex: 0 0 15%;flex: 0 0 15%;max-width: 15%;}
+.col-16 {-ms-flex: 0 0 16%;flex: 0 0 16%;max-width: 16%;}
 .col-20 {-ms-flex: 0 0 20%;flex: 0 0 20%;max-width: 20%;}
 .col-20-dev {-ms-flex: 0 0 20%;flex: 0 0 20%;max-width: 20%;}
 .col-20-area {-ms-flex: 0 0 20%;flex: 0 0 20%;max-width: 20%;}
@@ -319,6 +320,7 @@ button {font-weight: 600;/*border-radius: 36px;*/width: auto;height: 34px;line-h
 .btn-none {background-color: initial;color: #000;}
 .btn-radius {color: #333d49;background: #fff;border: 1px solid #aeb9c7;border-radius: 18px;padding: 10px 20px;height: 30px;line-height: 10px;}/*라운드버튼*/
 .btn-radius:hover {background: #27364c;color:#fff;}
+<<<<<<< HEAD
 .btn-radius.on {background: #FFA904;border: 1px solid #ee6504;color: #fff;margin: 0 2px;}
 
 .button-small {padding: 0 20px;line-height: 34px;margin: 0;/*margin-right: 5px;*/-webkit-appearance: button;-webkit-writing-mode: horizontal-tb !important;text-indent: 0px;display: inline-block;text-align: center;align-items: flex-start;cursor: pointer;}
@@ -332,6 +334,20 @@ button {font-weight: 600;/*border-radius: 36px;*/width: auto;height: 34px;line-h
 .btn-Ticon {width: 22px; height: auto;}
 .btn-Ticon02 {width: 19px; height: auto;}
 .button-Csmall {font-size: 12px;font-weight: 600;height: 24px;border: 1px solid #2bb769;background-color: #33c172;color: #fff;border-radius: 4px;line-height: 24px;padding: 6px 10px;}
+=======
+.btn-radius.on {background: #FFA904;border: 1px solid #dbbe00;color: #fff;margin: 0 2px;}
+
+.btn-small {padding: 0 20px;line-height: 34px;margin: 0;text-indent: 0px;display: inline-block;text-align: center;align-items: flex-start;cursor: pointer;}
+.btn-small02 {font-size: 12px;font-weight: 600;height: 24px;border: 1px solid #2bb769;background-color: #33c172;color: #fff;border-radius: 4px;line-height: 24px;padding: 6px 10px;}
+.btn-search {height: 40px;line-height: 40px;float:left;text-align: center;background: #4f607a;border-radius: 0 2px 2px 0;border-color: #485973;padding: 0 8px;font-weight: 600;}
+.btn-yes {font-size: 11px;color: #fff;width: 48px;height: 30px;line-height: 1.4;background: #ffdd02;border: 1px solid #dbbe00;border-radius: 36px;}
+.btn-no {font-size: 11px;width: 48px;height: 30px;line-height: 30px;background: #e1e1e1;border: 1px solid #d7d7d7;border-radius: 36px;}
+.btn-form-small {background-color: #f1f1f1;border: 1px solid #bdbdbd;border-radius: 2px;color: #333d49;width: auto;min-width: 50px;height:30px;display: inline;padding: 0 4px;margin: 4px;}
+.btn-form-small:hover {background-color: #e7e7e7;}
+.btn-form-small label {font-size: 12px;line-height: 24px !important}
+.btn-table-icon {width: 22px; height: auto;margin: 0 4px;}
+.btn-table-icon02 {width: 19px; height: auto;margin: 0 4px;}
+>>>>>>> c924ccfdda0430dd634c331971ae48659c8ab905
 
 /* on,off 버튼기능*/
 .form-checkbox {position: relative;display: flex;justify-content: center;align-items: center;}
@@ -604,6 +620,7 @@ input[name="tab_item"] {display: none;}
 .pro-result {border: 2px solid #27364c}
 .pro-result .form-label {background: #f5f5f5;font-weight: 600;border: 0px solid #ddd;}
 
+.pack-none {position: absolute;top:64px;left: 50%;margin-left: 162px;background: #fff;border: 2px solid #2bb769;color: #333d49;padding: 6px 50px;font-size: 14px;height: 42px;font-weight: normal;}
 /* 이미지박스 */
 .img-box {display: inline-block;background: #fff;width: 15.7%;margin: 20px 15px 20px 0px;border: 1px solid #e3e3e3;border-radius: 2px;vertical-align: top;}
 .img-view{border: 1px solid #e3e3e3;height: auto;}
