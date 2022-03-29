@@ -170,19 +170,19 @@ body {
 								</c:forEach>
 			          		</c:when>
 			          		<c:otherwise>
-			          			<button type="button" name="partType" class="button btn-radius partTypeCheck" value="BODY">
+			          			<button type="button" name="partType" class="button btn-radius partTypeCheck" value="B">
 									몸체
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="LABEL">
+								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="L">
 									라벨
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="COVER">
+								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="C">
+									마개
+								</button>
+								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="M">
 									잡자재
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="MISCELLANEOUS">
-									잡자재
-								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="SEPARATELYPACK">
+								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="S">
 									별도포장
 								</button>
 			          		</c:otherwise>
