@@ -215,7 +215,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">디바이스 사이즈</label>
 						<div class="col-75 row">
-							<div class="col-20-dev">
+							<div class="col-25">
 								<input type="text" class="text-input" id="reportSize" name="reportSize" value="1320x700">
 							</div>
 							<div class="col-75 pl05">

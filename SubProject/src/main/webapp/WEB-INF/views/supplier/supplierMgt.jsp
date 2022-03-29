@@ -151,13 +151,13 @@
 						<label class="col-25 form-label">사업자번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="supplierNo1" name="supplierNo1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<div class="phone-number">
-								<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" placeholder="2자리" maxlength="2" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="supplierNo2" name="supplierNo2" type="text" class="text-input" placeholder="2자리" maxlength="2" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
-							<div class="phone-number">
-								<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" placeholder="5자리" maxlength="5" onkeyup="this.value = setNumber(this.value)">
+							<div class="phone-number end">
+								<div><input id="supplierNo3" name="supplierNo3" type="text" class="text-input" placeholder="5자리" maxlength="5" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<input type="hidden" id="supplierNo" name="supplierNo" />
 						</div>
@@ -168,13 +168,13 @@
 						<label class="col-25 form-label">연락처<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" placeholder="지역번호" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" placeholder="지역번호" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<div class="phone-number">
-								<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" placeholder="3~4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" placeholder="3~4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
-							<div class="phone-number">
-								<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+							<div class="phone-number end">
+								<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<input type="hidden" id="telephoneNo" name="telephoneNo" />
 						</div>
@@ -261,13 +261,13 @@
 						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled>
+								<div class="pr16"><input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
 							<div class="phone-number">
-								<input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
+								<div class="pr16"><input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
-							<div class="phone-number">
-								<input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
+							<div class="phone-number end">
+								<div><input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
 							<input type="hidden" id="managementPhone" name="managementPhone" disabled/>
 						</div>
@@ -275,15 +275,17 @@
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">이메일<em>*</em></label>
+						<label class="col-25 form-label">이메일<em>*</em></label>						
 						<div class="col-75">
-							<div class="email-add">
-								<input id="managementMail1" name="managementMail1" type="text" class="text-input email" disabled>
+							<div class="form-input">
+								<div class="email-add">
+									<div class="pr28"><input id="managementMail1" name="managementMail1" type="text" class="text-input email" disabled></div>
+								</div>
+								<div class="email-add">
+									<div><input id="managementMail2" name="managementMail2" type="text" class="text-input email" disabled></div>
+								</div>
+								<input type="hidden" id="managementMail" name="managementMail"  disabled/>
 							</div>
-							<div class="email-add">
-								<input id="managementMail2" name="managementMail2" type="text" class="text-input email" disabled>
-							</div>
-							<input type="hidden" id="managementMail" name="managementMail"  disabled/>
 						</div>
 					</div>
 				</div>
@@ -310,13 +312,13 @@
 						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="managerPhone1" name="managerPhone1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<div class="phone-number">
-								<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+								<div class="pr16"><input id="managerPhone2" name="managerPhone2" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
-							<div class="phone-number">
-								<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+							<div class="phone-number end">
+								<div><input id="managerPhone3" name="managerPhone3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 							</div>
 							<input type="hidden" id="managerPhone" name="managerPhone" />
 						</div>
@@ -342,14 +344,16 @@
 					<div class="form-group">
 						<label class="col-25 form-label">이메일<em>*</em></label>
 						<div class="col-75">
-							<div class="email-add">
-								<input id="managerMail1" name="managerMail1" type="text" placeholder="아이디" class="text-input email">
+							<div class="form-input">
+								<div class="email-add">
+									<div class="pr28"><input id="managerMail1" name="managerMail1" type="text" placeholder="아이디" class="text-input email"></div>
+								</div>
+								<div class="email-add">
+									<div><input id="managerMail2" name="managerMail2" type="text" placeholder="주소" class="text-input email"></div>
+								</div>
+								<input type="hidden" id="managerMail" name="managerMail" />
 							</div>
-							<div class="email-add">
-								<input id="managerMail2" name="managerMail2" type="text" placeholder="주소" class="text-input email">
-							</div>
-							<input type="hidden" id="managerMail" name="managerMail" />
-						</div>
+						</div>	
 					</div>
 				</div>
 				<div class="col-50">
@@ -454,13 +458,13 @@
 										<label class="col-25 form-label">사업자번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="supplierNo1" name="supplierNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<div class="phone-number">
-												<input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="supplierNo2" name="supplierNo2" type="text" class="text-input" maxlength="2" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
-											<div class="phone-number">
-												<input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeyup="this.value = setNumber(this.value)">
+											<div class="phone-number end">
+												<div><input id="supplierNo3" name="supplierNo3" type="text" class="text-input" maxlength="5" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<input type="hidden" id="supplierNo" name="supplierNo" />
 										</div>
@@ -471,13 +475,13 @@
 										<label class="col-25 form-label">연락처</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<div class="phone-number">
-												<input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
-											<div class="phone-number">
-												<input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+											<div class="phone-number end">
+												<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<input type="hidden" id="telephoneNo" name="telephoneNo" />
 										</div>
@@ -550,13 +554,13 @@
 										<label class="col-25 form-label"><em>*</em>휴대폰번호</label>
 										<div class="col-75">
 											<div class="phone-number">
-												<input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="managerPhone1" name="managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<div class="phone-number">
-												<input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+												<div class="pr16"><input id="managerPhone2" name="managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
-											<div class="phone-number">
-												<input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)">
+											<div class="phone-number end">
+												<div><input id="managerPhone3" name="managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
 											</div>
 											<input type="hidden" id="managerPhone" name="managerPhone" />
 										</div>
@@ -584,14 +588,16 @@
 									<div class="form-group">
 										<label class="col-25 form-label"><em>*</em>이메일</label>
 										<div class="col-75">
-											<div class="email-add">
-												<input id="managerMail1" name="managerMail1" type="text" class="text-input email">
+											<div class="form-input">
+												<div class="email-add">
+													<div class="pr28"><input id="managerMail1" name="managerMail1" type="text" class="text-input email"></div>
+												</div>
+												<div class="email-add">
+													<div><input id="managerMail2" name="managerMail2" type="text" class="text-input email"></div>
+												</div>
+												<input type="hidden" id="managerMail" name="managerMail" />
 											</div>
-											<div class="email-add">
-												<input id="managerMail2" name="managerMail2" type="text" class="text-input email">
-											</div>
-											<input type="hidden" id="managerMail" name="managerMail" />
-										</div>
+										</div>	
 									</div>
 								</div>
 								<div class="col-50">
@@ -664,9 +670,10 @@
 				<img src="/images/icon_close.png">
 			</button>
 		</div>
+		
 		<div class="modal-body">
 			<div class="row">
-				<input id="pop_managerId" name="pop_managerId" type="hidden" class="text-input" disabled>
+			 <input id="pop_managerId" name="pop_managerId" type="hidden" class="text-input" disabled>
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">성명</label>
@@ -674,63 +681,52 @@
 							<div class="search-box">
 								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input w-auto" value="홍나리" disabled>
 								<span class="overlapMngmt" style="display:none;">
-									<button type="button" class="btn-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기
-									</button>
+									<button type="button" class="btn-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기</button>
 								</span>
 							</div>
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호</label>
+					<label class="col-25 form-label">휴대폰번호</label>
 						<div class="col-75">
 							<div class="phone-number">
-								<input id="pop_managerPhone1" name="pop_managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled>
+								<div class="pr16"><input id="pop_managerPhone1" name="pop_managerPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
 							<div class="phone-number">
-								<input id="pop_managerPhone2" name="pop_managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
+								<div class="pr16"><input id="pop_managerPhone2" name="pop_managerPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
 							<div class="phone-number end">
-								<input id="pop_managerPhone3" name="pop_managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled>
+								<div><input id="pop_managerPhone3" name="pop_managerPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
 							</div>
 							<input id="pop_managerPhone" name="pop_managerPhone" type="hidden" class="text-input" value="010-123-4567">
 						</div>
 					</div>
 				</div>
-				<%--<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input id="pop_managerDept" name="pop_managerDept" type="text" class="text-input" value="홍보" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input id="pop_mmanagerPstn" name="pop_mmanagerPstn" type="text" class="text-input" value="과장" disabled>
-						</div>
-					</div>
-				</div> --%>
+			
 				<div class="col-100">
 					<div class="form-group">
-						<label class="col-25 form-label">이메일</label>
+					<label class="col-25 form-label">이메일</label>				
 						<div class="col-75">
-							<div class="email-add">
-								<input id="pop_managerMail1" name="pop_managerMail1" type="text" class="text-input email" disabled>
+							<div class="form-input">
+								<div class="email-add">
+									<div class="pr28"><input id="pop_managerMail1" name="pop_managerMail1" type="text" class="text-input email" disabled></div>
+								</div>
+								<div class="email-add">
+									<div><input id="pop_managerMail2" name="pop_managerMail2" type="text" class="text-input email" disabled></div>
+								</div>
+								<input id="pop_managerMail" name="pop_managerMail" type="hidden" class="text-input" value="PPlueEc o@PlueEc.co.kr">
 							</div>
-							<div class="email-add end">
-								<input id="pop_managerMail2" name="pop_managerMail2" type="text" class="text-input email" disabled>
-							</div>
-							<input id="pop_managerMail" name="pop_managerMail" type="hidden" class="text-input" value="PPlueEc o@PlueEc.co.kr">
-						</div>
+						</div>		
 					</div>
 				</div>
+				
+				
 			</div>
 		</div>
-		<!-- 버튼 -->
+	<!-- 버튼 -->
 		<div class="modal-footer btn-group">
 			<button type="button" class="button btn-success pop_btn pop_edit" >수정</button>
 			<button type="button" class="button btn-success pop_cancel" data-dismiss="modal">취소</button>
@@ -739,9 +735,7 @@
 </div>
 
 <!-- 레이어 팝업 관리 책임자 검색 -->
-<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-	data-modal-parent="#myModal">
+<div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	<div class="modal-content" style="width: 600px">
 		<div class="modal-header">
 			<h4 class="modal-title">관리 담당자 조회</h4>
@@ -767,6 +761,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="scroll-auto h300auto">
 				<table class="table">
 					<colgroup>
@@ -790,6 +785,7 @@
 					</tbody>
 				</table>
 			</div>
+			
 		</div>
 		<!-- 버튼 -->
 		<div class="modal-footer btn-group">
