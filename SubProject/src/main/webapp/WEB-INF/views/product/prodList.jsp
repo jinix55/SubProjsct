@@ -1122,7 +1122,7 @@
     <div class="modal-content" style="width:400px">
       <div class="modal-header">
         <h4 class="modal-title">포장정보</h4>
-        <button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
+        <button type="button"  onclick="showTab();" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -1156,7 +1156,7 @@
       <!-- 버튼 -->
       <div class="modal-footer btn-group">
         <button type="button" class="button btn-success" onclick="addPackagingTab();">적용</button>
-        <button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+        <button type="button" class="button btn-cancel" onclick="showTab();" data-dismiss="modal">취소</button>
       </div>
     </div>
   </div>
@@ -1242,19 +1242,22 @@
 				dataType : 'json',
 				error : function(xhr, status, error) {
 					console.log(error);
+					alert(error);
 				},
 				success : function(result) {
-					$('#matType').val(result.packingType); 
+					$('#matType').val(result.matType); 
 					tabID = packagingOrderNmApplyVal;
-					var selectedText = result.packingTypeNm;
+					var selectedText = result.matTypeNm;
 					$('#tab-list li.active').removeClass('active');
-					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" role="tab" data-toggle="tab"><span>' +
+					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" onclick=\'productMatInfoView("'+selectedProdId+'", "'+packagingOrderNmApplyVal+'", this);\' role="tab" data-toggle="tab"><span>' +
 							selectedPackagingOrderNmText +
-				     ' ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+				     ' ('+selectedText+')</span><button class="tab-close" type="button" onclick=\'deleteProductPackagingInfo("'+ selectedProdId + '", "'+ packagingOrderNmApplyVal + '", this);\' title="Remove this page">×</button></a></li>'
 				    ));
 			        
+					var tabFirst = $('#tab-list a:first');
+			        tabFirst.click();
 					$("#tab" + packagingOrderNmApplyVal).modal("show");
-					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
+// 					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
 					$("#matTypeSelect").modal('hide');
 				}
 			});
@@ -1270,6 +1273,7 @@
 				dataType : 'json',
 				error : function(xhr, status, error) {
 					console.log(error);
+					alert(error);
 				},
 				success : function(result) {
 					if(id === 'matTypeSelectProductCodeVal'){
@@ -1323,6 +1327,7 @@
 			dataType : 'text',
 			error : function(xhr, status, error) {
 				console.log(error);
+				alert(error);
 			},
 			success : function(result) {
 				$("#frmUpdate input[name="+year+"]").val(result);
@@ -1464,6 +1469,7 @@
 		dataType : 'json',
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(result) {
 			console.log(result);
@@ -1503,7 +1509,7 @@
 	  }
 	  
 	  if(packagingOrderNmApplyVal > 8 && mappedProductCodeChecked === true) {
-			if($("#matTypeSelectProductCode").val() !== '') {
+			if($("#matTypeSelectProductCodeVal").val() !== '') {
 		    	mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
 			}else {
 				alert('등록된 부속상품코드를 입력해주세요.');
@@ -1656,7 +1662,8 @@
         cache: false,
         timeout: 600000,
 		error: function(xhr, status, error){
-		    console.log(error);
+			console.log(error);
+			alert(error);
 		},
 		success : function(result){
 		    if(result == 'Update' || result == 'Insert'){
@@ -1694,6 +1701,7 @@
 		dataType : 'text',
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(result) {
 			isDisabled = false;
@@ -1720,6 +1728,7 @@
 			async: false,
 			error : function(xhr, status, error) {
 				console.log(error);
+				alert(error);
 			},
 			success : function(data) {
 				if (data.length > 0) {
@@ -1781,6 +1790,7 @@
 			async: false,
 			error : function(xhr, status, error) {
 				console.log(error);
+				alert(error);
 			},
 			success : function(data) {
 				
@@ -1817,6 +1827,7 @@
 			async: false,
 			error : function(xhr, status, error) {
 				console.log(error);
+				alert(error);
 			},
 			success : function(data) {
 				$('#tab04_1_in1').children().empty();
@@ -1885,7 +1896,10 @@
 		saveProductPackagingAjax(param,'update');
   	}
   }
-  
+
+  function showTab() {
+	  $('#btn-add-tab').show();
+  }
   // 상품포장정보등록 수정
   function saveProductPackagingAjax(param, action, sendMail) {
     $.ajax({
@@ -1895,8 +1909,10 @@
 		dataType : 'text',
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(result) {
+			$('#btn-add-tab').show();
 			var data = JSON.parse(result);
 			console.log(data.packagingId);
 			$("#frmDetail input[name=packagingId]").val(data.packagingId);
@@ -1925,6 +1941,7 @@
 		type : "POST",
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(data) {
 			$('.supplierManager').empty();
@@ -1951,6 +1968,7 @@
 			type : "POST",
 			error : function(xhr, status, error) {
 				console.log(error);
+				alert(error);
 			},
 			success : function(data) {
 				alert("정상적으로 이메일 전송이 되었습니다.");
@@ -1970,6 +1988,7 @@
 		dataType : 'text',
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(result) {
 			var lastPart = $('#partTypeDetail span:last');
@@ -2001,6 +2020,7 @@
 		type : "POST",
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2024,6 +2044,7 @@
 		type : "POST",
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2054,6 +2075,7 @@
 		data : {'smallCategory': codeId, 'revision': revision},
 		error : function(xhr, status, error) {
 			console.log(error);
+			alert(error);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2100,6 +2122,7 @@
 							data : {'smallCategory': item.codeId, 'revision': revision},
 							error : function(xhr, status, error) {
 								console.log(error);
+								alert(error);
 							},
 							success : function(subData) {
 								$('#Accordion_wrap').show();
@@ -2444,6 +2467,7 @@
 	});
 	
 	$('#btn-add-tab').click(function () {
+		$('#btn-add-tab').hide();
 		getPackagingOrderByNew(selectedProdId);
 		getMatTypeList();
 // 		$("#matTypeSelect").modal('show');
@@ -2459,6 +2483,7 @@
 //       resetTab();
 //       tabFirst.tab('show');
       tabFirst.click();
+      $('#btn-add-tab').show();
     });
 
     var list = document.getElementById("tab-list");
