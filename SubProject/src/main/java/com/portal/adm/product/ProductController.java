@@ -472,7 +472,7 @@ public class ProductController {
     	
     	for( int i = 0 ; i < packagingOrder.size() ; i++) {
     		EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
-        	environmentCode.setCodeId(packagingOrder.get(i).getMatType());
+        	environmentCode.setCodeId(packagingOrder.get(i).getMatType().split("_")[0]);
         	environmentCode.setGroupId("GROUP_ID");
         	environmentCode.setRevisionYear("2022");
         	environmentCode.setRevisionMonth("03");
@@ -494,7 +494,7 @@ public class ProductController {
     	for( int i = 0 ; i < models.size() ; i++) {
 	    	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
 	    	environmentCode.setCodeId(models.get(i).getPartType());
-	    	environmentCode.setGroupId(models.get(i).getMatType());
+	    	environmentCode.setGroupId(models.get(i).getMatType().split("_")[0]);
 	    	environmentCode.setRevisionYear("2022");
 	    	environmentCode.setRevisionMonth("03");
 	    	EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCode);
@@ -534,7 +534,7 @@ public class ProductController {
 			productPackaging.setMatFileNm("");
     	}
     	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
-    	environmentCode.setCodeId(productPackaging.getPartType());
+    	environmentCode.setCodeId(productPackaging.getPartType().split("_")[0]);
     	environmentCode.setGroupId(productPackaging.getMatType());
     	environmentCode.setRevisionYear("2022");
     	environmentCode.setRevisionMonth("03");
