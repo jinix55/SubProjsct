@@ -636,7 +636,7 @@
 						<label class="col-40 form-label"  id="edit_baseYear">누적판매량(기준 년)</label>
 						<input id="edit_baseYear_hidden" name="baseYear" type="hidden">
 						<input id="edit_baseYear_1_hidden" name="baseYear_1" type="hidden">
-						<input id="edit_baseYear_2_hidden" name="baseYear_1" type="hidden">
+						<input id="edit_baseYear_2_hidden" name="baseYear_2" type="hidden">
 						<div class="col-60">
 						  <input id="edit_accumulateSaleQty" name="accumulateSaleQty" type="text" class="text-input" placeholder="누적판매량(년)"  autocomplete="off">
 						</div>
@@ -655,7 +655,7 @@
 						<label class="col-40 form-label">재활용분담금</label>
 						<div class="col-60">
 						  <input id="edit_recyleContributions" name="recyleContributions" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('baseYear');" type="button" class="button btn-success">계산</button>
+						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
@@ -680,7 +680,7 @@
 						<label class="col-40 form-label">재활용분담금</label>
 						<div class="col-60">
 						  <input id="edit_recyleContributions_1" name="recyleContributions_1" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('baseYear_1');" type="button" class="button btn-success">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
@@ -705,7 +705,7 @@
 						<label class="col-40 form-label">재활용분담금</label>
 						<div class="col-60">
 						  <input id="edit_recyleContributions_2" name="recyleContributions_2" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('baseYear_2');" type="button" class="button btn-success">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
@@ -1222,6 +1222,21 @@
 					result.forEach(function(item, index) {
 						// loop
 						$('#packagingOrderNmApply').append('<option value="'+item.packagingOrder+'">'+item.packagingNm+'</option>');
+						$('#matTypeSelectTab').empty();
+						if(result.length == 1) {
+							$('#packagingOrderNmApply option[value="'+item.packagingOrder+'"]').attr("selected", "selected");
+							if(item.packagingOrder > 8){
+								$('#matTypeSelectProductCode').show();
+								$('#matTypeSelectProductMatType').hide();
+								$('#matTypeSelectTab').text(item.packagingNm+' 정보를 매핑하세요.');
+							}else {
+								$('#matTypeSelectProductMatType').show();
+								$('#matTypeSelectProductCode').hide();
+								$('#matTypeSelectTab').text(item.packagingNm+' 재잴 유형을 선택 하세요');
+							}
+						}else {
+							$('#matTypeSelectTab').text('포장 차수 및 재질 정보를 선택하세요.');
+						}
 					});
 					$("#matTypeSelect").modal('show');
 				}
@@ -1229,7 +1244,7 @@
 		});
   }
   
-  function mapProductCodeApply(id){
+  function mapProductCodeApply(id, packagingOrderNmApplyVal, selectedPackagingOrderNmText){
 	 var productCode = $('#'+id).val();
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
@@ -1240,11 +1255,17 @@
 					console.log(error);
 				},
 				success : function(result) {
-					if(result.masterMapping === 'MAPPING') {
-						$('#matTypeSelectProductMatType').hide();
-					}else {
-						$('#matTypeSelectProductMatType').show();
-					}
+					$('#matType').val(result.packingType); 
+					var selectedText = result.packingTypeNm;
+					$('#tab-list li.active').removeClass('active');
+					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" role="tab" data-toggle="tab"><span>' +
+							selectedPackagingOrderNmText +
+				     ' ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+				    ));
+			        
+					$("#tab" + packagingOrderNmApplyVal).modal("show");
+					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
+					$("#matTypeSelect").modal('hide');
 				}
 			});
 	 }
@@ -1284,26 +1305,26 @@
   function calculateRecyleContributions(year) {
 	  valyCheck(year);
 	  var param = {};
-	  if(year == 'baseYear') {
-		  param.baseYear= "";  
-		  param.accumulateSaleQty= "";  
-		  param.packingTotalWeight= "";  
-	  }else if(year == 'baseYear_1') {
-		  param.baseYear_1= "";  
-		  param.accumulateSaleQty_1= "";  
-		  param.packingTotalWeight_1= ""; 
-	  }else if(year == 'baseYear_2') {
-		  param.baseYear_2= "";  
-		  param.accumulateSaleQty_2= "";  
-		  param.packingTotalWeight_3= ""; 
+	  if(year == 'recyleContributions') {
+		  param.baseYear= $("#frmUpdate input[name=baseYear]").val();
+		  param.accumulateSaleQty= $("#frmUpdate input[name=accumulateSaleQty]").val();
+		  param.packingTotalWeight= $("#frmUpdate input[name=packingTotalWeight]").val();
+	  }else if(year == 'recyleContributions_1') {
+		  param.baseYear_1= $("#frmUpdate input[name=baseYear_1]").val();
+		  param.accumulateSaleQty_1= $("#frmUpdate input[name=accumulateSaleQty_1]").val();
+		  param.packingTotalWeight_1= $("#frmUpdate input[name=packingTotalWeight_1]").val();
+	  }else if(year == 'recyleContributions_2') {
+		  param.baseYear_2= $("#frmUpdate input[name=baseYear_2]").val();
+		  param.accumulateSaleQty_2= $("#frmUpdate input[name=accumulateSaleQty_2]").val();
+		  param.packingTotalWeight_2= $("#frmUpdate input[name=packingTotalWeight_2]").val();
 	  }else {
 		  return;
 	  }
 	  var productId = $("#frmUpdate input[name=productId]").val();
-	  calculateRecyleContributionsAjax(productId, param);
+	  calculateRecyleContributionsAjax(productId, param, year);
   }
   
-  function calculateRecyleContributionsAjax(productId, param){
+  function calculateRecyleContributionsAjax(productId, param, year){
 // 	  var param = $('#frmUpdate').serialize();
 	  $.ajax({
 			type : 'post',
@@ -1314,7 +1335,7 @@
 				console.log(error);
 			},
 			success : function(result) {
-				isDisabled = false;
+				$("#frmUpdate input[name="+year+"]").val(result);
 			}
 		});
   }
@@ -1354,7 +1375,7 @@
 				$("#frmDetail select[name=managerId]").focus();
 				return false;
 			}
-		}else if(type == 'baseYear'){
+		}else if(type == 'recyleContributions'){
 			var accumulateSaleQty = $("#frmUpdate input[name=edit_accumulateSaleQty]").val();
 			if (accumulateSaleQty == '') {
 				alert('누적판패량을 입력해 주세요.');
@@ -1367,7 +1388,7 @@
 				$("#frmUpdate input[name=packingTotalWeight]").focus();
 				return false;
 			}
-		}else if(type == 'baseYear_1'){
+		}else if(type == 'recyleContributions_1'){
 			var accumulateSaleQty = $("#frmUpdate input[name=edit_accumulateSaleQty_1]").val();
 			if (accumulateSaleQty == '') {
 				alert('누적판패량을 입력해 주세요.');
@@ -1380,7 +1401,7 @@
 				$("#frmUpdate input[name=packingTotalWeight_1]").focus();
 				return false;
 			}
-		}else if(type == 'baseYear_2'){
+		}else if(type == 'recyleContributions_2'){
 			var accumulateSaleQty = $("#frmUpdate input[name=edit_accumulateSaleQty_2]").val();
 			if (accumulateSaleQty == '') {
 				alert('누적판패량을 입력해 주세요.');
@@ -1477,47 +1498,35 @@
   function addPackagingTab() {
 	  var selectedVal = $("#matTypeSelectBox").val();
 	  var packagingOrderNmApplyVal = $("#packagingOrderNmApply").val();
+	  var selectedPackagingOrderNmText = $("#packagingOrderNmApply option:selected").text();
 	  var matTypeSelectProductCodeVal = $("#matTypeSelectProductCode").val();
 	  var matTypeSelectProductMatTypeMapped = $("#matTypeSelectProductMatTypeMapped").val();
-
+	  console.log(selectedVal);
 	  console.log(packagingOrderNmApplyVal);
 	  console.log(matTypeSelectProductCodeVal);
-	  if(matTypeSelectProductMatTypeMapped == 'MAPPING' && packagingOrderNmApplyVal == '9') {
-		  mapProductCodeApply('matTypeSelectProductCodeVal');
-		    $('#matType').val(selectedVal); 
-			var selectedText = $( "#matTypeSelectBox option:selected" ).text();
-	// 		  productPackagingOrder();
-			tabID++;
-			$("#matTypeSelectTab").empty();		
-			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
-			$('#tab-list li.active').removeClass('active');
-			$('#tab-list').append($('<li class="active"><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
-		     tabID +
-		     '차 포장 ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
-		    ));
-	        
-			$("#tab" + tabID).modal("show");
-	// 		$('#tab-list').append($('<li><a href="#tab1" role="tab" data-toggle="tab"><span>'+tabID+'차 포장 <br>'+selectedText+'</span></a></li>'));
-			//기존 정보 초기화
-			getSelfCodeList(selectedVal, 'tab-list', 'selfPartType1');
+	  console.log(matTypeSelectProductMatTypeMapped);
+	  console.log(selectedPackagingOrderNmText);
+	  if(matTypeSelectProductMatTypeMapped === 'MAPPING') {
+		    mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
 	  }else {
 		  if(selectedVal) {
 			$('#matType').val(selectedVal); 
 			var selectedText = $( "#matTypeSelectBox option:selected" ).text();
 	// 		  productPackagingOrder();
 			tabID++;
-			$("#matTypeSelectTab").empty();		
-			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
+// 			$("#matTypeSelectTab").empty();		
+// 			$("#matTypeSelectTab").text(tabID+'차 포장 재잴 유형을 선택 하세요');	
 			$('#tab-list li.active').removeClass('active');
-			$('#tab-list').append($('<li class="active"><a href="#tab' + tabID + '" role="tab" data-toggle="tab"><span>' +
-		     tabID +
-		     '차 포장 ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
+			$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" role="tab" data-toggle="tab"><span>' +
+					selectedPackagingOrderNmText +
+		     ' ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
 		    ));
 	        
-			$("#tab" + tabID).modal("show");
+			$("#tab" + packagingOrderNmApplyVal).modal("show");
 	// 		$('#tab-list').append($('<li><a href="#tab1" role="tab" data-toggle="tab"><span>'+tabID+'차 포장 <br>'+selectedText+'</span></a></li>'));
 			//기존 정보 초기화
-			getSelfCodeList(selectedVal, 'tab-list', 'selfPartType1');
+			getSelfCodeList(selectedVal.slice(0, selectedVal.indexOf('_')), 'tab-list', 'selfPartType1');
+			$("#matTypeSelect").modal('hide');
 			
 		  }else {
 			 alert('재질유형을 선택해주세요');
@@ -1727,7 +1736,7 @@
 					});
 				}else {
 					getPackagingOrderByNew(id);
-					getgetMatTypeList();
+					getMatTypeList();
 // 					addPackagingTab(id);
 				}
 			}
@@ -1976,7 +1985,7 @@
 
   
 //재질유형 조회
-  function getgetMatTypeList() {
+  function getMatTypeList() {
     $.ajax({
 		url : '/system/environmentCode/detail/getMatTypeList',
 		dataType : 'JSON',
@@ -1991,6 +2000,7 @@
 			if (data.length > 0) {
 				data.forEach(function(item, index) {
 					$('#matTypeSelectBox').append("<option value=" + item.codeId +">" + item.str + "</option>");
+					if(data.length == 1)$('#matTypeSelectBox option[value="'+item.codeId+'"]').attr("selected", "selected");
 				});
 			}
 		}
@@ -2029,7 +2039,7 @@
 			revision = '2022-03';
 		}
 	    $.ajax({
-		url : '/system/environmentCode/detail/'+codeId,
+		url : '/system/environmentCode/detail/'+codeId+'/getPartList/',
 		dataType : 'JSON',
 		type : "POST",
 		data : {'smallCategory': codeId, 'revision': revision},
@@ -2401,10 +2411,10 @@
 	});
 
 	$(document).on('change', '#packagingOrderNmApply', function () {
-		if(this.value && this.value === '9'){
+		if(this.value && this.value > 8){
 			$('#matTypeSelectProductMatType').hide();
 			$('#matTypeSelectProductCode').show();
-// 			getSelfCodeList(this.value, 'selfMatType', 'selfPartType');
+// 			getSelfCodeList(this.value.slice(0, this.value.indexOf('_')), 'selfMatType', 'selfPartType');
 		}else {
 			$('#matTypeSelectProductCode').hide();
 			$('#matTypeSelectProductMatType').show();
@@ -2413,7 +2423,7 @@
 	
 	$('#btn-add-tab').click(function () {
 		getPackagingOrderByNew(selectedProdId);
-		getgetMatTypeList();
+		getMatTypeList();
 // 		$("#matTypeSelect").modal('show');
     });
 
