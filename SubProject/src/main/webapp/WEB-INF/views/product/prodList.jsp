@@ -1199,8 +1199,8 @@
 			type : 'post',
 			url : '/product/detail/'+id+'/getPackagingOrderByNew/',
 			dataType : 'json',
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
 			},
 			success : function(result) {
 				$("#packagingOrderNmApply").empty();
@@ -1240,9 +1240,9 @@
 				type : 'post',
 				url : '/product/detail/'+productCode+'/apply/',
 				dataType : 'json',
-				error : function(xhr, status, error) {
-					console.log(error);
-					alert(error);
+				error: function(request, status, error){
+					console.log(request.responseText);
+					alert(request.responseText);
 				},
 				success : function(result) {
 					if (result.length > 0) {
@@ -1278,9 +1278,9 @@
 				type : 'post',
 				url : '/product/detail/'+productCode+'/mapping/',
 				dataType : 'json',
-				error : function(xhr, status, error) {
-					console.log(error);
-					alert(error);
+				error: function(request, status, error){
+					console.log(request.responseText);
+					alert(request.responseText);
 				},
 				success : function(result) {
 					if(id === 'matTypeSelectProductCodeVal'){
@@ -1332,9 +1332,9 @@
 			url : 'detail/'+productId+'/recyle_contributions/',
 			data : param,
 			dataType : 'text',
-			error : function(xhr, status, error) {
-				console.log(error);
-				alert(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(result) {
 				$("#frmUpdate input[name="+year+"]").val(result);
@@ -1474,9 +1474,9 @@
 		type : 'post',
 		url : '/file/delete/' + fileId,
 		dataType : 'json',
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			console.log(result);
@@ -1668,9 +1668,9 @@
         contentType: false,
         cache: false,
         timeout: 600000,
-		error: function(xhr, status, error){
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result){
 		    if(result == 'Update' || result == 'Insert'){
@@ -1706,9 +1706,9 @@
 		url : '/product/' + action,
 		data : param,
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			isDisabled = false;
@@ -1733,9 +1733,9 @@
 			data : {'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
-				alert(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				if (data.length > 0) {
@@ -1795,9 +1795,9 @@
 // 			data : {'packagingId': packagingId, 'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
-				alert(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				
@@ -1832,9 +1832,9 @@
 			data : {'packagingOrder': packagingOrder, 'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
-				alert(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				$('#tab04_1_in1').children().empty();
@@ -1914,9 +1914,9 @@
 		url : '/product/'+action+'/'+selectedProdId+'/packaging',
 		data : param,
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			$('#btn-add-tab').show();
@@ -1946,9 +1946,9 @@
 		url : '/supplier/supplier/detail/managers/' + id,
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			$('.supplierManager').empty();
@@ -1973,9 +1973,9 @@
 			dataType : 'text',
 			data : param,
 			type : "POST",
-			error : function(xhr, status, error) {
-				console.log(error);
-				alert(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				alert("정상적으로 이메일 전송이 되었습니다.");
@@ -1993,9 +1993,9 @@
 		url : '/product/delete/'+productId+'/packaging/',
 		data : {'packagingId': packagingId, 'packagingOrder': packagingOrder, 'productId':productId},
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			var lastPart = $('#partTypeDetail span:last');
@@ -2025,9 +2025,9 @@
 		url : '/system/environmentCode/detail/getMatTypeList',
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2049,9 +2049,9 @@
 		url : '/product/detail/getCodeDayList',
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2080,9 +2080,9 @@
 		dataType : 'JSON',
 		type : "POST",
 		data : {'smallCategory': codeId, 'revision': revision},
-		error : function(xhr, status, error) {
-			console.log(error);
-			alert(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2127,9 +2127,9 @@
 							dataType : 'JSON',
 							type : "POST",
 							data : {'smallCategory': item.codeId, 'revision': revision},
-							error : function(xhr, status, error) {
-								console.log(error);
-								alert(error);
+							error: function(request, status, error){
+								console.log(request.responseText);
+								alert(request.responseText);
 							},
 							success : function(subData) {
 								$('#Accordion_wrap').show();
