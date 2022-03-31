@@ -1245,21 +1245,27 @@
 					alert(error);
 				},
 				success : function(result) {
-					$('#matType').val(result.matType); 
-					tabID = packagingOrderNmApplyVal;
-					var selectedText = result.matTypeNm;
-					$('#tab-list li.active').removeClass('active');
-					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" onclick=\'productMatInfoView("'+selectedProdId+'", "'+packagingOrderNmApplyVal+'", this);\' role="tab" data-toggle="tab"><span>' +
-							selectedPackagingOrderNmText +
-				     ' ('+selectedText+')</span><button class="tab-close" type="button" onclick=\'deleteProductPackagingInfo("'+ selectedProdId + '", "'+ packagingOrderNmApplyVal + '", this);\' title="Remove this page">×</button></a></li>'
-				    ));
-			        
-					var tabFirst = $('#tab-list a:first');
-			        tabFirst.click();
-					$("#tab" + packagingOrderNmApplyVal).modal("show");
-// 					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
-					$("#matTypeSelect").modal('hide');
-					
+					if (result.length > 0) {
+						result.forEach(function(item, index) {
+							// loop
+							if(index === 0) {
+								$('#matType').val(item.matType); 
+								tabID = packagingOrderNmApplyVal;
+								var selectedText = item.matTypeNm;
+								$('#tab-list li.active').removeClass('active');
+								$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" onclick=\'productMatInfoView("'+selectedProdId+'", "'+packagingOrderNmApplyVal+'", this);\' role="tab" data-toggle="tab"><span>' +
+										selectedPackagingOrderNmText +
+							     ' ('+selectedText+')</span><button class="tab-close" type="button" onclick=\'deleteProductPackagingInfo("'+ selectedProdId + '", "'+ packagingOrderNmApplyVal + '", this);\' title="Remove this page">×</button></a></li>'
+							    ));
+						        
+								var tabFirst = $('#tab-list a:first');
+						        tabFirst.click();
+								$("#tab" + packagingOrderNmApplyVal).modal("show");
+			// 					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
+								$("#matTypeSelect").modal('hide');
+							}
+						});
+					}
 				}
 			});
 	 }
