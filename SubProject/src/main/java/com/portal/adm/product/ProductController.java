@@ -153,8 +153,8 @@ public class ProductController {
         	return new ResponseEntity<>("동일한 상품코드로 등록된 상품이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
         }
         
-        if(productModel.getProductCode() == null || productModel.getProductCode().trim().equals("")) {
-        	return new ResponseEntity<>("상품명이 누락 되었습니다..", HttpStatus.NOT_ACCEPTABLE);
+        if(productModel.getProductNm() == null || productModel.getProductNm().trim().equals("")) {
+        	return new ResponseEntity<>("상품명이 누락 되었습니다 @@@@@@@@@@@@..", HttpStatus.NOT_ACCEPTABLE);
         }
         
     	try {
