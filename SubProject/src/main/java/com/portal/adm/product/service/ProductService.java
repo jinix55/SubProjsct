@@ -136,7 +136,7 @@ public class ProductService {
 
 		//ProdPackagingList.add(prodPackagingModel);
 		
-		//outProductModel.setProdPackagingList(ProdPackagingList);
+		outProductModel.setProdPackagingList(prodPackagingList);
 		
 		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
 		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
