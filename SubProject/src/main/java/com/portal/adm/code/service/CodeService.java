@@ -117,17 +117,22 @@ public class CodeService {
     }
 
     
-    public String getCodeNm(String CodeType, String CodeId) {
-    	String CodeNm = "";
-    	if("MAT_TYPE".equals(CodeType)){
-    		  CodeNm = codeMapper.getCodeNmOnEnvironPrice(CodeId);
-    	} else if("PART_TYPE".equals(CodeType)){ 
-    		  CodeNm = codeMapper.getCodeNmOnEnvironmentCode(CodeId);
-    	} else if("SUPPLIER_CODE".equals(CodeType)){ 
-  		  CodeNm = codeMapper.getCodeNmOnSupplier(CodeId);
-  	}
+    public String getCodeNm(String codeType, String codeId, String groupId) {
+    	String codeNm = "";
+    	CodeModel codeModel = new CodeModel();
+    	if("MAT_TYPE".equals(codeType)){
+    		  codeNm = codeMapper.getCodeNmOnEnvironPrice(codeId);
+    	} else if("PART_TYPE".equals(codeType)){ 
+    		  codeNm = codeMapper.getCodeNmOnEnvironmentCode(codeId);
+    	} else if("SUPPLIER_CODE".equals(codeType)){ 
+  		  	codeNm = codeMapper.getCodeNmOnSupplier(codeId);
+  	    } else if(Constant._CODE_.equals(codeType)){ 
+  	    	codeModel.setGroupId(groupId);
+  	    	codeModel.setCodeId(codeId); 
+  	    	//codeNm = codeMapper.getCodeNmOnCode(codeModel);
+  	    } 
     	
-        return CodeNm;
+        return codeNm;
     }
     
     

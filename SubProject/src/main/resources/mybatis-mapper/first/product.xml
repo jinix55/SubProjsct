@@ -41,6 +41,8 @@
 			CHECK1,
 			PHOTO,
 			SPEC,
+			MASTER_APPLY,
+			MASTER_MAPPING,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,

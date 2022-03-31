@@ -41,7 +41,11 @@ public class ProductService {
 	 * @return
 	 */
     public List<ProductModel> selectProductList(ProductModel productModel) {
-        return productMapper.selectProductList(productModel);
+    	List<ProductModel> productList = productMapper.selectProductList(productModel);
+    	for(ProductModel p : productList) {
+    		
+    	}
+        return productList;
     }
     
     /**
@@ -110,13 +114,13 @@ public class ProductService {
 		List<ProdPackagingModel> prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
 		String CodeNm = "";
 		for (ProdPackagingModel p :  prodPackagingList) {
-			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType());
+			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
 			p.setMatTypeNm(CodeNm);
 			
-			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType());
+			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType(), null);
 			p.setPartTypeNm(CodeNm);
 			
-			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode());
+			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
 			p.setSupplierNm(CodeNm);
 			
 			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
@@ -134,10 +138,10 @@ public class ProductService {
 		
 		//outProductModel.setProdPackagingList(ProdPackagingList);
 		
-//		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
-//		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
-//		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
-//		outProductModel.setMappingStatCode(mappingStatCode);
+		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
+		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
+		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
+		outProductModel.setMappingStatCode(mappingStatCode);
 		
 		return outProductModel;
 	}
@@ -357,13 +361,13 @@ public class ProductService {
            p.setPackagingId(idUtil.getPackagingId());        	
            p.setPackagingId(productModel.getProductCode());
            
-			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType());
+			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
 			p.setMatTypeNm(CodeNm);
 			
-			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType());
+			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType(), null);
 			p.setPartTypeNm(CodeNm);
 			
-			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode());
+			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
 			p.setSupplierNm(CodeNm);
 			
 			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
