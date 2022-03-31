@@ -1304,25 +1304,27 @@
   }
   
   function calculateRecyleContributions(year) {
-	  valyCheck(year);
-	  var param = {};
-	  if(year == 'recyleContributions') {
-		  param.baseYear= $("#frmUpdate input[name=baseYear]").val();
-		  param.accumulateSaleQty= $("#frmUpdate input[name=accumulateSaleQty]").val();
-		  param.packingTotalWeight= $("#frmUpdate input[name=packingTotalWeight]").val();
-	  }else if(year == 'recyleContributions_1') {
-		  param.baseYear_1= $("#frmUpdate input[name=baseYear_1]").val();
-		  param.accumulateSaleQty_1= $("#frmUpdate input[name=accumulateSaleQty_1]").val();
-		  param.packingTotalWeight_1= $("#frmUpdate input[name=packingTotalWeight_1]").val();
-	  }else if(year == 'recyleContributions_2') {
-		  param.baseYear_2= $("#frmUpdate input[name=baseYear_2]").val();
-		  param.accumulateSaleQty_2= $("#frmUpdate input[name=accumulateSaleQty_2]").val();
-		  param.packingTotalWeight_2= $("#frmUpdate input[name=packingTotalWeight_2]").val();
-	  }else {
-		  return;
+	  var check = valyCheck(year);
+	  if(check) {
+		  var param = {};
+		  if(year == 'recyleContributions') {
+			  param.baseYear= $("#frmUpdate input[name=baseYear]").val();
+			  param.accumulateSaleQty= $("#frmUpdate input[name=accumulateSaleQty]").val();
+			  param.packingTotalWeight= $("#frmUpdate input[name=packingTotalWeight]").val();
+		  }else if(year == 'recyleContributions_1') {
+			  param.baseYear_1= $("#frmUpdate input[name=baseYear_1]").val();
+			  param.accumulateSaleQty_1= $("#frmUpdate input[name=accumulateSaleQty_1]").val();
+			  param.packingTotalWeight_1= $("#frmUpdate input[name=packingTotalWeight_1]").val();
+		  }else if(year == 'recyleContributions_2') {
+			  param.baseYear_2= $("#frmUpdate input[name=baseYear_2]").val();
+			  param.accumulateSaleQty_2= $("#frmUpdate input[name=accumulateSaleQty_2]").val();
+			  param.packingTotalWeight_2= $("#frmUpdate input[name=packingTotalWeight_2]").val();
+		  }else {
+			  return;
+		  }
+		  var productId = $("#frmUpdate input[name=productId]").val();
+		  calculateRecyleContributionsAjax(productId, param, year);
 	  }
-	  var productId = $("#frmUpdate input[name=productId]").val();
-	  calculateRecyleContributionsAjax(productId, param, year);
   }
   
   function calculateRecyleContributionsAjax(productId, param, year){
@@ -1639,15 +1641,19 @@
   }
   
   function productInsert(){
-	valyCheck("registProduct");
-	var param =  $('#frmInsert').serialize();
-	insertAjax(param,'insert');
+	var check = valyCheck("registProduct");
+	if(check) {
+		var param =  $('#frmInsert').serialize();
+		insertAjax(param,'insert');
+	}
   }
   
   function productUpdate(){
-	  valyCheck("editProduct");
-	  var param =  $('#frmUpdate').serialize();
-	  insertAjax(param,'update');
+	  var check = valyCheck("editProduct");
+	  if(check) {
+		  var param =  $('#frmUpdate').serialize();
+		  insertAjax(param,'update');
+	  }
   }
   
   function insertAjax(param,action){
@@ -1893,15 +1899,17 @@
   }
   
   function saveProductPackaging() {
-	valyCheck("savePackaging");
-	var param =  $('#frmDetail').serialize();
-  	var packagingId = $("#frmDetail input[name=packagingId]").val();
-  	console.log(packagingId);
-  	if(packagingId == '' || packagingId == null) {
-  		saveProductPackagingAjax(param,'insert');
-  	}else {
-		saveProductPackagingAjax(param,'update');
-  	}
+	var check = valyCheck("savePackaging");
+	if(check){
+		var param =  $('#frmDetail').serialize();
+	  	var packagingId = $("#frmDetail input[name=packagingId]").val();
+	  	console.log(packagingId);
+	  	if(packagingId == '' || packagingId == null) {
+	  		saveProductPackagingAjax(param,'insert');
+	  	}else {
+			saveProductPackagingAjax(param,'update');
+	  	}
+	}
   }
 
   function showTab() {
