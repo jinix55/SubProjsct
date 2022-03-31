@@ -150,7 +150,11 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
         if(productService.selectProductListCountByProductCode(productModel.getProductCode()) > 0) {
-        	
+        	return new ResponseEntity<>("동일한 상품코드로 등록된 상품이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
+        }
+        
+        if(productModel.getProductCode() == null || productModel.getProductCode().trim().equals("")) {
+        	return new ResponseEntity<>("상품명이 누락 되었습니다..", HttpStatus.NOT_ACCEPTABLE);
         }
         
     	try {
