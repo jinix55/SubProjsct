@@ -107,7 +107,7 @@ public class ProductService {
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
 		prodPackagingModel.setProductId(outProductModel.getProductId());
 
-		List<ProdPackagingModel> prodPackagingList = productMapper.selectProductPackagingList(prodPackagingModel);
+		List<ProdPackagingModel> prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
 		String CodeNm = "";
 		for (ProdPackagingModel p :  prodPackagingList) {
 			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType());
@@ -360,10 +360,22 @@ public class ProductService {
 		prodPackagingModel.setProductId( this.getProductId(productModel.getApplyProductCode()) );
 		
 		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
-		
+		String CodeNm = "";
         for(ProdPackagingModel p : prodPackagingList) {
            p.setPackagingId(idUtil.getPackagingId());        	
            p.setPackagingId(productModel.getProductCode());
+           
+			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType());
+			p.setMatTypeNm(CodeNm);
+			
+			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType());
+			p.setPartTypeNm(CodeNm);
+			
+			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode());
+			p.setSupplierNm(CodeNm);
+			
+			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
+			
            productMapper.insertProductPackaging(p);
         }
 		return prodPackagingList;
