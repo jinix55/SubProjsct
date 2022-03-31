@@ -177,4 +177,6 @@ public interface ProductMapper {
     
     
     public String getProductId(String productCoded);
+    
+    public int selectProductListCountByProductCode(String productCoded);
 }

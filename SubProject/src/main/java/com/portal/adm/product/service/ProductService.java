@@ -396,4 +396,10 @@ public class ProductService {
 	public String getProductId(String productCoded) {
 		return productMapper.getProductId(productCoded);
 	}	
+	
+	public int selectProductListCountByProductCode(String productCoded) {
+		return productMapper.selectProductListCountByProductCode(productCoded);
+	}
+	
+	
 }
