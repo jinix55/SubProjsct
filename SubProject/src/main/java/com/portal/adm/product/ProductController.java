@@ -817,6 +817,26 @@ public class ProductController {
 	}
 	
 	
-	
+	/**
+     * 에러 전달
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/detail/{productCode}/error", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<String> throwError(@PathVariable("productCode") String productCode) {
+		if(productCode == null) {
+			return new ResponseEntity<>("에러났다.", HttpStatus.NOT_ACCEPTABLE);
+		}else {
+			String val = productService.throwError("정상");
+			if(!"정상".equals(val)) {
+				return new ResponseEntity<>("service 에러났다."+val, HttpStatus.NOT_ACCEPTABLE);
+			}
+			
+			return new ResponseEntity<>(productCode, HttpStatus.OK);
+		}
+	    
+	}
 }
 

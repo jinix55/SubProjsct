@@ -400,6 +400,13 @@ public class ProductService {
 	public int selectProductListCountByProductCode(String productCoded) {
 		return productMapper.selectProductListCountByProductCode(productCoded);
 	}
+
+	public String throwError(String val) {
+		if(!"정상".equals(val)) {
+			return "에러";
+		}
+		return "정상";
+	}
 	
 	
 }
