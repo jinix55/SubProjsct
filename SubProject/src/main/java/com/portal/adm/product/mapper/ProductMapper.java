@@ -76,6 +76,8 @@ public interface ProductMapper {
      */
     List<ProdPackagingModel> selectProductPackaging(ProdPackagingModel productPackagingModel);
     
+    List<ProdPackagingModel> selectProductPackagingListByProductId(ProdPackagingModel productPackagingModel);
+    
     
     /**
      * 상품포장정보관리 상세 조회한다.
@@ -143,6 +145,12 @@ public interface ProductMapper {
     int selectMaxPartProductPackagingOrder(String productId);
     
     
+    
+    List<ProdPackagingModel> selectProductPackagingList(ProdPackagingModel prodPackagingModel);
+    
+    List<ProdPackagingModel> selectProductPackagingListByProc(ProdPackagingModel prodPackagingModel);
+    
+    
     /**
      * 제품 포장 재 질관리[제품 포장 재질 관리] 목록을 조회한다.
      *
@@ -165,5 +173,8 @@ public interface ProductMapper {
      * @param model 상품번호를 사용
      * @return
      */
-    long deleteProductPackagingMat(ProdPackagingMatModel prodPackagingMatModel);    
+    long deleteProductPackagingMat(ProdPackagingMatModel prodPackagingMatModel);
+    
+    
+    public String getProductId(String productCoded);
 }

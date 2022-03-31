@@ -117,5 +117,18 @@ public class CodeService {
     }
 
     
+    public String getCodeNm(String CodeType, String CodeId) {
+    	String CodeNm = "";
+    	if("MAT_TYPE".equals(CodeType)){
+    		  CodeNm = codeMapper.getCodeNmOnEnvironPrice(CodeId);
+    	} else if("PART_TYPE".equals(CodeType)){ 
+    		  CodeNm = codeMapper.getCodeNmOnEnvironmentCode(CodeId);
+    	} else if("SUPPLIER_CODE".equals(CodeType)){ 
+  		  CodeNm = codeMapper.getCodeNmOnSupplier(CodeId);
+  	}
+    	
+        return CodeNm;
+    }
+    
     
 }
