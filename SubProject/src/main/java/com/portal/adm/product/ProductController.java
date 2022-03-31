@@ -90,7 +90,7 @@ public class ProductController {
         model.addAttribute("products", models);
         model.addAttribute("pages", productModel);
     	
-/*        
+        
         //상품분류 정보 조회
     	List<String> productTypeList = new ArrayList<>();
     	productTypeList.add("제품분류113");
@@ -116,7 +116,7 @@ public class ProductController {
     	supplierModel.setPageSize(9999);
         List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
         model.addAttribute("suppliers", supplierList);
-*/        
+        
         
         return "product/prodList";
     }
