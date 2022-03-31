@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
 import com.portal.adm.file.model.FileModel;
@@ -150,11 +149,11 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
         if(productService.selectProductListCountByProductCode(productModel.getProductCode()) > 0) {
-        	return new ResponseEntity<>("동일한 상품코드로 등록된 상품이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body("동일한 상품코드로 등록된 상품이 있습니다.");
         }
         
         if(productModel.getProductNm() == null || productModel.getProductNm().trim().equals("")) {
-        	return new ResponseEntity<>("상품명이 누락 되었습니다 @@@@@@@@@@@@..", HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body("상품명이 누락 되었습니다 @@@@@@@@@@@@..");
         }
         
     	try {
@@ -205,7 +204,7 @@ public class ProductController {
     				try {
     					Files.createDirectories(directoryPath);
     				} catch (IOException e1) {
-    					e1.printStackTrace();
+    					return ResponseEntity.badRequest().body("1.파일 생성시 오류났습니다.");
     				}
 
     				try {
@@ -223,10 +222,10 @@ public class ProductController {
     						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
     					}
     				} catch (FileNotFoundException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("1.FileNotFoundException.");
     				}
     				catch (IOException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("1.IOException.");
     				}
     			}
     		}
@@ -269,7 +268,7 @@ public class ProductController {
     				try {
     					Files.createDirectories(directoryPath);
     				} catch (IOException e1) {
-    					e1.printStackTrace();
+    					return ResponseEntity.badRequest().body("2.파일 생성시 오류났습니다.");
     				}
 
     				try {
@@ -287,10 +286,10 @@ public class ProductController {
     						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
     					}
     				} catch (FileNotFoundException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("2.FileNotFoundException.");
     				}
     				catch (IOException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("2.IOException.");
     				}
     			}
     		}
@@ -299,7 +298,7 @@ public class ProductController {
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     
@@ -346,8 +345,7 @@ public class ProductController {
     			try {
     				f.setInputStream(photo.getResource().getInputStream());
     			} catch (IOException e) {
-    				result = "fail";
-    				resultMessage = "실패";
+    				return ResponseEntity.badRequest().body("1.IOException.");
     			}
     			
     			// 파일 생성
@@ -380,10 +378,10 @@ public class ProductController {
     						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
     					}
     				} catch (FileNotFoundException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("2.FileNotFoundException.");
     				}
     				catch (IOException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("3.IOException.");
     				}
     			}
     		}
@@ -413,8 +411,7 @@ public class ProductController {
     			try {
     				f.setInputStream(spec.getResource().getInputStream());
     			} catch (IOException e) {
-    				result = "fail";
-    				resultMessage = "실패";
+    				return ResponseEntity.badRequest().body("1.IOException.");
     			}
     			
     			// 파일 생성
@@ -444,10 +441,10 @@ public class ProductController {
     						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
     					}
     				} catch (FileNotFoundException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("2.IOException.");
     				}
     				catch (IOException e) {
-    					e.printStackTrace();
+    					return ResponseEntity.badRequest().body("3.IOException.");
     				}
     			}
     		}
@@ -456,7 +453,7 @@ public class ProductController {
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     
@@ -474,7 +471,7 @@ public class ProductController {
             
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
     }    
     
@@ -585,7 +582,7 @@ public class ProductController {
 
             return new ResponseEntity<>(prodPackagingModel, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ProdPackagingModel(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(new ProdPackagingModel());
         }
     }
     
@@ -605,7 +602,7 @@ public class ProductController {
 
             return new ResponseEntity<>(prodPackagingModel, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ProdPackagingModel(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(new ProdPackagingModel());
         }
     }
     
@@ -623,7 +620,7 @@ public class ProductController {
             
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
     } 
     
@@ -831,11 +828,11 @@ public class ProductController {
 	@ResponseBody
 	public ResponseEntity<String> throwError(@PathVariable("productCode") String productCode) {
 		if(productCode == null) {
-			return new ResponseEntity<>("에러났다.", HttpStatus.NOT_ACCEPTABLE);
+			return ResponseEntity.badRequest().body("에러났다.");
 		}else {
 			String val = productService.throwError("정상");
 			if(!"정상".equals(val)) {
-				return new ResponseEntity<>("service 에러났다."+val, HttpStatus.NOT_ACCEPTABLE);
+				return ResponseEntity.badRequest().body("service 에러났다."+val);
 			}
 			
 			return new ResponseEntity<>(productCode, HttpStatus.OK);
