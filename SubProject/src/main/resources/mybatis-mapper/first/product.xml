@@ -64,7 +64,6 @@
 		FROM T_PRODUCT
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND USE_YN = 'Y'		
-		<include refid="searchProduct"></include>	
 	</select>	
 
 	

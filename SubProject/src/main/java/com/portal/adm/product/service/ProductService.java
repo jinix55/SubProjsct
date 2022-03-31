@@ -127,15 +127,7 @@ public class ProductService {
 		
 		//
 		
-		prodPackagingModel.setPackagingId("pa2200062");
-//		prodPackagingModel.setPackagingOrder(1);
-//		prodPackagingModel.setMatType("PA");
-//		prodPackagingModel.setMatTypeNm("종이팩");
-//		prodPackagingModel.setPartType("PA_B");
-//		prodPackagingModel.setPartTypeNm("몸체");
-//		prodPackagingModel.setSupplierCode("KM");
-//		prodPackagingModel.setSupplierNm("KAMILL");
-		prodPackagingModel.setStr("1차포장_종이팩_몸체_KAMILL");
+ 
 		 
 
 		//ProdPackagingList.add(prodPackagingModel);
