@@ -61,32 +61,36 @@
 	
 	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-			  PRODUCT_ID
-			, PRODUCT_NM
-			, PRODUCT_CODE
-			, PRODUCT_CLASS
-			, SUPPLIER_INFO
-			, PRODUCT_MAKER
-			, SUMMARY
-			, PHOTO
-			, COMPLETE_STATUS
-			, CHECK1
-			, MASTER_APPLY
-			, RECEIPT_NUMBER
-			, APPROVAL_NUMBER
+			  a.PRODUCT_ID
+			, a.PRODUCT_NM
+			, a.PRODUCT_CODE
+			, a.PRODUCT_CLASS
+			, a.SUPPLIER_INFO
+			, a.PRODUCT_MAKER
+			, a.SUMMARY
+			, a.PHOTO
+			, a.COMPLETE_STATUS
+			, a.CHECK1
+			, a.MASTER_APPLY
+			, a.RECEIPT_NUMBER
+			, a.APPROVAL_NUMBER
 			
-			, MASTER_MAPPING
-			, MAPPING_PRODUCT_ID
+			, a.MASTER_MAPPING
+			, a.MAPPING_PRODUCT_CODE
+			, b.PRODUCT_NM MAPPING_PRODUCT_NM 
 			
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			T_PRODUCT 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
+			T_PRODUCT a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_CODE = b.MAPPING_PRODUCT_CODE
+         AND b.USE_YN = 'Y'
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
@@ -139,7 +143,7 @@
 			, APPROVAL_NUMBER   = #{approvalNumber}
 			
 			, MASTER_MAPPING   = #{masterMapping}
-			, MAPPING_PRODUCT_ID   = #{mappingProductId}
+			, MAPPING_PRODUCT_CODE   = #{mappingProductCode}
 		WHERE
 			PRODUCT_ID = #{productId}
 	</update>
@@ -396,5 +400,77 @@
 		     AND  packaging_order >= 9
 		]]>			 
 	</select>	
+		
+		
+	<select id="selectProductPackagingList" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT                                                                               
+			  a.PACKAGING_ID                                          
+			, a.PRODUCT_ID                                            
+			, b.PRODUCT_NM                                            
+			, a.PACKAGING_NM                                          
+			, a.PACKAGING_DSC                                         
+			, a.PACKAGING_ORDER                                       
+			, a.MAT_TYPE                                              
+			, a.PART_TYPE                                             
+			, a.PART_TYPE_ORDER                                       
+			, a.MAT_INFO                                              
+			, a.WEIGHT                                                
+			, a.STANDARD                                              
+			, a.COLOR                                                 
+			, a.ADD_EXPLAN                                       
+			, a.MAT_FILE_ID        
+			, a.SUPPLIER_CODE      
+			, a.MANAGER_ID         
+		FROM                                                       
+			T_PRODUCT_PACKAGING a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'	
+       WHERE a.USE_YN = 'Y'  		    		
+	</select>
+
+
+		
+	<select id="selectProductPackagingListByProductId" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT                                                                               
+			  a.PACKAGING_ID                                          
+			, a.PRODUCT_ID                                            
+			, a.PACKAGING_NM                                          
+			, a.PACKAGING_DSC                                         
+			, a.PACKAGING_ORDER                                       
+			, a.MAT_TYPE                                              
+			, a.PART_TYPE                                             
+			, a.PART_TYPE_ORDER                                       
+			, a.MAT_INFO                                              
+			, a.WEIGHT                                                
+			, a.STANDARD                                              
+			, a.COLOR                                                 
+			, a.ADD_EXPLAN                                       
+			, a.MAT_FILE_ID        
+			, a.SUPPLIER_CODE      
+			, a.MANAGER_ID         
+		FROM                                                       
+			T_PRODUCT_PACKAGING a 
+       WHERE a.USE_YN = 'Y'
+        AND  a.PRODUCT_ID =  #{productId}
+        AND  a.PACKAGING_ORDER = 1 		 		    		
+	</select>
+
+
+
+
+
+
+
+
+		
+	<select id="getProductId" resultType="String" parameterType="String">
+		SELECT                                                                               
+			  PRODUCT_ID                                            
+		FROM                                                       
+			T_PRODUCT 
+       WHERE USE_YN = 'Y' 
+        AND  PRODUCT_CODE = #{productCode} 		    		
+	</select>		
 		
 </mapper>

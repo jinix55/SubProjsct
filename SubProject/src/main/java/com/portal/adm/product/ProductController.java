@@ -83,10 +83,14 @@ public class ProductController {
     public String product(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	// 상품 목록 조회
     	List<ProductModel> models = productService.selectProductList(productModel);
+    	
+    	System.out.println("models " + models);
+    	
     	productModel.setTotalCount(productService.selectProductListCount(productModel));
         model.addAttribute("products", models);
         model.addAttribute("pages", productModel);
     	
+/*        
         //상품분류 정보 조회
     	List<String> productTypeList = new ArrayList<>();
     	productTypeList.add("제품분류113");
@@ -112,6 +116,7 @@ public class ProductController {
     	supplierModel.setPageSize(9999);
         List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
         model.addAttribute("suppliers", supplierList);
+*/        
         
         return "product/prodList";
     }
@@ -130,6 +135,8 @@ public class ProductController {
     	productModel.setProductId(productId);
     	ProductModel product = productService.selectProduct(productModel);
 		
+    	System.out.println("product" + product);
+    	
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
     
@@ -763,16 +770,13 @@ public class ProductController {
      * @param 
      * @return
      */
-  //todo productId => productCode
-    @RequestMapping(value="/detail/{productId}/apply/", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<ProductModel> apply(@PathVariable("productId") String productId) {
-    	
-    	ProductModel productModel = new ProductModel();
-    	productModel.setProductId(productId);
-    	ProductModel product = productService.mapping(productModel);
 
-    	return new ResponseEntity<>(product, HttpStatus.OK);
+    @RequestMapping(value="/detail/apply/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+	public ResponseEntity<List<ProdPackagingModel>> apply(@ModelAttribute ProductModel productModel) {
+    	
+    	List<ProdPackagingModel>  prodPackagingList = productService.apply(productModel);
+    	return new ResponseEntity<>(prodPackagingList, HttpStatus.OK);
     }    
 
     /**
@@ -781,12 +785,12 @@ public class ProductController {
      * @param 
      * @return
      */
-	@RequestMapping(value="/detail/{productId}/getPackagingOrderByNew", method= {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="/detail/{productCode}/getPackagingOrderByNew", method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<List<ProdPackagingModel>> getPackagingOrderByNew(@PathVariable("productId") String productId) {
+	public ResponseEntity<List<ProdPackagingModel>> getPackagingOrderByNew(@PathVariable("productCode") String productCode) {
 		// 상품 포장 차수 조회
-		int  maxPackagingOrder = productService.selectMaxProductPackagingOrder(productId);
-		
+		int  maxPackagingOrder = productService.selectMaxProductPackagingOrder(productCode);
+ 		
 	    List<ProdPackagingModel> ProdPackagingList = new ArrayList<>() ;
 	    ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
 	    prodPackagingModel.setPackagingOrder(maxPackagingOrder + 1);
@@ -798,8 +802,9 @@ public class ProductController {
         	prodPackagingModel.setPackagingNm(Integer.toString(maxPackagingOrder + 1) + "차포장");
 	    	ProdPackagingList.add(prodPackagingModel);
 	    	
+	    	int  maxPartPackagingOrder = productService.selectMaxProductPackagingOrder(productService.getProductId(productCode));
 		    prodPackagingModel = new ProdPackagingModel();
-		    prodPackagingModel.setPackagingOrder(9);
+		    prodPackagingModel.setPackagingOrder(maxPartPackagingOrder + 1);
 		    prodPackagingModel.setPackagingNm("부속포장");
 		    ProdPackagingList.add(prodPackagingModel);
         }

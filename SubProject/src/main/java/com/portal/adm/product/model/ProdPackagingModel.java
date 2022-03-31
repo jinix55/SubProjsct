@@ -27,6 +27,7 @@ public class ProdPackagingModel extends Criteria{
     private String matTypeNm;
     private String partType;
     private String partTypeNm;
+    private int partTypeOrder;
     private String revisionYear;
     private String revisionMonth;
     private String matInfo;
