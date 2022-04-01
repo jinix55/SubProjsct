@@ -7,9 +7,7 @@
 	<sql id="searchProduct">
 		<where>
 			and USE_YN = 'Y'
-			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%') or upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%') or (upper(RECYCLE_GRADE) like concat('%',upper(#{searchValue}),'%')) or upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
-			</if>
+
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
 				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
@@ -18,9 +16,6 @@
 			</if>
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
 				and (upper(RECYCLE_GRADE) = upper(#{searchValue}))
-			</if>
-			<if test="searchKey != '' and searchKey == 'completeStatus' and searchValue != ''">
-				and (upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 		</where>
 	</sql>
@@ -37,7 +32,6 @@
 			PRODUCT_CODE,
 			PACKING_TYPE,
 			RECYCLE_GRADE,
-			COMPLETE_STATUS,
 			CHECK1,
 			PHOTO,
 			SPEC,
@@ -79,7 +73,6 @@
 			, a.PRODUCT_MAKER
 			, a.SUMMARY
 			, a.PHOTO
-			, a.COMPLETE_STATUS
 			, a.CHECK1
 			, a.MASTER_APPLY
 			, a.RECEIPT_NUMBER
@@ -146,7 +139,6 @@
 			, PHOTO    = #{photo}
 			, PACKING_TYPE  = #{packingType}
 			, RECYCLE_GRADE = #{recycleGrade}
-			, COMPLETE_STATUS  = #{completeStatus}
 			, CHECK1   = #{check1}
 			, MASTER_APPLY   = #{masterApply}
 			, RECEIPT_NUMBER   = #{receiptNumber}

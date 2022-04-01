@@ -33,6 +33,9 @@ public class ProductService {
     
     @Resource
     private IdUtil idUtil;    
+
+//    @Resource
+//    private Constant constant;
     
     /**
 	 * 상품관리 목록을 조회한다.
@@ -41,9 +44,12 @@ public class ProductService {
 	 * @return
 	 */
     public List<ProductModel> selectProductList(ProductModel productModel) {
+    	CodeModel codeModel = new CodeModel();
     	List<ProductModel> productList = productMapper.selectProductList(productModel);
     	for(ProductModel p : productList) {
     		
+    		//p.setCompleteStatus(codeService.getCodeNm(constant._CODE_, p.getMasterApply(),constant._MAPPING_STAT_CODE_));
+    		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApply(), "ENVIRONMENT_PROCEED_STAT_CODE"));
     	}
         return productList;
     }

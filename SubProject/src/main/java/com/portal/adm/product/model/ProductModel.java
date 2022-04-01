@@ -44,7 +44,7 @@ public class ProductModel extends Criteria{
     private String productClass;
     private String packingType;
     private String recycleGrade;
-    private String completeStatus;
+    private String masterApplyNm;
     
     private String applyProductCode;
     

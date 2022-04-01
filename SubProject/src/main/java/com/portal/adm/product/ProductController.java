@@ -90,11 +90,9 @@ public class ProductController {
         model.addAttribute("pages", productModel);
     	
         
-        //상품분류 정보 조회
-    	List<String> productTypeList = new ArrayList<>();
-    	productTypeList.add("제품분류113");
-    	productTypeList.add("제품분류223");
-    	model.addAttribute("productTypeList", productTypeList);        
+//		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
+//		and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%') or upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%') or (upper(RECYCLE_GRADE) like concat('%',upper(#{searchValue}),'%')))
+//	</if>
     	
     	//재질 정보 조회
 //    	List<PackagingCodeModel> productMatType = productService.selectProductMatType();
