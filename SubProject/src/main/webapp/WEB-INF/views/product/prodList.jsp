@@ -1234,7 +1234,18 @@
 							selfPackInfo += '	              </li>';
 						}
 					});
-
+					selfPackInfo += '				  <li class="choice-box">';
+					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
+					selfPackInfo += '                    <div class="choice-cont">';
+					selfPackInfo += '                      <ul>';
+  					selfPackInfo += '                        <li><input type="checkbox"><label for="">기기분석</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox"><label for="">육안판정</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox"><label for="">공인시험성적서</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox"><label for="">신고허가서류</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox"><label for="">기타</label></li>';
+					selfPackInfo += '                      </ul>';
+					selfPackInfo += '    				 </div>';
+					selfPackInfo += '                  </li>';
 					selfPackInfo += '            </ul>';
 					selfPackInfo += '             <div class="row">';
 					selfPackInfo += '               <div class="col-50">';
