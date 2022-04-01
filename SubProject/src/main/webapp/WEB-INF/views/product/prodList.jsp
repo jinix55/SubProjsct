@@ -985,26 +985,26 @@
 							</div>
 							<!--S_탭 tab04_2 -->
 							<div id="tab04_2" style="display:none;">
-							  <div class="row">
-								<span class="pt10 pr10">ㆍ코드변경시점</span>
-								<select name="revision" class="select-box w150 mr10" id="codeDayList">
-<!-- 								  <option value="0">2021년7월</option> -->
-<!-- 								  <option value="1">2021년1월</option> -->
-								</select>
-								<div class="tab-in-nav d-flex">
-								  <span class="pt10 pr10">ㆍ재질유형</span>
-								  <select id="selfMatType" class="select-box w150 mr10">
-<!-- 									<option value="0">종이팩</option> -->
-<!-- 									<option value="1">플라스틱</option> -->
-								  </select>
-								  <ul class="d-flex pt05" id="selfPartType">
-<!-- 									<li class="button btn-radius on">몸체</li> -->
-<!-- 									<li class="button btn-radius">라벨</li> -->
-<!-- 									<li class="button btn-radius on">마개및잡자재</li> -->
-<!-- 									<li class="button btn-radius">라벨 마개 및 잡자재</li> -->
-								  </ul>
-								</div>
-							  </div>
+<!-- 							  <div class="row"> -->
+<!-- 								<span class="pt10 pr10">ㆍ코드변경시점</span> -->
+<!-- 								<select name="revision" class="select-box w150 mr10" id="codeDayList"> -->
+<!--  								  <option value="0">2021년7월</option> --> 
+<!-- 								  <option value="1">2021년1월</option> --> 
+<!-- 								</select> -->
+<!-- 								<div class="tab-in-nav d-flex"> -->
+<!-- 								  <span class="pt10 pr10">ㆍ재질유형</span> -->
+<!-- 								  <select id="selfMatType" class="select-box w150 mr10"> -->
+<!-- 									<option value="0">종이팩</option> --> 
+<!--  									<option value="1">플라스틱</option> --> 
+<!-- 								  </select> -->
+<!-- 								  <ul class="d-flex pt05" id="selfPartType"> -->
+<!-- 									<li class="button btn-radius on">몸체</li> --> 
+<!--  									<li class="button btn-radius">라벨</li> --> 
+<!--  									<li class="button btn-radius on">마개및잡자재</li> --> 
+<!-- 									<li class="button btn-radius">라벨 마개 및 잡자재</li> --> 
+<!-- 								  </ul> -->
+<!-- 								</div> -->
+<!-- 							  </div> -->
 							  <!--<div class="cb">체크 </div>-->
 							  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
 								<div class="Accordion-box">
@@ -1194,7 +1194,6 @@
   });
 
   function getProductSelfPackaging(){
-		 console.log('getProductSelfPackaging');
 		 var param = {};
 		 param.revisionYear="2022";
 		 param.revisionMonth="03";
@@ -1209,16 +1208,86 @@
 				console.log(request.responseText);
 			},
 			success : function(result) {
-				console.log(result);
+				var selfPackInfo = "";
+				$("#Accordion_wrap").empty();
 				result.middleModels.forEach(function(item, index) {
-					console.log(item);
+					selfPackInfo += '<div class="Accordion-box">';
+					selfPackInfo += '<h4 class="que pt15"><span class="title-point">['+item.codeNm+']</span></h4>';
+					selfPackInfo += '	<div class="anw">';
+					selfPackInfo += '	            <ul class="choice-wrapper">';
+
 					result.smallModels.forEach(function(sItem, index) {
-						console.log(sItem);
-						result.lastModels.forEach(function(lItem, index) {
-							console.log(lItem);
-						});
+						if(sItem.groupId === item.codeId){
+							selfPackInfo += '	              <li class="choice-box">';
+							selfPackInfo += '	                <h4 class="line-br">재활용-'+sItem.codeNm+'</h4>';
+							selfPackInfo += '	                <div class="choice-cont">';
+							selfPackInfo += '	                  <ul>';
+	
+							result.lastModels.forEach(function(lItem, index) {
+								if(lItem.groupId === sItem.codeId){
+									selfPackInfo += '	                    <li><input type="checkbox"><label for="">'+lItem.codeNm+'</label></li>';
+								}
+							});
+	
+							selfPackInfo += '	                  </ul>';
+							selfPackInfo += '	                </div>';
+							selfPackInfo += '	              </li>';
+						}
 					});
+
+					selfPackInfo += '            </ul>';
+					selfPackInfo += '             <div class="row">';
+					selfPackInfo += '               <div class="col-50">';
+					selfPackInfo += '                 <div class="form-group pb0">';
+					selfPackInfo += '                   <label class="col-25 form-label">증빙서류</label>';
+					selfPackInfo += '                   <div class="col-75">';
+					selfPackInfo += '                     <div class="form-input">';
+					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">';
+					selfPackInfo += '                     </div>';
+					selfPackInfo += '                   </div>';
+					selfPackInfo += '                 </div>';
+					selfPackInfo += '               </div>';
+					selfPackInfo += '               <div class="col-50">';
+					selfPackInfo += '                 <div class="form-group pb0">';
+					selfPackInfo += '                   <label class="col-25 form-label">첨부파일</label>';
+					selfPackInfo += '                   <div class="col-75">';
+					selfPackInfo += '                     <input type="file" multiple="multiple" class="text-input">';
+					selfPackInfo += '                   </div>';
+					selfPackInfo += '                 </div>';
+					selfPackInfo += '               </div>';
+					selfPackInfo += '             </div>';
+                    //            <!-- S_결과확인-->
+                    selfPackInfo += '             <div class="result-box">';
+                    selfPackInfo += '               <div class="row">';
+                    selfPackInfo += '                 <div class="col-50">';
+                    selfPackInfo += '                   <div class="form-group pb0">';
+                    selfPackInfo += '                     <label class="col-25 form-label">몸체평가결과';
+                    selfPackInfo += '                     </label>';
+                    selfPackInfo += '                     <div class="col-75">';
+                    selfPackInfo += '                       <div class="form-input">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수">';
+                    selfPackInfo += '                       </div>';
+                    selfPackInfo += '                     </div>';
+                    selfPackInfo += '                   </div>';
+                    selfPackInfo += '                 </div>';
+                    selfPackInfo += '                 <div class="col-50">';
+                    selfPackInfo += '                   <div class="form-group pb0">';
+                    selfPackInfo += '                     <label class="col-25 form-label">필요서류목록</label>';
+                    selfPackInfo += '                     <div class="col-75">';
+                    selfPackInfo += '                       <div class="form-input">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">';
+                    selfPackInfo += '                       </div>';
+                    selfPackInfo += '                     </div>';
+                    selfPackInfo += '                   </div>';
+                    selfPackInfo += '                 </div>';
+                    selfPackInfo += '               </div>';
+                    selfPackInfo += '             </div>';
+//                                 <!-- E_결과확인-->
+                    selfPackInfo += '           </div>';
+                    selfPackInfo += '</div>';
 				});
+				$("#Accordion_wrap").append(selfPackInfo);
+				$("#Accordion_wrap").show();
 			}
 		});
 }
@@ -2050,7 +2119,7 @@
 			$('#Accordion_wrap').hide();
 			$('#tab04_1').show();
 		}else{
-			getCodeDayList();
+// 			getCodeDayList();
 			getProductSelfPackaging();
 			$('#tab04_1').hide();
 			$('#tab04_2').show();
