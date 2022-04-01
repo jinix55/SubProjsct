@@ -200,7 +200,8 @@
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
-			<input id="masterApplyNm" name="masterApplyNm" type="hidden" value="진행중" class="text-input" >
+			<input id="masterApply" name="masterApply" type="hidden" value="UNPROCEED" class="text-input" >
+			<input id="masterMapping" name="masterMapping" type="hidden" value="UNMAPPING" class="text-input" >
 			<div class="row">
 			  <div class="col-50">
 				<div class="form-group">
@@ -756,18 +757,17 @@
 						<label class="col-20 form-label">진행상태</label>
 						<div class="col-80">
 						  <div class="form-input-box" id="edit_masterApplyNm">
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApplyNm" value="미진행">
-							  <label for="masterApplyNm" class="mr05">미진행</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApplyNm" value="진행중">
-							  <label for="masterApplyNm" class="mr05">진행중</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApplyNm" value="완료">
-							  <label for="masterApplyNm" class="mr05">완료</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApplyNm" value="환경부 제외 상품">
-							  <label for="masterApplyNm" class="mr05">환경부 제외 상품</label></div>
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio"  name="masterApply" value="미진행"> -->
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio"  name="masterApply" value="진행중"> -->
+<!-- 							  <label for="masterApplyNm" class="mr05">진행중</label></div> -->
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio"  name="masterApply" value="완료"> -->
+<!-- 							  <label for="masterApplyNm" class="mr05">완료</label></div> -->
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio"  name="masterApply" value="환경부 제외 상품"> -->
+<!-- 							  <label for="masterApplyNm" class="mr05">환경부 제외 상품</label></div> -->
 						  </div>
 						</div>
 					  </div>
@@ -777,17 +777,17 @@
 						<label class="col-20 form-label">매핑상태</label>
 						<div class="col-80">
 						  <div class="form-input-box" id="edit_masterApply">
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApply" value="미매핑">
-							  <label for="masterApply" class="mr05">미매핑</label></div>
-							<div class="button-Rsmall d-inblock">  
-							  <input type="radio" name="masterApply" value="매핑있음">
-							  <label for="masterApply" class="mr05">매핑있음</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio" name="masterApply" value="매핑없음">
-							  <label for="masterApply" class="mr05">매핑없음</label></div>
-							 <div class="button-Rsmall d-inblock"  onclick="mapProductCode('edit_productCodeSave');">
-							  <label class="mr05">매핑실행</label></div>
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio"  name="masterMapping" value="미매핑"> -->
+<!-- 							  <label for="masterApply" class="mr05">미매핑</label></div> -->
+<!-- 							<div class="button-Rsmall d-inblock">   -->
+<!-- 							  <input type="radio" name="masterMapping" value="매핑있음"> -->
+<!-- 							  <label for="masterApply" class="mr05">매핑있음</label></div> -->
+<!-- 							<div class="button-Rsmall d-inblock"> -->
+<!-- 							  <input type="radio" name="masterMapping" value="매핑없음"> -->
+<!-- 							  <label for="masterApply" class="mr05">매핑없음</label></div> -->
+<!-- 							 <div class="button-Rsmall d-inblock"  onclick="mapProductCode('edit_productCodeSave');"> -->
+<!-- 							  <label class="mr05">매핑실행</label></div> -->
 						  </div>
 						</div>
 					  </div>
@@ -1936,7 +1936,7 @@
 	if (data.environmentProceedStatCode.length > 0) {
 		data.environmentProceedStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApplyNm" value="'+item.codeId+'"><label for="masterApplyNm" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
 		});
 	}
 
@@ -1946,13 +1946,13 @@
 	if (data.mappingStatCode.length > 0) {
 		data.mappingStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterMapping" value="'+item.codeId+'"><label for="masterMapping" class="mr05">'+item.codeNm+'</label></div>');
 		});
 		$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
 	}
 	
-	$("#frmUpdate input[name=masterApplyNm]").val([data.masterApply]);
-	$("#frmUpdate input[name=masterApply]").val([data.masterMapping]);
+	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
+	$("#frmUpdate input[name=masterMapping]").val([data.masterMapping]);
 	$('#edit_receiptNumber').val(data.receiptNumber);
 	$('#edit_approvalNumber').val(data.approvalNumber);
 	
