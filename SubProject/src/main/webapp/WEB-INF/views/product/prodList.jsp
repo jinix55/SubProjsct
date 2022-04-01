@@ -1066,7 +1066,7 @@
 							  </div>
 							  <!-- 버튼 -->
 							  <div class="modal-footer btn-group" id="packagingInfo">
-								<button type="button" class="button btn-success" data-dismiss="modal">결과확인</button>
+								<button type="button" class="button btn-success" onclick="result();">결과확인</button>
 								<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 							  </div>
 							  <!--S_최종결과 -->
@@ -1193,8 +1193,8 @@
 	  $("#searchFrm").submit();
   });
 
-  function result(){
-	    var gradeResult = [];
+  function result(resultId){
+	  var gradeResult = [];
       var chkCnt = 0;
       var sc = $('.choice-title').length;
       var text = '';
@@ -1211,11 +1211,11 @@
       		}
       	}
       	text = $('.choice-title')[i].children[0].innerText;
-      	if(isAlert){
-	        	alert(text+' 항목을 선택하지 않으셨습니다.');
-	        	isAlert = true;
-	        	break;
-      	}
+//       	if(isAlert){
+// 	        	alert(text+' 항목을 선택하지 않으셨습니다.');
+// 	        	isAlert = true;
+// 	        	break;
+//       	}
       	isAlert = true;
       }
       if(chkCnt == $('.choice-title').length){
@@ -1223,30 +1223,34 @@
       	gradeResult.forEach(function(item){
 		        if(item == 'A'){
 		        	if(gradeNum < 1){
+			        	if(resultId)$('#'+resultId).val('최우수');
 // 			        	$('.fz').text('최우수');
 // 			        	$('.fz').css('color','black');
 			        	gradeNum = 1;
 		        	}
 		        }else if(item == 'B'){
 		        	if(gradeNum < 2){
+		        		if(resultId)$('#'+resultId).val('우수');
 // 			        	$('.fz').text('우수');
 // 			        	$('.fz').css('color','black');
 			        	gradeNum = 2;
 		        	}
 		        }else if(item == 'C'){
 		        	if(gradeNum < 3){
+		        		if(resultId)$('#'+resultId).val('보통');
 // 			        	$('.fz').text('보통');
 // 			        	$('.fz').css('color','black');
 			        	gradeNum = 3;
 		        	}
 		        }else if(item == 'D'){
 		        	if(gradeNum < 4){
+		        		if(resultId)$('#'+resultId).val('어려움');
 // 			        	$('.fz').text('어려움');
 // 			        	$('.fz').css('color','red');
 			        	gradeNum = 4;
 		        	}
 		        }
-      	})
+      	});
 // 	        $('#score').show();
       }
   }
@@ -1303,6 +1307,7 @@
 			reqDocs += "기타";
 		}
 		$('#reqDocs-'+id.split('-')).val(reqDocs);
+		result('results-'+id.split('-'));
 		var isSeasonChk = false;
       var chk = $('.checkbox_'+id.split('-')[0]);
       for(var i=0;i<chk.length;i++){
@@ -1345,7 +1350,7 @@
 				$("#Accordion_wrap").empty();
 				result.middleModels.forEach(function(item, index) {
 					selfPackInfo += '<div class="Accordion-box">';
-					selfPackInfo += '<h4 class="que pt15 choice-title"><span class="title-point">['+item.codeNm+']</span></h4>';
+					selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.codeId+'"><span class="title-point">['+item.codeNm+']</span></h4>';
 					selfPackInfo += '	<div class="anw">';
 					selfPackInfo += '	            <ul class="choice-wrapper">';
 
