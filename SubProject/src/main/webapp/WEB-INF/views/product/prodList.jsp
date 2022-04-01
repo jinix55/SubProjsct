@@ -1193,6 +1193,36 @@
 	  $("#searchFrm").submit();
   });
 
+  function getProductSelfPackaging(){
+		 console.log('getProductSelfPackaging');
+		 var param = {};
+		 param.revisionYear="2022";
+		 param.revisionMonth="03";
+		 param.groupId = "PA";//$("#matType").val();//재질유형
+		 
+		 $.ajax({
+			type : 'post',
+			url : '/product/detail/selfPackaging/',
+			data : param,
+			dataType : 'json',
+			error: function(request, status, error){
+				console.log(request.responseText);
+			},
+			success : function(result) {
+				console.log(result);
+				result.middleModels.forEach(function(item, index) {
+					console.log(item);
+					result.smallModels.forEach(function(sItem, index) {
+						console.log(sItem);
+						result.lastModels.forEach(function(lItem, index) {
+							console.log(lItem);
+						});
+					});
+				});
+			}
+		});
+}
+  
   function getPackagingOrderByNew(id){
 		console.log('getPackagingOrderByNew');
 		 $.ajax({
@@ -2021,6 +2051,7 @@
 			$('#tab04_1').show();
 		}else{
 			getCodeDayList();
+			getProductSelfPackaging();
 			$('#tab04_1').hide();
 			$('#tab04_2').show();
 		}
