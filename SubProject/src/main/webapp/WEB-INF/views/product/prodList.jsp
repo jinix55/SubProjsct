@@ -1165,7 +1165,7 @@
 <script>
   var selectedPartType ="";
   var selectedPartTypeNm ="";
-
+  var grade = [];
   var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
   var tabID = 0;
   var selectedProdId = "";
@@ -1193,6 +1193,122 @@
 	  $("#searchFrm").submit();
   });
 
+  function result(){
+	    var gradeResult = [];
+      var chkCnt = 0;
+      var sc = $('.choice-title').length;
+      var text = '';
+      var isAlert = true; 
+      for(var i = 0 ; i < sc ; i++){
+      	var id = $('.choice-title')[i].id;
+      	var chkList = $('.checkbox_'+id);
+      	for(var j=0;j<chkList.length;j++){
+      		if(chkList[j].checked == true) {
+      			gradeResult.push(chkList[j].dataset.key);
+      			chkCnt++;
+      			isAlert = false;
+      			break;
+      		}
+      	}
+      	text = $('.choice-title')[i].children[0].innerText;
+      	if(isAlert){
+	        	alert(text+' 항목을 선택하지 않으셨습니다.');
+	        	isAlert = true;
+	        	break;
+      	}
+      	isAlert = true;
+      }
+      if(chkCnt == $('.choice-title').length){
+      	var gradeNum = 0;
+      	gradeResult.forEach(function(item){
+		        if(item == 'A'){
+		        	if(gradeNum < 1){
+// 			        	$('.fz').text('최우수');
+// 			        	$('.fz').css('color','black');
+			        	gradeNum = 1;
+		        	}
+		        }else if(item == 'B'){
+		        	if(gradeNum < 2){
+// 			        	$('.fz').text('우수');
+// 			        	$('.fz').css('color','black');
+			        	gradeNum = 2;
+		        	}
+		        }else if(item == 'C'){
+		        	if(gradeNum < 3){
+// 			        	$('.fz').text('보통');
+// 			        	$('.fz').css('color','black');
+			        	gradeNum = 3;
+		        	}
+		        }else if(item == 'D'){
+		        	if(gradeNum < 4){
+// 			        	$('.fz').text('어려움');
+// 			        	$('.fz').css('color','red');
+			        	gradeNum = 4;
+		        	}
+		        }
+      	})
+// 	        $('#score').show();
+      }
+  }
+  
+  function chkClick(that){
+ 		var id = $(that).attr('id');
+ 		if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+	   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+ 		}
+ 		$('#'+id).prop('checked', true);
+ 		
+		var rptMatStruct = $(that).attr('data-a');
+		var rptDevAnal = $(that).attr('data-b');
+		var rptVisualJudg = $(that).attr('data-c');
+		var rptTest = $(that).attr('data-d');
+		var rptPermission = $(that).attr('data-e');
+		var rptEtc = $(that).attr('data-f');
+		$('.word_check-'+id.split('-')[0]).prop('checked',false);
+		if($('#'+id).prop('checked')){
+			if(rptMatStruct == 'Y'){
+				$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptDevAnal == 'Y'){
+				$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptVisualJudg == 'Y'){
+				$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptTest == 'Y'){
+				$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptPermission == 'Y'){
+				$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptEtc == 'Y'){
+				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+			}
+		}
+		
+		var isSeasonChk = false;
+      var chk = $('.checkbox_'+id.split('-')[0]);
+      for(var i=0;i<chk.length;i++){
+          if(chk[i].checked == true) {
+          	if($(that).attr('data-Key') == 'D'){
+              	isSeasonChk = true;
+      			if(grade.indexOf(id.split('-')[0]) == -1){
+      				grade.push(id.split('-')[0]);
+      			}
+              	break;
+          	}else{
+          		if(grade.indexOf(id.split('-')[0]) > -1){
+	            		for (var i = 0; i < grade.length; i++) {
+	            		    if (grade[i] === id.split('-')[0]) {
+	            		    	grade.splice(i, 1);
+	            		    }
+	            		}
+          		}
+          	}
+          }
+      }
+  }
+  
   function getProductSelfPackaging(){
 		 var param = {};
 		 param.revisionYear="2022";
@@ -1212,7 +1328,7 @@
 				$("#Accordion_wrap").empty();
 				result.middleModels.forEach(function(item, index) {
 					selfPackInfo += '<div class="Accordion-box">';
-					selfPackInfo += '<h4 class="que pt15"><span class="title-point">['+item.codeNm+']</span></h4>';
+					selfPackInfo += '<h4 class="que pt15 choice-title"><span class="title-point">['+item.codeNm+']</span></h4>';
 					selfPackInfo += '	<div class="anw">';
 					selfPackInfo += '	            <ul class="choice-wrapper">';
 
@@ -1225,7 +1341,7 @@
 	
 							result.lastModels.forEach(function(lItem, index) {
 								if(lItem.groupId === sItem.codeId){
-									selfPackInfo += '	                    <li><input type="checkbox"><label for="">'+lItem.codeNm+'</label></li>';
+									selfPackInfo += '	                    <li><input type="checkbox" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 								}
 							});
 	
@@ -1238,11 +1354,11 @@
 					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
 					selfPackInfo += '                    <div class="choice-cont">';
 					selfPackInfo += '                      <ul>';
-  					selfPackInfo += '                        <li><input type="checkbox"><label for="">기기분석</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox"><label for="">육안판정</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox"><label for="">공인시험성적서</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox"><label for="">신고허가서류</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox"><label for="">기타</label></li>';
+  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptDevAnal-'+item.codeId+'"><label for="">기기분석</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptVisualJudg-'+item.codeId+'"><label for="">육안판정</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptTest-'+item.codeId+'"><label for="">공인시험성적서</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptPermission-'+item.codeId+'"><label for="">신고허가서류</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptEtc-'+item.codeId+'"><label for="">기타</label></li>';
 					selfPackInfo += '                      </ul>';
 					selfPackInfo += '    				 </div>';
 					selfPackInfo += '                  </li>';
