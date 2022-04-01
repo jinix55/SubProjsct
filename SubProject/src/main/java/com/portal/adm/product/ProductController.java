@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -36,6 +38,7 @@ import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
@@ -621,6 +624,49 @@ public class ProductController {
         	return ResponseEntity.badRequest().body(e.getMessage());
         }
     } 
+    
+    /**
+     * 상품자가진단 정보 조회한다.
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/detail/selfPackaging", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProdSelfPackagingModel> selectProductSelfPackaging(@ModelAttribute EnvironmentCodeModel environmentCodeModel) {
+    	List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
+    	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
+    	List<EnvironmentCodeModel> lastModels = new ArrayList<EnvironmentCodeModel>();
+    	ProdSelfPackagingModel prodSelfPackagingModel = new ProdSelfPackagingModel();
+    	
+    	middleModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
+    	prodSelfPackagingModel.setMiddleModels(middleModels);
+    	
+    	ArrayList<EnvironmentCodeModel> list = new ArrayList<EnvironmentCodeModel>();
+    	for(EnvironmentCodeModel m : middleModels) {
+    		environmentCodeModel.setGroupId(m.getCodeId());
+    		smallModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
+    		list.addAll(smallModels);
+    	}
+    	
+    	Collections.sort(list,new Comparator<EnvironmentCodeModel>() {
+			@Override
+			public int compare(EnvironmentCodeModel o1, EnvironmentCodeModel o2) {
+				return o1.getOrdSeq() - o2.getOrdSeq();
+			}
+		});
+    	prodSelfPackagingModel.setSmallModels(list);
+    	
+    	ArrayList<EnvironmentCodeModel> lalist = new ArrayList<EnvironmentCodeModel>();
+    	for(EnvironmentCodeModel l :list) {
+    		environmentCodeModel.setGroupId(l.getCodeId());
+    		lastModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
+    		lalist.addAll(lastModels);
+    	}
+    	prodSelfPackagingModel.setLastModels(lalist);
+    	
+        return new ResponseEntity<>(prodSelfPackagingModel, HttpStatus.OK);
+    }
     
     /**
      * 코드변경시점정보를 조회한다.
