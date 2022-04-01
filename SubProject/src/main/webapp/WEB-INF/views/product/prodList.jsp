@@ -64,7 +64,7 @@
 					<option value="productNm">상품명</option>
 					<option value="packingType">포장유형</option>
 					<option value="recycleGrade">재활용등급</option>
-					<option value="completeStatus">상태</option>
+					<option value="masterApplyNm">상태</option>
                   </select>
                 </div>
                 <div class="form-inline">
@@ -147,7 +147,7 @@
 									</c:choose>
 									${product.recycleGrade}
 								</td>
-								<td>${product.completeStatus}</td>
+								<td>${product.masterApplyNm}</td>
 								<td>${product.check1}</td>
 								<td><a href="#" onclick="productPackagingOrder('${product.productId}');" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
@@ -200,7 +200,7 @@
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
-			<input id="completeStatus" name="completeStatus" type="hidden" value="진행중" class="text-input" >
+			<input id="masterApplyNm" name="masterApplyNm" type="hidden" value="진행중" class="text-input" >
 			<div class="row">
 			  <div class="col-50">
 				<div class="form-group">
@@ -755,19 +755,19 @@
 					  <div class="form-group">
 						<label class="col-20 form-label">진행상태</label>
 						<div class="col-80">
-						  <div class="form-input-box" id="edit_completeStatus">
+						  <div class="form-input-box" id="edit_masterApplyNm">
 							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="미진행">
-							  <label for="completeStatus" class="mr05">미진행</label></div>
+							  <input type="radio"  name="masterApplyNm" value="미진행">
+							  <label for="masterApplyNm" class="mr05">미진행</label></div>
 							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="진행중">
-							  <label for="completeStatus" class="mr05">진행중</label></div>
+							  <input type="radio"  name="masterApplyNm" value="진행중">
+							  <label for="masterApplyNm" class="mr05">진행중</label></div>
 							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="완료">
-							  <label for="completeStatus" class="mr05">완료</label></div>
+							  <input type="radio"  name="masterApplyNm" value="완료">
+							  <label for="masterApplyNm" class="mr05">완료</label></div>
 							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="환경부 제외 상품">
-							  <label for="completeStatus" class="mr05">환경부 제외 상품</label></div>
+							  <input type="radio"  name="masterApplyNm" value="환경부 제외 상품">
+							  <label for="masterApplyNm" class="mr05">환경부 제외 상품</label></div>
 						  </div>
 						</div>
 					  </div>
@@ -1291,7 +1291,7 @@
 							$('#matTypeSelectProductMatType').hide();
 						}
 					}else {
-						$("#frmUpdate input[name=completeStatus]").val([result.masterApply]);
+						$("#frmUpdate input[name=masterApplyNm]").val([result.masterApply]);
 						$("#frmUpdate input[name=masterApply]").val([result.masterMapping]);
 						$('#edit_receiptNumber').val(result.receiptNumber);
 						$('#edit_approvalNumber').val(result.approvalNumber);
@@ -1604,13 +1604,13 @@
 	getFileList('photos_'+data.productId, "edit_photos", data.photo);
 	getFileList('specs_'+data.productId, "edit_specs", data.spec);
 
-	$('#edit_completeStatus').empty();
+	$('#edit_masterApplyNm').empty();
 	console.log(data.environmentProceedStatCode.length);
 	//진행상태
 	if (data.environmentProceedStatCode.length > 0) {
 		data.environmentProceedStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_completeStatus').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="completeStatus" value="'+item.codeId+'"><label for="completeStatus" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApplyNm" value="'+item.codeId+'"><label for="masterApplyNm" class="mr05">'+item.codeNm+'</label></div>');
 		});
 	}
 
@@ -1625,8 +1625,8 @@
 		$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
 	}
 	
-	$("#frmUpdate input[name=completeStatus]").val([data.completeStatus]);
-	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
+	$("#frmUpdate input[name=masterApplyNm]").val([data.masterApply]);
+	$("#frmUpdate input[name=masterApply]").val([data.masterMapping]);
 	$('#edit_receiptNumber').val(data.receiptNumber);
 	$('#edit_approvalNumber').val(data.approvalNumber);
 	
