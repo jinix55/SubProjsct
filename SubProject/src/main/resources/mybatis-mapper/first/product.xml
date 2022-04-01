@@ -168,76 +168,81 @@
 	
 	<select id="selectProductPackaging" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
-			  PACKAGING_ID
-			, PRODUCT_ID
-			, PRODUCT_NM
-			, PACKAGING_NM
-			, PACKAGING_DSC
-			, PACKAGING_ORDER
-			, MAT_TYPE
-			, PART_TYPE
-			, PART_TYPE_ORDER
-			, MAT_INFO
-			, WEIGHT
-			, STANDARD
-			, COLOR
-			, ADD_EXPLAN
-			, MAT_FILE_ID
-			, SUPPLIER_CODE
-			, MANAGER_ID
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			  a.PACKAGING_ID
+			, a.PRODUCT_ID
+			, b.PRODUCT_NM
+			, a.PACKAGING_NM
+			, a.PACKAGING_DSC
+			, a.PACKAGING_ORDER
+			, a.MAT_TYPE
+			, a.PART_TYPE
+			, a.PART_TYPE_ORDER
+			, a.MAT_INFO
+			, a.WEIGHT
+			, a.STANDARD
+			, a.COLOR
+			, a.ADD_EXPLAN
+			, a.MAT_FILE_ID
+			, a.SUPPLIER_CODE
+			, a.MANAGER_ID
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			t_product_packaging 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
+			t_product_packaging a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'			
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
 		  <if test="packagingOrder  != null and packagingOrder != ''">
-				and (PACKAGING_ORDER = #{packagingOrder})
+				and (a.PACKAGING_ORDER = #{packagingOrder})
 		  </if>
 		  <if test="packagingId  != null and packagingId != ''">
-				and (PACKAGING_ID = #{packagingId})
+				and (a.PACKAGING_ID = #{packagingId})
 		  </if>
 	</select>
 	
 	<select id="selectProductPackagingDetail" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
-			  PACKAGING_ID
-			, PRODUCT_ID
-			, PRODUCT_NM
-			, PACKAGING_NM
-			, PACKAGING_DSC
-			, PACKAGING_ORDER
-			, MAT_TYPE
-			, PART_TYPE
-			, PART_TYPE_ORDER
-			, MAT_INFO
-			, WEIGHT
-			, STANDARD
-			, COLOR
-			, ADD_EXPLAN
-			, MAT_FILE_ID
-			, SUPPLIER_CODE
-			, MANAGER_ID
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			  a.PACKAGING_ID
+			, a.PRODUCT_ID
+			, b.PRODUCT_NM
+			, a.PACKAGING_NM
+			, a.PACKAGING_DSC
+			, a.PACKAGING_ORDER
+			, a.MAT_TYPE
+			, a.PART_TYPE
+			, a.PART_TYPE_ORDER
+			, a.MAT_INFO
+			, a.WEIGHT
+			, a.STANDARD
+			, a.COLOR
+			, a.ADD_EXPLAN
+			, a.MAT_FILE_ID
+			, a.SUPPLIER_CODE
+			, a.MANAGER_ID
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			t_product_packaging 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
-		  AND (PACKAGING_ID = #{packagingId})
+			t_product_packaging a
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'						
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
+		  AND (a.PACKAGING_ID = #{packagingId})
 	</select>
 	
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   
 			, PRODUCT_ID     
-			, PRODUCT_NM     
 			, PACKAGING_NM   
 			, PACKAGING_DSC  
 			, PACKAGING_ORDER
@@ -259,7 +264,6 @@
 		) VALUES (
 			  #{packagingId}
 			, #{productId}
-			, #{productNm}
 			, #{packagingNm}
 			, #{packagingDsc}
 			, #{packagingOrder}
@@ -286,7 +290,6 @@
 		SET
 			  PACKAGING_ID         = #{packagingId}      
 			, PRODUCT_ID           = #{productId}        
-			, PRODUCT_NM           = #{productNm}        
 			, PACKAGING_NM         = #{packagingNm}      
 			, PACKAGING_DSC        = #{packagingDsc}     
 			, PACKAGING_ORDER      = #{packagingOrder}   
