@@ -131,7 +131,9 @@ public class CodeService {
   	    	inCodeModel.setGroupId(groupId);
   	    	inCodeModel.setCodeId(codeId); 
   	    	outCodeModel = codeMapper.select(inCodeModel);
-  	    	codeNm = outCodeModel.getCodeNm();
+  	    	if(outCodeModel != null) {
+  	    		codeNm = outCodeModel.getCodeNm();
+  	    	}
   	    } 
     	
         return codeNm;

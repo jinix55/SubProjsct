@@ -30,7 +30,6 @@
 			PRODUCT_ID,
 			PRODUCT_NM,
 			PRODUCT_CODE,
-			PACKING_TYPE,
 			RECYCLE_GRADE,
 			CHECK1,
 			PHOTO,
@@ -137,7 +136,6 @@
 			, PRODUCT_MAKER    = #{productMaker}
 			, SUMMARY    = #{summary}
 			, PHOTO    = #{photo}
-			, PACKING_TYPE  = #{packingType}
 			, RECYCLE_GRADE = #{recycleGrade}
 			, CHECK1   = #{check1}
 			, MASTER_APPLY   = #{masterApply}

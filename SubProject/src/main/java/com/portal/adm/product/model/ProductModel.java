@@ -52,17 +52,17 @@ public class ProductModel extends Criteria{
     private String baseYear;			        //기준 년 
     private Integer accumulateSaleQty;			//누적판매량
     private double packingTotalWeight;			//포장재총중량
-    private String recyleContributions;         //재활용 분담금
+    private Integer recyleContributions;         //재활용 분담금
 
     private String baseYear_1;		
     private Integer accumulateSaleQty_1;			
     private double packingTotalWeight_1;			
-    private String recyleContributions_1;         
+    private Integer recyleContributions_1;         
 
     private String baseYear_2;		
     private Integer accumulateSaleQty_2;		 
     private double packingTotalWeight_2;		
-    private String recyleContributions_2;       
+    private Integer recyleContributions_2;       
     
     
     private String productMaker;

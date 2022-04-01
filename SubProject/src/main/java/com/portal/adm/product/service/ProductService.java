@@ -45,11 +45,21 @@ public class ProductService {
 	 */
     public List<ProductModel> selectProductList(ProductModel productModel) {
     	CodeModel codeModel = new CodeModel();
+    	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+    	List<ProdPackagingModel> prodPackagingList = new ArrayList<>() ;
+    	
     	List<ProductModel> productList = productMapper.selectProductList(productModel);
     	for(ProductModel p : productList) {
     		
     		//p.setCompleteStatus(codeService.getCodeNm(constant._CODE_, p.getMasterApply(),constant._MAPPING_STAT_CODE_));
     		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApply(), "ENVIRONMENT_PROCEED_STAT_CODE"));
+    		
+    		prodPackagingModel.setProductId(p.getProductId());
+    		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
+    		for(ProdPackagingModel pp : prodPackagingList) {
+    			p.setPackingType(codeService.getCodeNm("MAT_TYPE", pp.getMatType(), null));
+    			break;
+    		}
     	}
         return productList;
     }
