@@ -1285,7 +1285,24 @@
 				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
 			}
 		}
-		
+
+		var reqDocs = "";
+		if($('#chk_rptDevAnal-'+id.split('-')[0]).is(":checked")){
+			reqDocs += "기기분석";
+		}
+		if($('#chk_rptVisualJudg-'+id.split('-')[0]).is(":checked")){
+			reqDocs += "육안판정";
+		}
+		if($('#chk_rptTest-'+id.split('-')[0]).is(":checked")){
+			reqDocs += "공인시험성적서";
+		}
+		if($('#chk_rptPermission-'+id.split('-')[0]).is(":checked")){
+			reqDocs += "신고허가서류";
+		}
+		if($('#chk_rptEtc-'+id.split('-')[0]).is(":checked")){
+			reqDocs += "기타";
+		}
+		$('#reqDocs-'+id.split('-')).val(reqDocs);
 		var isSeasonChk = false;
       var chk = $('.checkbox_'+id.split('-')[0]);
       for(var i=0;i<chk.length;i++){
@@ -1350,15 +1367,16 @@
 							selfPackInfo += '	              </li>';
 						}
 					});
+					
 					selfPackInfo += '				  <li class="choice-box">';
 					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
 					selfPackInfo += '                    <div class="choice-cont">';
 					selfPackInfo += '                      <ul>';
-  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptDevAnal-'+item.codeId+'"><label for="">기기분석</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptVisualJudg-'+item.codeId+'"><label for="">육안판정</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptTest-'+item.codeId+'"><label for="">공인시험성적서</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptPermission-'+item.codeId+'"><label for="">신고허가서류</label></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptEtc-'+item.codeId+'"><label for="">기타</label></li>';
+  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptDevAnal-'+item.codeId+'" disabled><label for="">기기분석</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptVisualJudg-'+item.codeId+'" disabled><label for="">육안판정</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptTest-'+item.codeId+'" disabled><label for="">공인시험성적서</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptPermission-'+item.codeId+'" disabled><label for="">신고허가서류</label></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptEtc-'+item.codeId+'" disabled><label for="">기타</label></li>';
 					selfPackInfo += '                      </ul>';
 					selfPackInfo += '    				 </div>';
 					selfPackInfo += '                  </li>';
@@ -1369,7 +1387,7 @@
 					selfPackInfo += '                   <label class="col-25 form-label">증빙서류</label>';
 					selfPackInfo += '                   <div class="col-75">';
 					selfPackInfo += '                     <div class="form-input">';
-					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">';
+					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타"  id="proofDocs-'+item.codeId+'">';
 					selfPackInfo += '                     </div>';
 					selfPackInfo += '                   </div>';
 					selfPackInfo += '                 </div>';
@@ -1388,11 +1406,10 @@
                     selfPackInfo += '               <div class="row">';
                     selfPackInfo += '                 <div class="col-50">';
                     selfPackInfo += '                   <div class="form-group pb0">';
-                    selfPackInfo += '                     <label class="col-25 form-label">몸체평가결과';
-                    selfPackInfo += '                     </label>';
+                    selfPackInfo += '                     <label class="col-25 form-label">'+item.codeNm+'평가결과</label>';
                     selfPackInfo += '                     <div class="col-75">';
                     selfPackInfo += '                       <div class="form-input">';
-                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수" disabled id="results-'+item.codeId+'">';
                     selfPackInfo += '                       </div>';
                     selfPackInfo += '                     </div>';
                     selfPackInfo += '                   </div>';
@@ -1402,7 +1419,7 @@
                     selfPackInfo += '                     <label class="col-25 form-label">필요서류목록</label>';
                     selfPackInfo += '                     <div class="col-75">';
                     selfPackInfo += '                       <div class="form-input">';
-                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타" disabled id="reqDocs-'+item.codeId+'">';
                     selfPackInfo += '                       </div>';
                     selfPackInfo += '                     </div>';
                     selfPackInfo += '                   </div>';
@@ -1415,6 +1432,7 @@
 				});
 				$("#Accordion_wrap").append(selfPackInfo);
 				$("#Accordion_wrap").show();
+				$('#tab04_2').show();
 			}
 		});
 }
@@ -2249,7 +2267,7 @@
 // 			getCodeDayList();
 			getProductSelfPackaging();
 			$('#tab04_1').hide();
-			$('#tab04_2').show();
+// 			$('#tab04_2').show();
 		}
   }
 
