@@ -85,7 +85,7 @@
     <select id="selectProdApiInfo" parameterType="com.portal.adm.product.model.ProdPackagingModel" resultType="com.portal.adm.product.model.ProdPackagingModel">
     	SELECT 
 			PP.PACKAGING_ID
-			, PP.PRODUCT_NM
+<!-- 			, PP.PRODUCT_NM -->
 			, PP.PRODUCT_ID
 			, PP.PACKAGING_ORDER
 			, PP.MAT_TYPE
