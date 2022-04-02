@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
+import com.portal.adm.file.model.FileModel;
 import com.portal.common.paging.Criteria;
 
 import lombok.Data;
@@ -20,5 +21,6 @@ public class ProdSelfPackagingModel extends Criteria{
 	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
 	List<EnvironmentCodeModel> lastModels = new ArrayList<EnvironmentCodeModel>();
 	List<ProdPackagingMatModel> selfPackagingModels = new ArrayList<ProdPackagingMatModel>();
+	ArrayList<FileModel> files = new ArrayList<FileModel>();
 
 }

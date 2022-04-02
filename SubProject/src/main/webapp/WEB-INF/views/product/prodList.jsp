@@ -1330,17 +1330,44 @@
 							selfPackInfo += '	              </li>';
 						}
 					});
+
+					var chk_rptMatStruct = "";
+					var chk_rptDevAnal = "";
+					var chk_rptVisualJudg = "";
+					var chk_rptTest = "";
+					var chk_rptPermission = "";
+					var chk_rptEtc = "";
+					result.selfPackagingModels.forEach(function(selfItem, index) {
+						if(selfItem.file === 'rptMatStruct_'+item.codeId){
+							chk_rptMatStruct = "checked";
+						}
+						if(selfItem.file === 'rptDevAnal_'+item.codeId){
+							chk_rptDevAnal = "checked";
+						}
+						if(selfItem.file === 'rptVisualJudg_'+item.codeId){
+							chk_rptVisualJudg = "checked";
+						}
+						if(selfItem.file === 'rptTest_'+item.codeId){
+							chk_rptTest = "checked";
+						}
+						if(selfItem.file === 'rptPermission_'+item.codeId){
+							chk_rptPermission = "checked";
+						}
+						if(selfItem.file === 'rptEtc_'+item.codeId){
+							chk_rptEtc = "checked";
+						}
+					});
 					
 					selfPackInfo += '				  <li class="choice-box">';
 					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
 					selfPackInfo += '                    <div class="choice-cont">';
 					selfPackInfo += '                      <ul>';
-					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptMatStruct-'+item.codeId+'" disabled><label for="chk_rptMatStruct-'+item.codeId+'">포장재질구조증명서</label><input type="file" name="rptMatStruct" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
-  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptDevAnal-'+item.codeId+'" disabled><label for="chk_rptDevAnal-'+item.codeId+'">기기분석</label><input type="file" name="rptDevAnal" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptVisualJudg-'+item.codeId+'" disabled><label for="chk_rptVisualJudg-'+item.codeId+'">육안판정</label><input type="file" name="rptVisualJudg" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptTest-'+item.codeId+'" disabled><label for="chk_rptTest-'+item.codeId+'">공인시험성적서</label><input type="file" name="rptTest" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptPermission-'+item.codeId+'" disabled><label for="chk_rptPermission-'+item.codeId+'">신고허가서류</label><input type="file" name="rptPermission" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" id="chk_rptEtc-'+item.codeId+'" disabled><label for="chk_rptEtc-'+item.codeId+'">기타</label><input type="file" name="rptEtc" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
+					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
+  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
 					selfPackInfo += '                      </ul>';
 					selfPackInfo += '    				 </div>';
 					selfPackInfo += '                  </li>';
@@ -1407,6 +1434,17 @@
 			          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
 			        }
 			      });
+
+				result.files.forEach(function(f, index) {
+					result.middleModels.forEach(function(item, index) {
+						console.log(f.refId.split('_pd')[0]);
+						console.log(f.refId.split('-')[0]+'-'+item.codeId);
+						console.log('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list');
+						if(f.refId.split('_pd')[0] === f.refId.split('-')[0]+'-'+item.codeId){
+							$('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteFileAjax("'+f.fileId+'","","'+f.refId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
+						}			
+					});				
+				});
 				$("#Accordion_wrap").show();
 				$('#tab04_2').show();
 			}

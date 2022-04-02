@@ -20,6 +20,7 @@ public class ProdPackagingMatModel extends Criteria{
     private String packagingId;
     private String productId;
     private String packagingOrder;
+    private String file;
     private String matType;
     private String partType;
     private String groupId;

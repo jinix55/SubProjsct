@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -689,12 +690,61 @@ public class ProductController {
     	middleModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
     	prodSelfPackagingModel.setMiddleModels(middleModels);
     	
+    	
+    	ArrayList<FileModel> files = new ArrayList<FileModel>();
     	ArrayList<EnvironmentCodeModel> list = new ArrayList<EnvironmentCodeModel>();
     	for(EnvironmentCodeModel m : middleModels) {
     		environmentCodeModel.setGroupId(m.getCodeId());
     		smallModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
     		list.addAll(smallModels);
+    		
+    		String rptMatStruct = "rptMatStruct-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	String rptDevAnal = "rptDevAnal-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	String rptVisualJudg = "rptVisualJudg-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	String rptTest = "rptTest-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	String rptPermission = "rptPermission-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	String rptEtc = "rptEtc-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
+        	
+        	FileModel f = new FileModel();
+    		
+        	f.setRefId(rptMatStruct);    
+    		List<FileModel> rptMatStructFileList = fileService.selectFileList(f);
+    		if(rptMatStructFileList !=null && rptMatStructFileList.size() > 0) {
+    			files.add(rptMatStructFileList.get(0));
+    		}
+    		
+    		f.setRefId(rptDevAnal);    
+    		List<FileModel> rptDevAnalFileList = fileService.selectFileList(f);
+    		if(rptDevAnalFileList !=null && rptDevAnalFileList.size() > 0) {
+    			files.add(rptDevAnalFileList.get(0));
+    		}
+    		
+    		f.setRefId(rptVisualJudg);    
+    		List<FileModel> rptVisualJudgFileList = fileService.selectFileList(f);
+    		if(rptVisualJudgFileList !=null && rptVisualJudgFileList.size() > 0) {
+    			files.add(rptVisualJudgFileList.get(0));
+    		}
+    		
+    		f.setRefId(rptTest);    
+    		List<FileModel>rptTestFileList = fileService.selectFileList(f);
+    		if(rptTestFileList !=null && rptTestFileList.size() > 0) {
+    			files.add(rptTestFileList.get(0));
+    		}
+    		
+    		f.setRefId(rptPermission);    
+    		List<FileModel> rptPermissionFileList = fileService.selectFileList(f);
+    		if(rptPermissionFileList !=null && rptPermissionFileList.size() > 0) {
+    			files.add(rptPermissionFileList.get(0));
+    		}
+    		
+    		f.setRefId(rptEtc);    
+    		List<FileModel> rptEtcFileList = fileService.selectFileList(f);
+    		if(rptEtcFileList !=null && rptEtcFileList.size() > 0) {
+    			files.add(rptEtcFileList.get(0));
+    		}
     	}
+    	
+    	prodSelfPackagingModel.setFiles(files);
     	
     	Collections.sort(list,new Comparator<EnvironmentCodeModel>() {
 			@Override
@@ -727,6 +777,7 @@ public class ProductController {
     		lalist.addAll(lastModels);
     	}
     	prodSelfPackagingModel.setLastModels(lalist);
+    	prodSelfPackagingModel.setSelfPackagingModels(selfPackagingModels);
     	
         return new ResponseEntity<>(prodSelfPackagingModel, HttpStatus.OK);
     }
@@ -745,7 +796,13 @@ public class ProductController {
     		, MultipartRequest multipart
     		, @RequestParam(value = "checkbox_PA_B", required = false) List<String> paBs
     		, @RequestParam(value = "checkbox_PE_L", required = false) List<String> paLs
-    		, @RequestParam(value = "checkbox_PA_G", required = false) List<String> paGs) {
+    		, @RequestParam(value = "checkbox_PA_G", required = false) List<String> paGs
+    		, @RequestParam(value = "chk_rptMatStruct", required = false)  List<String> rptMatStrucs
+    		, @RequestParam(value = "chk_rptDevAnal", required = false)  List<String> rptDevAnals
+    		, @RequestParam(value = "chk_rptVisualJudg", required = false)  List<String> rptVisualJudgs
+    		, @RequestParam(value = "chk_rptTest", required = false)  List<String> rptTests
+    		, @RequestParam(value = "chk_rptPermission", required = false)  List<String> rptPermissions
+    		, @RequestParam(value = "chk_rptEtc", required = false)  List<String> rptEtcs) {
     	
     	prodPackagingMatModel.setRgstId(authUser.getMemberModel().getUserId());
     	prodPackagingMatModel.setModiId(authUser.getMemberModel().getUserId());
@@ -760,13 +817,84 @@ public class ProductController {
     	String gPackagingId = "";
     	for(ProdPackagingModel model : models) {
     		if(model.getPartType().contains("_B")) {
-    			bPackagingId = model.getPartType();
+    			bPackagingId = model.getPackagingId();
     		}else if(model.getPartType().contains("_L")) {
-    			lPackagingId = model.getPartType();
+    			lPackagingId = model.getPackagingId();
     		}else if(model.getPartType().contains("_G")) {
-    			gPackagingId = model.getPartType();
+    			gPackagingId = model.getPackagingId();
     		}
     	}
+    	
+    	if(rptMatStrucs != null) {
+	    	for(String rptMatStruc : rptMatStrucs) {
+	    		prodPackagingMatModel.setGroupId(rptMatStruc.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptMatStruc.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setFile("rptMatStruct_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+    	if(rptDevAnals != null) {
+	    	for(String rptDevAnal : rptDevAnals) {
+	    		prodPackagingMatModel.setGroupId(rptDevAnal.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptDevAnal.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setPackagingId(bPackagingId);
+	    		prodPackagingMatModel.setFile("rptDevAnal_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+
+    	if(rptVisualJudgs != null) {
+	    	for(String rptVisualJudg : rptVisualJudgs) {
+	    		prodPackagingMatModel.setGroupId(rptVisualJudg.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptVisualJudg.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setFile("rptVisualJudg_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+
+    	if(rptTests != null) {
+	    	for(String rptTest : rptTests) {
+	    		prodPackagingMatModel.setGroupId(rptTest.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptTest.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setFile("rptTest_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+
+    	if(rptPermissions != null) {
+	    	for(String rptPermission : rptPermissions) {
+	    		prodPackagingMatModel.setGroupId(rptPermission.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptPermission.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setFile("rptPermission_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+
+    	if(rptEtcs != null) {
+	    	for(String rptEtc : rptEtcs) {
+	    		prodPackagingMatModel.setGroupId(rptEtc.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(rptEtc.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setFile("rptEtc_"+prodPackagingMatModel.getCodeId());
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+    	prodPackagingMatModel.setFile(null);
     	
     	if(paBs != null) {
 	    	for(String paB : paBs) {
@@ -801,6 +929,74 @@ public class ProductController {
 	    	}
     	}
     	
+    	String fileUrl = "C:/PPLUS/" + prodPackagingMatModel.getProductId() + "/selfPackaging/";
+    	String result = "success";
+    	final Map<String, MultipartFile> files = multipart.getFileMap();
+    	MultipartFile file = null;
+		for (String key : files.keySet()) {
+			file = files.get(key);
+			System.out.println("key :"+key);
+			if(file.getOriginalFilename().equals("")) {
+				continue;
+			}
+			System.out.println("OriginalFilename :"+file.getOriginalFilename());
+			
+			FileModel f = new FileModel();
+			f.setFileId(idUtil.getFileId());
+			
+			// s3 기본 처리
+			f.setStorageSe("LOCAL");
+			f.setFileNm(file.getOriginalFilename());
+			f.setFileExtsn(FilenameUtils.getExtension(file.getOriginalFilename()));
+			f.setFileSize(file.getSize());
+			f.setFileUrl(fileUrl+f.getFileId() + "/");
+			f.setUseYn("Y");
+			f.setRefId(key+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder());
+			f.setRgstId(prodPackagingMatModel.getModiId());
+			f.setModiId(prodPackagingMatModel.getModiId());
+			f.setFileCl(Constant.File.API);
+			
+			try {
+				f.setInputStream(file.getResource().getInputStream());
+			} catch (IOException e) {
+				result = "fail";
+//				return ResponseEntity.badRequest().body("1.IOException.");
+			}
+			
+			// 파일 생성
+			if (!"fail".equals(result)) {
+				fileService.insertFile(f);
+				
+				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
+
+				try {
+					Files.createDirectories(directoryPath);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+				try {
+					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + file.getOriginalFilename());
+
+					InputStream is = file.getInputStream();
+
+					int readCount = 0;
+					byte[] buffer = new byte[1024];
+					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+					while ((readCount = is.read(buffer)) != -1) {
+						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+						fos.write(buffer, 0, readCount);
+						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+					}
+				} catch (FileNotFoundException e) {
+//					return ResponseEntity.badRequest().body("2.IOException.");
+				}
+				catch (IOException e) {
+//					return ResponseEntity.badRequest().body("3.IOException.");
+				}
+			}
+		}
     	return new ResponseEntity<>(prodPackagingMatModel, HttpStatus.OK);
     }
     

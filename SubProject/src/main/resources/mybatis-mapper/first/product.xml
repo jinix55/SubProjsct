@@ -482,8 +482,9 @@
 			, PACKAGING_ID   
 			, PRODUCT_ID     
 			, PACKAGING_ORDER
-			, MAT_TYPE       
-			, PART_TYPE      
+			, FILE
+<!-- 			, MAT_TYPE        -->
+<!-- 			, PART_TYPE       -->
 			, GROUP_ID       
 			, CODE_ID         
 			, REVISION_YEAR       
@@ -505,8 +506,9 @@
 			, PACKAGING_ID   
 			, PRODUCT_ID     
 			, PACKAGING_ORDER
-			, MAT_TYPE       
-			, PART_TYPE      
+			, FILE
+<!-- 			, MAT_TYPE        -->
+<!-- 			, PART_TYPE       -->
 			, GROUP_ID       
 			, CODE_ID         
 			, REVISION_YEAR       
@@ -521,8 +523,9 @@
 			, #{packagingId}
 			, #{productId}
 			, #{packagingOrder}
-			, #{matType}
-			, #{partType}
+			, #{file}
+<!-- 			, #{matType} -->
+<!-- 			, #{partType} -->
 			, #{groupId}
 			, #{codeId}
 			, #{revisionYear}
