@@ -704,16 +704,29 @@ public class ProductController {
 		});
     	prodSelfPackagingModel.setSmallModels(list);
     	
+    	List<ProdPackagingMatModel> selfPackagingModels = productService.selectProductSelfPackaging(prodPackagingMatModel);
     	ArrayList<EnvironmentCodeModel> lalist = new ArrayList<EnvironmentCodeModel>();
+    	
     	for(EnvironmentCodeModel l :list) {
     		environmentCodeModel.setGroupId(l.getCodeId());
     		lastModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
+    		int count = 0;
+    		for(EnvironmentCodeModel lastM :lastModels) {
+    			for(ProdPackagingMatModel sm :selfPackagingModels) {
+    				if(sm.getGroupId().equals(lastM.getGroupId()) && sm.getCodeId().equals(lastM.getCodeId())) {
+    					lastModels.get(count).setStr("checked");
+    					lastM.setStr("checked");
+    					break;
+    				}
+    			}
+    			if(lastM.getStr() == null) {
+    				lastModels.get(count).setStr("");
+    			}
+    			count++;
+    		}
     		lalist.addAll(lastModels);
     	}
     	prodSelfPackagingModel.setLastModels(lalist);
-    	
-    	List<ProdPackagingMatModel> selfPackagingModels = productService.selectProductSelfPackaging(prodPackagingMatModel);
-    	prodSelfPackagingModel.setSelfPackagingModels(selfPackagingModels);
     	
         return new ResponseEntity<>(prodSelfPackagingModel, HttpStatus.OK);
     }
