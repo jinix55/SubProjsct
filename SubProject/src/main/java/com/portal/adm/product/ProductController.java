@@ -735,8 +735,8 @@ public class ProductController {
     	
     	if(paBs != null) {
 	    	for(String paB : paBs) {
-	    		prodPackagingMatModel.setGroupId(paB.split("||")[0]);
-	    		prodPackagingMatModel.setCodeId(paB.split("||")[1]);
+	    		prodPackagingMatModel.setGroupId(paB.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(paB.split("\\|\\|")[1]);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
@@ -745,8 +745,8 @@ public class ProductController {
     	
     	if(paLs != null) {
 	    	for(String paL : paLs) {
-	    		prodPackagingMatModel.setGroupId(paL.split("||")[0]);
-	    		prodPackagingMatModel.setCodeId(paL.split("||")[1]);
+	    		prodPackagingMatModel.setGroupId(paL.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(paL.split("\\|\\|")[1]);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
@@ -755,8 +755,8 @@ public class ProductController {
     	
     	if(paGs != null) {
 	    	for(String paG : paGs) {
-	    		prodPackagingMatModel.setGroupId(paG.split("||")[0]);
-	    		prodPackagingMatModel.setCodeId(paG.split("||")[1]);
+	    		prodPackagingMatModel.setGroupId(paG.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(paG.split("\\|\\|")[1]);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
