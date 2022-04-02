@@ -527,6 +527,9 @@ public class ProductController {
     	// 상품 포장 차수 조회
     	List<ProdPackagingModel> packagingOrder = productService.selectProductPackagingOrder(prodPackagingModel);
     	
+    	
+    	
+    	
     	for( int i = 0 ; i < packagingOrder.size() ; i++) {
     		EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
         	environmentCode.setCodeId(packagingOrder.get(i).getMatType().split("_")[0]);

@@ -139,7 +139,7 @@ public class ProductService {
 			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
 			p.setSupplierNm(CodeNm);
 			
-			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
+			p.setStr(p.getPackagingNm() + "_" + p.getMatTypeNm() + "_" + p.getPartTypeNm() + "_" + p.getSupplierNm());
 		}
 		
 		
