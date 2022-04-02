@@ -1292,6 +1292,9 @@
 		 param.revisionYear="2022";
 		 param.revisionMonth="03";
 		 param.groupId = matType.split('_')[0];//재질유형
+
+		 param.productId=selectedProdId;
+		 param.packagingOrder=$("#frmSelfDiagnose input[name=packagingOrder]").val();
 		 
 		 $.ajax({
 			type : 'post',
@@ -1309,17 +1312,16 @@
 					selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.codeId+'"><span class="title-point">['+item.codeNm+']</span></h4>';
 					selfPackInfo += '	<div class="anw">';
 					selfPackInfo += '	            <ul class="choice-wrapper">';
-
 					result.smallModels.forEach(function(sItem, index) {
 						if(sItem.groupId === item.codeId){
+							
 							selfPackInfo += '	              <li class="choice-box">';
 							selfPackInfo += '	                <h4 class="line-br">재활용-'+sItem.codeNm+'</h4>';
 							selfPackInfo += '	                <div class="choice-cont">';
 							selfPackInfo += '	                  <ul>';
-	
 							result.lastModels.forEach(function(lItem, index) {
 								if(lItem.groupId === sItem.codeId){
-									selfPackInfo += '	                    <li><input type="checkbox" value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+									selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 								}
 							});
 	
