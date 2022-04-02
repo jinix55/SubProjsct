@@ -732,11 +732,28 @@ public class ProductController {
     	prodPackagingMatModel.setModiId(authUser.getMemberModel().getUserId());
 		
     	productService.deleteProductSelfPackaging(prodPackagingMatModel);
+    	ProdPackagingModel productPackagingModel = new ProdPackagingModel();
+    	productPackagingModel.setProductId(prodPackagingMatModel.getProductId());
+    	productPackagingModel.setPackagingOrder(Integer.parseInt(prodPackagingMatModel.getPackagingOrder()));
+    	List<ProdPackagingModel> models = productService.selectProductPackaging(productPackagingModel);
+    	String bPackagingId = "";
+    	String lPackagingId = "";
+    	String gPackagingId = "";
+    	for(ProdPackagingModel model : models) {
+    		if(model.getPartType().contains("_B")) {
+    			bPackagingId = model.getPartType();
+    		}else if(model.getPartType().contains("_L")) {
+    			lPackagingId = model.getPartType();
+    		}else if(model.getPartType().contains("_G")) {
+    			gPackagingId = model.getPartType();
+    		}
+    	}
     	
     	if(paBs != null) {
 	    	for(String paB : paBs) {
 	    		prodPackagingMatModel.setGroupId(paB.split("\\|\\|")[0]);
 	    		prodPackagingMatModel.setCodeId(paB.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setPackagingId(bPackagingId);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
@@ -747,6 +764,7 @@ public class ProductController {
 	    	for(String paL : paLs) {
 	    		prodPackagingMatModel.setGroupId(paL.split("\\|\\|")[0]);
 	    		prodPackagingMatModel.setCodeId(paL.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setPackagingId(lPackagingId);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
@@ -757,6 +775,7 @@ public class ProductController {
 	    	for(String paG : paGs) {
 	    		prodPackagingMatModel.setGroupId(paG.split("\\|\\|")[0]);
 	    		prodPackagingMatModel.setCodeId(paG.split("\\|\\|")[1]);
+	    		prodPackagingMatModel.setPackagingId(gPackagingId);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
