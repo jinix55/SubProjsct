@@ -899,7 +899,7 @@ public class ProductController {
         	prodPackagingModel.setPackagingNm(Integer.toString(maxPackagingOrder + 1) + "차포장");
 	    	ProdPackagingList.add(prodPackagingModel);
 	    	
-	    	int  maxPartPackagingOrder = productService.selectMaxProductPackagingOrder(productService.getProductId(productCode));
+	    	int  maxPartPackagingOrder = productService.selectMaxPartProductPackagingOrder(productService.getProductId(productCode));
 		    prodPackagingModel = new ProdPackagingModel();
 		    prodPackagingModel.setPackagingOrder(maxPartPackagingOrder + 1);
 		    prodPackagingModel.setPackagingNm("부속포장");
