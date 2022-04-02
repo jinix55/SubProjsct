@@ -806,9 +806,9 @@
 					</div>
 					<div class="col-50">
 					  <div class="form-group">
-						<label class="col-20 form-label">매핑상품번호</label>
+						<label class="col-20 form-label">매핑상품코드</label>
 						<div class="col-30">
-						  <input id="edit_mappingProductId" name="mappingProductId" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_mappingProductCode" name="mappingProductCode" type="text" class="text-input"  autocomplete="off">
 						</div>
 						<label class="col-20 form-label">매핑상품명</label>
 						<div class="col-30">
@@ -1565,6 +1565,7 @@
 		 $.ajax({
 				type : 'post',
 				url : '/product/detail/'+productCode+'/apply/',
+				
 				dataType : 'json',
 				error: function(request, status, error){
 					console.log(request.responseText);
@@ -1599,10 +1600,19 @@
   
   function mapProductCode(id){
 	 var productCode = $('#'+id).val();
+	 var masterApply = $("#frmUpdate input[name=masterApply]").val();
+	 var receiptNumber = $('#edit_receiptNumber').val();
+	 var approvalNumber =$('#edit_approvalNumber').val();
+	 var param = {};
+	 param.productCode=productCode;
+	 param.masterApply=masterApply;
+	 param.receiptNumber=receiptNumber;
+	 param.approvalNumber=approvalNumber;
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
-				url : '/product/detail/'+productCode+'/mapping/',
+				url : '/product/detail/mapping/',
+				data: param,
 				dataType : 'json',
 				error: function(request, status, error){
 					console.log(request.responseText);
@@ -1617,11 +1627,11 @@
 							$('#matTypeSelectProductMatType').hide();
 						}
 					}else {
-						$("#frmUpdate input[name=masterApplyNm]").val([result.masterApply]);
-						$("#frmUpdate input[name=masterApply]").val([result.masterMapping]);
+						$("#frmUpdate input[name=masterApply]").val([result.masterApply]);
+						$("#frmUpdate input[name=masterMapping]").val([result.masterMapping]);
 						$('#edit_receiptNumber').val(result.receiptNumber);
 						$('#edit_approvalNumber').val(result.approvalNumber);
-						$('#edit_mappingProductId').val(result.mappingProductId);
+						$('#edit_mappingProductCode').val(result.mappingProductCode);
 						$('#edit_mappingProductNm').val(result.mappingProductNm);
 					}
 				}
