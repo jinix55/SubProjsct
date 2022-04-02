@@ -154,7 +154,7 @@ public class ProductController {
         }
         
         if(productModel.getProductNm() == null || productModel.getProductNm().trim().equals("")) {
-        	return ResponseEntity.badRequest().body("상품명이 누락 되었습니다 @@@@@@@@@@@@..");
+        	return ResponseEntity.badRequest().body("상품명이 누락 되었습니다");
         }
         
     	try {
@@ -311,6 +311,48 @@ public class ProductController {
                                        @AuthenticationPrincipal AuthUser authUser
                                        , @RequestParam("photos") MultipartFile[] photos
                                        , @RequestParam("specs") MultipartFile[] specs) {
+    	
+    	if((productModel.getMasterApply().equals("UNPROCEED")) || (productModel.getMasterApply().equals("EXCEPT"))) { //미진행
+    		if(!(productModel.getReceiptNumber() == null || productModel.getReceiptNumber().trim().equals(""))) {
+    			return ResponseEntity.badRequest().body("접수번호를 등록 할수 없습니다.");	
+    		}
+    		
+    		if(!(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals(""))) {
+    			return ResponseEntity.badRequest().body("승인번호를 등록 할수 없습니다.");	
+    		}
+
+    		if(!(productModel.getMappingProductCode() == null || productModel.getMappingProductCode().trim().equals(""))) {
+    			return ResponseEntity.badRequest().body("매핑상품코드를 등록 할수 없습니다.");	
+    		}
+    	}
+    	
+    	
+    	if(productModel.getMasterApply().equals("PROCEEDING")) { //진행중
+    		if(productModel.getReceiptNumber() == null || productModel.getReceiptNumber().trim().equals("")) {
+    			return ResponseEntity.badRequest().body("접수번호가 누락 되었습니다.");	
+    		}
+    		
+    		if(!(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals(""))) {
+    			return ResponseEntity.badRequest().body("승인번호를 등록 할수 없습니다.");	
+    		}
+
+    		if(!(productModel.getMappingProductCode() == null || productModel.getMappingProductCode().trim().equals(""))) {
+    			return ResponseEntity.badRequest().body("매핑상품코드를 등록 할수 없습니다.");	
+    		}
+    	}
+    	
+    	if(productModel.getMasterApply().equals("COMPLETION")) { //완료
+    		if(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals("")) {
+    			return ResponseEntity.badRequest().body("승인번호가가 누락 되었습니다.");	
+    		}
+
+    	}
+    	
+    	
+    	if(productModel.getMasterMapping().equals("UNMAPPING")) { //매핑전
+    	   productModel.setMappingProductCode(""); 
+    	}    	
+    	
 
         try {
     		productModel.setModiId(authUser.getMemberModel().getUserId());
@@ -800,16 +842,20 @@ public class ProductController {
      * @param 
      * @return
      */
-    //todo productId => productCode
-    @RequestMapping(value="/detail/{productId}/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<ProductModel> mapping(@PathVariable("productId") String productId) {
-    	
-    	ProductModel productModel = new ProductModel();
-    	productModel.setProductId(productId);
-    	ProductModel product = productService.mapping(productModel);
 
-    	return new ResponseEntity<>(product, HttpStatus.OK);
+    @RequestMapping(value="/detail/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProductModel> mapping(@ModelAttribute ProductModel productModel) {
+    	System.out.println("mapping productModel" + productModel);
+    	
+    	if(!(productModel.getMasterApply().equals("UNPROCEED"))) { //미진행
+    		productModel.setErrorString("진행상태가 미진행이 아닙니다.");
+  	    	return ResponseEntity.badRequest().body(productModel);	
+    	}
+    	
+    	ProductModel product = productService.mapping(productModel);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+
     }
     
     
@@ -823,6 +869,8 @@ public class ProductController {
     @RequestMapping(value="/detail/apply/", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
 	public ResponseEntity<List<ProdPackagingModel>> apply(@ModelAttribute ProductModel productModel) {
+
+    	
     	
     	List<ProdPackagingModel>  prodPackagingList = productService.apply(productModel);
     	return new ResponseEntity<>(prodPackagingList, HttpStatus.OK);
