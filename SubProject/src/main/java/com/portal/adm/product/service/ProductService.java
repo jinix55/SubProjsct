@@ -413,6 +413,32 @@ public class ProductService {
 		return productMapper.selectProductListCountByProductCode(productCoded);
 	}
 
+	public List<ProdPackagingMatModel>  selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel) {
+		return productMapper.selectProductSelfPackaging(prodPackagingMatModel);
+	}
+	
+	@Transactional
+	public String insertProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel) {
+		long count = productMapper.insertProductSelfPackaging(prodPackagingMatModel);
+		
+		if (count > 0) {
+			return Constant.DB.INSERT;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
+	
+	@Transactional
+	public String deleteProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel) {
+		long count = productMapper.deleteProductSelfPackaging(prodPackagingMatModel);
+		if (count > 0) {
+			return Constant.DB.DELETE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
+	
+	
 	public String throwError(String val) {
 		if(!"정상".equals(val)) {
 			return "에러";

@@ -179,4 +179,9 @@ public interface ProductMapper {
     public String getProductId(String productCoded);
     
     public int selectProductListCountByProductCode(String productCoded);
+    
+    List<ProdPackagingMatModel> selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
+    long insertProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
+    long deleteProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
+    
 }

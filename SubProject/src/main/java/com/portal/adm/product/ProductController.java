@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
@@ -37,6 +38,7 @@ import com.portal.adm.file.model.FileModel;
 import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
+import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductModel;
@@ -708,6 +710,60 @@ public class ProductController {
     	prodSelfPackagingModel.setLastModels(lalist);
     	
         return new ResponseEntity<>(prodSelfPackagingModel, HttpStatus.OK);
+    }
+    
+    /**
+     * 
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/insert/selfPackaging" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<ProdPackagingMatModel> saveSelfPackaging(HttpServletRequest request
+    		, @AuthenticationPrincipal AuthUser authUser
+    		, @ModelAttribute ProdPackagingMatModel prodPackagingMatModel
+    		, MultipartRequest multipart
+    		, @RequestParam(value = "checkbox_PA_B", required = false) List<String> paBs
+    		, @RequestParam(value = "checkbox_PE_L", required = false) List<String> paLs
+    		, @RequestParam(value = "checkbox_PA_G", required = false) List<String> paGs) {
+    	
+    	prodPackagingMatModel.setRgstId(authUser.getMemberModel().getUserId());
+    	prodPackagingMatModel.setModiId(authUser.getMemberModel().getUserId());
+		
+    	productService.deleteProductSelfPackaging(prodPackagingMatModel);
+    	
+    	if(paBs != null) {
+	    	for(String paB : paBs) {
+	    		prodPackagingMatModel.setGroupId(paB.split("||")[0]);
+	    		prodPackagingMatModel.setCodeId(paB.split("||")[1]);
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+    	if(paLs != null) {
+	    	for(String paL : paLs) {
+	    		prodPackagingMatModel.setGroupId(paL.split("||")[0]);
+	    		prodPackagingMatModel.setCodeId(paL.split("||")[1]);
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+    	if(paGs != null) {
+	    	for(String paG : paGs) {
+	    		prodPackagingMatModel.setGroupId(paG.split("||")[0]);
+	    		prodPackagingMatModel.setCodeId(paG.split("||")[1]);
+	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
+	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
+	    		
+	    	}
+    	}
+    	
+    	return new ResponseEntity<>(prodPackagingMatModel, HttpStatus.OK);
     }
     
     /**

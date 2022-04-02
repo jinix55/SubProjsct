@@ -474,6 +474,75 @@
 			T_PRODUCT 
        WHERE USE_YN = 'Y' 
         AND  PRODUCT_CODE = #{productCode} 		    		
-	</select>		
+	</select>
+	
+	<select id="selectProductSelfPackaging" resultType="com.portal.adm.product.model.ProdPackagingMatModel" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		SELECT
+			  PACKAGING_MAT_ID
+			, PACKAGING_ID   
+			, PRODUCT_ID     
+			, PACKAGING_ORDER
+			, MAT_TYPE       
+			, PART_TYPE      
+			, GROUP_ID       
+			, CODE_ID         
+			, REVISION_YEAR       
+			, REVISION_MONTH          
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		FROM t_product_packaging_mat
+		WHERE PRODUCT_ID = #{productId} 
+		  AND PACKAGING_ORDER = #{packagingOrder} 
+		  AND USE_YN = 'Y'
+	</select>	
+	
+	<insert id="insertProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		INSERT INTO t_product_packaging_mat (
+			  PACKAGING_MAT_ID
+			, PACKAGING_ID   
+			, PRODUCT_ID     
+			, PACKAGING_ORDER
+			, MAT_TYPE       
+			, PART_TYPE      
+			, GROUP_ID       
+			, CODE_ID         
+			, REVISION_YEAR       
+			, REVISION_MONTH          
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingMatId}
+			, #{packagingId}
+			, #{productId}
+			, #{packagingOrder}
+			, #{matType}
+			, #{partType}
+			, #{groupId}
+			, #{codeId}
+			, #{revisionYear}
+			, #{revisionMonth}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>		
 		
+	<update id="deleteProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		UPDATE t_product_packaging_mat
+		SET
+			  USE_YN = 'N'
+			, MODI_ID              = #{modiId}           
+			, MODI_DT              = now()   
+		WHERE
+			PRODUCT_ID           = #{productId}
+			and (PACKAGING_ORDER = #{packagingOrder})
+	</update>	
 </mapper>

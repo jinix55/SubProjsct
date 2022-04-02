@@ -604,17 +604,6 @@
 					  </div>
 					</div>
 					<div class="col-50">
-<!-- 					  <div class="form-group"> -->
-<!-- 						<label class="col-25 form-label">상품분류</label> -->
-<!-- 						<div class="col-75"> -->
-<!-- 						  <select id="edit_productClass" name="productClass" class="select-box"> -->
-<!-- 							<option value="선택없음" selected="">선택없음</option> -->
-<%-- 							<c:forEach items="${productTypeList}" var="list" varStatus="status"> --%>
-<%-- 								<option value="${list}">${list}</option> --%>
-<%-- 							</c:forEach> --%>
-<!-- 						  </select> -->
-<!-- 						</div> -->
-<!-- 					  </div> -->
 					</div>
 					<div class="col-50">
 					  <div class="form-group">
@@ -715,8 +704,6 @@
 						<label class="col-25 form-label">상품제조사</label>
 						<div class="col-75">
 						  <div class="form-input-box" id="edit_productMaker">
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명1</a> -->
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명2</a> -->
 						  </div>
 						</div>
 					  </div>
@@ -757,17 +744,6 @@
 						<label class="col-20 form-label">진행상태</label>
 						<div class="col-80">
 						  <div class="form-input-box" id="edit_masterApplyNm">
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio"  name="masterApply" value="미진행"> -->
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio"  name="masterApply" value="진행중"> -->
-<!-- 							  <label for="masterApplyNm" class="mr05">진행중</label></div> -->
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio"  name="masterApply" value="완료"> -->
-<!-- 							  <label for="masterApplyNm" class="mr05">완료</label></div> -->
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio"  name="masterApply" value="환경부 제외 상품"> -->
-<!-- 							  <label for="masterApplyNm" class="mr05">환경부 제외 상품</label></div> -->
 						  </div>
 						</div>
 					  </div>
@@ -777,17 +753,6 @@
 						<label class="col-20 form-label">매핑상태</label>
 						<div class="col-80">
 						  <div class="form-input-box" id="edit_masterApply">
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio"  name="masterMapping" value="미매핑"> -->
-<!-- 							  <label for="masterApply" class="mr05">미매핑</label></div> -->
-<!-- 							<div class="button-Rsmall d-inblock">   -->
-<!-- 							  <input type="radio" name="masterMapping" value="매핑있음"> -->
-<!-- 							  <label for="masterApply" class="mr05">매핑있음</label></div> -->
-<!-- 							<div class="button-Rsmall d-inblock"> -->
-<!-- 							  <input type="radio" name="masterMapping" value="매핑없음"> -->
-<!-- 							  <label for="masterApply" class="mr05">매핑없음</label></div> -->
-<!-- 							 <div class="button-Rsmall d-inblock"  onclick="mapProductCode('edit_productCodeSave');"> -->
-<!-- 							  <label class="mr05">매핑실행</label></div> -->
 						  </div>
 						</div>
 					  </div>
@@ -894,7 +859,7 @@
 	  </div>
   </form>
   
-  <form id="frmDetail">
+  
 	  <!-- 레이어 팝업 - 상세  -->
 	  <div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:auto;max-width:1100px">
@@ -919,6 +884,7 @@
 					<div id="tab03_1">
 					  <div class="row">
 						<!--S_탭 tab04-->
+						
 						<div class="tab04">
 						  <ul class="tabnav04 tc mb10">
 							<li><a href="#" onclick="javascript:showMatTypeSelf('tab04_1', this);">재질정보</a></li>
@@ -926,118 +892,57 @@
 						  </ul>
 						  <!--S_탭 tabcontent04-->
 						  <div class="tabcontent04">
-							<div id="tab04_1">
-							  <div class="tab-in-nav d-flex">
-							  		<input type="hidden" name="matType" id="matType">
-<!-- 								<div class="tab-in-nav d-flex"> -->
-<!-- 								  <span class="pt10 pr10">ㆍ재질유형</span> -->
-<!-- 								  <select id="matType" name="matType" class="select-box w200 mr10"> -->
-<!-- 									<option value="">선택</option> -->
-<%-- 									<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%>
-<%-- 										<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%>
-<%-- 									</c:forEach> --%>
-<!-- 								  </select> -->
-<!-- 								</div> -->
-								<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in1');">몸체</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in2');">라벨</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in3');">마개</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in4');">잡자재</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in5');">별도포장</a></li> -->
-								</ul>
-								<div class="add-row">
-								  <button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
-<!-- 								  <button id='btn-delete-row' class="button-Rsmall">(-)삭제하기</button> -->
-								</div>
-							  </div>
-							  <!--S_몸체 -->
-							  <div class="tabcontent04-in">
-								<ul class="tabnav04-in d-flex pt05" id="partTypeDetail" style="display:none;">
-								</ul>
-								<div class="mytable_1_in" id="tab04_1_in1">
-								  <div id="mytable_1_in1">
+							<form id="frmDetail">
+								<div id="tab04_1">
+								  <div class="tab-in-nav d-flex">
+								  		<input type="hidden" name="matType" id="matType">
+									<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
+									</ul>
+									<div class="add-row">
+									  <button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
+									</div>
 								  </div>
-								</div>
-<!-- 								<div class="mytable_1_in" id="tab04_1_in2"> -->
-<!-- 								  <div id="mytable_1_in2"> -->
-<!-- 								  </div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in3"> -->
-<!-- 								  <div id="mytable_1_in3"> -->
-<!-- 								  </div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in4"> -->
-<!-- 									<div id="mytable_1_in4"> -->
-<!-- 								  	</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in5"> -->
-<!-- 									<div id="mytable_1_in5"> -->
-<!-- 								  	</div> -->
-<!-- 								</div> -->
-								<!-- 버튼 -->
-							  </div>
-							  <div class="modal-footer btn-group">
-								<button  id="savePackagingBtn" type="button" class="button btn-success">저장</button>
-								<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-							  </div>
-							  <!--E_몸체 -->
-
-							</div>
-							<!--S_탭 tab04_2 -->
-							<div id="tab04_2" style="display:none;">
-<!-- 							  <div class="row"> -->
-<!-- 								<span class="pt10 pr10">ㆍ코드변경시점</span> -->
-<!-- 								<select name="revision" class="select-box w150 mr10" id="codeDayList"> -->
-<!--  								  <option value="0">2021년7월</option> --> 
-<!-- 								  <option value="1">2021년1월</option> --> 
-<!-- 								</select> -->
-<!-- 								<div class="tab-in-nav d-flex"> -->
-<!-- 								  <span class="pt10 pr10">ㆍ재질유형</span> -->
-<!-- 								  <select id="selfMatType" class="select-box w150 mr10"> -->
-<!-- 									<option value="0">종이팩</option> --> 
-<!--  									<option value="1">플라스틱</option> --> 
-<!-- 								  </select> -->
-<!-- 								  <ul class="d-flex pt05" id="selfPartType"> -->
-<!-- 									<li class="button btn-radius on">몸체</li> --> 
-<!--  									<li class="button btn-radius">라벨</li> --> 
-<!--  									<li class="button btn-radius on">마개및잡자재</li> --> 
-<!-- 									<li class="button btn-radius">라벨 마개 및 잡자재</li> --> 
-<!-- 								  </ul> -->
-<!-- 								</div> -->
-<!-- 							  </div> -->
-							  <!--<div class="cb">체크 </div>-->
-							  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
-								<div class="Accordion-box">
-								  <h4 class="que pt15"><span class="title-point" id="selfValidationLabel">[몸체]</span></h4>
-								  <div class="anw">
-									<ul class="choice-wrapper" id="selfValidation"></ul>
-									<div class="row" >
-									  <div class="col-50">
-										<div class="form-group pb0">
-										  <label class="col-25 form-label">증빙서류</label>
-										  <div class="col-75">
-											<div class="form-input">
-											  <input type="text" class="text-input"
-												placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
-											</div>
-										  </div>
-										</div>
-									  </div>
-									  <div class="col-50">
-										<div class="form-group pb0">
-										  <label class="col-25 form-label">첨부파일</label>
-										  <div class="col-75">
-											<input type="file" multiple="multiple" class="text-input">
-										  </div>
-										</div>
+								  <!--S_몸체 -->
+								  <div class="tabcontent04-in">
+									<ul class="tabnav04-in d-flex pt05" id="partTypeDetail" style="display:none;">
+									</ul>
+									<div class="mytable_1_in" id="tab04_1_in1">
+									  <div id="mytable_1_in1">
 									  </div>
 									</div>
-									<!-- S_결과확인-->
+									<!-- 버튼 -->
+								  </div>
+								  <div class="modal-footer btn-group">
+									<button  id="savePackagingBtn" type="button" class="button btn-success">저장</button>
+									<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+								  </div>
+								  <!--E_몸체 -->
+	
+								</div>
+							</form>
+							<!--S_탭 tab04_2 -->
+							<form id="frmSelfDiagnose"  enctype="multipart/form-data">
+								<div id="tab04_2" style="display:none;">
+								<input type="hidden" name="packagingOrder">
+								<input type="hidden" name="productId">
+								<input type="hidden" name="revisionYear" value="2022">
+								<input type="hidden" name="revisionMonth" value="03">
+								  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
+									<div class="Accordion-box">
+									</div>
+								  </div>
+								  <!-- 버튼 -->
+								  <div class="modal-footer btn-group" id="packagingInfo">
+									<button type="button" class="button btn-success" onclick="insertSelfDiagnoseAjax();">결과확인</button>
+									<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+								  </div>
+								  <!--S_최종결과 -->
+								  <div class="row100 pt10">
 									<div class="result-box">
 									  <div class="row">
 										<div class="col-50">
 										  <div class="form-group pb0">
-											<label class="col-25 form-label">몸체평가결과
+											<label class="col-25 form-label result-text">최종 결과
 											</label>
 											<div class="col-75">
 											  <div class="form-input">
@@ -1048,57 +953,20 @@
 										</div>
 										<div class="col-50">
 										  <div class="form-group pb0">
-											<label class="col-25 form-label">필요서류
-											  목록</label>
+											<label class="col-25 form-label result-text">매핑결과</label>
 											<div class="col-75">
 											  <div class="form-input">
-												<input type="text" class="text-input"
-												  placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+												<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
 											  </div>
 											</div>
 										  </div>
 										</div>
 									  </div>
 									</div>
-									<!-- E_결과확인-->
 								  </div>
+								  <!--E_최종결과 -->
 								</div>
-							  </div>
-							  <!-- 버튼 -->
-							  <div class="modal-footer btn-group" id="packagingInfo">
-								<button type="button" class="button btn-success" onclick="result();">결과확인</button>
-								<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-							  </div>
-							  <!--S_최종결과 -->
-							  <div class="row100 pt10">
-								<div class="result-box">
-								  <div class="row">
-									<div class="col-50">
-									  <div class="form-group pb0">
-										<label class="col-25 form-label result-text">최종 결과
-										</label>
-										<div class="col-75">
-										  <div class="form-input">
-											<input type="text" class="text-input" placeholder="우수">
-										  </div>
-										</div>
-									  </div>
-									</div>
-									<div class="col-50">
-									  <div class="form-group pb0">
-										<label class="col-25 form-label result-text">매핑결과</label>
-										<div class="col-75">
-										  <div class="form-input">
-											<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
-										  </div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-							  </div>
-							  <!--E_최종결과 -->
-							</div>
+							</form>
 							<!--E_탭 tab04_2 -->
 						  </div>
 						  <!--E_탭 tabcontent04-->
@@ -1114,7 +982,7 @@
 		  </div>
 		</div>
 	  </div>
-  </form>
+  
   
   <!-- 레이어 팝업 - 재질유형 정보 조회 -->
   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -1193,6 +1061,30 @@
 	  $("#searchFrm").submit();
   });
 
+  function insertSelfDiagnoseAjax(){
+		var form = $('#frmSelfDiagnose')[0];
+	    var data = new FormData(form);
+	    
+	  	$.ajax({
+		type : 'post',
+		url : '/product/insert/selfPackaging',
+		enctype: 'multipart/form-data',
+		data : data,
+		dataType : 'text',
+		processData: false,
+      contentType: false,
+      cache: false,
+      timeout: 600000,
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(result){
+		    console.log(result);
+		}
+	});
+  }
+  
   var aJsonArray = new Array();
   function chkClick(that){
  		var id = $(that).attr('id');
@@ -1427,7 +1319,7 @@
 	
 							result.lastModels.forEach(function(lItem, index) {
 								if(lItem.groupId === sItem.codeId){
-									selfPackInfo += '	                    <li><input type="checkbox" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+									selfPackInfo += '	                    <li><input type="checkbox" value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 								}
 							});
 	
@@ -2358,6 +2250,8 @@
 			$('#tab04_1').show();
 		}else{
 // 			getCodeDayList();
+			$("#frmSelfDiagnose input[name=packagingOrder]").val($("#frmDetail input[name=packagingOrder]").val());
+			$('#frmSelfDiagnose input[name=productId]').val(selectedProdId);
 			getProductSelfPackaging();
 			$('#tab04_1').hide();
 // 			$('#tab04_2').show();

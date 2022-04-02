@@ -207,6 +207,8 @@ public interface Constant {
 		public static final String PACKAGING = "pa";
 		//상품번호
 		public static final String PRODUCT = "pd";
+		//자가진단정보
+		public static final String PACKAGINGMAT = "pam";
 		
 	}
 	
