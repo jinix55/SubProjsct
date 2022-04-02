@@ -19,5 +19,6 @@ public class ProdSelfPackagingModel extends Criteria{
     List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
 	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
 	List<EnvironmentCodeModel> lastModels = new ArrayList<EnvironmentCodeModel>();
+	List<ProdPackagingMatModel> selfPackagingModels = new ArrayList<ProdPackagingMatModel>();
 
 }

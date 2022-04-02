@@ -677,7 +677,7 @@ public class ProductController {
      */
     @RequestMapping(value="/detail/selfPackaging", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProdSelfPackagingModel> selectProductSelfPackaging(@ModelAttribute EnvironmentCodeModel environmentCodeModel) {
+    public ResponseEntity<ProdSelfPackagingModel> selectProductSelfPackaging(@ModelAttribute EnvironmentCodeModel environmentCodeModel, @ModelAttribute ProdPackagingMatModel prodPackagingMatModel) {
     	List<EnvironmentCodeModel> middleModels = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> smallModels = new ArrayList<EnvironmentCodeModel>();
     	List<EnvironmentCodeModel> lastModels = new ArrayList<EnvironmentCodeModel>();
@@ -708,6 +708,9 @@ public class ProductController {
     		lalist.addAll(lastModels);
     	}
     	prodSelfPackagingModel.setLastModels(lalist);
+    	
+    	List<ProdPackagingMatModel> selfPackagingModels = productService.selectProductSelfPackaging(prodPackagingMatModel);
+    	prodSelfPackagingModel.setSelfPackagingModels(selfPackagingModels);
     	
         return new ResponseEntity<>(prodSelfPackagingModel, HttpStatus.OK);
     }
