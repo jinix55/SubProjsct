@@ -1161,6 +1161,9 @@ public class ProductController {
 	public ResponseEntity<List<ProdPackagingModel>> apply(@ModelAttribute ProductModel productModel) {
 
     	System.out.println("productModel" + productModel);
+    	productModel.setProductId("pd2200045");
+    	productModel.setApplyProductCode("PROD_01");
+    	
     	
     	List<ProdPackagingModel>  prodPackagingList = productService.apply(productModel);
     	return new ResponseEntity<>(prodPackagingList, HttpStatus.OK);
