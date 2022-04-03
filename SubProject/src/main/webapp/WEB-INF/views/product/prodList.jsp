@@ -1323,7 +1323,7 @@
 							selfPackInfo += '	                  <ul>';
 							result.lastModels.forEach(function(lItem, index) {
 								if(lItem.groupId === sItem.codeId){
-									selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_'+item.codeId+'" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+									selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 								}
 							});
 	

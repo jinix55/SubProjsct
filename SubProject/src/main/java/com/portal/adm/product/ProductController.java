@@ -794,9 +794,7 @@ public class ProductController {
     		, @AuthenticationPrincipal AuthUser authUser
     		, @ModelAttribute ProdPackagingMatModel prodPackagingMatModel
     		, MultipartRequest multipart
-    		, @RequestParam(value = "checkbox_PA_B", required = false) List<String> paBs
-    		, @RequestParam(value = "checkbox_PE_L", required = false) List<String> paLs
-    		, @RequestParam(value = "checkbox_PA_G", required = false) List<String> paGs
+    		, @RequestParam(value = "checkbox_self", required = false) List<String> selfs
     		, @RequestParam(value = "chk_rptMatStruct", required = false)  List<String> rptMatStrucs
     		, @RequestParam(value = "chk_rptDevAnal", required = false)  List<String> rptDevAnals
     		, @RequestParam(value = "chk_rptVisualJudg", required = false)  List<String> rptVisualJudgs
@@ -896,33 +894,18 @@ public class ProductController {
     	
     	prodPackagingMatModel.setFile(null);
     	
-    	if(paBs != null) {
-	    	for(String paB : paBs) {
-	    		prodPackagingMatModel.setGroupId(paB.split("\\|\\|")[0]);
-	    		prodPackagingMatModel.setCodeId(paB.split("\\|\\|")[1]);
+    	if(selfs != null) {
+	    	for(String self : selfs) {
+	    		prodPackagingMatModel.setGroupId(self.split("\\|\\|")[0]);
+	    		prodPackagingMatModel.setCodeId(self.split("\\|\\|")[1]);
+	    		if(prodPackagingMatModel.getCodeId().contains("_B")) {
+	    			prodPackagingMatModel.setPackagingId(bPackagingId);
+	    		}else if(prodPackagingMatModel.getCodeId().contains("_L")) {
+	    			prodPackagingMatModel.setPackagingId(lPackagingId);
+	    		}else if(prodPackagingMatModel.getCodeId().contains("_G")) {
+	    			prodPackagingMatModel.setPackagingId(gPackagingId);
+	    		}
 	    		prodPackagingMatModel.setPackagingId(bPackagingId);
-	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
-	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
-	    		
-	    	}
-    	}
-    	
-    	if(paLs != null) {
-	    	for(String paL : paLs) {
-	    		prodPackagingMatModel.setGroupId(paL.split("\\|\\|")[0]);
-	    		prodPackagingMatModel.setCodeId(paL.split("\\|\\|")[1]);
-	    		prodPackagingMatModel.setPackagingId(lPackagingId);
-	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
-	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
-	    		
-	    	}
-    	}
-    	
-    	if(paGs != null) {
-	    	for(String paG : paGs) {
-	    		prodPackagingMatModel.setGroupId(paG.split("\\|\\|")[0]);
-	    		prodPackagingMatModel.setCodeId(paG.split("\\|\\|")[1]);
-	    		prodPackagingMatModel.setPackagingId(gPackagingId);
 	    		prodPackagingMatModel.setPackagingMatId(idUtil.getPackagingMatId());
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
