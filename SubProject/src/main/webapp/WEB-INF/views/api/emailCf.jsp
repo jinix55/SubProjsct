@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -158,11 +159,14 @@ body {
 						</c:if>
 					</c:forEach>
 					<div class=" mr10 tc pt05 ml20">
+			          	${packagingModel.partType}
+			          	${fn:split(packagingModel.partType, '_')[1]}
 			          	<c:choose>
 			          		<c:when test="${!empty packagingModel.partType}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
-   						          	<c:if test="${list.codeId eq packagingModel.partType.substring(1)}">
-										<input id="partType" name="partType" value="${packagingModel.partType}" type="hidden">
+   						          	${list.codeId}
+   						          	<c:if test="${list.codeId eq fn:split(packagingModel.partType, '_')[1]}">
+										<input id="partType" name="partType" value="${fn:split(packagingModel.partType, '_')[1]}" type="hidden">
 										<button id="partTypeNm" name="partTypeNm" value="${list.codeId}" type="button" class="button btn-radius partTypeCheck on">
 										</button>
 			          				</c:if>

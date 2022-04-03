@@ -149,7 +149,7 @@
 								</td>
 								<td>${product.masterApplyNm}</td>
 								<td>${product.check1}</td>
-								<td><a href="#" onclick="productPackagingOrder('${product.productId}');" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
 								<td>
 									<div class="btn-group">
@@ -895,6 +895,7 @@
 							<form id="frmDetail">
 								<div id="tab04_1">
 								  <div class="tab-in-nav d-flex">
+								  		<input id="frmDetail_productCode" type="hidden" class="text-input">
 								  		<input type="hidden" name="matType" id="matType">
 									<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
 									</ul>
@@ -1037,6 +1038,7 @@
   var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
   var tabID = 0;
   var selectedProdId = "";
+  var selectedProdCode = "";
   if('${param.productId}') {
 	  $('#editBtn_${param.productId}').click();
   }
@@ -1492,7 +1494,7 @@
   }
   
   function mapProductCodeApply(id, packagingOrderNmApplyVal, selectedPackagingOrderNmText){
-	 var productCode = $('#'+id).val();
+	 var productCode = selectedProdCode;
 	 var applyProductCode = $('#matTypeSelectProductCodeVal').val();
 	 var param = {};
 	 param.productCode=productCode;
@@ -2000,8 +2002,9 @@
 	});
   }
   
-  function productPackagingOrder(id){
+  function productPackagingOrder(id, code){
 	  selectedProdId = id;
+	  selectedProdCode = code;
 // 	  tabID = 0;
 	  $('#tab-list').empty();
 	  $('#tab-list li.active').removeClass('active');
