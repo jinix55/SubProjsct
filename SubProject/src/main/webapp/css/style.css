@@ -306,7 +306,7 @@ button {font-weight: 600;width: auto;height: 40px;border: 0;color: #fff;margin: 
 .btn-group .btn-round[disabled], .btn-group[disabled], .btn-form-small[disabled] {opacity: 0.5;}
 .btn-success {background: #00baff;border: 1px solid #029bd4;}/*확인,등록*/
 .btn-modify {background: #fb3a3a;border: 1px solid #e33535;}/*수정*/
-.btn-warning {background: #bababa;border: 1px solid #949494;}/*경고*/
+.btn-warning {background: #959eae;border: 1px solid #949494;}/*경고*/
 .btn-cancel {color: #27364c;background-color: #fff;border: 1px solid #27364c;}/*취소*/
 .btn-default {background: #444953;border:1px solid #444953;}/*기본*/
 .btn-none {background-color: initial;color: #000;}
