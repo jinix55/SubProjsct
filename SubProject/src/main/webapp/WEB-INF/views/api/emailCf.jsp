@@ -159,16 +159,15 @@ body {
 						</c:if>
 					</c:forEach>
 					<div class=" mr10 tc pt05 ml20">
-			          	${packagingModel.partType}
-			          	${fn:split(packagingModel.partType, '_')[1]}
+						<c:set var="partTypeNm" value=""></c:set>
 			          	<c:choose>
 			          		<c:when test="${!empty packagingModel.partType}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
-   						          	${list.codeId}
    						          	<c:if test="${list.codeId eq fn:split(packagingModel.partType, '_')[1]}">
 										<input id="partType" name="partType" value="${fn:split(packagingModel.partType, '_')[1]}" type="hidden">
-										<button id="partTypeNm" name="partTypeNm" value="${list.codeId}" type="button" class="button btn-radius partTypeCheck on">
-										</button>
+<%-- 										<button id="partTypeNm" name="partTypeNm" value="${list.codeNm}" type="button" class="button btn-radius partTypeCheck on"> --%>
+<!-- 										</button> -->
+										<c:set var="partTypeNm" value="${list.codeNm}"></c:set>
 			          				</c:if>
 								</c:forEach>
 			          		</c:when>
@@ -195,7 +194,7 @@ body {
 
 				<!-- 몸체 상세-->
 				<h4 class="tl pt15">
-					<span class="title-point">[확인후 수정 해야 함 상세]</span>
+					<span class="title-point">[${partTypeNm} 상세]</span>
 				</h4>
 				<div class="row">
 					<div class="col-100">
