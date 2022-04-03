@@ -152,7 +152,7 @@ body {
 				<div class="tab-in-nav d-flex">
 					<span class="pt10 pr10">ㆍ재질유형</span>
 					<c:forEach items="${largeEnv}" var="list" varStatus="status">
-						<c:if test="${list.codeId eq packagingModel.matType}">
+						<c:if test="${list.codeId eq packagingModel.matType.substring(0,2)}">
 							<input id="matType" name="matType" type="hidden" class="text-input w200" value="${packagingModel.matType }">
 							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled>
 						</c:if>
@@ -161,10 +161,9 @@ body {
 			          	<c:choose>
 			          		<c:when test="${!empty packagingModel.partType}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
-   						          	<c:if test="${list.codeId eq packagingModel.partType}">
+   						          	<c:if test="${list.codeId eq packagingModel.partType.substring(1)}">
 										<input id="partType" name="partType" value="${packagingModel.partType}" type="hidden">
 										<button id="partTypeNm" name="partTypeNm" value="${list.codeId}" type="button" class="button btn-radius partTypeCheck on">
-											${list.codeNm }
 										</button>
 			          				</c:if>
 								</c:forEach>
@@ -192,7 +191,7 @@ body {
 
 				<!-- 몸체 상세-->
 				<h4 class="tl pt15">
-					<span class="title-point">[몸체 상세]</span>
+					<span class="title-point">[확인후 수정 해야 함 상세]</span>
 				</h4>
 				<div class="row">
 					<div class="col-100">
@@ -217,7 +216,7 @@ body {
 					</div>
 					<div class="col-50">
 						<div class="form-group">
-							<label class="col-25 form-label">무게</label>
+							<label class="col-25 form-label">무게(g)</label>
 							<div class="col-75">
 								<div class="form-input">
 									<input id="weight" name="weight" type="text" class="text-input" value="${packagingModel.weight}">

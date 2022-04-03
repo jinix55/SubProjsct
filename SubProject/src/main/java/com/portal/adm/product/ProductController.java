@@ -1160,7 +1160,7 @@ public class ProductController {
     @ResponseBody
 	public ResponseEntity<List<ProdPackagingModel>> apply(@ModelAttribute ProductModel productModel) {
 
-    	
+    	System.out.println("productModel" + productModel);
     	
     	List<ProdPackagingModel>  prodPackagingList = productService.apply(productModel);
     	return new ResponseEntity<>(prodPackagingList, HttpStatus.OK);

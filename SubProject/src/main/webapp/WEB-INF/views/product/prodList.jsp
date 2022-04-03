@@ -1493,11 +1493,16 @@
   
   function mapProductCodeApply(id, packagingOrderNmApplyVal, selectedPackagingOrderNmText){
 	 var productCode = $('#'+id).val();
+	 var applyProductCode = $('#matTypeSelectProductCodeVal').val();
+	 var param = {};
+	 param.productCode=productCode;
+	 param.applyProductCode=applyProductCode;
+		 
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
-				url : '/product/detail/'+productCode+'/apply/',
-				
+				url : '/product/detail/apply/',
+				data: param,
 				dataType : 'json',
 				error: function(request, status, error){
 					console.log(request.responseText);
