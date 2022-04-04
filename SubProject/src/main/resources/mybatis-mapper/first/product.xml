@@ -388,19 +388,19 @@
 				T_PRODUCT_PACKAGING
 	        WHERE use_yn = 'Y'
 	         AND  product_id = #{productId}
-		     AND  packaging_order <> 9
+		     AND  packaging_order < 9
 		]]>			 
 	</select>
 
 	<select id="selectMaxPartProductPackagingOrder" resultType="int" parameterType="String">
 		<![CDATA[
 			SELECT
-			    ifnull(max(packaging_order), 9) packaging_order
+			    ifnull(max(packaging_order), 8) packaging_order
 			FROM
 				T_PRODUCT_PACKAGING
 	        WHERE use_yn = 'Y'
 	         AND  product_id = #{productId}
-		     AND  packaging_order >= 10
+		     AND  packaging_order >= 9
 		]]>			 
 	</select>	
 		
@@ -538,8 +538,8 @@
 		)
 	</insert>		
 		
-	<update id="deleteProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
-		UPDATE t_product_packaging_mat
+	<delete id="deleteProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+<!--  		UPDATE t_product_packaging_mat
 		SET
 			  USE_YN = 'N'
 			, MODI_ID              = #{modiId}           
@@ -547,5 +547,11 @@
 		WHERE
 			PRODUCT_ID           = #{productId}
 			and (PACKAGING_ORDER = #{packagingOrder})
-	</update>	
+-->
+      DELETE FROM 	t_product_packaging_mat
+      		WHERE
+			PRODUCT_ID           = #{productId}
+			and PACKAGING_ORDER = #{packagingOrder}
+      		
+	</delete>	
 </mapper>

@@ -368,14 +368,19 @@ public class ProductService {
 	public List<ProdPackagingModel>  apply(ProductModel productModel) {
 		List<ProdPackagingModel>  prodPackagingList = new ArrayList<>() ;
 		
+		String productId =  this.getProductId(productModel.getProductCode());
+		String applyProductId =  this.getProductId(productModel.getApplyProductCode());
+	
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-		prodPackagingModel.setProductId( this.getProductId(productModel.getApplyProductCode()) );
-		
+		prodPackagingModel.setProductId(applyProductId);
 		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
+		
+		int maxPartProductPackagingOrder = productMapper.selectMaxPartProductPackagingOrder(productId);
 		String CodeNm = "";
         for(ProdPackagingModel p : prodPackagingList) {
            p.setPackagingId(idUtil.getPackagingId());        	
-           p.setPackagingId(productModel.getProductCode());
+           p.setProductId(productId);
+           p.setPackagingOrder(maxPartProductPackagingOrder + 1);
            
 			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
 			p.setMatTypeNm(CodeNm);
@@ -386,7 +391,7 @@ public class ProductService {
 			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
 			p.setSupplierNm(CodeNm);
 			
-			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
+			p.setStr(p.getPackagingNm() + "_" + p.getMatTypeNm() + "_" + p.getPartTypeNm() + "_" + p.getSupplierNm());
 			
            productMapper.insertProductPackaging(p);
         }
