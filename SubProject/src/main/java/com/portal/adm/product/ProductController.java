@@ -898,11 +898,11 @@ public class ProductController {
 	    	for(String self : selfs) {
 	    		prodPackagingMatModel.setGroupId(self.split("\\|\\|")[0]);
 	    		prodPackagingMatModel.setCodeId(self.split("\\|\\|")[1]);
-	    		if(prodPackagingMatModel.getCodeId().contains("_B")) {
+	    		if(self.split("\\|\\|")[1].contains("_B")) {
 	    			prodPackagingMatModel.setPackagingId(bPackagingId);
-	    		}else if(prodPackagingMatModel.getCodeId().contains("_L")) {
+	    		}else if(self.split("\\|\\|")[1].contains("_L")) {
 	    			prodPackagingMatModel.setPackagingId(lPackagingId);
-	    		}else if(prodPackagingMatModel.getCodeId().contains("_G")) {
+	    		}else if(self.split("\\|\\|")[1].contains("_G")) {
 	    			prodPackagingMatModel.setPackagingId(gPackagingId);
 	    		}
 	    		prodPackagingMatModel.setPackagingId(bPackagingId);
