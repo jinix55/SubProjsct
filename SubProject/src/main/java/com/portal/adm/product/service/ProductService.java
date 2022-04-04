@@ -395,6 +395,16 @@ public class ProductService {
 			
            productMapper.insertProductPackaging(p);
         }
+        
+        ProdPackagingMatModel prodPackagingMatModel = new ProdPackagingMatModel();
+        prodPackagingMatModel.setProductId(applyProductId);
+        prodPackagingMatModel.setPackagingOrder("1"); 
+		List<ProdPackagingMatModel> prodPackagingMatList = productMapper.selectProductSelfPackaging(prodPackagingMatModel);
+		for(ProdPackagingMatModel pM : prodPackagingMatList) {
+			pM.setProductId(productId);
+			productMapper.insertProductSelfPackaging(pM);
+		}
+       
 		return prodPackagingList;
 	}		
 	
