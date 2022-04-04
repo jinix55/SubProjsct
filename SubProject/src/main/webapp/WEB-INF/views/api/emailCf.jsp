@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -152,20 +153,21 @@ body {
 				<div class="tab-in-nav d-flex">
 					<span class="pt10 pr10">ㆍ재질유형</span>
 					<c:forEach items="${largeEnv}" var="list" varStatus="status">
-						<c:if test="${list.codeId eq packagingModel.matType}">
+						<c:if test="${list.codeId eq packagingModel.matType.substring(0,2)}">
 							<input id="matType" name="matType" type="hidden" class="text-input w200" value="${packagingModel.matType }">
 							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled>
 						</c:if>
 					</c:forEach>
 					<div class=" mr10 tc pt05 ml20">
+						<c:set var="partTypeNm" value=""></c:set>
 			          	<c:choose>
 			          		<c:when test="${!empty packagingModel.partType}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
-   						          	<c:if test="${list.codeId eq packagingModel.partType}">
-										<input id="partType" name="partType" value="${packagingModel.partType}" type="hidden">
-										<button id="partTypeNm" name="partTypeNm" value="${list.codeId}" type="button" class="button btn-radius partTypeCheck on">
-											${list.codeNm }
-										</button>
+   						          	<c:if test="${list.codeId eq fn:split(packagingModel.partType, '_')[1]}">
+										<input id="partType" name="partType" value="${fn:split(packagingModel.partType, '_')[1]}" type="hidden">
+<%-- 										<button id="partTypeNm" name="partTypeNm" value="${list.codeNm}" type="button" class="button btn-radius partTypeCheck on"> --%>
+<!-- 										</button> -->
+										<c:set var="partTypeNm" value="${list.codeNm}"></c:set>
 			          				</c:if>
 								</c:forEach>
 			          		</c:when>
@@ -192,7 +194,7 @@ body {
 
 				<!-- 몸체 상세-->
 				<h4 class="tl pt15">
-					<span class="title-point">[몸체 상세]</span>
+					<span class="title-point">[${partTypeNm} 상세]</span>
 				</h4>
 				<div class="row">
 					<div class="col-100">
@@ -217,7 +219,7 @@ body {
 					</div>
 					<div class="col-50">
 						<div class="form-group">
-							<label class="col-25 form-label">무게</label>
+							<label class="col-25 form-label">무게(g)</label>
 							<div class="col-75">
 								<div class="form-input">
 									<input id="weight" name="weight" type="text" class="text-input" value="${packagingModel.weight}">

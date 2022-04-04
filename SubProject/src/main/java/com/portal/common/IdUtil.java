@@ -203,4 +203,11 @@ public class IdUtil {
 	public String getProductId() {
 		return service.getId(Constant.ID.PRODUCT);
 	}
+	
+	/**
+	 * 알람 ID : 자가진단 ID
+	 */
+	public String getPackagingMatId() {
+		return service.getId(Constant.ID.PACKAGINGMAT);
+	}
 }

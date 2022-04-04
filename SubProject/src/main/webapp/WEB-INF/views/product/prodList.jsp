@@ -71,9 +71,8 @@
                   <div class="search-box w250">
                     <input id="searchValue" name="searchValue" value="${pages.searchValue}" type="text" class="text-input">
                     <span class="search-box-append">
-                      <button type="button" class="btn-search">
-						<img class="searchBtn" src="/images/icon_search.png" title="검색">
-					  </button>
+                      <button type="submit" class="button-search"><img src="/images/icon_search.png"
+                          title="검색"></button>
                     </span>
                   </div>
                 </div>
@@ -150,16 +149,16 @@
 								</td>
 								<td>${product.masterApplyNm}</td>
 								<td>${product.check1}</td>
-								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
-								<td><a href="#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
+								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
 								<td>
 									<div class="btn-group">
 										<a href="#edit" onclick="detailView('${product.productId}');" role="button" data-toggle="modal" class="btn-icon">
-											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
+											<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
 										<a href="#delete"  onclick="deleteProductItemSet('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
-											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
+											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" >
 										</a>
 									</div>
 								</td>
@@ -179,8 +178,8 @@
             </div>
             <!-- E_그리드-->
             <div class="btn-group pt15 tr">
-              <button id="registView" type="button" class="button btn-success" data-toggle="modal">
-              	<a href="#register" data-toggle="modal">상품관리</a></button>
+              <button id="registView" type="button" class="button btn-success" data-toggle="modal"><a href="#register"
+                  data-toggle="modal">상품관리</a></button>
             </div>
             <!-- S_페이징-->
             <div class="board-paging"></div>
@@ -578,7 +577,7 @@
   <form id="frmUpdate"  enctype="multipart/form-data">
 	  <!-- 레이어 팝업 - 수정  -->
 	  <div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-content" style="width:1100px">
+		<div class="modal-content" style="width:1000px">
 		  <div class="modal-header">
 			<h4 class="modal-title">상품수정</h4>
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
@@ -622,7 +621,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-35">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear">누적판매량(기준 년)</label>
 						<input id="edit_baseYear_hidden" name="baseYear" type="hidden">
@@ -633,7 +632,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-25">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -641,16 +640,16 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-40">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60 d-flex">
+						<div class="col-60">
 						  <input id="edit_recyleContributions" name="recyleContributions" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions');" type="button" class="button btn-success" style="width:70px;padding: 0px;">계산</button>
+						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
-					<div class="col-35">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear_1">누적판매량(1년전)</label>
 						<div class="col-60">
@@ -658,7 +657,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-25">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -666,16 +665,16 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-40">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60 d-flex">
+						<div class="col-60">
 						  <input id="edit_recyleContributions_1" name="recyleContributions_1" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
-					<div class="col-35">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear_2">누적판매량(2년전)</label>
 						<div class="col-60">
@@ -683,7 +682,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-25">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -691,12 +690,12 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-40">
+					<div class="col-33">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60 d-flex">
+						<div class="col-60">
 						  <input id="edit_recyleContributions_2" name="recyleContributions_2" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success">계산</button>
 						</div>
 					  </div>
 					</div>
@@ -872,7 +871,7 @@
 			<div class="row">
 			  <div class="tab-content-box">
 				<p>
-				  <button id="btn-add-tab" type="button" class="btn-form-small fr">탭 추가</button>
+				  <button id="btn-add-tab" type="button" class="button-Rsmall fr">탭 추가</button>
 				</p>
 				<!-- Nav tabs -->
 				<ul id="tab-list" class="nav tab-nav" role="tablist">
@@ -901,7 +900,7 @@
 									<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
 									</ul>
 									<div class="add-row">
-									  <button id='btn-add-row' class="btn-form-small">(+)추가하기</button>
+									  <button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
 									</div>
 								  </div>
 								  <!--S_몸체 -->
@@ -1361,16 +1360,16 @@
 						}
 					});
 					
-					selfPackInfo += '				  <li class="choice-box2">';
+					selfPackInfo += '				  <li class="choice-box">';
 					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
-					selfPackInfo += '                    <div class="choice-cont2">';
+					selfPackInfo += '                    <div class="choice-cont">';
 					selfPackInfo += '                      <ul>';
-					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'" style="margin:0 4px">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
-  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'" style="margin:0 4px">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'" style="margin:0 4px">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'" style="margin:0 4px">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'" style="margin:0 4px">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
-   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'" style="margin:0 4px">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
+					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
+  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
 					selfPackInfo += '                      </ul>';
 					selfPackInfo += '    				 </div>';
 					selfPackInfo += '                  </li>';
@@ -1400,8 +1399,8 @@
                     selfPackInfo += '               <div class="row">';
                     selfPackInfo += '                 <div class="col-50">';
                     selfPackInfo += '                   <div class="form-group pb0">';
-                    selfPackInfo += '                     <label class="col-45 form-label">'+item.codeNm+ '평가결과</label>';
-                    selfPackInfo += '                     <div class="col-55">';
+                    selfPackInfo += '                     <label class="col-25 form-label">'+item.codeNm+'평가결과</label>';
+                    selfPackInfo += '                     <div class="col-75">';
                     selfPackInfo += '                       <div class="form-input">';
                     selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수" disabled id="results-'+item.codeId+'">';
                     selfPackInfo += '                       </div>';
@@ -2579,7 +2578,7 @@
 		innerHtml += '<input name="managerNm" type=hidden class="text-input managerNm">';
 		innerHtml += '<input name="managerMail" type=text class="text-input supplierMail">';
 		innerHtml += '<span class=search-box-append>';
-		innerHtml += '<button type=button class="btn-search sendEmail">이메일보내기</button>';
+		innerHtml += '<button type=button class="button-search sendEmail">이메일보내기</button>';
 		innerHtml += '</span>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
@@ -2593,7 +2592,7 @@
 		innerHtml += '<div class=search-box>';
 		innerHtml += '<input type=text disabled class=text-input value='+matFileNm+'>';
 		innerHtml += '<span class=search-box-append>';
-		innerHtml += '<button type=button class=btn-search onclick=\'downloadFile("'+matFileId+'");\'>다운로드</button>';
+		innerHtml += '<button type=button class=button-search onclick=\'downloadFile("'+matFileId+'");\'>다운로드</button>';
 		innerHtml += '</span>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';

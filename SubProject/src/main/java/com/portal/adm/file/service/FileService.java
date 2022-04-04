@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,21 +103,23 @@ public class FileService {
 	 * @param model
 	 * @return
 	 */
-//	public ByteArrayResource getByteArrayResource(FileModel model) {
-//		ByteArrayResource resource = null;
-//		try {
+	public ByteArrayResource getByteArrayResource(FileModel model) {
+		ByteArrayResource resource = null;
+		try {
 //			if (StringUtils.equals(Constant.File.AWS_S3, model.getStorageSe())) {
-//				// S3
+				// S3
 //				if (s3Util.download(model)) {
-//					resource = new ByteArrayResource(IOUtils.toByteArray(model.getInputStream()));
+			Path path = Paths.get(model.getFileUrl() + "/" + model.getFileNm());
+	        byte[] data = Files.readAllBytes(path);
+					resource = new ByteArrayResource(data);
 //				}
 //			}
-//		} catch (IOException e) {
-//			log.warn("file 변환 처리 중 오류");
-//			log.warn(e.getMessage());
-//		}
-//		return resource;
-//	}
+		} catch (IOException e) {
+			log.warn("file 변환 처리 중 오류");
+			log.warn(e.getMessage());
+		}
+		return resource;
+	}
 
 	/**
 	 * 사용자 기본 사진
@@ -270,10 +275,11 @@ public class FileService {
 		String fileNm = "";
 		// request의 파일 정보 파라메터로 파일을 조회 후 다운로드
 		FileModel f = new FileModel();
-		f.setFileUrl(uuid);
+		f.setFileId(uuid);
+//		f.setFileUrl(uuid);
 		FileModel f1 = fileService.selectFile(f);
 		if(f1 != null) {
-//			resource = getByteArrayResource(f1);
+			resource = getByteArrayResource(f1);
 			if (resource != null) {
 				fileSize = resource.contentLength();
 			}
@@ -323,7 +329,8 @@ public class FileService {
 			resource = getDefaultPreview();
 			fileNm = "img_noimg.png";
 		}
-		long fileSize = resource.contentLength();
+		
+		long fileSize = model.getFileSize(); //resource.contentLength();
 
 		return ResponseEntity.ok().headers(getHeaders(fileNm)).contentLength(fileSize).contentType(MediaType.IMAGE_PNG)
 				.body(resource);
@@ -337,13 +344,16 @@ public class FileService {
 	 */
 	public ResponseEntity<ByteArrayResource> getView(HttpServletRequest request, String uuid) {
 		// DB 조회 해서 이미지 가져오기
-		FileModel model = null;
+		FileModel model = new FileModel();;
 		String fileNm = null;
 		ByteArrayResource resource = null;
 		if (StringUtils.isNotBlank(uuid)) {
-			model = mapper.selectViewFile(uuid);
+			model.setFileId(uuid);
+//			model.setFileUrl(uuid);
+			model = fileService.selectFile(model);
+//			model = mapper.selectViewFile(uuid);
 			if (model != null) {
-//				resource = getByteArrayResource(model);
+				resource = getByteArrayResource(model);
 				fileNm = model.getFileNm();
 			}
 		}
@@ -382,7 +392,7 @@ public class FileService {
 			resource = getDefaultPhoto();
 			fileNm = "icon_top_user.png";
 		}
-		long fileSize = resource.contentLength();
+		long fileSize = model.getFileSize(); //resource.contentLength();
 
 		return ResponseEntity.ok().headers(getHeaders(fileNm)).contentLength(fileSize).contentType(MediaType.IMAGE_JPEG)
 				.body(resource);
@@ -413,7 +423,7 @@ public class FileService {
 			resource = getDefaultPhoto();
 			fileNm = "icon_top_user.png";
 		}
-		long fileSize = resource.contentLength();
+		long fileSize = model.getFileSize(); //resource.contentLength();
 
 		return ResponseEntity.ok().headers(getHeaders(fileNm)).contentLength(fileSize).contentType(MediaType.IMAGE_JPEG)
 				.body(resource);
@@ -443,7 +453,7 @@ public class FileService {
 			resource = getDefaultPreview();
 			fileNm = "icon_top_user.png";
 		}
-		long fileSize = resource.contentLength();
+		long fileSize = model.getFileSize(); //resource.contentLength();
 		
 		return ResponseEntity.ok().headers(getHeaders()).contentLength(fileSize).contentType(MediaType.IMAGE_JPEG)
 				.body(resource);		

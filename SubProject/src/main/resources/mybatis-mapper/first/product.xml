@@ -7,9 +7,7 @@
 	<sql id="searchProduct">
 		<where>
 			and USE_YN = 'Y'
-			<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%') or upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%') or (upper(RECYCLE_GRADE) like concat('%',upper(#{searchValue}),'%')) or upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
-			</if>
+
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
 				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
@@ -18,9 +16,6 @@
 			</if>
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
 				and (upper(RECYCLE_GRADE) = upper(#{searchValue}))
-			</if>
-			<if test="searchKey != '' and searchKey == 'completeStatus' and searchValue != ''">
-				and (upper(COMPLETE_STATUS) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 		</where>
 	</sql>
@@ -35,12 +30,12 @@
 			PRODUCT_ID,
 			PRODUCT_NM,
 			PRODUCT_CODE,
-			PACKING_TYPE,
 			RECYCLE_GRADE,
-			COMPLETE_STATUS,
 			CHECK1,
 			PHOTO,
 			SPEC,
+			MASTER_APPLY,
+			MASTER_MAPPING,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -58,35 +53,46 @@
 		FROM T_PRODUCT
 		<include refid="searchProduct"></include>	
 	</select>	
+
+	<select id="selectProductListCountByProductCode" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		FROM T_PRODUCT
+		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
+		  AND USE_YN = 'Y'		
+	</select>	
+
 	
 	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-			  PRODUCT_ID
-			, PRODUCT_NM
-			, PRODUCT_CODE
-			, PRODUCT_CLASS
-			, SUPPLIER_INFO
-			, PRODUCT_MAKER
-			, SUMMARY
-			, PHOTO
-			, COMPLETE_STATUS
-			, CHECK1
-			, MASTER_APPLY
-			, RECEIPT_NUMBER
-			, APPROVAL_NUMBER
+			  a.PRODUCT_ID
+			, a.PRODUCT_NM
+			, a.PRODUCT_CODE
+			, a.PRODUCT_CLASS
+			, a.SUPPLIER_INFO
+			, a.PRODUCT_MAKER
+			, a.SUMMARY
+			, a.PHOTO
+			, a.CHECK1
+			, a.MASTER_APPLY
+			, a.RECEIPT_NUMBER
+			, a.APPROVAL_NUMBER
 			
-			, MASTER_MAPPING
-			, MAPPING_PRODUCT_ID
+			, a.MASTER_MAPPING
+			, a.MAPPING_PRODUCT_CODE
+			, b.PRODUCT_NM MAPPING_PRODUCT_NM 
 			
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			T_PRODUCT 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
+			T_PRODUCT a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_CODE = b.MAPPING_PRODUCT_CODE
+         AND b.USE_YN = 'Y'
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
@@ -130,16 +136,14 @@
 			, PRODUCT_MAKER    = #{productMaker}
 			, SUMMARY    = #{summary}
 			, PHOTO    = #{photo}
-			, PACKING_TYPE  = #{packingType}
 			, RECYCLE_GRADE = #{recycleGrade}
-			, COMPLETE_STATUS  = #{completeStatus}
 			, CHECK1   = #{check1}
 			, MASTER_APPLY   = #{masterApply}
 			, RECEIPT_NUMBER   = #{receiptNumber}
 			, APPROVAL_NUMBER   = #{approvalNumber}
 			
 			, MASTER_MAPPING   = #{masterMapping}
-			, MAPPING_PRODUCT_ID   = #{mappingProductId}
+			, MAPPING_PRODUCT_CODE   = #{mappingProductCode}
 		WHERE
 			PRODUCT_ID = #{productId}
 	</update>
@@ -162,76 +166,81 @@
 	
 	<select id="selectProductPackaging" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
-			  PACKAGING_ID
-			, PRODUCT_ID
-			, PRODUCT_NM
-			, PACKAGING_NM
-			, PACKAGING_DSC
-			, PACKAGING_ORDER
-			, MAT_TYPE
-			, PART_TYPE
-			, PART_TYPE_ORDER
-			, MAT_INFO
-			, WEIGHT
-			, STANDARD
-			, COLOR
-			, ADD_EXPLAN
-			, MAT_FILE_ID
-			, SUPPLIER_CODE
-			, MANAGER_ID
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			  a.PACKAGING_ID
+			, a.PRODUCT_ID
+			, b.PRODUCT_NM
+			, a.PACKAGING_NM
+			, a.PACKAGING_DSC
+			, a.PACKAGING_ORDER
+			, a.MAT_TYPE
+			, a.PART_TYPE
+			, a.PART_TYPE_ORDER
+			, a.MAT_INFO
+			, a.WEIGHT
+			, a.STANDARD
+			, a.COLOR
+			, a.ADD_EXPLAN
+			, a.MAT_FILE_ID
+			, a.SUPPLIER_CODE
+			, a.MANAGER_ID
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			t_product_packaging 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
+			t_product_packaging a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'			
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
 		  <if test="packagingOrder  != null and packagingOrder != ''">
-				and (PACKAGING_ORDER = #{packagingOrder})
+				and (a.PACKAGING_ORDER = #{packagingOrder})
 		  </if>
 		  <if test="packagingId  != null and packagingId != ''">
-				and (PACKAGING_ID = #{packagingId})
+				and (a.PACKAGING_ID = #{packagingId})
 		  </if>
 	</select>
 	
 	<select id="selectProductPackagingDetail" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
-			  PACKAGING_ID
-			, PRODUCT_ID
-			, PRODUCT_NM
-			, PACKAGING_NM
-			, PACKAGING_DSC
-			, PACKAGING_ORDER
-			, MAT_TYPE
-			, PART_TYPE
-			, PART_TYPE_ORDER
-			, MAT_INFO
-			, WEIGHT
-			, STANDARD
-			, COLOR
-			, ADD_EXPLAN
-			, MAT_FILE_ID
-			, SUPPLIER_CODE
-			, MANAGER_ID
-			, USE_YN
-			, RGST_ID
-			, RGST_DT
-			, MODI_ID
-			, MODI_DT
+			  a.PACKAGING_ID
+			, a.PRODUCT_ID
+			, b.PRODUCT_NM
+			, a.PACKAGING_NM
+			, a.PACKAGING_DSC
+			, a.PACKAGING_ORDER
+			, a.MAT_TYPE
+			, a.PART_TYPE
+			, a.PART_TYPE_ORDER
+			, a.MAT_INFO
+			, a.WEIGHT
+			, a.STANDARD
+			, a.COLOR
+			, a.ADD_EXPLAN
+			, a.MAT_FILE_ID
+			, a.SUPPLIER_CODE
+			, a.MANAGER_ID
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
 		FROM
-			t_product_packaging 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND USE_YN = 'Y'
-		  AND (PACKAGING_ID = #{packagingId})
+			t_product_packaging a
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'						
+		WHERE upper(a.PRODUCT_ID) = upper(#{productId})
+		  AND a.USE_YN = 'Y'
+		  AND (a.PACKAGING_ID = #{packagingId})
 	</select>
 	
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   
 			, PRODUCT_ID     
-			, PRODUCT_NM     
 			, PACKAGING_NM   
 			, PACKAGING_DSC  
 			, PACKAGING_ORDER
@@ -253,7 +262,6 @@
 		) VALUES (
 			  #{packagingId}
 			, #{productId}
-			, #{productNm}
 			, #{packagingNm}
 			, #{packagingDsc}
 			, #{packagingOrder}
@@ -280,7 +288,6 @@
 		SET
 			  PACKAGING_ID         = #{packagingId}      
 			, PRODUCT_ID           = #{productId}        
-			, PRODUCT_NM           = #{productNm}        
 			, PACKAGING_NM         = #{packagingNm}      
 			, PACKAGING_DSC        = #{packagingDsc}     
 			, PACKAGING_ORDER      = #{packagingOrder}   
@@ -385,6 +392,160 @@
 		]]>			 
 	</select>
 
-	
+	<select id="selectMaxPartProductPackagingOrder" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT
+			    ifnull(max(packaging_order), 9) packaging_order
+			FROM
+				T_PRODUCT_PACKAGING
+	        WHERE use_yn = 'Y'
+	         AND  product_id = #{productId}
+		     AND  packaging_order >= 10
+		]]>			 
+	</select>	
 		
+		
+	<select id="selectProductPackagingList" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT                                                                               
+			  a.PACKAGING_ID                                          
+			, a.PRODUCT_ID                                            
+			, b.PRODUCT_NM                                            
+			, a.PACKAGING_NM                                          
+			, a.PACKAGING_DSC                                         
+			, a.PACKAGING_ORDER                                       
+			, a.MAT_TYPE                                              
+			, a.PART_TYPE                                             
+			, a.PART_TYPE_ORDER                                       
+			, a.MAT_INFO                                              
+			, a.WEIGHT                                                
+			, a.STANDARD                                              
+			, a.COLOR                                                 
+			, a.ADD_EXPLAN                                       
+			, a.MAT_FILE_ID        
+			, a.SUPPLIER_CODE      
+			, a.MANAGER_ID         
+		FROM                                                       
+			T_PRODUCT_PACKAGING a 
+	    LEFT OUTER JOIN T_PRODUCT b
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
+         AND b.USE_YN = 'Y'	
+       WHERE a.USE_YN = 'Y'  		    		
+	</select>
+
+
+		
+	<select id="selectProductPackagingListByProductId" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		SELECT                                                                               
+			  a.PACKAGING_ID                                          
+			, a.PRODUCT_ID                                            
+			, a.PACKAGING_NM                                          
+			, a.PACKAGING_DSC                                         
+			, a.PACKAGING_ORDER                                       
+			, a.MAT_TYPE                                              
+			, a.PART_TYPE                                             
+			, a.PART_TYPE_ORDER                                       
+			, a.MAT_INFO                                              
+			, a.WEIGHT                                                
+			, a.STANDARD                                              
+			, a.COLOR                                                 
+			, a.ADD_EXPLAN                                       
+			, a.MAT_FILE_ID        
+			, a.SUPPLIER_CODE      
+			, a.MANAGER_ID         
+		FROM                                                       
+			T_PRODUCT_PACKAGING a 
+       WHERE a.USE_YN = 'Y'
+        AND  a.PRODUCT_ID =  #{productId}
+        AND  a.PACKAGING_ORDER = 1 		 		    		
+	</select>
+
+
+
+
+
+
+
+
+		
+	<select id="getProductId" resultType="String" parameterType="String">
+		SELECT                                                                               
+			  PRODUCT_ID                                            
+		FROM                                                       
+			T_PRODUCT 
+       WHERE USE_YN = 'Y' 
+        AND  PRODUCT_CODE = #{productCode} 		    		
+	</select>
+	
+	<select id="selectProductSelfPackaging" resultType="com.portal.adm.product.model.ProdPackagingMatModel" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		SELECT
+			  PACKAGING_MAT_ID
+			, PACKAGING_ID   
+			, PRODUCT_ID     
+			, PACKAGING_ORDER
+			, FILE
+<!-- 			, MAT_TYPE        -->
+<!-- 			, PART_TYPE       -->
+			, GROUP_ID       
+			, CODE_ID         
+			, REVISION_YEAR       
+			, REVISION_MONTH          
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		FROM t_product_packaging_mat
+		WHERE PRODUCT_ID = #{productId} 
+		  AND PACKAGING_ORDER = #{packagingOrder} 
+		  AND USE_YN = 'Y'
+	</select>	
+	
+	<insert id="insertProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		INSERT INTO t_product_packaging_mat (
+			  PACKAGING_MAT_ID
+			, PACKAGING_ID   
+			, PRODUCT_ID     
+			, PACKAGING_ORDER
+			, FILE
+<!-- 			, MAT_TYPE        -->
+<!-- 			, PART_TYPE       -->
+			, GROUP_ID       
+			, CODE_ID         
+			, REVISION_YEAR       
+			, REVISION_MONTH          
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingMatId}
+			, #{packagingId}
+			, #{productId}
+			, #{packagingOrder}
+			, #{file}
+<!-- 			, #{matType} -->
+<!-- 			, #{partType} -->
+			, #{groupId}
+			, #{codeId}
+			, #{revisionYear}
+			, #{revisionMonth}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>		
+		
+	<update id="deleteProductSelfPackaging" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
+		UPDATE t_product_packaging_mat
+		SET
+			  USE_YN = 'N'
+			, MODI_ID              = #{modiId}           
+			, MODI_DT              = now()   
+		WHERE
+			PRODUCT_ID           = #{productId}
+			and (PACKAGING_ORDER = #{packagingOrder})
+	</update>	
 </mapper>

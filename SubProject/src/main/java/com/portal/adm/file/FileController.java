@@ -1,12 +1,14 @@
 package com.portal.adm.file;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +34,24 @@ public class FileController {
 	@Resource(name="fileService")
 	private FileService service;
 	
+	
+	/**
+	 * File Upload
+	 * @param request
+	 * @param multipart
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/file/list/{refId}", method=RequestMethod.GET)
+	public ResponseEntity<List<FileModel>> selectList(HttpServletRequest request, @PathVariable String refId, @AuthenticationPrincipal AuthUser authUser) {
+		//파일 조회
+		FileModel f = new FileModel();
+		f.setRefId(refId);    	
+		List<FileModel> fileList = service.selectFileList(f);
+		
+		return new ResponseEntity<>(fileList, HttpStatus.OK);
+	}
+	
 	/**
 	 * File Upload
 	 * @param request
@@ -50,7 +70,7 @@ public class FileController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/file/detail/{uuid}", method=RequestMethod.POST)
+	@RequestMapping(value="/file/detail/{uuid}", method={RequestMethod.GET,RequestMethod.POST})
 	public ResponseEntity<ByteArrayResource> download(HttpServletRequest request, @PathVariable String uuid) {
 		ResponseEntity<ByteArrayResource> result = service.download(uuid);
 		return result;
@@ -68,7 +88,9 @@ public class FileController {
 		
 		//Map<String,Object> result = null;
 		Map<String,Object> result = new HashMap<String, Object>();
-		fileModel.setFileUrl(uuid);
+		fileModel.setFileId(uuid);
+		fileModel = service.selectFile(fileModel);
+//		fileModel.setFileUrl(uuid);
 		fileModel.setUseYn("N");
 		fileModel.setModiId(authUser.getMemberModel().getUserId());
 		long cnt = service.deleteFile(fileModel);
