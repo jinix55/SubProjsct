@@ -64,15 +64,16 @@
 					<option value="productNm">상품명</option>
 					<option value="packingType">포장유형</option>
 					<option value="recycleGrade">재활용등급</option>
-					<option value="completeStatus">상태</option>
+					<option value="masterApplyNm">상태</option>
                   </select>
                 </div>
                 <div class="form-inline">
                   <div class="search-box w250">
                     <input id="searchValue" name="searchValue" value="${pages.searchValue}" type="text" class="text-input">
                     <span class="search-box-append">
-                      <button type="submit" class="button-search"><img src="/images/icon_search.png"
-                          title="검색"></button>
+                      <button type="button" class="btn-search">
+						<img class="searchBtn" src="/images/icon_search.png" title="검색">
+					  </button>
                     </span>
                   </div>
                 </div>
@@ -147,18 +148,18 @@
 									</c:choose>
 									${product.recycleGrade}
 								</td>
-								<td>${product.completeStatus}</td>
+								<td>${product.masterApplyNm}</td>
 								<td>${product.check1}</td>
-								<td><a href="#" onclick="productPackagingOrder('${product.productId}');" role="button" data-toggle="modal" class="button-Csmall">포장정보등록</a></td>
-								<td><a href="#envi_result" role="button" data-toggle="modal" class="button-Csmall">결과확인</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
+								<td><a href="#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
 								<td>
 									<div class="btn-group">
 										<a href="#edit" onclick="detailView('${product.productId}');" role="button" data-toggle="modal" class="btn-icon">
-											<img src="/images/icon_edit.png" alt="수정하기" class="btn-Ticon02" id="editBtn_${product.rownum}" >
+											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
 										<a href="#delete"  onclick="deleteProductItemSet('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
-											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-Ticon02" >
+											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
 								</td>
@@ -178,8 +179,8 @@
             </div>
             <!-- E_그리드-->
             <div class="btn-group pt15 tr">
-              <button id="registView" type="button" class="button btn-success" data-toggle="modal"><a href="#register"
-                  data-toggle="modal">상품관리</a></button>
+              <button id="registView" type="button" class="button btn-success" data-toggle="modal">
+              	<a href="#register" data-toggle="modal">상품관리</a></button>
             </div>
             <!-- S_페이징-->
             <div class="board-paging"></div>
@@ -200,7 +201,8 @@
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
-			<input id="completeStatus" name="completeStatus" type="hidden" value="진행중" class="text-input" >
+			<input id="masterApply" name="masterApply" type="hidden" value="UNPROCEED" class="text-input" >
+			<input id="masterMapping" name="masterMapping" type="hidden" value="UNMAPPING" class="text-input" >
 			<div class="row">
 			  <div class="col-50">
 				<div class="form-group">
@@ -576,7 +578,7 @@
   <form id="frmUpdate"  enctype="multipart/form-data">
 	  <!-- 레이어 팝업 - 수정  -->
 	  <div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-content" style="width:1000px">
+		<div class="modal-content" style="width:1100px">
 		  <div class="modal-header">
 			<h4 class="modal-title">상품수정</h4>
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
@@ -603,17 +605,6 @@
 					  </div>
 					</div>
 					<div class="col-50">
-<!-- 					  <div class="form-group"> -->
-<!-- 						<label class="col-25 form-label">상품분류</label> -->
-<!-- 						<div class="col-75"> -->
-<!-- 						  <select id="edit_productClass" name="productClass" class="select-box"> -->
-<!-- 							<option value="선택없음" selected="">선택없음</option> -->
-<%-- 							<c:forEach items="${productTypeList}" var="list" varStatus="status"> --%>
-<%-- 								<option value="${list}">${list}</option> --%>
-<%-- 							</c:forEach> --%>
-<!-- 						  </select> -->
-<!-- 						</div> -->
-<!-- 					  </div> -->
 					</div>
 					<div class="col-50">
 					  <div class="form-group">
@@ -631,7 +622,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-35">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear">누적판매량(기준 년)</label>
 						<input id="edit_baseYear_hidden" name="baseYear" type="hidden">
@@ -642,7 +633,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-25">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -650,16 +641,16 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-40">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60">
+						<div class="col-60 d-flex">
 						  <input id="edit_recyleContributions" name="recyleContributions" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions');" type="button" class="button btn-success">계산</button>
+						   <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions');" type="button" class="button btn-success" style="width:70px;padding: 0px;">계산</button>
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-35">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear_1">누적판매량(1년전)</label>
 						<div class="col-60">
@@ -667,7 +658,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-25">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -675,16 +666,16 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-40">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60">
+						<div class="col-60 d-flex">
 						  <input id="edit_recyleContributions_1" name="recyleContributions_1" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-35">
 					  <div class="form-group">
 						<label class="col-40 form-label"  id="edit_baseYear_2">누적판매량(2년전)</label>
 						<div class="col-60">
@@ -692,7 +683,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-25">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
 						<div class="col-60">
@@ -700,12 +691,12 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-33">
+					<div class="col-40">
 					  <div class="form-group">
 						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60">
+						<div class="col-60 d-flex">
 						  <input id="edit_recyleContributions_2" name="recyleContributions_2" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success">계산</button>
+						  <button id="edit_calculateRecyleContributions" onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
 						</div>
 					  </div>
 					</div>
@@ -714,8 +705,6 @@
 						<label class="col-25 form-label">상품제조사</label>
 						<div class="col-75">
 						  <div class="form-input-box" id="edit_productMaker">
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명1</a> -->
-<!-- 							<a href="#" role="button" data-toggle="modal" class="button-Csmall d-inblock" style="padding: 0 10px;">상품제조사명2</a> -->
 						  </div>
 						</div>
 					  </div>
@@ -755,19 +744,7 @@
 					  <div class="form-group">
 						<label class="col-20 form-label">진행상태</label>
 						<div class="col-80">
-						  <div class="form-input-box" id="edit_completeStatus">
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="미진행">
-							  <label for="completeStatus" class="mr05">미진행</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="진행중">
-							  <label for="completeStatus" class="mr05">진행중</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="완료">
-							  <label for="completeStatus" class="mr05">완료</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="completeStatus" value="환경부 제외 상품">
-							  <label for="completeStatus" class="mr05">환경부 제외 상품</label></div>
+						  <div class="form-input-box" id="edit_masterApplyNm">
 						  </div>
 						</div>
 					  </div>
@@ -777,17 +754,6 @@
 						<label class="col-20 form-label">매핑상태</label>
 						<div class="col-80">
 						  <div class="form-input-box" id="edit_masterApply">
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio"  name="masterApply" value="미매핑">
-							  <label for="masterApply" class="mr05">미매핑</label></div>
-							<div class="button-Rsmall d-inblock">  
-							  <input type="radio" name="masterApply" value="매핑있음">
-							  <label for="masterApply" class="mr05">매핑있음</label></div>
-							<div class="button-Rsmall d-inblock">
-							  <input type="radio" name="masterApply" value="매핑없음">
-							  <label for="masterApply" class="mr05">매핑없음</label></div>
-							 <div class="button-Rsmall d-inblock"  onclick="mapProductCode('edit_productCodeSave');">
-							  <label class="mr05">매핑실행</label></div>
 						  </div>
 						</div>
 					  </div>
@@ -806,9 +772,9 @@
 					</div>
 					<div class="col-50">
 					  <div class="form-group">
-						<label class="col-20 form-label">매핑상품번호</label>
+						<label class="col-20 form-label">매핑상품코드</label>
 						<div class="col-30">
-						  <input id="edit_mappingProductId" name="mappingProductId" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_mappingProductCode" name="mappingProductCode" type="text" class="text-input"  autocomplete="off">
 						</div>
 						<label class="col-20 form-label">매핑상품명</label>
 						<div class="col-30">
@@ -894,7 +860,7 @@
 	  </div>
   </form>
   
-  <form id="frmDetail">
+  
 	  <!-- 레이어 팝업 - 상세  -->
 	  <div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:auto;max-width:1100px">
@@ -906,7 +872,7 @@
 			<div class="row">
 			  <div class="tab-content-box">
 				<p>
-				  <button id="btn-add-tab" type="button" class="button-Rsmall fr">탭 추가</button>
+				  <button id="btn-add-tab" type="button" class="btn-form-small fr">탭 추가</button>
 				</p>
 				<!-- Nav tabs -->
 				<ul id="tab-list" class="nav tab-nav" role="tablist">
@@ -919,6 +885,7 @@
 					<div id="tab03_1">
 					  <div class="row">
 						<!--S_탭 tab04-->
+						
 						<div class="tab04">
 						  <ul class="tabnav04 tc mb10">
 							<li><a href="#" onclick="javascript:showMatTypeSelf('tab04_1', this);">재질정보</a></li>
@@ -926,118 +893,58 @@
 						  </ul>
 						  <!--S_탭 tabcontent04-->
 						  <div class="tabcontent04">
-							<div id="tab04_1">
-							  <div class="tab-in-nav d-flex">
-							  		<input type="hidden" name="matType" id="matType">
-<!-- 								<div class="tab-in-nav d-flex"> -->
-<!-- 								  <span class="pt10 pr10">ㆍ재질유형</span> -->
-<!-- 								  <select id="matType" name="matType" class="select-box w200 mr10"> -->
-<!-- 									<option value="">선택</option> -->
-<%-- 									<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%>
-<%-- 										<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%>
-<%-- 									</c:forEach> --%>
-<!-- 								  </select> -->
-<!-- 								</div> -->
-								<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in1');">몸체</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in2');">라벨</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in3');">마개</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in4');">잡자재</a></li> -->
-<!-- 								  <li><a href="#" onclick="javascript:showMatType('tab04_1_in5');">별도포장</a></li> -->
-								</ul>
-								<div class="add-row">
-								  <button id='btn-add-row' class="button-Rsmall">(+)추가하기</button>
-<!-- 								  <button id='btn-delete-row' class="button-Rsmall">(-)삭제하기</button> -->
-								</div>
-							  </div>
-							  <!--S_몸체 -->
-							  <div class="tabcontent04-in">
-								<ul class="tabnav04-in d-flex pt05" id="partTypeDetail" style="display:none;">
-								</ul>
-								<div class="mytable_1_in" id="tab04_1_in1">
-								  <div id="mytable_1_in1">
+							<form id="frmDetail">
+								<div id="tab04_1">
+								  <div class="tab-in-nav d-flex">
+								  		<input id="frmDetail_productCode" type="hidden" class="text-input">
+								  		<input type="hidden" name="matType" id="matType">
+									<ul class="tabnav04-in d-flex pt05" id="selfPartType1">
+									</ul>
+									<div class="add-row">
+									  <button id='btn-add-row' class="btn-form-small">(+)추가하기</button>
+									</div>
 								  </div>
-								</div>
-<!-- 								<div class="mytable_1_in" id="tab04_1_in2"> -->
-<!-- 								  <div id="mytable_1_in2"> -->
-<!-- 								  </div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in3"> -->
-<!-- 								  <div id="mytable_1_in3"> -->
-<!-- 								  </div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in4"> -->
-<!-- 									<div id="mytable_1_in4"> -->
-<!-- 								  	</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="mytable_1_in" id="tab04_1_in5"> -->
-<!-- 									<div id="mytable_1_in5"> -->
-<!-- 								  	</div> -->
-<!-- 								</div> -->
-								<!-- 버튼 -->
-							  </div>
-							  <div class="modal-footer btn-group">
-								<button  id="savePackagingBtn" type="button" class="button btn-success">저장</button>
-								<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-							  </div>
-							  <!--E_몸체 -->
-
-							</div>
-							<!--S_탭 tab04_2 -->
-							<div id="tab04_2" style="display:none;">
-							  <div class="row">
-								<span class="pt10 pr10">ㆍ코드변경시점</span>
-								<select name="revision" class="select-box w150 mr10" id="codeDayList">
-<!-- 								  <option value="0">2021년7월</option> -->
-<!-- 								  <option value="1">2021년1월</option> -->
-								</select>
-								<div class="tab-in-nav d-flex">
-								  <span class="pt10 pr10">ㆍ재질유형</span>
-								  <select id="selfMatType" class="select-box w150 mr10">
-<!-- 									<option value="0">종이팩</option> -->
-<!-- 									<option value="1">플라스틱</option> -->
-								  </select>
-								  <ul class="d-flex pt05" id="selfPartType">
-<!-- 									<li class="button btn-radius on">몸체</li> -->
-<!-- 									<li class="button btn-radius">라벨</li> -->
-<!-- 									<li class="button btn-radius on">마개및잡자재</li> -->
-<!-- 									<li class="button btn-radius">라벨 마개 및 잡자재</li> -->
-								  </ul>
-								</div>
-							  </div>
-							  <!--<div class="cb">체크 </div>-->
-							  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
-								<div class="Accordion-box">
-								  <h4 class="que pt15"><span class="title-point" id="selfValidationLabel">[몸체]</span></h4>
-								  <div class="anw">
-									<ul class="choice-wrapper" id="selfValidation"></ul>
-									<div class="row" >
-									  <div class="col-50">
-										<div class="form-group pb0">
-										  <label class="col-25 form-label">증빙서류</label>
-										  <div class="col-75">
-											<div class="form-input">
-											  <input type="text" class="text-input"
-												placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
-											</div>
-										  </div>
-										</div>
-									  </div>
-									  <div class="col-50">
-										<div class="form-group pb0">
-										  <label class="col-25 form-label">첨부파일</label>
-										  <div class="col-75">
-											<input type="file" multiple="multiple" class="text-input">
-										  </div>
-										</div>
+								  <!--S_몸체 -->
+								  <div class="tabcontent04-in">
+									<ul class="tabnav04-in d-flex pt05" id="partTypeDetail" style="display:none;">
+									</ul>
+									<div class="mytable_1_in" id="tab04_1_in1">
+									  <div id="mytable_1_in1">
 									  </div>
 									</div>
-									<!-- S_결과확인-->
+									<!-- 버튼 -->
+								  </div>
+								  <div class="modal-footer btn-group">
+									<button  id="savePackagingBtn" type="button" class="button btn-success">저장</button>
+									<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+								  </div>
+								  <!--E_몸체 -->
+	
+								</div>
+							</form>
+							<!--S_탭 tab04_2 -->
+							<form id="frmSelfDiagnose"  enctype="multipart/form-data">
+								<div id="tab04_2" style="display:none;">
+								<input type="hidden" name="packagingOrder">
+								<input type="hidden" name="productId">
+								<input type="hidden" name="revisionYear" value="2022">
+								<input type="hidden" name="revisionMonth" value="03">
+								  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
+									<div class="Accordion-box">
+									</div>
+								  </div>
+								  <!-- 버튼 -->
+								  <div class="modal-footer btn-group" id="packagingInfo">
+									<button type="button" class="button btn-success" onclick="insertSelfDiagnoseAjax();">결과확인</button>
+									<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+								  </div>
+								  <!--S_최종결과 -->
+								  <div class="row100 pt10">
 									<div class="result-box">
 									  <div class="row">
 										<div class="col-50">
 										  <div class="form-group pb0">
-											<label class="col-25 form-label">몸체평가결과
+											<label class="col-25 form-label result-text">최종 결과
 											</label>
 											<div class="col-75">
 											  <div class="form-input">
@@ -1048,57 +955,20 @@
 										</div>
 										<div class="col-50">
 										  <div class="form-group pb0">
-											<label class="col-25 form-label">필요서류
-											  목록</label>
+											<label class="col-25 form-label result-text">매핑결과</label>
 											<div class="col-75">
 											  <div class="form-input">
-												<input type="text" class="text-input"
-												  placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타">
+												<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
 											  </div>
 											</div>
 										  </div>
 										</div>
 									  </div>
 									</div>
-									<!-- E_결과확인-->
 								  </div>
+								  <!--E_최종결과 -->
 								</div>
-							  </div>
-							  <!-- 버튼 -->
-							  <div class="modal-footer btn-group" id="packagingInfo">
-								<button type="button" class="button btn-success" data-dismiss="modal">결과확인</button>
-								<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-							  </div>
-							  <!--S_최종결과 -->
-							  <div class="row100 pt10">
-								<div class="result-box">
-								  <div class="row">
-									<div class="col-50">
-									  <div class="form-group pb0">
-										<label class="col-25 form-label result-text">최종 결과
-										</label>
-										<div class="col-75">
-										  <div class="form-input">
-											<input type="text" class="text-input" placeholder="우수">
-										  </div>
-										</div>
-									  </div>
-									</div>
-									<div class="col-50">
-									  <div class="form-group pb0">
-										<label class="col-25 form-label result-text">매핑결과</label>
-										<div class="col-75">
-										  <div class="form-input">
-											<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
-										  </div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-							  </div>
-							  <!--E_최종결과 -->
-							</div>
+							</form>
 							<!--E_탭 tab04_2 -->
 						  </div>
 						  <!--E_탭 tabcontent04-->
@@ -1114,74 +984,62 @@
 		  </div>
 		</div>
 	  </div>
-  </form>
+  
   
   <!-- 레이어 팝업 - 재질유형 정보 조회 -->
   <div id="matTypeSelect" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	aria-hidden="true" data-modal-parent="#myModal">
-	<div class="modal-content" style="width:400px">
-	  <div class="modal-header">
-		<h4 class="modal-title" id="matTypeSelectTab"></h4>
-		<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
-	  </div>
-	  <div class="modal-body">
-		<div class="row">
-		  <div class="col-100" id="matTypeSelectpackagingOrderNm">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">포장차수</span>
-				  <select id="packagingOrderNmApply" name="packagingOrderNmApply" class="select-box w200 mr10">
-<!-- 					<option value="">선택</option> -->
-<!-- 					<option value="1">기준포장</option> -->
-<!-- 					<option value="2">2차포장</option> -->
-<!-- 					<option value="3">3차포장</option> -->
-<!-- 					<option value="4">4차포장</option> -->
-<!-- 					<option value="5">5차보장</option> -->
-<!-- 					<option value="9">부속포장</option> -->
-				  </select>
-				</div>
-			</div>
-		  </div>
-		  <div class="col-100" id="matTypeSelectProductCode" style="display:none;">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">상품코드</span>
-				  <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped">
-				  <input type="text" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal" class="text-input w200 mr10" placeholder="기존에 등록된 상품코드등록해주세요.">
-				  <button type="button" class="button" onclick="mapProductCode('matTypeSelectProductCodeVal');">상품정보 확인</button>
-				</div>
-			</div>
-		  </div>
-		  <div class="col-100" id="matTypeSelectProductMatType"  style="display:none;">
-			<div class="form-group">
-			  <div class="tab-in-nav d-flex">
-				  <span class="pt10 pr10">재질유형</span>
-				  <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box w200 mr10">
-<!-- 					<option value="">선택</option> -->
-<%-- 					<c:forEach items="${productMatTypeList}" var="productMatType" varStatus="status"> --%>
-<%-- 						<option value="${productMatType.codeId}">${productMatType.codeNm}</option> --%>
-<%-- 					</c:forEach> --%>
-				  </select>
-				</div>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	  <div class="modal-footer btn-group">
-		<button type="button" class="button btn-warning" onclick="addPackagingTab();">젹용</button>
-		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-	  </div>
-	</div>
+    aria-hidden="true" data-modal-parent="#myModal">
+    <div class="modal-content" style="width:400px">
+      <div class="modal-header">
+        <h4 class="modal-title">포장정보</h4>
+        <button type="button"  onclick="showTab();" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-100">
+            <div class="form-group" id="matTypeSelectpackagingOrderNm">
+              <label class="col-25 form-label">포장차수</label>
+              <div class="col-75">
+                <select class="select-box" id="packagingOrderNmApply" name="packagingOrderNmApply">
+                </select>
+              </div>
+            </div>
+            <div class="form-notice" id="showMappedProductCode" style="display:none;"><input type="checkbox" id="mappedProductCode" name="mappedProductCode" value="Y"><label for="mappedProductCode"> * 동록된 상품코드가 있습니다.</label></div>
+<!--             <div class="form-notice">* [1차포장]은 등록되어있습니다.</div> -->
+            <div class="form-group" id="matTypeSelectProductMatType"  style="display:none;">
+              <label class="col-25 form-label">재질유형</label>
+              <div class="col-75">
+                <select id="matTypeSelectBox" name="matTypeSelectBox" class="select-box">
+                </select>
+              </div>
+            </div>
+            <div class="form-group" id="matTypeSelectProductCode" style="display:none;">
+              <label class="col-25 form-label">상품코드</label>
+              <div class="form-input">
+                <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="matTypeSelectProductMatTypeMapped">
+                <input type="text" class="text-input" id="matTypeSelectProductCodeVal" name="matTypeSelectProductCodeVal">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 버튼 -->
+      <div class="modal-footer btn-group">
+        <button type="button" class="button btn-success" onclick="addPackagingTab();">적용</button>
+        <button type="button" class="button btn-cancel" onclick="showTab();" data-dismiss="modal">취소</button>
+      </div>
+    </div>
   </div>
   
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script>
   var selectedPartType ="";
   var selectedPartTypeNm ="";
-  
+  var grade = [];
   var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
   var tabID = 0;
   var selectedProdId = "";
+  var selectedProdCode = "";
   if('${param.productId}') {
 	  $('#editBtn_${param.productId}').click();
   }
@@ -1206,14 +1064,404 @@
 	  $("#searchFrm").submit();
   });
 
+  function insertSelfDiagnoseAjax(){
+		var form = $('#frmSelfDiagnose')[0];
+	    var data = new FormData(form);
+	    
+	  	$.ajax({
+		type : 'post',
+		url : '/product/insert/selfPackaging',
+		enctype: 'multipart/form-data',
+		data : data,
+		dataType : 'text',
+		processData: false,
+      contentType: false,
+      cache: false,
+      timeout: 600000,
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(result){
+		    console.log(result);
+		}
+	});
+  }
+  
+  var aJsonArray = new Array();
+  function chkClick(that){
+ 		var id = $(that).attr('id');
+		if(id.split('-')[0].split('_')[1] == 'B'){
+ 			if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+		   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+ 			}
+ 			$('#'+id).prop('checked', true);
+ 		}else{
+ 			if(!$('.checkbox_'+id.split('-')[0]).is(':checked')){
+ 				console.log('>> '+$(that).attr('data-Key'));
+ 				if($(that).attr('data-Key') == 'D'){
+      			if(grade.indexOf(id.split('-')[0]) == -1){
+      				grade.push(id.split('-')[0]);
+      			}else{
+      				for (var i = 0; i < grade.length; i++) {
+              		    if (grade[i] === id.split('-')[0]) {
+              		    	grade.splice(i, 1);
+              		    }
+              		}
+      			}
+          	}
+ 			}
+ 		}
+		
+		var rptMatStruct = $(that).attr('data-a');
+		var rptDevAnal = $(that).attr('data-b');
+		var rptVisualJudg = $(that).attr('data-c');
+		var rptTest = $(that).attr('data-d');
+		var rptPermission = $(that).attr('data-e');
+		var rptEtc = $(that).attr('data-f');
+		$('.word_check-'+id.split('-')[0]).prop('checked',false);
+		
+		// 몸체는 단독체크, 그외 멀티체크 분리
+		if(id.split('-')[0].split('_')[1] == 'B'){
+			if(rptMatStruct == 'Y'){
+				$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptDevAnal == 'Y'){
+				$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptVisualJudg == 'Y'){
+				$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptTest == 'Y'){
+				$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptPermission == 'Y'){
+				$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+			}
+			if(rptEtc == 'Y'){
+				$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+			}
+		}else{
+			var aJson = new Object();
+			var bJson = new Object();
+			bJson.rptMatStruct = rptMatStruct;
+			bJson.rptDevAnal = rptDevAnal;
+			bJson.rptVisualJudg = rptVisualJudg;
+			bJson.rptTest = rptTest;
+			bJson.rptPermission = rptPermission;
+			bJson.rptEtc = rptEtc;
+			aJson.codeId = id;
+			
+			var chk = false;
+			console.log(aJsonArray.length);
+			aJsonArray.forEach(function(item,index){
+				console.log(index);
+				if(item.codeId == id){
+					console.log(item.codeId);
+					console.log(id);
+					chk = true;
+					aJsonArray.splice(index, 1);
+				}
+			})
+			if(aJsonArray.length == 0 && !chk){
+				aJson.value = bJson;
+				aJsonArray.push(aJson);
+			}else{
+				if(!chk){
+					aJson.value = bJson;
+					aJsonArray.push(aJson);
+				}
+			}
+			
+			aJsonArray.forEach(function(item){
+				if(item.value.rptMatStruct == 'Y'){
+					$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptDevAnal == 'Y'){
+					$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptVisualJudg == 'Y'){
+					$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptTest == 'Y'){
+					$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptPermission == 'Y'){
+					$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(item.value.rptEtc == 'Y'){
+					$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+				}
+			})
+		}
+		
+		
+		var isSeasonChk = false;
+      var chk = $('.checkbox_'+id.split('-')[0]);
+      for(var i=0;i<chk.length;i++){
+          if(chk[i].checked == true) {
+          	if($(that).attr('data-Key') == 'D'){
+              	isSeasonChk = true;
+      			if(grade.indexOf(id.split('-')[0]) == -1){
+      				grade.push(id.split('-')[0]);
+      			}
+              	break;
+          	}else{
+          		if(grade.indexOf(id.split('-')[0]) > -1){
+	            		for (var i = 0; i < grade.length; i++) {
+	            		    if (grade[i] === id.split('-')[0]) {
+	            		    	grade.splice(i, 1);
+	            		    }
+	            		}
+          		}
+          	}
+          }
+      }
+  }
+  
+  function result(){
+	    var gradeResult = [];
+      var chkCnt = 0;
+      var sc = $('.choice-title').length;
+      var text = '';
+      var isAlert = true; 
+      for(var i = 0 ; i < sc ; i++){
+      	var id = $('.choice-title')[i].id;
+      	var chkList = $('.checkbox_'+id);
+      	for(var j=0;j<chkList.length;j++){
+      		if(chkList[j].checked == true) {
+      			gradeResult.push(chkList[j].dataset.key);
+      			chkCnt++;
+      			isAlert = false;
+      			if(id.split('_')[1] == 'B'){
+	        			break;        				
+      			}
+      		}
+      	}
+      	text = $('.choice-title')[i].children[0].innerText;
+      	if(isAlert){
+	        	alert(text+' 항목을 선택하지 않으셨습니다.');
+	        	isAlert = false;
+	        	break;
+      	}
+      	isAlert = true;
+      }
+      if(isAlert){
+      	var gradeNum = 0;
+      	gradeResult.forEach(function(item){
+		        if(item == 'A'){
+		        	if(gradeNum < 1){
+			        	$('.rating').text('최우수');
+			        	$('.rating').css('color','black');
+			        	gradeNum = 1;
+		        	}
+		        }else if(item == 'B'){
+		        	if(gradeNum < 2){
+			        	$('.rating').text('우수');
+			        	$('.rating').css('color','black');
+			        	gradeNum = 2;
+		        	}
+		        }else if(item == 'C'){
+		        	if(gradeNum < 3){
+			        	$('.rating').text('보통');
+			        	$('.rating').css('color','black');
+			        	gradeNum = 3;
+		        	}
+		        }else if(item == 'D'){
+		        	if(gradeNum < 4){
+			        	$('.rating').text('어려움');
+			        	$('.rating').css('color','red');
+			        	gradeNum = 4;
+		        	}
+		        }
+      	})
+      	if($('.checkbox_PE_L')){
+      		var boxs = $('.checkbox_PE_L');
+      		for(var i = 0 ; i < boxs.length ; i++){
+      			if($('#'+boxs[i].id).prop('checked') && $('#'+boxs[i].id).attr('data-key') == 'A' && gradeNum != 4){
+      				$('.rating').text('최우수');
+      				$('.rating').css('color','black');
+      			}
+      		}
+      	}
+	        $('#score').show();
+	        $('.btn-success.isClose').focus();
+      }
+  }
+  
+  function getProductSelfPackaging(){
+		 var matType = $("#matType").val();//재질유형
+		 var param = {};
+		 param.revisionYear="2022";
+		 param.revisionMonth="03";
+		 param.groupId = matType.split('_')[0];//재질유형
+
+		 param.productId=selectedProdId;
+		 param.packagingOrder=$("#frmSelfDiagnose input[name=packagingOrder]").val();
+		 
+		 $.ajax({
+			type : 'post',
+			url : '/product/detail/selfPackaging/',
+			data : param,
+			dataType : 'json',
+			error: function(request, status, error){
+				console.log(request.responseText);
+			},
+			success : function(result) {
+				var selfPackInfo = "";
+				$("#Accordion_wrap").empty();
+				result.middleModels.forEach(function(item, index) {
+					selfPackInfo += '<div class="Accordion-box">';
+					selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.codeId+'"><span class="title-point">['+item.codeNm+']</span></h4>';
+					selfPackInfo += '	<div class="anw">';
+					selfPackInfo += '	            <ul class="choice-wrapper">';
+					result.smallModels.forEach(function(sItem, index) {
+						if(sItem.groupId === item.codeId){
+							
+							selfPackInfo += '	              <li class="choice-box">';
+							selfPackInfo += '	                <h4 class="line-br">재활용-'+sItem.codeNm+'</h4>';
+							selfPackInfo += '	                <div class="choice-cont">';
+							selfPackInfo += '	                  <ul>';
+							result.lastModels.forEach(function(lItem, index) {
+								if(lItem.groupId === sItem.codeId){
+									selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+								}
+							});
+	
+							selfPackInfo += '	                  </ul>';
+							selfPackInfo += '	                </div>';
+							selfPackInfo += '	              </li>';
+						}
+					});
+
+					var chk_rptMatStruct = "";
+					var chk_rptDevAnal = "";
+					var chk_rptVisualJudg = "";
+					var chk_rptTest = "";
+					var chk_rptPermission = "";
+					var chk_rptEtc = "";
+					result.selfPackagingModels.forEach(function(selfItem, index) {
+						if(selfItem.file === 'rptMatStruct_'+item.codeId){
+							chk_rptMatStruct = "checked";
+						}
+						if(selfItem.file === 'rptDevAnal_'+item.codeId){
+							chk_rptDevAnal = "checked";
+						}
+						if(selfItem.file === 'rptVisualJudg_'+item.codeId){
+							chk_rptVisualJudg = "checked";
+						}
+						if(selfItem.file === 'rptTest_'+item.codeId){
+							chk_rptTest = "checked";
+						}
+						if(selfItem.file === 'rptPermission_'+item.codeId){
+							chk_rptPermission = "checked";
+						}
+						if(selfItem.file === 'rptEtc_'+item.codeId){
+							chk_rptEtc = "checked";
+						}
+					});
+					
+					selfPackInfo += '				  <li class="choice-box2">';
+					selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
+					selfPackInfo += '                    <div class="choice-cont2">';
+					selfPackInfo += '                      <ul>';
+					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'" style="margin:0 4px">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
+  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'" style="margin:0 4px">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'" style="margin:0 4px">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'" style="margin:0 4px">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'" style="margin:0 4px">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
+   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'" style="margin:0 4px">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
+					selfPackInfo += '                      </ul>';
+					selfPackInfo += '    				 </div>';
+					selfPackInfo += '                  </li>';
+					selfPackInfo += '            </ul>';
+					selfPackInfo += '             <div class="row">';
+					selfPackInfo += '               <div class="col-50">';
+					selfPackInfo += '                 <div class="form-group pb0">';
+					selfPackInfo += '                   <label class="col-25 form-label">증빙서류</label>';
+					selfPackInfo += '                   <div class="col-75">';
+					selfPackInfo += '                     <div class="form-input">';
+					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타"  id="proofDocs-'+item.codeId+'">';
+					selfPackInfo += '                     </div>';
+					selfPackInfo += '                   </div>';
+					selfPackInfo += '                 </div>';
+					selfPackInfo += '               </div>';
+					selfPackInfo += '               <div class="col-50">';
+					selfPackInfo += '                 <div class="form-group pb0">';
+					selfPackInfo += '                   <label class="col-25 form-label">첨부파일</label>';
+					selfPackInfo += '                   <div class="col-75">';
+					selfPackInfo += '                     <input type="file" multiple="multiple" class="text-input">';
+					selfPackInfo += '                   </div>';
+					selfPackInfo += '                 </div>';
+					selfPackInfo += '               </div>';
+					selfPackInfo += '             </div>';
+                    //            <!-- S_결과확인-->
+                    selfPackInfo += '             <div class="result-box">';
+                    selfPackInfo += '               <div class="row">';
+                    selfPackInfo += '                 <div class="col-50">';
+                    selfPackInfo += '                   <div class="form-group pb0">';
+                    selfPackInfo += '                     <label class="col-45 form-label">'+item.codeNm+ '평가결과</label>';
+                    selfPackInfo += '                     <div class="col-55">';
+                    selfPackInfo += '                       <div class="form-input">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수" disabled id="results-'+item.codeId+'">';
+                    selfPackInfo += '                       </div>';
+                    selfPackInfo += '                     </div>';
+                    selfPackInfo += '                   </div>';
+                    selfPackInfo += '                 </div>';
+                    selfPackInfo += '                 <div class="col-50">';
+                    selfPackInfo += '                   <div class="form-group pb0">';
+                    selfPackInfo += '                     <label class="col-25 form-label">필요서류목록</label>';
+                    selfPackInfo += '                     <div class="col-75">';
+                    selfPackInfo += '                       <div class="form-input">';
+                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타" disabled id="reqDocs-'+item.codeId+'">';
+                    selfPackInfo += '                       </div>';
+                    selfPackInfo += '                     </div>';
+                    selfPackInfo += '                   </div>';
+                    selfPackInfo += '                 </div>';
+                    selfPackInfo += '               </div>';
+                    selfPackInfo += '             </div>';
+//                                 <!-- E_결과확인-->
+                    selfPackInfo += '           </div>';
+                    selfPackInfo += '</div>';
+				});
+				$("#Accordion_wrap").append(selfPackInfo);
+				$('.afile-txt').MultiFile({
+			        // 옵션 설정
+			        max: 3, //업로할수있는 최대 파일 갯수
+			        accept: 'txt|pptx|xlsx|pdf|hwp', //허용할수있는 파일 확장자
+			        STRING: { //Multi-lingual support : 메시지 수정 가능
+			          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+			          duplicate: "$file 은 이미 선택된 파일입니다.",
+			          denied: "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+			          selected: '$file 을 선택했습니다.',
+			          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+			        }
+			      });
+
+				result.files.forEach(function(f, index) {
+					result.middleModels.forEach(function(item, index) {
+						console.log(f.refId.split('_pd')[0]);
+						console.log(f.refId.split('-')[0]+'-'+item.codeId);
+						console.log('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list');
+						if(f.refId.split('_pd')[0] === f.refId.split('-')[0]+'-'+item.codeId){
+							$('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteFileAjax("'+f.fileId+'","","'+f.refId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
+						}			
+					});				
+				});
+				$("#Accordion_wrap").show();
+				$('#tab04_2').show();
+			}
+		});
+}
+  
   function getPackagingOrderByNew(id){
 		console.log('getPackagingOrderByNew');
 		 $.ajax({
 			type : 'post',
 			url : '/product/detail/'+id+'/getPackagingOrderByNew/',
 			dataType : 'json',
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
 			},
 			success : function(result) {
 				$("#packagingOrderNmApply").empty();
@@ -1222,20 +1470,22 @@
 					result.forEach(function(item, index) {
 						// loop
 						$('#packagingOrderNmApply').append('<option value="'+item.packagingOrder+'">'+item.packagingNm+'</option>');
-						$('#matTypeSelectTab').empty();
+// 						$('#matTypeSelectTab').empty();
 						if(result.length == 1) {
 							$('#packagingOrderNmApply option[value="'+item.packagingOrder+'"]').attr("selected", "selected");
 							if(item.packagingOrder > 8){
 								$('#matTypeSelectProductCode').show();
+								$('#showMappedProductCode').show();
 								$('#matTypeSelectProductMatType').hide();
-								$('#matTypeSelectTab').text(item.packagingNm+' 정보를 매핑하세요.');
+// 								$('#matTypeSelectTab').text(item.packagingNm+' 정보를 매핑하세요.');
 							}else {
 								$('#matTypeSelectProductMatType').show();
 								$('#matTypeSelectProductCode').hide();
-								$('#matTypeSelectTab').text(item.packagingNm+' 재잴 유형을 선택 하세요');
+								$('#showMappedProductCode').hide();
+// 								$('#matTypeSelectTab').text(item.packagingNm+' 재잴 유형을 선택 하세요');
 							}
 						}else {
-							$('#matTypeSelectTab').text('포장 차수 및 재질 정보를 선택하세요.');
+// 							$('#matTypeSelectTab').text('포장 차수 및 재질 정보를 선택하세요.');
 						}
 					});
 					$("#matTypeSelect").modal('show');
@@ -1245,28 +1495,44 @@
   }
   
   function mapProductCodeApply(id, packagingOrderNmApplyVal, selectedPackagingOrderNmText){
-	 var productCode = $('#'+id).val();
+	 var productCode = selectedProdCode;
+	 var applyProductCode = $('#matTypeSelectProductCodeVal').val();
+	 var param = {};
+	 param.productCode=productCode;
+	 param.applyProductCode=applyProductCode;
+		 
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
-				url : '/product/detail/'+productCode+'/apply/',
+				url : '/product/detail/apply/',
+				data: param,
 				dataType : 'json',
-				error : function(xhr, status, error) {
-					console.log(error);
+				error: function(request, status, error){
+					console.log(request.responseText);
+					alert(request.responseText);
 				},
 				success : function(result) {
-					$('#matType').val(result.packingType); 
-					tabID = packagingOrderNmApplyVal;
-					var selectedText = result.packingTypeNm;
-					$('#tab-list li.active').removeClass('active');
-					$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" role="tab" data-toggle="tab"><span>' +
-							selectedPackagingOrderNmText +
-				     ' ('+selectedText+')</span><button class="tab-close" type="button" title="Remove this page">×</button></a></li>'
-				    ));
-			        
-					$("#tab" + packagingOrderNmApplyVal).modal("show");
-					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
-					$("#matTypeSelect").modal('hide');
+					if (result.length > 0) {
+						result.forEach(function(item, index) {
+							// loop
+							if(index === 0) {
+								$('#matType').val(item.matType); 
+								tabID = packagingOrderNmApplyVal;
+								var selectedText = item.matTypeNm;
+								$('#tab-list li.active').removeClass('active');
+								$('#tab-list').append($('<li class="active"><a href="#tab' + packagingOrderNmApplyVal + '" onclick=\'productMatInfoView("'+selectedProdId+'", "'+packagingOrderNmApplyVal+'", this);\' role="tab" data-toggle="tab"><span>' +
+										selectedPackagingOrderNmText +
+							     ' ('+selectedText+')</span><button class="tab-close" type="button" onclick=\'deleteProductPackagingInfo("'+ selectedProdId + '", "'+ packagingOrderNmApplyVal + '", this);\' title="Remove this page">×</button></a></li>'
+							    ));
+						        
+								var tabFirst = $('#tab-list a:first');
+						        tabFirst.click();
+								$("#tab" + packagingOrderNmApplyVal).modal("show");
+			// 					getSelfCodeList(result.packingType.slice(0, result.packingType.indexOf('_')), 'tab-list', 'selfPartType1');
+								$("#matTypeSelect").modal('hide');
+							}
+						});
+					}
 				}
 			});
 	 }
@@ -1274,13 +1540,23 @@
   
   function mapProductCode(id){
 	 var productCode = $('#'+id).val();
+	 var masterApply = $("#frmUpdate input[name=masterApply]").val();
+	 var receiptNumber = $('#edit_receiptNumber').val();
+	 var approvalNumber =$('#edit_approvalNumber').val();
+	 var param = {};
+	 param.productCode=productCode;
+	 param.masterApply=masterApply;
+	 param.receiptNumber=receiptNumber;
+	 param.approvalNumber=approvalNumber;
 	 if(productCode && productCode != '' && productCode != null) {
 		 $.ajax({
 				type : 'post',
-				url : '/product/detail/'+productCode+'/mapping/',
+				url : '/product/detail/mapping/',
+				data: param,
 				dataType : 'json',
-				error : function(xhr, status, error) {
-					console.log(error);
+				error: function(request, status, error){
+					console.log(request.responseText);
+					alert(request.responseText);
 				},
 				success : function(result) {
 					if(id === 'matTypeSelectProductCodeVal'){
@@ -1291,11 +1567,11 @@
 							$('#matTypeSelectProductMatType').hide();
 						}
 					}else {
-						$("#frmUpdate input[name=completeStatus]").val([result.masterApply]);
-						$("#frmUpdate input[name=masterApply]").val([result.masterMapping]);
+						$("#frmUpdate input[name=masterApply]").val([result.masterApply]);
+						$("#frmUpdate input[name=masterMapping]").val([result.masterMapping]);
 						$('#edit_receiptNumber').val(result.receiptNumber);
 						$('#edit_approvalNumber').val(result.approvalNumber);
-						$('#edit_mappingProductId').val(result.mappingProductId);
+						$('#edit_mappingProductCode').val(result.mappingProductCode);
 						$('#edit_mappingProductNm').val(result.mappingProductNm);
 					}
 				}
@@ -1304,25 +1580,27 @@
   }
   
   function calculateRecyleContributions(year) {
-	  valyCheck(year);
-	  var param = {};
-	  if(year == 'recyleContributions') {
-		  param.baseYear= $("#frmUpdate input[name=baseYear]").val();
-		  param.accumulateSaleQty= $("#frmUpdate input[name=accumulateSaleQty]").val();
-		  param.packingTotalWeight= $("#frmUpdate input[name=packingTotalWeight]").val();
-	  }else if(year == 'recyleContributions_1') {
-		  param.baseYear_1= $("#frmUpdate input[name=baseYear_1]").val();
-		  param.accumulateSaleQty_1= $("#frmUpdate input[name=accumulateSaleQty_1]").val();
-		  param.packingTotalWeight_1= $("#frmUpdate input[name=packingTotalWeight_1]").val();
-	  }else if(year == 'recyleContributions_2') {
-		  param.baseYear_2= $("#frmUpdate input[name=baseYear_2]").val();
-		  param.accumulateSaleQty_2= $("#frmUpdate input[name=accumulateSaleQty_2]").val();
-		  param.packingTotalWeight_2= $("#frmUpdate input[name=packingTotalWeight_2]").val();
-	  }else {
-		  return;
+	  var check = valyCheck(year);
+	  if(check) {
+		  var param = {};
+		  if(year == 'recyleContributions') {
+			  param.baseYear= $("#frmUpdate input[name=baseYear]").val();
+			  param.accumulateSaleQty= $("#frmUpdate input[name=accumulateSaleQty]").val();
+			  param.packingTotalWeight= $("#frmUpdate input[name=packingTotalWeight]").val();
+		  }else if(year == 'recyleContributions_1') {
+			  param.baseYear_1= $("#frmUpdate input[name=baseYear_1]").val();
+			  param.accumulateSaleQty_1= $("#frmUpdate input[name=accumulateSaleQty_1]").val();
+			  param.packingTotalWeight_1= $("#frmUpdate input[name=packingTotalWeight_1]").val();
+		  }else if(year == 'recyleContributions_2') {
+			  param.baseYear_2= $("#frmUpdate input[name=baseYear_2]").val();
+			  param.accumulateSaleQty_2= $("#frmUpdate input[name=accumulateSaleQty_2]").val();
+			  param.packingTotalWeight_2= $("#frmUpdate input[name=packingTotalWeight_2]").val();
+		  }else {
+			  return;
+		  }
+		  var productId = $("#frmUpdate input[name=productId]").val();
+		  calculateRecyleContributionsAjax(productId, param, year);
 	  }
-	  var productId = $("#frmUpdate input[name=productId]").val();
-	  calculateRecyleContributionsAjax(productId, param, year);
   }
   
   function calculateRecyleContributionsAjax(productId, param, year){
@@ -1332,8 +1610,9 @@
 			url : 'detail/'+productId+'/recyle_contributions/',
 			data : param,
 			dataType : 'text',
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(result) {
 				$("#frmUpdate input[name="+year+"]").val(result);
@@ -1473,8 +1752,9 @@
 		type : 'post',
 		url : '/file/delete/' + fileId,
 		dataType : 'json',
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			console.log(result);
@@ -1502,13 +1782,24 @@
 	  var selectedPackagingOrderNmText = $("#packagingOrderNmApply option:selected").text();
 	  var matTypeSelectProductCodeVal = $("#matTypeSelectProductCode").val();
 	  var matTypeSelectProductMatTypeMapped = $("#matTypeSelectProductMatTypeMapped").val();
+	  var mappedProductCodeChecked = $('#mappedProductCode').is(':checked');
 	  console.log(selectedVal);
 	  console.log(packagingOrderNmApplyVal);
 	  console.log(matTypeSelectProductCodeVal);
 	  console.log(matTypeSelectProductMatTypeMapped);
 	  console.log(selectedPackagingOrderNmText);
-	  if(matTypeSelectProductMatTypeMapped === 'MAPPING' && packagingOrderNmApplyVal > 8) {
-		    mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+	  if(!packagingOrderNmApplyVal) {
+		alert('포장차수를 선택해주세요.');
+		return;
+	  }
+	  
+	  if(packagingOrderNmApplyVal > 8 && mappedProductCodeChecked === true) {
+			if($("#matTypeSelectProductCodeVal").val() !== '') {
+		    	mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+			}else {
+				alert('등록된 부속상품코드를 입력해주세요.');
+				return;
+			}
 	  }else {
 		  if(selectedVal) {
 			$('#matType').val(selectedVal); 
@@ -1589,13 +1880,13 @@
 	getFileList('photos_'+data.productId, "edit_photos", data.photo);
 	getFileList('specs_'+data.productId, "edit_specs", data.spec);
 
-	$('#edit_completeStatus').empty();
+	$('#edit_masterApplyNm').empty();
 	console.log(data.environmentProceedStatCode.length);
 	//진행상태
 	if (data.environmentProceedStatCode.length > 0) {
 		data.environmentProceedStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_completeStatus').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="completeStatus" value="'+item.codeId+'"><label for="completeStatus" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
 		});
 	}
 
@@ -1605,13 +1896,13 @@
 	if (data.mappingStatCode.length > 0) {
 		data.mappingStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterMapping" value="'+item.codeId+'"><label for="masterMapping" class="mr05">'+item.codeNm+'</label></div>');
 		});
 		$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
 	}
 	
-	$("#frmUpdate input[name=completeStatus]").val([data.completeStatus]);
 	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
+	$("#frmUpdate input[name=masterMapping]").val([data.masterMapping]);
 	$('#edit_receiptNumber').val(data.receiptNumber);
 	$('#edit_approvalNumber').val(data.approvalNumber);
 	
@@ -1626,15 +1917,19 @@
   }
   
   function productInsert(){
-	valyCheck("registProduct");
-	var param =  $('#frmInsert').serialize();
-	insertAjax(param,'insert');
+	var check = valyCheck("registProduct");
+	if(check) {
+		var param =  $('#frmInsert').serialize();
+		insertAjax(param,'insert');
+	}
   }
   
   function productUpdate(){
-	  valyCheck("editProduct");
-	  var param =  $('#frmUpdate').serialize();
-	  insertAjax(param,'update');
+	  var check = valyCheck("editProduct");
+	  if(check) {
+		  var param =  $('#frmUpdate').serialize();
+		  insertAjax(param,'update');
+	  }
   }
   
   function insertAjax(param,action){
@@ -1655,8 +1950,9 @@
         contentType: false,
         cache: false,
         timeout: 600000,
-		error: function(xhr, status, error){
-		    console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result){
 		    if(result == 'Update' || result == 'Insert'){
@@ -1692,8 +1988,9 @@
 		url : '/product/' + action,
 		data : param,
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			isDisabled = false;
@@ -1706,8 +2003,9 @@
 	});
   }
   
-  function productPackagingOrder(id){
+  function productPackagingOrder(id, code){
 	  selectedProdId = id;
+	  selectedProdCode = code;
 // 	  tabID = 0;
 	  $('#tab-list').empty();
 	  $('#tab-list li.active').removeClass('active');
@@ -1718,8 +2016,9 @@
 			data : {'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				if (data.length > 0) {
@@ -1727,10 +2026,10 @@
 						// loop으로 포장 차 탭 출력
 // 						tabID++;
 						var packagingOrder = item.packagingOrder;
-						if(packagingOrder > 8) {
+						if(item.packagingOrder > 8) {
 							packagingOrder = '부속포장';
 						}else {
-							packagingOrder = packagingOrder +'차 포장;
+							packagingOrder = item.packagingOrder +'차 포장';
 						}
 						$('#tab-list').append('<li class="active"><a href="#" onclick=\'productMatInfoView("'+item.productId+'", "'+item.packagingOrder+'", this);\' role="tab" data-toggle="tab"><span>' +
 								packagingOrder +
@@ -1739,7 +2038,8 @@
 						
 						// 텝 추가후 1차 포장정보 서버에서 조회 함
 						if(index == 0) {
-							getSelfCodeList(item.matType, 'tab-list', 'selfPartType1', item.matTypeNm, item);
+							$('#matType').val(item.matType); 
+							getSelfCodeList(item.matType.slice(0, item.matType.indexOf('_')), 'tab-list', 'selfPartType1', item.matTypeNm, item);
 							tabID = item.packagingOrder;
 						}
 					});
@@ -1779,8 +2079,9 @@
 // 			data : {'packagingId': packagingId, 'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				
@@ -1815,8 +2116,9 @@
 			data : {'packagingOrder': packagingOrder, 'productId':id},
 			type : "POST",
 			async: false,
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				$('#tab04_1_in1').children().empty();
@@ -1875,17 +2177,22 @@
   }
   
   function saveProductPackaging() {
-	valyCheck("savePackaging");
-	var param =  $('#frmDetail').serialize();
-  	var packagingId = $("#frmDetail input[name=packagingId]").val();
-  	console.log(packagingId);
-  	if(packagingId == '' || packagingId == null) {
-  		saveProductPackagingAjax(param,'insert');
-  	}else {
-		saveProductPackagingAjax(param,'update');
-  	}
+	var check = valyCheck("savePackaging");
+	if(check){
+		var param =  $('#frmDetail').serialize();
+	  	var packagingId = $("#frmDetail input[name=packagingId]").val();
+	  	console.log(packagingId);
+	  	if(packagingId == '' || packagingId == null) {
+	  		saveProductPackagingAjax(param,'insert');
+	  	}else {
+			saveProductPackagingAjax(param,'update');
+	  	}
+	}
   }
-  
+
+  function showTab() {
+	  $('#btn-add-tab').show();
+  }
   // 상품포장정보등록 수정
   function saveProductPackagingAjax(param, action, sendMail) {
     $.ajax({
@@ -1893,10 +2200,12 @@
 		url : '/product/'+action+'/'+selectedProdId+'/packaging',
 		data : param,
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
+			$('#btn-add-tab').show();
 			var data = JSON.parse(result);
 			console.log(data.packagingId);
 			$("#frmDetail input[name=packagingId]").val(data.packagingId);
@@ -1923,8 +2232,9 @@
 		url : '/supplier/supplier/detail/managers/' + id,
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			$('.supplierManager').empty();
@@ -1949,8 +2259,9 @@
 			dataType : 'text',
 			data : param,
 			type : "POST",
-			error : function(xhr, status, error) {
-				console.log(error);
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
 			},
 			success : function(data) {
 				alert("정상적으로 이메일 전송이 되었습니다.");
@@ -1968,8 +2279,9 @@
 		url : '/product/delete/'+productId+'/packaging/',
 		data : {'packagingId': packagingId, 'packagingOrder': packagingOrder, 'productId':productId},
 		dataType : 'text',
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(result) {
 			var lastPart = $('#partTypeDetail span:last');
@@ -1986,9 +2298,12 @@
 			$('#Accordion_wrap').hide();
 			$('#tab04_1').show();
 		}else{
-			getCodeDayList();
+// 			getCodeDayList();
+			$("#frmSelfDiagnose input[name=packagingOrder]").val($("#frmDetail input[name=packagingOrder]").val());
+			$('#frmSelfDiagnose input[name=productId]').val(selectedProdId);
+			getProductSelfPackaging();
 			$('#tab04_1').hide();
-			$('#tab04_2').show();
+// 			$('#tab04_2').show();
 		}
   }
 
@@ -1999,8 +2314,9 @@
 		url : '/system/environmentCode/detail/getMatTypeList',
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2022,8 +2338,9 @@
 		url : '/product/detail/getCodeDayList',
 		dataType : 'JSON',
 		type : "POST",
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2052,8 +2369,9 @@
 		dataType : 'JSON',
 		type : "POST",
 		data : {'smallCategory': codeId, 'revision': revision},
-		error : function(xhr, status, error) {
-			console.log(error);
+		error: function(request, status, error){
+			console.log(request.responseText);
+			alert(request.responseText);
 		},
 		success : function(data) {
 			console.log(data);
@@ -2098,8 +2416,9 @@
 							dataType : 'JSON',
 							type : "POST",
 							data : {'smallCategory': item.codeId, 'revision': revision},
-							error : function(xhr, status, error) {
-								console.log(error);
+							error: function(request, status, error){
+								console.log(request.responseText);
+								alert(request.responseText);
 							},
 							success : function(subData) {
 								$('#Accordion_wrap').show();
@@ -2260,7 +2579,7 @@
 		innerHtml += '<input name="managerNm" type=hidden class="text-input managerNm">';
 		innerHtml += '<input name="managerMail" type=text class="text-input supplierMail">';
 		innerHtml += '<span class=search-box-append>';
-		innerHtml += '<button type=button class="button-search sendEmail">이메일보내기</button>';
+		innerHtml += '<button type=button class="btn-search sendEmail">이메일보내기</button>';
 		innerHtml += '</span>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
@@ -2274,7 +2593,7 @@
 		innerHtml += '<div class=search-box>';
 		innerHtml += '<input type=text disabled class=text-input value='+matFileNm+'>';
 		innerHtml += '<span class=search-box-append>';
-		innerHtml += '<button type=button class=button-search onclick=\'downloadFile("'+matFileId+'");\'>다운로드</button>';
+		innerHtml += '<button type=button class=btn-search onclick=\'downloadFile("'+matFileId+'");\'>다운로드</button>';
 		innerHtml += '</span>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
@@ -2419,18 +2738,32 @@
 		}	
 	});
 
+	$('#mappedProductCode').change(function() {
+        if(this.checked) {
+        	$('#matTypeSelectProductCode').show();
+        	$('#matTypeSelectProductMatType').hide();
+        }else {
+        	$('#matTypeSelectProductCode').hide();
+        	$('#matTypeSelectProductMatType').show();
+        }
+    });
+    
 	$(document).on('change', '#packagingOrderNmApply', function () {
 		if(this.value && this.value > 8){
 			$('#matTypeSelectProductMatType').hide();
-			$('#matTypeSelectProductCode').show();
+// 			$('#matTypeSelectProductCode').show();
+			$('#showMappedProductCode').show();
+			$('#matTypeSelectProductMatType').show();
 // 			getSelfCodeList(this.value.slice(0, this.value.indexOf('_')), 'selfMatType', 'selfPartType');
 		}else {
 			$('#matTypeSelectProductCode').hide();
+			$('#showMappedProductCode').hide();
 			$('#matTypeSelectProductMatType').show();
 		}
 	});
 	
 	$('#btn-add-tab').click(function () {
+		$('#btn-add-tab').hide();
 		getPackagingOrderByNew(selectedProdId);
 		getMatTypeList();
 // 		$("#matTypeSelect").modal('show');
@@ -2446,6 +2779,7 @@
 //       resetTab();
 //       tabFirst.tab('show');
       tabFirst.click();
+      $('#btn-add-tab').show();
     });
 
     var list = document.getElementById("tab-list");

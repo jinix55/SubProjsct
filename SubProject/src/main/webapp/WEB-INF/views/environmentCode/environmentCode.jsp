@@ -314,7 +314,7 @@
 <div id="coderegister_s" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<input type="hidden" id="deRevision" name="deRevision">
 	<input type="hidden" id="setDeGroupId" name="groupId">
-	<div class="modal-content" style="width: 800px">
+	<div class="modal-content" style="width: 820px">
 		<div class="modal-header">
 			<h4 class="modal-title">내용 등록</h4>
 			<button type="button" class="close de_close" data-dismiss="modal">
@@ -326,7 +326,7 @@
 				<div class="left-wrap">
 					<table class="table">
 						<colgroup>
-							<col style="width: 135px;">
+							<col style="width: 130px;">
 							<col style="width: 150px;">
 						</colgroup>
 						<thead>
