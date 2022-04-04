@@ -401,7 +401,9 @@ public class ProductService {
         prodPackagingMatModel.setPackagingOrder("1"); 
 		List<ProdPackagingMatModel> prodPackagingMatList = productMapper.selectProductSelfPackaging(prodPackagingMatModel);
 		for(ProdPackagingMatModel pM : prodPackagingMatList) {
+			pM.setPackagingMatId(idUtil.getPackagingMatId()); 
 			pM.setProductId(productId);
+			pM.setPackagingOrder( Integer.toString(maxPartProductPackagingOrder + 1) );
 			productMapper.insertProductSelfPackaging(pM);
 		}
        
