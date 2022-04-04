@@ -230,6 +230,16 @@ public class ProductService {
 		}
 	}
 	
+	@Transactional
+	public String updateProductRecycleGrade(ProductModel productModel) {
+		long count = productMapper.updateProductRecycleGrade(productModel);
+		if (count > 0) {
+			return Constant.DB.UPDATE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
+	
 	/**
 	 * 상품 정보를 수정(삭제,미사용)한다.
 	 *

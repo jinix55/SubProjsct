@@ -912,6 +912,14 @@ public class ProductController {
 	    	}
     	}
     	
+    	//업데이터 패캐징 재활용등급
+    	if(prodPackagingMatModel.getRecycleGrade() != null && !"".equals(prodPackagingMatModel.getRecycleGrade())  && "1".equals(prodPackagingMatModel.getPackagingOrder())) {
+    		ProductModel productModel = new ProductModel();
+    		productModel.setProductId(prodPackagingMatModel.getProductId());
+    		productModel.setRecycleGrade(prodPackagingMatModel.getRecycleGrade());
+    		productService.updateProductRecycleGrade(productModel);
+    	}
+    	
     	String fileUrl = "C:/PPLUS/" + prodPackagingMatModel.getProductId() + "/selfPackaging/";
     	String result = "success";
     	final Map<String, MultipartFile> files = multipart.getFileMap();

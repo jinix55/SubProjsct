@@ -148,6 +148,14 @@
 			PRODUCT_ID = #{productId}
 	</update>
 	
+	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T_PRODUCT
+		SET
+			RECYCLE_GRADE = #{recycleGrade}
+		WHERE
+			PRODUCT_ID = #{productId}
+	</update>
+	
 	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
 		UPDATE T_PRODUCT
 		SET

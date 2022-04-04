@@ -52,6 +52,8 @@ public interface ProductMapper {
      */
     long updateProduct(ProductModel productModel);
     
+    long updateProductRecycleGrade(ProductModel productModel);
+    
     /**
      * 상품 모델을 미사용으로 업데이트 한다.
      * @param model 상품번호를 사용

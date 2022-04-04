@@ -27,6 +27,7 @@ public class ProdPackagingMatModel extends Criteria{
     private String codeId;
     private String revisionYear;
     private String revisionMonth;
+    private String recycleGrade;
     
     private String useYn;           // 사용여부
     private String rgstId;          // 등록자ID
