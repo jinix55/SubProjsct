@@ -148,6 +148,9 @@ public interface ProductMapper {
     
     List<ProdPackagingModel> selectProductPackagingList(ProdPackagingModel prodPackagingModel);
     
+    List<ProdPackagingModel> selectProductPackagingDetailWithoutProductId(ProdPackagingModel prodPackagingModel);
+    
+    
     List<ProdPackagingModel> selectProductPackagingListByProc(ProdPackagingModel prodPackagingModel);
     
     
@@ -158,7 +161,7 @@ public interface ProductMapper {
      * @return
      */
     List<ProdPackagingMatModel> selectProductPackagingMatList(ProdPackagingMatModel prodPackagingMatModel);
-    
+
     
     /**
      * 상품포장정보 모델 신규 등록 insert

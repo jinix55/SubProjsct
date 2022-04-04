@@ -237,6 +237,43 @@
 		  AND (a.PACKAGING_ID = #{packagingId})
 	</select>
 	
+	
+	<select id="selectProductPackagingDetailWithoutProductId" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		<![CDATA[
+		SELECT
+			  a.PACKAGING_ID
+			, a.PRODUCT_ID
+			, a.PACKAGING_NM
+			, a.PACKAGING_DSC
+			, a.PACKAGING_ORDER
+			, a.MAT_TYPE
+			, a.PART_TYPE
+			, a.PART_TYPE_ORDER
+			, a.MAT_INFO
+			, a.WEIGHT
+			, a.STANDARD
+			, a.COLOR
+			, a.ADD_EXPLAN
+			, a.MAT_FILE_ID
+			, a.SUPPLIER_CODE
+			, a.MANAGER_ID
+			, a.USE_YN
+			, a.RGST_ID
+			, a.RGST_DT
+			, a.MODI_ID
+			, a.MODI_DT
+		FROM
+			t_product_packaging a
+		WHERE upper(a.PRODUCT_ID) <> upper(#{productId})
+		  AND a.USE_YN = 'Y'
+		  AND a.PACKAGING_ORDER = 1
+		]]>			  
+	</select>	
+	
+	
+	
+	
+	
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   

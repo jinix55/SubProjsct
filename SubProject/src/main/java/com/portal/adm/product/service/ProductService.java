@@ -349,6 +349,15 @@ public class ProductService {
 	}
 
 	public ProductModel mapping(ProductModel productModel) {
+		String producId = this.getProductId(productModel.getProductCode());
+		
+		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
+		
+		List<ProdPackagingModel> prodPackagingList =  productMapper.selectProductPackagingDetailWithoutProductId(prodPackagingModel);
+		for(ProdPackagingModel p : prodPackagingList) {
+			
+		}
+		
 		ProductModel outProductModel = new ProductModel();
 		
 		outProductModel.setMasterApply("COMPLETION");
