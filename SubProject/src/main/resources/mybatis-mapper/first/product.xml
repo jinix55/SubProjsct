@@ -315,7 +315,7 @@
 			, MODI_DT              = now()   
 		WHERE
 			PRODUCT_ID           = #{productId}
-		  <if test="packagingOrder  != null and packagingOrder != ''">
+		  <if test="packagingOrder  != null and packagingOrder != '' and packagingOrder != '-1'">
 				and (PACKAGING_ORDER = #{packagingOrder})
 		  </if>
 		  <if test="packagingId  != null and packagingId != ''">

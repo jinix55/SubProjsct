@@ -1795,7 +1795,12 @@
 	  
 	  if(packagingOrderNmApplyVal > 8 && mappedProductCodeChecked === true) {
 			if($("#matTypeSelectProductCodeVal").val() !== '') {
-		    	mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+				if($("#matTypeSelectProductCodeVal").val() === selectedProdCode){
+					alert('동일한 상품을 부속포장으로 할수 없습니다.');
+					return;
+			    }else {
+		    		mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+				}
 			}else {
 				alert('등록된 부속상품코드를 입력해주세요.');
 				return;
@@ -2274,6 +2279,10 @@
 
 //포장 차수 삭제
   function deletePackagingInfoAjax(productId, packagingOrder, packagingId) {
+		if(!packagingOrder) {
+			packagingOrder = -1;
+		}
+		
 	  	$.ajax({
 		type : 'post',
 		url : '/product/delete/'+productId+'/packaging/',
