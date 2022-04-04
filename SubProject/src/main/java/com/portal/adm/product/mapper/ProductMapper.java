@@ -3,7 +3,6 @@ package com.portal.adm.product.mapper;
 import java.util.List;
 
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
-import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.common.annotation.ConnMapperFirst;
@@ -76,8 +75,6 @@ public interface ProductMapper {
      */
     List<ProdPackagingModel> selectProductPackaging(ProdPackagingModel productPackagingModel);
     
-    List<ProdPackagingModel> selectProductPackagingListByProductId(ProdPackagingModel productPackagingModel);
-    
     
     /**
      * 상품포장정보관리 상세 조회한다.
@@ -141,47 +138,4 @@ public interface ProductMapper {
      */
     
     int selectMaxProductPackagingOrder(String productId);
-    
-    int selectMaxPartProductPackagingOrder(String productId);
-    
-    
-    
-    List<ProdPackagingModel> selectProductPackagingList(ProdPackagingModel prodPackagingModel);
-    
-    List<ProdPackagingModel> selectProductPackagingListByProc(ProdPackagingModel prodPackagingModel);
-    
-    
-    /**
-     * 제품 포장 재 질관리[제품 포장 재질 관리] 목록을 조회한다.
-     *
-     * @param productPackagingModel 모델
-     * @return
-     */
-    List<ProdPackagingMatModel> selectProductPackagingMatList(ProdPackagingMatModel prodPackagingMatModel);
-    
-    
-    /**
-     * 상품포장정보 모델 신규 등록 insert
-     * @param model 상품번호를 사용
-     * @return
-     */
-    long insertProductPackagingMat(ProdPackagingMatModel prodPackagingMatModel);
-    
-    
-    /**
-     * 상품포장정보 모델을 미사용으로 업데이트 한다.
-     * @param model 상품번호를 사용
-     * @return
-     */
-    long deleteProductPackagingMat(ProdPackagingMatModel prodPackagingMatModel);
-    
-    
-    public String getProductId(String productCoded);
-    
-    public int selectProductListCountByProductCode(String productCoded);
-    
-    List<ProdPackagingMatModel> selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
-    long insertProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
-    long deleteProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
-    
 }

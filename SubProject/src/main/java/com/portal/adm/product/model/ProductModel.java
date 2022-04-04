@@ -44,25 +44,23 @@ public class ProductModel extends Criteria{
     private String productClass;
     private String packingType;
     private String recycleGrade;
-    private String masterApplyNm;
-    
-    private String applyProductCode;
+    private String completeStatus;
     
     private String inBaseYear;	
     private String baseYear;			        //기준 년 
     private Integer accumulateSaleQty;			//누적판매량
-    private double packingTotalWeight;			//포장재총중량
-    private Integer recyleContributions;         //재활용 분담금
+    private Integer packingTotalWeight;			//포장재총중량
+    private String recyleContributions;         //재활용 분담금
 
     private String baseYear_1;		
     private Integer accumulateSaleQty_1;			
-    private double packingTotalWeight_1;			
-    private Integer recyleContributions_1;         
+    private Integer packingTotalWeight_1;			
+    private String recyleContributions_1;         
 
     private String baseYear_2;		
     private Integer accumulateSaleQty_2;		 
-    private double packingTotalWeight_2;		
-    private Integer recyleContributions_2;       
+    private Integer packingTotalWeight_2;		
+    private String recyleContributions_2;       
     
     
     private String productMaker;
@@ -76,10 +74,8 @@ public class ProductModel extends Criteria{
     private String approvalNumber;   //승인번호
     
     private String masterMapping;      //매핑상태
-    private String mappingProductCode;  //매핑상품코드
+    private String mappingProductId;  //매핑상품코드
     private String mappingProductNm;    //매핑상품명
-    
-    private String errorString; 
     
     
     private List<ProdPackagingModel> ProdPackagingList;  

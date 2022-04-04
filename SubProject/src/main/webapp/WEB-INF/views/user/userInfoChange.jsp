@@ -36,16 +36,16 @@
 			</div>
 			<div class="col-50">
 				<div class="form-group">
-					<label class="col-25 form-label">연락처</label>
+					<label class="col-25 form-label">연락처</label>	
 					<div class="col-75">
 						<div class="phone-number">
-							<input id="phone1" name="phone1" value="${fn:split(memberInfo.phone,'-')[0]}" type="text" class="text-input" maxlength="3" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<div class="pr16"><input id="phone1" name="phone1" value="${fn:split(memberInfo.phone,'-')[0]}" type="text" class="text-input" maxlength="3" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'></div>
 						</div>
 						<div class="phone-number">
-							<input id="phone2" name="phone2" value="${fn:split(memberInfo.phone,'-')[1]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<div class="pr16"><input id="phone2" name="phone2" value="${fn:split(memberInfo.phone,'-')[1]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'></div>
 						</div>
 						<div class="phone-number end">
-							<input id="phone3" name="phone3" value="${fn:split(memberInfo.phone,'-')[2]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'>
+							<div class="pr16"><input id="phone3" name="phone3" value="${fn:split(memberInfo.phone,'-')[2]}" type="text" class="text-input" maxlength="4" placeholder="번호를 입력해 주세요" onkeypress='return checkNumber(event);'></div>
 						</div>
 						<input type="hidden" id="phone" name="phone" />
 					</div>
@@ -55,13 +55,15 @@
 				<div class="form-group">
 					<label class="col-25 form-label">이메일</label>
 					<div class="col-75">
-						<div class="email-add">
-							<input id="email1" name="email1" value="${fn:split(memberInfo.email,'@')[0]}" type="text" class="text-input email">
+						<div class="form-input">
+							<div class="email-add">
+								<div class="pr28"><input id="email1" name="email1" value="${fn:split(memberInfo.email,'@')[0]}" type="text" class="text-input email"></div>
+							</div>
+							<div class="email-add">
+								<div><input id="email2" name="email2" value="${fn:split(memberInfo.email,'@')[1]}"  type="text" class="text-input email"></div>
+							</div>
+							<input type="hidden" id="email" name="email" />
 						</div>
-						<div class="email-add end">
-							<input id="email2" name="email2" value="${fn:split(memberInfo.email,'@')[1]}" type="text" class="text-input email">
-						</div>
-						<input type="hidden" id="email" name="email" />
 					</div>
 				</div>
 			</div>

@@ -46,14 +46,11 @@
 			#{apiKey}
 			, #{packagingId}
 			, #{toCompanyCode}
-			<!-- , #{toCompanyNm}-->
-			, (SELECT SUPPLIER_NM   FROM t_supplier WHERE SUPPLIER_CODE = #{toCompanyCode}) 
+			, #{toCompanyNm}
 			, #{fromCompanyCode}
 			, #{fromCompanyNm}
 			, #{managerId}
-			<!--  , #{managerNm} -->
-			, (SELECT MANAGER_NM  FROM t_supplier_manager 
-			                     WHERE SUPPLIER_CODE = #{toCompanyCode} AND  MANAGER_ID = #{managerId})
+			, #{managerNm}
 			, #{managerMail}
 			, 'Y'
 			, #{rgstId}
@@ -88,7 +85,7 @@
     <select id="selectProdApiInfo" parameterType="com.portal.adm.product.model.ProdPackagingModel" resultType="com.portal.adm.product.model.ProdPackagingModel">
     	SELECT 
 			PP.PACKAGING_ID
- 			, b.PRODUCT_NM
+			, PP.PRODUCT_NM
 			, PP.PRODUCT_ID
 			, PP.PACKAGING_ORDER
 			, PP.MAT_TYPE
@@ -108,11 +105,9 @@
 			, (SELECT USER_NM FROM T_USER WHERE USER_ID = S.MANAGEMENT_ID) AS MANAGEMENT_NM
 			, S.REPRESENTATIVE_NM 
 		FROM T_PRODUCT_PACKAGING PP
-		LEFT JOIN T_PRODUCT b  ON PP.PRODUCT_ID = b.PRODUCT_ID
 		LEFT JOIN T_API_PRODUCT_PACKAGE APP ON PP.PACKAGING_ID = APP.PACKAGING_ID
 		LEFT JOIN T_SUPPLIER S ON APP.TO_COMPANY_CODE = S.SUPPLIER_CODE
 		WHERE PP.PACKAGING_ID = #{packagingId}
-		LIMIT 1
     </select>
     
    	<insert id="insertFile" parameterType="fileModel">
@@ -127,12 +122,9 @@
 	
 	<update id="updatePackagingInfo">
 		UPDATE T_PRODUCT_PACKAGING
-		SET  
-<!--  		MAT_TYPE = #{matType}
+		SET  MAT_TYPE = #{matType}
 		, PART_TYPE = #{partType}
-		,
--->		 
-		  MAT_INFO = #{matInfo}
+		, MAT_INFO = #{matInfo}
 		, WEIGHT = #{weight}
 		, STANDARD = #{standard}
 		, COLOR = #{color}
