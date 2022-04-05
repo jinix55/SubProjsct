@@ -159,5 +159,18 @@
 		   t_supplier
 		where  SUPPLIER_CODE = #{codeId}
 		  and  use_yn = "Y"
-	</select>			
+	</select>
+	
+					
+	<select id="getMatType" resultType="String" parameterType="String">
+		SELECT   DISTINCT
+		         b.MAT_TYPE 
+		   FROM  t_product a
+		       , t_product_packaging b
+		  WHERE  a.USE_YN ='Y'
+		    AND  b.USE_YN ='Y' 
+		    AND  a.PRODUCT_ID = b.PRODUCT_ID   
+		    AND  a.PRODUCT_ID = #{productId}
+		    AND  b.PACKAGING_ORDER = 1
+	</select>
 </mapper>

@@ -246,40 +246,51 @@
 	</select>
 	
 	
-	<select id="selectProductPackagingDetailWithoutProductId" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+	<select id="selectProductMapping" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[
-		SELECT
-			  a.PACKAGING_ID
-			, a.PRODUCT_ID
-			, a.PACKAGING_NM
-			, a.PACKAGING_DSC
-			, a.PACKAGING_ORDER
-			, a.MAT_TYPE
-			, a.PART_TYPE
-			, a.PART_TYPE_ORDER
-			, a.MAT_INFO
-			, a.WEIGHT
-			, a.STANDARD
-			, a.COLOR
-			, a.ADD_EXPLAN
-			, a.MAT_FILE_ID
-			, a.SUPPLIER_CODE
-			, a.MANAGER_ID
-			, a.USE_YN
-			, a.RGST_ID
-			, a.RGST_DT
-			, a.MODI_ID
-			, a.MODI_DT
-		FROM
-			t_product_packaging a
-		WHERE upper(a.PRODUCT_ID) <> upper(#{productId})
-		  AND a.USE_YN = 'Y'
-		  AND a.PACKAGING_ORDER = 1
+		SELECT   DISTINCT
+		         a.PRODUCT_CODE  
+		       , a.APPROVAL_NUMBER
+		       , b.MAT_TYPE 
+		   FROM  t_product a
+		       , t_product_packaging b
+		  WHERE  a.USE_YN ='Y'
+		    AND  b.USE_YN ='Y' 
+		    AND  a.PRODUCT_ID = b.PRODUCT_ID      
+		    AND  b.PACKAGING_ORDER = 1
+		    AND  a.MASTER_APPLY = 'COMPLETION'
+		    AND  ifnull(a.APPROVAL_NUMBER,'') <> ''
+		    AND  a.MASTER_MAPPING  = 'UNMAPPING'
+		    AND  b.MAT_TYPE = #{matType}
 		]]>			  
 	</select>	
-	
-	
-	
+
+	<select id="selectProductMatMappingCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
+		<![CDATA[
+		SELECT COUNT(*) FROM (
+			SELECT DISTINCT a.CODE_ID
+			FROM t_product_packaging_mat a 
+			LEFT JOIN t_product_packaging_mat b
+			 ON a.CODE_ID = b.CODE_ID
+			 AND b.file is null
+			 AND b.PRODUCT_ID = #{productId} 
+			WHERE b.CODE_ID IS NULL
+			 AND a.file is null
+			 AND a.PRODUCT_ID = #{mappingProductId} 
+		UNION 
+			 SELECT DISTINCT a.CODE_ID
+			FROM t_product_packaging_mat a 
+			LEFT JOIN t_product_packaging_mat b
+			 ON a.CODE_ID = b.CODE_ID
+			 AND b.file is null
+			 AND b.PRODUCT_ID = #{mappingProductId} 
+			WHERE b.CODE_ID IS NULL
+			 AND a.file is null
+			 AND a.PRODUCT_ID = #{productId} 
+		) c 
+		]]>			  
+	</select>	
+
 	
 	
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
@@ -506,11 +517,6 @@
 
 
 
-
-
-
-
-
 		
 	<select id="getProductId" resultType="String" parameterType="String">
 		SELECT                                                                               
@@ -520,6 +526,16 @@
        WHERE USE_YN = 'Y' 
         AND  PRODUCT_CODE = #{productCode} 		    		
 	</select>
+	
+	<select id="getProductNm" resultType="String" parameterType="String">
+		SELECT                                                                               
+			  PRODUCT_NM                                            
+		FROM                                                       
+			T_PRODUCT 
+       WHERE USE_YN = 'Y' 
+        AND  PRODUCT_CODE = #{productCode} 		    		
+	</select>
+	
 	
 	<select id="selectProductSelfPackaging" resultType="com.portal.adm.product.model.ProdPackagingMatModel" parameterType="com.portal.adm.product.model.ProdPackagingMatModel">
 		SELECT

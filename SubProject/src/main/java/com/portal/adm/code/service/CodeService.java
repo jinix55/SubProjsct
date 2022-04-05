@@ -121,7 +121,9 @@ public class CodeService {
     	String codeNm = "";
     	CodeModel inCodeModel = new CodeModel();
     	CodeModel outCodeModel = new CodeModel();
-    	if("MAT_TYPE".equals(codeType)){
+    	if("MAT_TYPE_PRODUCT_ID".equals(codeType)){
+  		  codeNm = codeMapper.getMatType(codeId);
+    	} else if("MAT_TYPE".equals(codeType)){
     		  codeNm = codeMapper.getCodeNmOnEnvironPrice(codeId);
     	} else if("PART_TYPE".equals(codeType)){ 
     		  codeNm = codeMapper.getCodeNmOnEnvironmentCode(codeId);

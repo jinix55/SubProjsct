@@ -78,6 +78,8 @@ public interface CodeMapper {
     public String getCodeNmOnEnvironmentCode(String CodeId);
     
     public String getCodeNmOnSupplier(String CodeId);
+    
+    public String getMatType(String productId);
    
 
 }

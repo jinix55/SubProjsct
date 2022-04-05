@@ -359,26 +359,36 @@ public class ProductService {
 	}
 
 	public ProductModel mapping(ProductModel productModel) {
-		String producId = this.getProductId(productModel.getProductCode());
-		
-		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-		
-		List<ProdPackagingModel> prodPackagingList =  productMapper.selectProductPackagingDetailWithoutProductId(prodPackagingModel);
-		for(ProdPackagingModel p : prodPackagingList) {
-			
-		}
-		
 		ProductModel outProductModel = new ProductModel();
 		
-		outProductModel.setMasterApply("COMPLETION");
-		outProductModel.setReceiptNumber("ReceiptNumber");
-		outProductModel.setApprovalNumber("ApprovalNumber");
+		String producId = this.getProductId(productModel.getProductCode());
+		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_ID", producId, null);
+		if((matType == null) || ("".equals(matType))) {
+			return outProductModel;
+		}
+		outProductModel.setMasterApply("UNPROCEED");
+		outProductModel.setMasterMapping("NONEMAPPING");
 		
-		outProductModel.setMasterMapping("MAPPING");
-		outProductModel.setMappingProductCode("MappingProductCode");
-		outProductModel.setMappingProductNm("MappingProductNm");
+		ProductModel inProductModel = new ProductModel();
+		ProductModel mappingProductModel = new ProductModel();
+		inProductModel.setMatType(matType);
+		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
 		
-		
+		int productMatMappingCount = 0;
+		String mappingProductId = "";
+		for(ProductModel p : ProductList) {
+			mappingProductModel.setProductId(producId);
+			mappingProductId = this.getProductId(p.getProductCode());
+			mappingProductModel.setMappingProductId(mappingProductId);
+			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
+			if(productMatMappingCount == 0) {
+				outProductModel.setMasterApply("COMPLETION");
+				outProductModel.setApprovalNumber(p.getApprovalNumber());
+				outProductModel.setMasterMapping("MAPPING");
+				outProductModel.setMappingProductCode(p.getProductCode());
+				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
+			}
+		}
 		return outProductModel;
 	}	
 
@@ -444,6 +454,10 @@ public class ProductService {
 	public String getProductId(String productCoded) {
 		return productMapper.getProductId(productCoded);
 	}	
+
+	public String getProductNm(String productCoded) {
+		return productMapper.getProductNm(productCoded);
+	}		
 	
 	public int selectProductListCountByProductCode(String productCoded) {
 		return productMapper.selectProductListCountByProductCode(productCoded);

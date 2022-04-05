@@ -79,7 +79,9 @@ public class ProductModel extends Criteria{
     private String mappingProductCode;  //매핑상품코드
     private String mappingProductNm;    //매핑상품명
     
-    private String errorString; 
+    private String errorString;
+    private String matType;
+    private String mappingProductId; 
     
     
     private List<ProdPackagingModel> ProdPackagingList;  
