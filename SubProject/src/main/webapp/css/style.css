@@ -51,6 +51,7 @@ select:active, select:focus, input {outline:none; box-shadow:none;}
 span {color: #797979;}
 em {color:#ea220b;}
 
+
 input[type="checkbox"]:checked {color: #99a1a7; text-shadow: 1px 1px #fff;border-color: #fd6763; box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);}
 input[type="checkbox"]{width: 18px;height: 18px;line-height: 18px;/*margin: -2px 5px 0 10px;*/text-align: center;vertical-align: middle;background: #f5f5f5;border: 1px solid #cacece;/*box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);*/}
 input[type="radio"]{width:18px;height:18px;vertical-align:top;/*margin-right: 4px;margin-left: 6px;*/}
