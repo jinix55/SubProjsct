@@ -73,4 +73,11 @@ public interface CodeMapper {
      */
     int selectCodeCountForGroupId(CodeModel model);
     
+    public String getCodeNmOnEnvironPrice(String CodeId);
+    
+    public String getCodeNmOnEnvironmentCode(String CodeId);
+    
+    public String getCodeNmOnSupplier(String CodeId);
+   
+
 }

@@ -132,4 +132,32 @@
 		and use_yn = 'Y'
 	</select>
 	
+	
+	<select id="getCodeNmOnEnvironPrice" resultType="String" parameterType="String">
+		SELECT  concat(a.code_nm,'(', b.code_nm ,')') AS codeNm
+				, b.code_id AS codeId
+		  FROM  t_environ_price a, 
+		        t_environ_price b
+		  WHERE a.code_id = b.group_id
+		    and b.code_id = #{codeId}
+	</select>	
+	
+	<select id="getCodeNmOnEnvironmentCode" resultType="String" parameterType="String">
+		select 
+           CODE_NM            
+		from 
+		   t_environment_code
+		where  CODE_ID = #{codeId}
+		  and  REVISION_YEAR = "2022"
+		  and  REVISION_MONTH = "03"
+	</select>	
+	
+	<select id="getCodeNmOnSupplier" resultType="String" parameterType="String">
+		select 
+           SUPPLIER_NM            
+		from 
+		   t_supplier
+		where  SUPPLIER_CODE = #{codeId}
+		  and  use_yn = "Y"
+	</select>			
 </mapper>

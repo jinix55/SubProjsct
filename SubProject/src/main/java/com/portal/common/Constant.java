@@ -28,8 +28,15 @@ public interface Constant {
 	public static final String YES = "Y";
 	public static final String NO = "N";
 	
+	
+	
+	public static final String _MAT_TYPE_ = "MAT_TYPE";
+	public static final String _CODE_ = "CODE";
+	public static final String _MAPPING_STAT_CODE_ = "MAPPING_STAT_CODE";
+	
 	public interface ApiKey {
 		public static final String KAKAO_REST_API_KEY = "1de7a7ba13af6e8eae7035efa4e9cbb1";
+		
 	}
 	
 	//File
@@ -200,6 +207,8 @@ public interface Constant {
 		public static final String PACKAGING = "pa";
 		//상품번호
 		public static final String PRODUCT = "pd";
+		//자가진단정보
+		public static final String PACKAGINGMAT = "pam";
 		
 	}
 	
