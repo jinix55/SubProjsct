@@ -91,7 +91,7 @@
                   <col style="width: 80px;">
                   <col style="width: 80px;">
                   <col style="width: 100px;">
-                  <col style="width: 70px;">
+                  <col style="width: 100px;">
                   <col style="width: 50px;">
                   <col style="width: 50px;">
                   <col style="width: 50px;">
@@ -327,7 +327,7 @@
 				<label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">1차포장</label>
 				<div class="col-55">
 				  <select class="select-box">
-					<option value="선택없음" selected="">선택없음</option>
+					<option value="선택없음" selected>선택없음</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
@@ -394,7 +394,7 @@
 				<label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">2차포장</label>
 				<div class="col-55">
 				  <select class="select-box">
-					<option value="선택없음" selected="">선택없음</option>
+					<option value="선택없음" selected>선택없음</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
@@ -460,7 +460,7 @@
 				<label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">3차포장</label>
 				<div class="col-55">
 				  <select class="select-box">
-					<option value="선택없음" selected="">선택없음</option>
+					<option value="선택없음" selected>선택없음</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
 					<option value="상품분류선택">상품분류선택</option>
