@@ -52,6 +52,8 @@ public interface ProductMapper {
      */
     long updateProduct(ProductModel productModel);
     
+    long updateProductRecycleGrade(ProductModel productModel);
+    
     /**
      * 상품 모델을 미사용으로 업데이트 한다.
      * @param model 상품번호를 사용
@@ -59,6 +61,10 @@ public interface ProductMapper {
      */
     long deleteProduct(ProductModel productModel);
     
+    
+    List<ProductModel> selectProductMapping(ProductModel productModel);
+    
+    int selectProductMatMappingCount(ProductModel productModel);
     
     /**
      * 상품포장정보관리 목록 조회한다.
@@ -77,6 +83,7 @@ public interface ProductMapper {
     List<ProdPackagingModel> selectProductPackaging(ProdPackagingModel productPackagingModel);
     
     List<ProdPackagingModel> selectProductPackagingListByProductId(ProdPackagingModel productPackagingModel);
+    
     
     
     /**
@@ -148,6 +155,9 @@ public interface ProductMapper {
     
     List<ProdPackagingModel> selectProductPackagingList(ProdPackagingModel prodPackagingModel);
     
+    
+    
+    
     List<ProdPackagingModel> selectProductPackagingListByProc(ProdPackagingModel prodPackagingModel);
     
     
@@ -158,7 +168,6 @@ public interface ProductMapper {
      * @return
      */
     List<ProdPackagingMatModel> selectProductPackagingMatList(ProdPackagingMatModel prodPackagingMatModel);
-    
     
     /**
      * 상품포장정보 모델 신규 등록 insert
@@ -177,6 +186,8 @@ public interface ProductMapper {
     
     
     public String getProductId(String productCoded);
+    
+    public String getProductNm(String productCoded);
     
     public int selectProductListCountByProductCode(String productCoded);
     

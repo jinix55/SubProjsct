@@ -133,13 +133,10 @@
 										<c:when test="${product.recycleGrade eq '우수'}">
 											<img src="/images/free-icon-emoji-3456813.png" width="26px">
 										</c:when>
-										<c:when test="${product.recycleGrade eq '적합'}">
+										<c:when test="${product.recycleGrade eq '보통'}">
 											<img src="/images/free-icon-smile-356662.png" width="26px">
 										</c:when>
-										<c:when test="${product.recycleGrade eq '나쁨'}">
-											<img src="/images/free-icon-angry-1747839.png" width="26px">
-										</c:when>
-										<c:when test="${product.recycleGrade eq '부적합'}">
+										<c:when test="${product.recycleGrade eq '어려움'}">
 											<img src="/images/free-icon-angry-1747839.png" width="26px">
 										</c:when>
 										<c:otherwise>
@@ -150,7 +147,7 @@
 								</td>
 								<td>${product.masterApplyNm}</td>
 								<td>${product.check1}</td>
-								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
 								<td>
 									<div class="btn-group">
@@ -865,7 +862,7 @@
 	  <div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:auto;max-width:1100px">
 		  <div class="modal-header">
-			<h4 class="modal-title">상품포장정보</h4>
+			<h4 class="modal-title" id="detailTitle"></h4>
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
@@ -927,6 +924,7 @@
 								<div id="tab04_2" style="display:none;">
 								<input type="hidden" name="packagingOrder">
 								<input type="hidden" name="productId">
+								<input type="hidden" name="recycleGrade">
 								<input type="hidden" name="revisionYear" value="2022">
 								<input type="hidden" name="revisionMonth" value="03">
 								  <div id="Accordion_wrap" class="row100 pt10" style="display:none;">
@@ -935,37 +933,37 @@
 								  </div>
 								  <!-- 버튼 -->
 								  <div class="modal-footer btn-group" id="packagingInfo">
-									<button type="button" class="button btn-success" onclick="insertSelfDiagnoseAjax();">결과확인</button>
+									<button type="button" class="button btn-success" onclick="insertSelfDiagnoseAjax();">결과저장</button>
 									<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
 								  </div>
 								  <!--S_최종결과 -->
-								  <div class="row100 pt10">
-									<div class="result-box">
-									  <div class="row">
-										<div class="col-50">
-										  <div class="form-group pb0">
-											<label class="col-25 form-label result-text">최종 결과
-											</label>
-											<div class="col-75">
-											  <div class="form-input">
-												<input type="text" class="text-input" placeholder="우수">
-											  </div>
-											</div>
-										  </div>
-										</div>
-										<div class="col-50">
-										  <div class="form-group pb0">
-											<label class="col-25 form-label result-text">매핑결과</label>
-											<div class="col-75">
-											  <div class="form-input">
-												<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌">
-											  </div>
-											</div>
-										  </div>
-										</div>
-									  </div>
-									</div>
-								  </div>
+<!-- 								  <div class="row100 pt10"> -->
+<!-- 									<div class="result-box"> -->
+<!-- 									  <div class="row"> -->
+<!-- 										<div class="col-50"> -->
+<!-- 										  <div class="form-group pb0"> -->
+<!-- 											<label class="col-25 form-label result-text">최종 결과 -->
+<!-- 											</label> -->
+<!-- 											<div class="col-75"> -->
+<!-- 											  <div class="form-input"> -->
+<!-- 												<input type="text" class="text-input" placeholder="우수"> -->
+<!-- 											  </div> -->
+<!-- 											</div> -->
+<!-- 										  </div> -->
+<!-- 										</div> -->
+<!-- 										<div class="col-50"> -->
+<!-- 										  <div class="form-group pb0"> -->
+<!-- 											<label class="col-25 form-label result-text">매핑결과</label> -->
+<!-- 											<div class="col-75"> -->
+<!-- 											  <div class="form-input"> -->
+<!-- 												<input type="text" class="text-input" placeholder="1안) – 3안) 중 결과 보여줌"> -->
+<!-- 											  </div> -->
+<!-- 											</div> -->
+<!-- 										  </div> -->
+<!-- 										</div> -->
+<!-- 									  </div> -->
+<!-- 									</div> -->
+<!-- 								  </div> -->
 								  <!--E_최종결과 -->
 								</div>
 							</form>
@@ -1065,9 +1063,17 @@
   });
 
   function insertSelfDiagnoseAjax(){
+	    var res = result();
+	    $("#frmSelfDiagnose input[name=recycleGrade]").val(res);
+	    if(res){
+		    	alert(res);
+		}else {
+			alert('결과확인이 어려웠습니다. 잘 선택이 되었는지 확인해주세요.');
+			return;
+		}
+		
 		var form = $('#frmSelfDiagnose')[0];
 	    var data = new FormData(form);
-	    
 	  	$.ajax({
 		type : 'post',
 		url : '/product/insert/selfPackaging',
@@ -1083,6 +1089,7 @@
 			alert(request.responseText);
 		},
 		success : function(result){
+			alert('정상적으로 등록되었습니다.');
 		    console.log(result);
 		}
 	});
@@ -1220,7 +1227,8 @@
   }
   
   function result(){
-	    var gradeResult = [];
+	  var retResult = "";
+	  var gradeResult = [];
       var chkCnt = 0;
       var sc = $('.choice-title').length;
       var text = '';
@@ -1251,26 +1259,30 @@
       	gradeResult.forEach(function(item){
 		        if(item == 'A'){
 		        	if(gradeNum < 1){
-			        	$('.rating').text('최우수');
-			        	$('.rating').css('color','black');
+// 			        	$('.rating').text('최우수');
+// 			        	$('.rating').css('color','black');
+			        	retResult = '최우수';
 			        	gradeNum = 1;
 		        	}
 		        }else if(item == 'B'){
 		        	if(gradeNum < 2){
-			        	$('.rating').text('우수');
-			        	$('.rating').css('color','black');
+// 			        	$('.rating').text('우수');
+// 			        	$('.rating').css('color','black');
+			        	retResult = '우수';
 			        	gradeNum = 2;
 		        	}
 		        }else if(item == 'C'){
 		        	if(gradeNum < 3){
-			        	$('.rating').text('보통');
-			        	$('.rating').css('color','black');
+// 			        	$('.rating').text('보통');
+// 			        	$('.rating').css('color','black');
+						retResult = '보통';
 			        	gradeNum = 3;
 		        	}
 		        }else if(item == 'D'){
 		        	if(gradeNum < 4){
-			        	$('.rating').text('어려움');
-			        	$('.rating').css('color','red');
+// 			        	$('.rating').text('어려움');
+// 			        	$('.rating').css('color','red');
+			        	retResult = '어려움';
 			        	gradeNum = 4;
 		        	}
 		        }
@@ -1279,14 +1291,17 @@
       		var boxs = $('.checkbox_PE_L');
       		for(var i = 0 ; i < boxs.length ; i++){
       			if($('#'+boxs[i].id).prop('checked') && $('#'+boxs[i].id).attr('data-key') == 'A' && gradeNum != 4){
-      				$('.rating').text('최우수');
-      				$('.rating').css('color','black');
+//       				$('.rating').text('최우수');
+//       				$('.rating').css('color','black');
+      				retResult = '어려움';
       			}
       		}
       	}
-	        $('#score').show();
-	        $('.btn-success.isClose').focus();
+      	return retResult;
+// 	        $('#score').show();
+// 	        $('.btn-success.isClose').focus();
       }
+      return retResult;
   }
   
   function getProductSelfPackaging(){
@@ -1375,51 +1390,51 @@
 					selfPackInfo += '    				 </div>';
 					selfPackInfo += '                  </li>';
 					selfPackInfo += '            </ul>';
-					selfPackInfo += '             <div class="row">';
-					selfPackInfo += '               <div class="col-50">';
-					selfPackInfo += '                 <div class="form-group pb0">';
-					selfPackInfo += '                   <label class="col-25 form-label">증빙서류</label>';
-					selfPackInfo += '                   <div class="col-75">';
-					selfPackInfo += '                     <div class="form-input">';
-					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타"  id="proofDocs-'+item.codeId+'">';
-					selfPackInfo += '                     </div>';
-					selfPackInfo += '                   </div>';
-					selfPackInfo += '                 </div>';
-					selfPackInfo += '               </div>';
-					selfPackInfo += '               <div class="col-50">';
-					selfPackInfo += '                 <div class="form-group pb0">';
-					selfPackInfo += '                   <label class="col-25 form-label">첨부파일</label>';
-					selfPackInfo += '                   <div class="col-75">';
-					selfPackInfo += '                     <input type="file" multiple="multiple" class="text-input">';
-					selfPackInfo += '                   </div>';
-					selfPackInfo += '                 </div>';
-					selfPackInfo += '               </div>';
-					selfPackInfo += '             </div>';
+// 					selfPackInfo += '             <div class="row">';
+// 					selfPackInfo += '               <div class="col-50">';
+// 					selfPackInfo += '                 <div class="form-group pb0">';
+// 					selfPackInfo += '                   <label class="col-25 form-label">증빙서류</label>';
+// 					selfPackInfo += '                   <div class="col-75">';
+// 					selfPackInfo += '                     <div class="form-input">';
+// 					selfPackInfo += '                       <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타"  id="proofDocs-'+item.codeId+'">';
+// 					selfPackInfo += '                     </div>';
+// 					selfPackInfo += '                   </div>';
+// 					selfPackInfo += '                 </div>';
+// 					selfPackInfo += '               </div>';
+// 					selfPackInfo += '               <div class="col-50">';
+// 					selfPackInfo += '                 <div class="form-group pb0">';
+// 					selfPackInfo += '                   <label class="col-25 form-label">첨부파일</label>';
+// 					selfPackInfo += '                   <div class="col-75">';
+// 					selfPackInfo += '                     <input type="file" multiple="multiple" class="text-input">';
+// 					selfPackInfo += '                   </div>';
+// 					selfPackInfo += '                 </div>';
+// 					selfPackInfo += '               </div>';
+// 					selfPackInfo += '             </div>';
                     //            <!-- S_결과확인-->
-                    selfPackInfo += '             <div class="result-box">';
-                    selfPackInfo += '               <div class="row">';
-                    selfPackInfo += '                 <div class="col-50">';
-                    selfPackInfo += '                   <div class="form-group pb0">';
-                    selfPackInfo += '                     <label class="col-45 form-label">'+item.codeNm+ '평가결과</label>';
-                    selfPackInfo += '                     <div class="col-55">';
-                    selfPackInfo += '                       <div class="form-input">';
-                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수" disabled id="results-'+item.codeId+'">';
-                    selfPackInfo += '                       </div>';
-                    selfPackInfo += '                     </div>';
-                    selfPackInfo += '                   </div>';
-                    selfPackInfo += '                 </div>';
-                    selfPackInfo += '                 <div class="col-50">';
-                    selfPackInfo += '                   <div class="form-group pb0">';
-                    selfPackInfo += '                     <label class="col-25 form-label">필요서류목록</label>';
-                    selfPackInfo += '                     <div class="col-75">';
-                    selfPackInfo += '                       <div class="form-input">';
-                    selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타" disabled id="reqDocs-'+item.codeId+'">';
-                    selfPackInfo += '                       </div>';
-                    selfPackInfo += '                     </div>';
-                    selfPackInfo += '                   </div>';
-                    selfPackInfo += '                 </div>';
-                    selfPackInfo += '               </div>';
-                    selfPackInfo += '             </div>';
+//                     selfPackInfo += '             <div class="result-box">';
+//                     selfPackInfo += '               <div class="row">';
+//                     selfPackInfo += '                 <div class="col-50">';
+//                     selfPackInfo += '                   <div class="form-group pb0">';
+//                     selfPackInfo += '                     <label class="col-45 form-label">'+item.codeNm+ '평가결과</label>';
+//                     selfPackInfo += '                     <div class="col-55">';
+//                     selfPackInfo += '                       <div class="form-input">';
+//                     selfPackInfo += '                         <input type="text" class="text-input" placeholder="우수" disabled id="results-'+item.codeId+'">';
+//                     selfPackInfo += '                       </div>';
+//                     selfPackInfo += '                     </div>';
+//                     selfPackInfo += '                   </div>';
+//                     selfPackInfo += '                 </div>';
+//                     selfPackInfo += '                 <div class="col-50">';
+//                     selfPackInfo += '                   <div class="form-group pb0">';
+//                     selfPackInfo += '                     <label class="col-25 form-label">필요서류목록</label>';
+//                     selfPackInfo += '                     <div class="col-75">';
+//                     selfPackInfo += '                       <div class="form-input">';
+//                     selfPackInfo += '                         <input type="text" class="text-input" placeholder="기기분석,육안판정,공인시험성적서,신고허가서류,기타" disabled id="reqDocs-'+item.codeId+'">';
+//                     selfPackInfo += '                       </div>';
+//                     selfPackInfo += '                     </div>';
+//                     selfPackInfo += '                   </div>';
+//                     selfPackInfo += '                 </div>';
+//                     selfPackInfo += '               </div>';
+//                     selfPackInfo += '             </div>';
 //                                 <!-- E_결과확인-->
                     selfPackInfo += '           </div>';
                     selfPackInfo += '</div>';
@@ -1795,7 +1810,12 @@
 	  
 	  if(packagingOrderNmApplyVal > 8 && mappedProductCodeChecked === true) {
 			if($("#matTypeSelectProductCodeVal").val() !== '') {
-		    	mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+				if($("#matTypeSelectProductCodeVal").val() === selectedProdCode){
+					alert('동일한 상품을 부속포장으로 할수 없습니다.');
+					return;
+			    }else {
+		    		mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+				}
 			}else {
 				alert('등록된 부속상품코드를 입력해주세요.');
 				return;
@@ -2003,9 +2023,10 @@
 	});
   }
   
-  function productPackagingOrder(id, code){
+  function productPackagingOrder(id, code, name){
 	  selectedProdId = id;
 	  selectedProdCode = code;
+	  $('#detailTitle').text('상품포장정보('+name+')');
 // 	  tabID = 0;
 	  $('#tab-list').empty();
 	  $('#tab-list li.active').removeClass('active');
@@ -2195,7 +2216,9 @@
   }
   // 상품포장정보등록 수정
   function saveProductPackagingAjax(param, action, sendMail) {
-    $.ajax({
+// 	    var weight = $("#frmDetail input[name=weight]").val();
+// 	    if(weight == || && weight)
+	    $.ajax({
 		type : 'post',
 		url : '/product/'+action+'/'+selectedProdId+'/packaging',
 		data : param,
@@ -2274,6 +2297,10 @@
 
 //포장 차수 삭제
   function deletePackagingInfoAjax(productId, packagingOrder, packagingId) {
+		if(!packagingOrder) {
+			packagingOrder = -1;
+		}
+		
 	  	$.ajax({
 		type : 'post',
 		url : '/product/delete/'+productId+'/packaging/',
@@ -2503,10 +2530,10 @@
 		innerHtml += '</div>';
 		innerHtml += '<div class=col-50>';
 		innerHtml += '<div class=form-group>';
-		innerHtml += '<label class="col-25 form-label">중량</label>';
+		innerHtml += '<label class="col-25 form-label">중량(g)</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<input type=text class=text-input name="weight" value="'+weight+'">';
+		innerHtml += '<input type=number step=0.01 placeholder=0.00 class=text-input name="weight" value="'+weight+'">';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';

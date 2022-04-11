@@ -898,11 +898,11 @@ public class ProductController {
 	    	for(String self : selfs) {
 	    		prodPackagingMatModel.setGroupId(self.split("\\|\\|")[0]);
 	    		prodPackagingMatModel.setCodeId(self.split("\\|\\|")[1]);
-	    		if(prodPackagingMatModel.getCodeId().contains("_B")) {
+	    		if(self.split("\\|\\|")[1].contains("_B")) {
 	    			prodPackagingMatModel.setPackagingId(bPackagingId);
-	    		}else if(prodPackagingMatModel.getCodeId().contains("_L")) {
+	    		}else if(self.split("\\|\\|")[1].contains("_L")) {
 	    			prodPackagingMatModel.setPackagingId(lPackagingId);
-	    		}else if(prodPackagingMatModel.getCodeId().contains("_G")) {
+	    		}else if(self.split("\\|\\|")[1].contains("_G")) {
 	    			prodPackagingMatModel.setPackagingId(gPackagingId);
 	    		}
 	    		prodPackagingMatModel.setPackagingId(bPackagingId);
@@ -910,6 +910,14 @@ public class ProductController {
 	    		productService.insertProductSelfPackaging(prodPackagingMatModel);
 	    		
 	    	}
+    	}
+    	
+    	//업데이터 패캐징 재활용등급
+    	if(prodPackagingMatModel.getRecycleGrade() != null && !"".equals(prodPackagingMatModel.getRecycleGrade())  && "1".equals(prodPackagingMatModel.getPackagingOrder())) {
+    		ProductModel productModel = new ProductModel();
+    		productModel.setProductId(prodPackagingMatModel.getProductId());
+    		productModel.setRecycleGrade(prodPackagingMatModel.getRecycleGrade());
+    		productService.updateProductRecycleGrade(productModel);
     	}
     	
     	String fileUrl = "C:/PPLUS/" + prodPackagingMatModel.getProductId() + "/selfPackaging/";
@@ -1142,12 +1150,6 @@ public class ProductController {
     @RequestMapping(value="/detail/apply/", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
 	public ResponseEntity<List<ProdPackagingModel>> apply(@ModelAttribute ProductModel productModel) {
-
-    	System.out.println("productModel" + productModel);
-    	productModel.setProductId("pd2200045");
-    	productModel.setApplyProductCode("PROD_01");
-    	
-    	
     	List<ProdPackagingModel>  prodPackagingList = productService.apply(productModel);
     	return new ResponseEntity<>(prodPackagingList, HttpStatus.OK);
     }    

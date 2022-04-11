@@ -230,6 +230,16 @@ public class ProductService {
 		}
 	}
 	
+	@Transactional
+	public String updateProductRecycleGrade(ProductModel productModel) {
+		long count = productMapper.updateProductRecycleGrade(productModel);
+		if (count > 0) {
+			return Constant.DB.UPDATE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}
+	
 	/**
 	 * 상품 정보를 수정(삭제,미사용)한다.
 	 *
@@ -351,15 +361,34 @@ public class ProductService {
 	public ProductModel mapping(ProductModel productModel) {
 		ProductModel outProductModel = new ProductModel();
 		
-		outProductModel.setMasterApply("COMPLETION");
-		outProductModel.setReceiptNumber("ReceiptNumber");
-		outProductModel.setApprovalNumber("ApprovalNumber");
+		String producId = this.getProductId(productModel.getProductCode());
+		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_ID", producId, null);
+		if((matType == null) || ("".equals(matType))) {
+			return outProductModel;
+		}
+		outProductModel.setMasterApply("UNPROCEED");
+		outProductModel.setMasterMapping("NONEMAPPING");
 		
-		outProductModel.setMasterMapping("MAPPING");
-		outProductModel.setMappingProductCode("MappingProductCode");
-		outProductModel.setMappingProductNm("MappingProductNm");
+		ProductModel inProductModel = new ProductModel();
+		ProductModel mappingProductModel = new ProductModel();
+		inProductModel.setMatType(matType);
+		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
 		
-		
+		int productMatMappingCount = 0;
+		String mappingProductId = "";
+		for(ProductModel p : ProductList) {
+			mappingProductModel.setProductId(producId);
+			mappingProductId = this.getProductId(p.getProductCode());
+			mappingProductModel.setMappingProductId(mappingProductId);
+			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
+			if(productMatMappingCount == 0) {
+				outProductModel.setMasterApply("COMPLETION");
+				outProductModel.setApprovalNumber(p.getApprovalNumber());
+				outProductModel.setMasterMapping("MAPPING");
+				outProductModel.setMappingProductCode(p.getProductCode());
+				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
+			}
+		}
 		return outProductModel;
 	}	
 
@@ -368,14 +397,19 @@ public class ProductService {
 	public List<ProdPackagingModel>  apply(ProductModel productModel) {
 		List<ProdPackagingModel>  prodPackagingList = new ArrayList<>() ;
 		
+		String productId =  this.getProductId(productModel.getProductCode());
+		String applyProductId =  this.getProductId(productModel.getApplyProductCode());
+	
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-		prodPackagingModel.setProductId( this.getProductId(productModel.getApplyProductCode()) );
-		
+		prodPackagingModel.setProductId(applyProductId);
 		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
+		
+		int maxPartProductPackagingOrder = productMapper.selectMaxPartProductPackagingOrder(productId);
 		String CodeNm = "";
         for(ProdPackagingModel p : prodPackagingList) {
            p.setPackagingId(idUtil.getPackagingId());        	
-           p.setPackagingId(productModel.getProductCode());
+           p.setProductId(productId);
+           p.setPackagingOrder(maxPartProductPackagingOrder + 1);
            
 			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
 			p.setMatTypeNm(CodeNm);
@@ -386,10 +420,22 @@ public class ProductService {
 			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
 			p.setSupplierNm(CodeNm);
 			
-			p.setStr(p.getPackagingNm() + p.getMatTypeNm() + p.getPartTypeNm() + p.getSupplierNm());
+			p.setStr(p.getPackagingNm() + "_" + p.getMatTypeNm() + "_" + p.getPartTypeNm() + "_" + p.getSupplierNm());
 			
            productMapper.insertProductPackaging(p);
         }
+        
+        ProdPackagingMatModel prodPackagingMatModel = new ProdPackagingMatModel();
+        prodPackagingMatModel.setProductId(applyProductId);
+        prodPackagingMatModel.setPackagingOrder("1"); 
+		List<ProdPackagingMatModel> prodPackagingMatList = productMapper.selectProductSelfPackaging(prodPackagingMatModel);
+		for(ProdPackagingMatModel pM : prodPackagingMatList) {
+			pM.setPackagingMatId(idUtil.getPackagingMatId()); 
+			pM.setProductId(productId);
+			pM.setPackagingOrder( Integer.toString(maxPartProductPackagingOrder + 1) );
+			productMapper.insertProductSelfPackaging(pM);
+		}
+       
 		return prodPackagingList;
 	}		
 	
@@ -408,6 +454,10 @@ public class ProductService {
 	public String getProductId(String productCoded) {
 		return productMapper.getProductId(productCoded);
 	}	
+
+	public String getProductNm(String productCoded) {
+		return productMapper.getProductNm(productCoded);
+	}		
 	
 	public int selectProductListCountByProductCode(String productCoded) {
 		return productMapper.selectProductListCountByProductCode(productCoded);
