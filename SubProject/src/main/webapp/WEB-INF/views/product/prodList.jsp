@@ -155,7 +155,7 @@
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
-										<a href="#delete"  onclick="deleteProductItemSet('${product.productCode}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
+										<a href="#delete"  onclick="deleteProductItemSet('${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
@@ -834,7 +834,7 @@
 	  <!-- 레이어 팝업 - delete -->
 	  <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true" data-modal-parent="#myModal">
-		<input type="hidden" id="del_productCode" name="productId" >
+		<input type="hidden" id="del_productCode" name="productCode" >
 		<div class="modal-content" style="width:400px">
 		  <div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
@@ -1895,10 +1895,10 @@
 
 	
 	//photos and specs 정보 있으면 뿌려줌
-	$('#edit_photo').val(data.photo);
-	$('#edit_spec').val(data.spec);
-	getFileList('photos_'+data.productId, "edit_photos", data.photo);
-	getFileList('specs_'+data.productId, "edit_specs", data.spec);
+	$('#edit_photo').val(data.photoGfileId);
+	$('#edit_spec').val(data.specGfileId);
+	getFileList('photos_'+data.productId, "edit_photos", data.photoGfileId);
+	getFileList('specs_'+data.productId, "edit_specs", data.specGfileId);
 
 	$('#edit_masterApplyNm').empty();
 	console.log(data.environmentProceedStatCode.length);
@@ -1923,8 +1923,8 @@
 	
 	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
 	$("#frmUpdate input[name=masterMapping]").val([data.masterMapping]);
-	$('#edit_receiptNumber').val(data.receiptNumber);
-	$('#edit_approvalNumber').val(data.approvalNumber);
+	$('#edit_receiptNo').val(data.receiptNo);
+	$('#edit_approvalNuo').val(data.approvalNo);
 	
 	$('#edit_rgstDt').val(data.rgstDt);
 	$('#edit_rgstDt').attr('disabled',true);
@@ -1982,9 +1982,9 @@
 	});
   }
   
-  function deleteProductItemSet(productId, productCode) {
+  function deleteProductItemSet(productCode) {
   	$('.delName').text(productCode);		
-	$('#del_productCode').val(productId);
+	$('#del_productCode').val(productCode);
 	$('#delType').val('small');
 	$('.tc div.fontColorRed').remove();
 	$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');
