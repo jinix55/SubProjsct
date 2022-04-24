@@ -759,11 +759,11 @@
 					  <div class="form-group">
 						<label class="col-20 form-label">접수번호</label>
 						<div class="col-30">
-						  <input id="edit_receiptNumber" name="receiptNumber" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_receiptNo" name="receiptNo" type="text" class="text-input"  autocomplete="off">
 						</div>
 						<label class="col-20 form-label">승인번호</label>
 						<div class="col-30">
-						  <input id="edit_approvalNumber" name="approvalNumber" type="text" class="text-input"  autocomplete="off">
+						  <input id="edit_approvalNo" name="approvalNo" type="text" class="text-input"  autocomplete="off">
 						</div>
 					  </div>
 					</div>
