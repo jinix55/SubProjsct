@@ -177,7 +177,7 @@
             <!-- E_그리드-->
             <div class="btn-group pt15 tr">
               <button id="registView" type="button" class="button btn-success" data-toggle="modal">
-              	<a href="#register" data-toggle="modal">상품관리</a></button>
+              	<a href="#register" data-toggle="modal">상품등록</a></button>
             </div>
             <!-- S_페이징-->
             <div class="board-paging"></div>
@@ -1715,8 +1715,9 @@
   
   function detailView(id){
 	$.ajax({
-		url : '/product/detail/'+id,
+		url : '/product/detail/',
 		dataType : 'json',
+		data : {'productCode':id},
 		type : "POST",
 		async: false,
 		success : function(data) {
@@ -1906,7 +1907,7 @@
 	if (data.environmentProceedStatCode.length > 0) {
 		data.environmentProceedStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApply" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApplyNm').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterApplyCode" value="'+item.codeId+'"><label for="masterApply" class="mr05">'+item.codeNm+'</label></div>');
 		});
 	}
 
@@ -1916,13 +1917,13 @@
 	if (data.mappingStatCode.length > 0) {
 		data.mappingStatCode.forEach(function(item, index) {
 			console.log(item);
-			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterMapping" value="'+item.codeId+'"><label for="masterMapping" class="mr05">'+item.codeNm+'</label></div>');
+			$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterMappingCode" value="'+item.codeId+'"><label for="masterMapping" class="mr05">'+item.codeNm+'</label></div>');
 		});
 		$('#edit_masterApply').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
 	}
 	
-	$("#frmUpdate input[name=masterApply]").val([data.masterApply]);
-	$("#frmUpdate input[name=masterMapping]").val([data.masterMapping]);
+	$("#frmUpdate input[name=masterApplyCode]").val([data.masterApplyCode]);
+	$("#frmUpdate input[name=masterMappingCode]").val([data.masterMappingCode]);
 	$('#edit_receiptNo').val(data.receiptNo);
 	$('#edit_approvalNuo').val(data.approvalNo);
 	
