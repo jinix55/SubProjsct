@@ -1851,10 +1851,10 @@
   
   function setView(data){
   	$('#edit_productCode').val(data.productCode);
-	$('#edit_productIdSave').val(data.productId);
+// 	$('#edit_productIdSave').val(data.productId);
 	$('#edit_productCodeSave').val(data.productCode);
 	
-	$('#edit_productClass option[value="'+data.productClass+'"]').attr("selected", "selected");
+// 	$('#edit_productClass option[value="'+data.productClass+'"]').attr("selected", "selected");
 // 		$('#edit_productClass').val(data.productClass);
 	$('#edit_productNm').val(data.productNm);
 	$('#edit_supplierInfo').val(data.supplierInfo);
