@@ -50,6 +50,8 @@ public class ProductModel extends Criteria{
     //-----------------------------------------------------------------------------------------------    
     private String masterApplyNm;    //매핑상품명
     private String applyProductCode; 
+    private String matClsNm;      //포장유형명
+    
     
     
     private String mappingProductNm;    //매핑상품명	
@@ -60,7 +62,7 @@ public class ProductModel extends Criteria{
     private String codeNm;          // 코드이름
     private String codeDsc;        // 코드설명
     private String productClass;
-    private String packingType;
+    
     private String selfEvlGradNm;     //자체평가등급  
     
     private String inBaseYear;	
