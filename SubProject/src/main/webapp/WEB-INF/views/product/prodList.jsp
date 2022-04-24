@@ -109,8 +109,8 @@
                     <th scope="col">포장유형</th>
                     <th scope="col">재활용등급</th>
                     <th scope="col">진행상태</th>
-                    <th scope="col">체크</th>
                     <th scope="col">포장정보</th>
+                    <th scope="col">자가진단</th>
                     <th scope="col">재활용<br>분담금결과</th>
                     <!-- <th scope="col">육안판정</th> -->
                     <th scope="col">관리</th>
@@ -122,40 +122,40 @@
 							<tr>
 								<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
 								<td><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
-								<td><img src="/file/view/${product.photo}"  width="70" height="auto"></td>
+								<td><img src="/file/view/${product.photoGfileId}"  width="70" height="auto"></td>
 								<td>${product.productNm} </td>
-								<td>${product.packingType}</td>
+								<td>${product.matClsNm}</td>
 								<td class="fontColorBlue">
 									<c:choose>
-										<c:when test="${product.recycleGrade eq '최우수'}">
+										<c:when test="${product.selfEvlGradNm eq '최우수'}">
 											<img src="/images/free-icon-in-love-356695.png" width="26px">
 										</c:when>
-										<c:when test="${product.recycleGrade eq '우수'}">
+										<c:when test="${product.selfEvlGradNm eq '우수'}">
 											<img src="/images/free-icon-emoji-3456813.png" width="26px">
 										</c:when>
-										<c:when test="${product.recycleGrade eq '보통'}">
+										<c:when test="${product.selfEvlGradNm eq '보통'}">
 											<img src="/images/free-icon-smile-356662.png" width="26px">
 										</c:when>
-										<c:when test="${product.recycleGrade eq '어려움'}">
+										<c:when test="${product.selfEvlGradNm eq '어려움'}">
 											<img src="/images/free-icon-angry-1747839.png" width="26px">
 										</c:when>
 										<c:otherwise>
 											<img src="/images/free-icon-smile-356662.png" width="26px">
 										</c:otherwise>
 									</c:choose>
-									${product.recycleGrade}
+									${product.selfEvlGradNm}
 								</td>
 								<td>${product.masterApplyNm}</td>
-								<td>${product.check1}</td>
-								<td><a href="#" onclick="productPackagingOrder('${product.productId}', '${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productCode}', '${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a></td>
+								<td><a href="#" onclick="productPackagingOrder('${product.productCode}', '${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a></td>
 								<td><a href="#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
 								<td>
 									<div class="btn-group">
-										<a href="#edit" onclick="detailView('${product.productId}');" role="button" data-toggle="modal" class="btn-icon">
+										<a href="#edit" onclick="detailView('${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
-										<a href="#delete"  onclick="deleteProductItemSet('${product.productId}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
+										<a href="#delete"  onclick="deleteProductItemSet('${product.productCode}', '${product.productCode}');" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
