@@ -26,7 +26,7 @@
 
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-		    ROW_NUMBER() OVER (ORDER BY PRODUCT_ID DESC) AS ROWNUM,
+		    ROW_NUMBER() OVER (ORDER BY PRODUCT_NM DESC) AS ROWNUM,
 			PRODUCT_CODE,
 			PRODUCT_NM,
 			PHOTO_GFILE_ID,
