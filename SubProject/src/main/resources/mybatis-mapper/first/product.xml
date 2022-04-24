@@ -89,7 +89,6 @@
 			  PRODUCT_CODE
 			, PRODUCT_NM
 			, SUPPLIER_INFO
-			, PRODUCT_MAKER
 			, SUMMARY
 			, PHOTO_GFILE_ID
 			, SPEC_GFILE_ID
@@ -101,12 +100,10 @@
 		) VALUES (
 			  #{productCode}
 			, #{productNm}
-			, #{productClass}
 			, #{supplierInfo}
-			, #{productMaker}
 			, #{summary}
-			, #{photoGfileId}
-			, #{specGfileId}
+			, '#{photoGfileId}'
+			, '#{specGfileId}'
 			, 'Y'
 			, #{rgstId}
 			, now()

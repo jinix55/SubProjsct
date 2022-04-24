@@ -171,8 +171,8 @@ public class ProductService {
 	 */
 	@Transactional
 	public String insertProduct(ProductModel productModel) {
+		System.out.println("insertProduct productModel " + productModel);
 		long count = productMapper.insertProduct(productModel);
-		
 		
 		if (count > 0) {
 			return Constant.DB.INSERT;
