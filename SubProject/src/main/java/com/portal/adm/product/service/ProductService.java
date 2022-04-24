@@ -52,9 +52,9 @@ public class ProductService {
     	for(ProductModel p : productList) {
     		
     		//p.setCompleteStatus(codeService.getCodeNm(constant._CODE_, p.getMasterApply(),constant._MAPPING_STAT_CODE_));
-    		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApply(), "ENVIRONMENT_PROCEED_STAT_CODE"));
+    		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApplyCode(), "ENVIRONMENT_PROCEED_STAT_CODE"));
     		
-    		prodPackagingModel.setProductId(p.getProductId());
+    		prodPackagingModel.setProductCode(p.getProductCode());
     		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
     		for(ProdPackagingModel pp : prodPackagingList) {
     			p.setPackingType(codeService.getCodeNm("MAT_TYPE", pp.getMatType(), null));
@@ -121,11 +121,11 @@ public class ProductService {
 		}
 		
 		
-		System.out.println("outProductModel.getProductId() " + outProductModel.getProductId());
+		System.out.println("outProductModel.getProductId() " + outProductModel.getProductCode());
 		
 		
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-		prodPackagingModel.setProductId(outProductModel.getProductId());
+		prodPackagingModel.setProductCode(outProductModel.getProductCode());
 
 		List<ProdPackagingModel> prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
 		String CodeNm = "";
@@ -197,7 +197,7 @@ public class ProductService {
 		for(int i = 1; i <= 3; i++) {
 			
 			productRecyleContributionsModel = new ProductModel();
-			productRecyleContributionsModel.setProductId(productModel.getProductId());
+			productRecyleContributionsModel.setProductCode(productModel.getProductCode());
 			productRecyleContributionsModel.setBaseYear(Integer.toString(year - i));
 			
 	        switch (i) {
@@ -361,13 +361,13 @@ public class ProductService {
 	public ProductModel mapping(ProductModel productModel) {
 		ProductModel outProductModel = new ProductModel();
 		
-		String producId = this.getProductId(productModel.getProductCode());
-		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_ID", producId, null);
+		String producCode = productModel.getProductCode();
+		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_CODE", producCode, null);
 		if((matType == null) || ("".equals(matType))) {
 			return outProductModel;
 		}
-		outProductModel.setMasterApply("UNPROCEED");
-		outProductModel.setMasterMapping("NONEMAPPING");
+		outProductModel.setMasterApplyCode("UNPROCEED");
+		outProductModel.setMasterMappingCode("NONEMAPPING");
 		
 		ProductModel inProductModel = new ProductModel();
 		ProductModel mappingProductModel = new ProductModel();
@@ -375,16 +375,15 @@ public class ProductService {
 		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
 		
 		int productMatMappingCount = 0;
-		String mappingProductId = "";
+		String mappingProductCode = "";
 		for(ProductModel p : ProductList) {
-			mappingProductModel.setProductId(producId);
-			mappingProductId = this.getProductId(p.getProductCode());
-			mappingProductModel.setMappingProductId(mappingProductId);
+			mappingProductModel.setProductCode(producCode);
+			mappingProductModel.setMappingProductCode(mappingProductCode);
 			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
 			if(productMatMappingCount == 0) {
-				outProductModel.setMasterApply("COMPLETION");
-				outProductModel.setApprovalNumber(p.getApprovalNumber());
-				outProductModel.setMasterMapping("MAPPING");
+				outProductModel.setMasterApplyCode("COMPLETION");
+				outProductModel.setApprovalNo(p.getApprovalNo());
+				outProductModel.setMasterMappingCode("MAPPING");
 				outProductModel.setMappingProductCode(p.getProductCode());
 				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
 			}
@@ -397,18 +396,18 @@ public class ProductService {
 	public List<ProdPackagingModel>  apply(ProductModel productModel) {
 		List<ProdPackagingModel>  prodPackagingList = new ArrayList<>() ;
 		
-		String productId =  this.getProductId(productModel.getProductCode());
-		String applyProductId =  this.getProductId(productModel.getApplyProductCode());
+		String productCode =  productModel.getProductCode();
+		String applyProductCode =  productModel.getApplyProductCode();
 	
 		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-		prodPackagingModel.setProductId(applyProductId);
+		prodPackagingModel.setProductCode(applyProductCode);
 		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
 		
-		int maxPartProductPackagingOrder = productMapper.selectMaxPartProductPackagingOrder(productId);
+		int maxPartProductPackagingOrder = productMapper.selectMaxPartProductPackagingOrder(productCode);
 		String CodeNm = "";
         for(ProdPackagingModel p : prodPackagingList) {
            p.setPackagingId(idUtil.getPackagingId());        	
-           p.setProductId(productId);
+           p.setProductCode(productCode);
            p.setPackagingOrder(maxPartProductPackagingOrder + 1);
            
 			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
@@ -426,13 +425,13 @@ public class ProductService {
         }
         
         ProdPackagingMatModel prodPackagingMatModel = new ProdPackagingMatModel();
-        prodPackagingMatModel.setProductId(applyProductId);
-        prodPackagingMatModel.setPackagingOrder("1"); 
+        prodPackagingMatModel.setProductCode(applyProductCode);
+        //------------------------prodPackagingMatModel.setPackagingOrder("1"); 
 		List<ProdPackagingMatModel> prodPackagingMatList = productMapper.selectProductSelfPackaging(prodPackagingMatModel);
 		for(ProdPackagingMatModel pM : prodPackagingMatList) {
 			pM.setPackagingMatId(idUtil.getPackagingMatId()); 
-			pM.setProductId(productId);
-			pM.setPackagingOrder( Integer.toString(maxPartProductPackagingOrder + 1) );
+			//------------pM.setProductId(productId);
+			//-----------------pM.setPackagingOrder( Integer.toString(maxPartProductPackagingOrder + 1) );
 			productMapper.insertProductSelfPackaging(pM);
 		}
        
@@ -450,10 +449,6 @@ public class ProductService {
 		return productMapper.selectMaxPartProductPackagingOrder(productId);
 	}
 	
-	
-	public String getProductId(String productCoded) {
-		return productMapper.getProductId(productCoded);
-	}	
 
 	public String getProductNm(String productCoded) {
 		return productMapper.getProductNm(productCoded);

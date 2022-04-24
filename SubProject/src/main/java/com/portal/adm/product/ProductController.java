@@ -130,16 +130,13 @@ public class ProductController {
      * @param productId
      * @return
      */
-    @RequestMapping(value="/detail/{productId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/detail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProductModel> selectProduct(@PathVariable("productId") String productId) {
+    public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
-    	ProductModel productModel = new ProductModel();
-    	productModel.setProductId(productId);
+
     	ProductModel product = productService.selectProduct(productModel);
-		
     	System.out.println("product" + product);
-    	
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
     
@@ -161,10 +158,9 @@ public class ProductController {
         }
         
     	try {
-    		productModel.setProductId(idUtil.getProductId());
     		productModel.setRgstId(authUser.getMemberModel().getUserId());
     		productModel.setModiId(authUser.getMemberModel().getUserId());
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductId() + "/";
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
     		String result = "success";
     		String resultMessage = "성공";
     		//사진 업로드
@@ -184,7 +180,7 @@ public class ProductController {
     			f.setFileSize(photo.getSize());
     			f.setFileUrl(fileUrl+f.getFileId() + "/");
     			f.setUseYn("Y");
-    			f.setRefId("photos_"+productModel.getProductId());
+    			f.setRefId("photos_"+productModel.getProductCode());
     			f.setRgstId(productModel.getRgstId());
     			f.setModiId(productModel.getRgstId());
     			f.setFileCl(Constant.File.API);
@@ -199,8 +195,8 @@ public class ProductController {
     			// 파일 생성
     			if (!"fail".equals(result)) {
     				fileService.insertFile(f);
-    				if(productModel.getPhoto() == null || "".equals(productModel.getPhoto())) {
-    					productModel.setPhoto(f.getFileId());
+    				if(productModel.getPhotoGfileId() == null || "".equals(productModel.getPhotoGfileId())) {
+    					productModel.setPhotoGfileId(f.getFileId());
     				}
     				
     				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
@@ -251,7 +247,7 @@ public class ProductController {
     			f.setFileSize(spec.getSize());
     			f.setFileUrl(fileUrl+f.getFileId() + "/");
     			f.setUseYn("Y");
-    			f.setRefId("specs_"+productModel.getProductId());
+    			f.setRefId("specs_"+productModel.getProductCode());
     			f.setRgstId(productModel.getRgstId());
     			f.setModiId(productModel.getRgstId());
     			f.setFileCl(Constant.File.API);
@@ -315,12 +311,12 @@ public class ProductController {
                                        , @RequestParam("photos") MultipartFile[] photos
                                        , @RequestParam("specs") MultipartFile[] specs) {
     	
-    	if((productModel.getMasterApply().equals("UNPROCEED")) || (productModel.getMasterApply().equals("EXCEPT"))) { //미진행
-    		if(!(productModel.getReceiptNumber() == null || productModel.getReceiptNumber().trim().equals(""))) {
+    	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
+    		if(!(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals(""))) {
     			return ResponseEntity.badRequest().body("접수번호를 등록 할수 없습니다.");	
     		}
     		
-    		if(!(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals(""))) {
+    		if(!(productModel.getApprovalNo() == null || productModel.getApprovalNo().trim().equals(""))) {
     			return ResponseEntity.badRequest().body("승인번호를 등록 할수 없습니다.");	
     		}
 
@@ -330,12 +326,12 @@ public class ProductController {
     	}
     	
     	
-    	if(productModel.getMasterApply().equals("PROCEEDING")) { //진행중
-    		if(productModel.getReceiptNumber() == null || productModel.getReceiptNumber().trim().equals("")) {
+    	if(productModel.getMasterApplyCode().equals("PROCEEDING")) { //진행중
+    		if(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals("")) {
     			return ResponseEntity.badRequest().body("접수번호가 누락 되었습니다.");	
     		}
     		
-    		if(!(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals(""))) {
+    		if(!(productModel.getApprovalNo() == null || productModel.getApprovalNo().trim().equals(""))) {
     			return ResponseEntity.badRequest().body("승인번호를 등록 할수 없습니다.");	
     		}
 
@@ -344,15 +340,15 @@ public class ProductController {
     		}
     	}
     	
-    	if(productModel.getMasterApply().equals("COMPLETION")) { //완료
-    		if(productModel.getApprovalNumber() == null || productModel.getApprovalNumber().trim().equals("")) {
+    	if(productModel.getMasterApplyCode().equals("COMPLETION")) { //완료
+    		if(productModel.getApprovalNo() == null || productModel.getApprovalNo().trim().equals("")) {
     			return ResponseEntity.badRequest().body("승인번호가가 누락 되었습니다.");	
     		}
 
     	}
     	
     	
-    	if(productModel.getMasterMapping().equals("UNMAPPING")) { //매핑전
+    	if(productModel.getMasterMappingCode().equals("UNMAPPING")) { //매핑전
     	   productModel.setMappingProductCode(""); 
     	}    	
     	
@@ -361,7 +357,7 @@ public class ProductController {
     		productModel.setModiId(authUser.getMemberModel().getUserId());
     		String result = "";
     		String resultMessage = "성공";
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductId() + "/";
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
     		int count = 0;
     		//사진 업로드
     		for(MultipartFile photo : photos) {
@@ -383,7 +379,7 @@ public class ProductController {
     			f.setFileSize(photo.getSize());
     			f.setFileUrl(fileUrl+f.getFileId() + "/");
     			f.setUseYn("Y");
-    			f.setRefId("photos_"+productModel.getProductId());
+    			f.setRefId("photos_"+productModel.getProductCode());
     			f.setRgstId(productModel.getModiId());
     			f.setModiId(productModel.getModiId());
     			f.setFileCl(Constant.File.API);
@@ -397,8 +393,7 @@ public class ProductController {
     			// 파일 생성
     			if (!"fail".equals(result)) {
     				fileService.insertFile(f);
-    				if(productModel.getPhoto() == null || "".equals(productModel.getPhoto())) {
-    					productModel.setPhoto(f.getFileId());
+    				if(productModel.getPhotoGfileId() == null || "".equals(productModel.getPhotoGfileId())) {
     				}
     				
     				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
@@ -449,7 +444,7 @@ public class ProductController {
     			f.setFileSize(spec.getSize());
     			f.setFileUrl(fileUrl+f.getFileId() + "/");
     			f.setUseYn("Y");
-    			f.setRefId("specs_"+productModel.getProductId());
+    			f.setRefId("specs_"+productModel.getProductCode());
     			f.setRgstId(productModel.getModiId());
     			f.setModiId(productModel.getModiId());
     			f.setFileCl(Constant.File.API);
@@ -572,12 +567,12 @@ public class ProductController {
      * @param productId
      * @return
      */
-    @RequestMapping(value="/detail/{productId}/packaging/{packagingId}", method= {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/detail/packaging/{packagingId}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProdPackagingModel> selectProduct(@PathVariable("productId") String productId, @PathVariable("packagingId") String packagingId) {
+    public ResponseEntity<ProdPackagingModel> selectProduct(@ModelAttribute ProductModel productModel, @PathVariable("packagingId") String packagingId) {
     	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
     	prodPackagingModel.setPackagingId(packagingId);
-    	prodPackagingModel.setProductId(productId);
+    	prodPackagingModel.setProductCode(productModel.getProductCode());
     	ProdPackagingModel productPackaging = productService.selectProductPackagingDetail(prodPackagingModel);
     	if(productPackaging.getMatFileId() != null && !"".equals(productPackaging.getMatFileId())) {
     		FileModel f = new FileModel();
@@ -614,13 +609,13 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/insert/{productId}/packaging")
-    public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @PathVariable("productId") String productId, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/insert/packaging")
+    public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
     	try {
     		
 			prodPackagingModel.setRgstId(authUser.getMemberModel().getUserId());
 			prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
-			prodPackagingModel.setProductId(productId);
+			//----------------------------------------------------prodPackagingModel.setProductCode(prodPackagingModel.getProductCode());
 			prodPackagingModel.setProductNm("상품1");
 			prodPackagingModel.setPackagingNm("1차포장");
 			prodPackagingModel.setPackagingId(idUtil.getPackagingId());
@@ -697,14 +692,14 @@ public class ProductController {
     		environmentCodeModel.setGroupId(m.getCodeId());
     		smallModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
     		list.addAll(smallModels);
-    		
+/*    		
     		String rptMatStruct = "rptMatStruct-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
         	String rptDevAnal = "rptDevAnal-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
         	String rptVisualJudg = "rptVisualJudg-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
         	String rptTest = "rptTest-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
         	String rptPermission = "rptPermission-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
         	String rptEtc = "rptEtc-"+m.getCodeId()+"_"+prodPackagingMatModel.getProductId()+prodPackagingMatModel.getPackagingOrder();
-        	
+
         	FileModel f = new FileModel();
     		
         	f.setRefId(rptMatStruct);    
@@ -742,6 +737,7 @@ public class ProductController {
     		if(rptEtcFileList !=null && rptEtcFileList.size() > 0) {
     			files.add(rptEtcFileList.get(0));
     		}
+*/    		
     	}
     	
     	prodSelfPackagingModel.setFiles(files);
@@ -801,10 +797,14 @@ public class ProductController {
     		, @RequestParam(value = "chk_rptTest", required = false)  List<String> rptTests
     		, @RequestParam(value = "chk_rptPermission", required = false)  List<String> rptPermissions
     		, @RequestParam(value = "chk_rptEtc", required = false)  List<String> rptEtcs) {
+ 
+    	
+/*-------------------------------------------------------------    	
     	
     	prodPackagingMatModel.setRgstId(authUser.getMemberModel().getUserId());
     	prodPackagingMatModel.setModiId(authUser.getMemberModel().getUserId());
 		
+     	
     	productService.deleteProductSelfPackaging(prodPackagingMatModel);
     	ProdPackagingModel productPackagingModel = new ProdPackagingModel();
     	productPackagingModel.setProductId(prodPackagingMatModel.getProductId());
@@ -988,6 +988,9 @@ public class ProductController {
 				}
 			}
 		}
+		
+----------------------------*/		
+		
     	return new ResponseEntity<>(prodPackagingMatModel, HttpStatus.OK);
     }
     
@@ -1129,7 +1132,7 @@ public class ProductController {
     public ResponseEntity<ProductModel> mapping(@ModelAttribute ProductModel productModel) {
     	System.out.println("mapping productModel" + productModel);
     	
-    	if(!(productModel.getMasterApply().equals("UNPROCEED"))) { //미진행
+    	if(!(productModel.getMasterApplyCode().equals("UNPROCEED"))) { //미진행
     		productModel.setErrorString("진행상태가 미진행이 아닙니다.");
   	    	return ResponseEntity.badRequest().body(productModel);	
     	}
@@ -1177,7 +1180,7 @@ public class ProductController {
         	prodPackagingModel.setPackagingNm(Integer.toString(maxPackagingOrder + 1) + "차포장");
 	    	ProdPackagingList.add(prodPackagingModel);
 	    	
-	    	int  maxPartPackagingOrder = productService.selectMaxPartProductPackagingOrder(productService.getProductId(productCode));
+	    	int  maxPartPackagingOrder = productService.selectMaxPartProductPackagingOrder(productCode);
 		    prodPackagingModel = new ProdPackagingModel();
 		    prodPackagingModel.setPackagingOrder(maxPartPackagingOrder + 1);
 		    prodPackagingModel.setPackagingNm("부속포장");

@@ -136,7 +136,7 @@ public class ApiExtrnlService {
 		final Map<String, MultipartFile> files = multipart.getFileMap();
 		ArrayList<String> fileIds = new ArrayList<String>();
 		String fileId = "";
-		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductId() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
+		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductCode() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
 		String result = "success";
 		String resultMessage = "성공";
 		MultipartFile file = null;

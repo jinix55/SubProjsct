@@ -13,13 +13,19 @@ import lombok.Data;
  * 코드관리 모델
  */
 @Data
-public class ProdPackagingModel extends Criteria{
-    
+public class ProdPackagingDetailModel extends Criteria{
+	
+	private String packagingDetailId;
 	private String packagingId;
-	private String productCode;
-	private int packagingOrder;
-	private String matLclsCode;
-	private String matMclsCode;
+	private String partCode;
+	private String matInfo;
+	private double weight;
+    private String standard;
+    private String color;
+    private String summary;
+    private String matFileId;
+    private String supplierCode;
+    private String managerId;	
     private String useYn;           // 사용여부
     private String rgstId;          // 등록자ID
     private String modiId;          // 수정자ID
@@ -39,33 +45,10 @@ public class ProdPackagingModel extends Criteria{
     private Integer ordSeq;			//정렬순서
 	
     //-----------------------------------------------------------------------------------------------	
-	
-    private String apiKey;
-    
-    
-    private String productNm;
-    private String packagingNm;
-    private String packagingDsc;
-    
-    private int packagingOrderCnt;
-    private String matType;
-    private String matTypeNm;
-    private String partType;
-    private String partTypeNm;
-    private int partTypeOrder;
-    private String revisionYear;
-    private String revisionMonth;
-    private String matInfo;
-    private String weight;
-    private String standard;
-    private String color;
-    private String addExplan;
-    private String matFileId;
+     
     private String matFileNm;
-    private String supplierCode;
     private String supplierNm;
     private String representativeNm;
-	private String managerId; 
 	private String managerNm; 
 	private String managerMail;
 	private String managementId;
