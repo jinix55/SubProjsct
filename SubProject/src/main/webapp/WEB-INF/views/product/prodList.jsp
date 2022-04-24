@@ -62,8 +62,8 @@
                   <select id="searchKey" name="searchKey" class="select-box w150">
                     <option value="ALL">전체</option>
 					<option value="productNm">상품명</option>
-					<option value="packingType">포장유형</option>
-					<option value="recycleGrade">재활용등급</option>
+					<option value="matClsNm">포장유형</option>
+					<option value="selfEvlGradNm">재활용등급</option>
 					<option value="masterApplyNm">상태</option>
                   </select>
                 </div>
