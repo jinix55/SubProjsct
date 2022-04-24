@@ -90,4 +90,7 @@ public class ProductModel extends Criteria{
     private List<CodeModel> mappingStatCode;
     
     
+    
+    private String productId;
+    
 }

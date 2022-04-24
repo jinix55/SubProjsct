@@ -134,7 +134,8 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
-
+        
+    	productModel.setProductCode("a");
     	ProductModel product = productService.selectProduct(productModel);
     	System.out.println("product" + product);
         return new ResponseEntity<>(product, HttpStatus.OK);

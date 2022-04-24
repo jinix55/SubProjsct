@@ -31,12 +31,12 @@
 			PRODUCT_NM,
 			PHOTO_GFILE_ID,
 			'포장유형명'   AS   MAT_CLS_NM,
-			'UNPROCEED' AS   MASTER_APPLY_NM,
+			'미진행' AS   MASTER_APPLY_NM,
 			'보통'       AS 	SELF_EVL_GRAD_NM	
 		FROM
 			T1_PRODUCT 
 		<include refid="searchProduct"></include>	
-        ORDER BY PRODUCT_NM DESC, ROWNUM	
+        ORDER BY PRODUCT_CODE, ROWNUM	
         <include refid="paging"></include>		
 	</select>
 	
@@ -102,8 +102,8 @@
 			, #{productNm}
 			, #{supplierInfo}
 			, #{summary}
-			, '#{photoGfileId}'
-			, '#{specGfileId}'
+			, #{photoGfileId}
+			, #{specGfileId}
 			, 'Y'
 			, #{rgstId}
 			, now()

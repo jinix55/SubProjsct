@@ -72,5 +72,7 @@ public class ProdPackagingModel extends Criteria{
 	private String managementNm;
     
     private String str;   //1차포장_종이팩_몸체_KAMILL 
+    
+    private String productId;
 
 }
