@@ -34,7 +34,7 @@
 			'미진행' AS   MASTER_APPLY_NM,
 			'보통'  AS 	SELF_EVL_GRAD_NM	
 		FROM
-			T_PRODUCT 
+			T1_PRODUCT 
 		<include refid="searchProduct"></include>	
         ORDER BY PRODUCT_NM DESC, ROWNUM	
         <include refid="paging"></include>		
@@ -42,13 +42,13 @@
 	
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
-		FROM T_PRODUCT
+		FROM T1_PRODUCT
 		<include refid="searchProduct"></include>	
 	</select>	
 
 	<select id="selectProductListCountByProductCode" resultType="int" parameterType="String">
 		SELECT COUNT(*)
-		FROM T_PRODUCT
+		FROM T1_PRODUCT
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND USE_YN = 'Y'		
 	</select>	
@@ -76,8 +76,8 @@
 			, a.MODI_ID
 			, a.MODI_DT
 		FROM
-			T_PRODUCT a 
-	    LEFT OUTER JOIN T_PRODUCT b
+			T1_PRODUCT a 
+	    LEFT OUTER JOIN T1_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = upper(b.MAPPING_PRODUCT_CODE)
          AND b.USE_YN = 'Y'
 		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
@@ -85,7 +85,7 @@
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		INSERT INTO T_PRODUCT (
+		INSERT INTO T1_PRODUCT (
 			  PRODUCT_CODE
 			, PRODUCT_NM
 			, SUPPLIER_INFO
@@ -116,7 +116,7 @@
 	</insert>
 	
 	<update id="updateProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T_PRODUCT
+		UPDATE T1_PRODUCT
 		SET
 			  PRODUCT_NM          = #{productNm}
 			, SUPPLIER_INFO       = #{supplierInfo}
@@ -134,7 +134,7 @@
 	</update>
 	
 	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T_PRODUCT
+		UPDATE T1_PRODUCT
 		SET
 			RECYCLE_GRADE = #{recycleGrade}
 		WHERE
@@ -142,11 +142,12 @@
 	</update>
 	
 	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T_PRODUCT
+		UPDATE T1_PRODUCT
 		SET
-			USE_YN = 'N'
-		WHERE
-			PRODUCT_CODE = #{productCode}
+				USE_YN = 'N'
+		WHERE	PRODUCT_CODE = #{productCode}
+		  AND	USE_YN = 'Y'   
+		   	
 	</update>
 	
 	<select id="selectProductPackagingOrder" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
