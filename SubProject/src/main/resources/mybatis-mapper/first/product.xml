@@ -30,9 +30,9 @@
 			PRODUCT_CODE,
 			PRODUCT_NM,
 			PHOTO_GFILE_ID,
-			SPEC_GFILE_ID,
+			'포장유형명'   AS   MAT_CLS_NM,
 			'UNPROCEED' AS   MASTER_APPLY_NM,
-			'보통'  AS 	SELF_EVL_GRAD_NM	
+			'보통'       AS 	SELF_EVL_GRAD_NM	
 		FROM
 			T1_PRODUCT 
 		<include refid="searchProduct"></include>	
