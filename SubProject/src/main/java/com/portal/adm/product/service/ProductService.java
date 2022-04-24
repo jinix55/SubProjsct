@@ -191,7 +191,7 @@ public class ProductService {
 	public String updateProduct(ProductModel productModel) {
 		
 		long count = productMapper.updateProduct(productModel);
-		
+/*----------------------------------------------------------		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		ProductModel productRecyleContributionsModel = new ProductModel();
 		for(int i = 1; i <= 3; i++) {
@@ -221,7 +221,7 @@ public class ProductService {
 	                break;            	
 	        }
 		}		
-
+*/
 		
 		if (count > 0) {
 			return Constant.DB.UPDATE;
