@@ -49,18 +49,18 @@ public class ProductService {
     	List<ProdPackagingModel> prodPackagingList = new ArrayList<>() ;
     	
     	List<ProductModel> productList = productMapper.selectProductList(productModel);
-    	for(ProductModel p : productList) {
+//    	for(ProductModel p : productList) {
     		
     		//p.setCompleteStatus(codeService.getCodeNm(constant._CODE_, p.getMasterApply(),constant._MAPPING_STAT_CODE_));
-    		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApplyCode(), "ENVIRONMENT_PROCEED_STAT_CODE"));
-    		
-    		prodPackagingModel.setProductCode(p.getProductCode());
-    		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
-    		for(ProdPackagingModel pp : prodPackagingList) {
-    			p.setPackingType(codeService.getCodeNm("MAT_TYPE", pp.getMatType(), null));
-    			break;
-    		}
-    	}
+//    		p.setMasterApplyNm(codeService.getCodeNm("_CODE_", p.getMasterApplyCode(), "ENVIRONMENT_PROCEED_STAT_CODE"));
+//    		
+//    		prodPackagingModel.setProductCode(p.getProductCode());
+//    		prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
+//    		for(ProdPackagingModel pp : prodPackagingList) {
+//    			p.setMatClsNm(codeService.getCodeNm("MAT_TYPE", pp.getMatType(), null));
+//    			break;
+//    		}
+//    	}
         return productList;
     }
     
