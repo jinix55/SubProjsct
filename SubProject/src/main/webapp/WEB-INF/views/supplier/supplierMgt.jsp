@@ -47,7 +47,7 @@
 						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-						<th scope="col">관리 책임자</th>
+						<th scope="col">담당 관리자</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -213,7 +213,7 @@
 			
 			
 			<h4 class="tl mb10 pt15">
-				<span class="title-point">[관리 담당자]</span>
+				<span class="title-point">[담당 관리자]</span>
 			</h4>
 			<input id="managementId" name="managementId" type="hidden" class="text-input">
 			<div class="row">
@@ -293,7 +293,7 @@
 			
 			
 			<h4 class="tl mb10 pt15">
-				<span class="title-point">[업체 담당자]</span>
+				<span class="title-point">[공급업체 담당자]</span>
 			</h4>
 			<div class="row">
 				<div class="col-100 mb10">
@@ -437,7 +437,7 @@
 								</div>
 								<div class="col-50">
 									<div class="form-group">
-										<label class="col-25 form-label">업체명</label>
+										<label class="col-25 form-label">납품기업</label>
 										<div class="col-75">
 											<input id="supplierNm" name="supplierNm" type="text"
 												class="text-input">
@@ -734,11 +734,11 @@
 	</div>
 </div>
 
-<!-- 레이어 팝업 관리 책임자 검색 -->
+<!-- 레이어 팝업 담당 관리자 검색 -->
 <div id="overlap" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
 	<div class="modal-content" style="width: 600px">
 		<div class="modal-header">
-			<h4 class="modal-title">관리 담당자 조회</h4>
+			<h4 class="modal-title">담당 관리자 조회</h4>
 			<button type="button" class="close" data-dismiss="modal">
 				<img src="/images/icon_close.png">
 			</button>
@@ -747,7 +747,7 @@
 			<div class="row">
 				<div class="col-100">
 					<div class="form-group">
-						<label class="col-25 form-label">사용자 명<em>*</em></label>
+						<label class="col-25 form-label">담당 관리자 명<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
 								<input id="chUserNm" name="chUserNm" type="text" class="text-input" placeholder="찾으실 이름을 입력해 주세요.">
@@ -796,13 +796,13 @@
 </div>
 
 
-<!-- 레이어 팝업 관리 책임자 검색 -->
+<!-- 레이어 팝업 담당 관리자 검색 -->
 <div id="overlapMngmt" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 	data-modal-parent="#myModal">
 	<div class="modal-content" style="width: 600px">
 		<div class="modal-header">
-			<h4 class="modal-title">관리 담당자 조회</h4>
+			<h4 class="modal-title">담당 관리자 조회</h4>
 			<button type="button" class="close" data-dismiss="modal">
 				<img src="/images/icon_close.png">
 			</button>
@@ -959,7 +959,7 @@
 			});
 		} else {
 			html += '<tr>';
-			html += '	<td colspan="4">검색된 관리 담당자가 없습니다.</td>';
+			html += '	<td colspan="4">검색된 담당 관리자가 없습니다.</td>';
 			html += '</tr>';
 		}
 		$('#managementTable'+type).append(html);
@@ -1615,7 +1615,7 @@
 		}
 		if(type == 'register'){
 			if($('#managementNm').val() == ''){
-				alert('관리 책임자를 선택해 주세요.');
+				alert('담당 관리자를 선택해 주세요.');
 				return false;
 			}
 			if ($('#'+type+' #managerNm').val() == '') {

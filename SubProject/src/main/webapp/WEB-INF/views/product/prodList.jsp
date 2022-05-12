@@ -194,7 +194,7 @@
 	  <div id="register" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:1000px">
 		  <div class="modal-header">
-			<h4 class="modal-title">상품기본정보등록</h4>
+			<h4 class="modal-title">상품등록</h4>
 			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
@@ -2531,20 +2531,20 @@
 		innerHtml += '</div>';
 		innerHtml += '<div class=col-50>';
 		innerHtml += '<div class=form-group>';
-		innerHtml += '<label class="col-25 form-label">중량(g)</label>';
+		innerHtml += '<label class="col-25 form-label">포장재 중량(g)</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<input type=number step=0.01 placeholder=0.00 class=text-input name="weight" value="'+weight+'">';
+		innerHtml += '<input type=number step=0.01 placeholder="내용물을 제외한 전체포장재만의 무게" class=text-input name="weight" value="'+weight+'">';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '<div class=col-50>';
 		innerHtml += '<div class=form-group>';
-		innerHtml += '<label class="col-25 form-label">규격</label>';
+		innerHtml += '<label class="col-25 form-label">규격(mm)</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<input type=text class=text-input name="standard" value="'+standard+'">';
+		innerHtml += '<input type=text class=text-input name="standard" placeholder="장*폭*고(원혈일 경우 지름*지름*고)" value="'+standard+'">';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
@@ -2554,7 +2554,7 @@
 		innerHtml += '<label class="col-25 form-label">색상</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<input type=text class=text-input name="color" value="'+color+'">';
+		innerHtml += '<input type=text class=text-input name="color" placeholder="색상기입/해당없음" value="'+color+'">';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
