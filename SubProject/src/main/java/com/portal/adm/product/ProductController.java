@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,9 +133,9 @@ public class ProductController {
      */
     @RequestMapping(value="/detail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<ProductModel> selectProduct(@RequestBody ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
-        
+    	System.out.println("productModel" + productModel.getProductCode());
     	ProductModel product = productService.selectProduct(productModel);
     	System.out.println("product" + product);
         return new ResponseEntity<>(product, HttpStatus.OK);
