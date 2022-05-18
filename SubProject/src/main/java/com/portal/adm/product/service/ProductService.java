@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.code.service.CodeService;
+import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.mapper.ProductMapper;
 import com.portal.adm.product.model.ProdPackagingMatModel;
@@ -256,6 +257,8 @@ public class ProductService {
 		}
 	}
 	
+	//##################################################################################################################################################
+	
 	 /**
 	 * 상품포장정보관리 목록 카운트를 조회한다.
 	 *
@@ -343,7 +346,7 @@ public class ProductService {
 	 * @param
 	 * @return
 	 */
-	public List<PackagingCodeModel> selectProductMatType() {
+	public List<EnvironPriceModel> selectProductMatType() {
         return productMapper.selectProductMatType();
     }
 	
@@ -409,7 +412,7 @@ public class ProductService {
            p.setPackagingId(idUtil.getPackagingId());        	
            p.setProductCode(productCode);
            p.setPackagingOrder(maxPartProductPackagingOrder + 1);
-           
+/*           
 			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
 			p.setMatTypeNm(CodeNm);
 			
@@ -420,6 +423,7 @@ public class ProductService {
 			p.setSupplierNm(CodeNm);
 			
 			p.setStr(p.getPackagingNm() + "_" + p.getMatTypeNm() + "_" + p.getPartTypeNm() + "_" + p.getSupplierNm());
+*/	
 			
            productMapper.insertProductPackaging(p);
         }

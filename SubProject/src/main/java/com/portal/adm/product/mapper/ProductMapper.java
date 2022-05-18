@@ -2,6 +2,7 @@ package com.portal.adm.product.mapper;
 
 import java.util.List;
 
+import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -122,7 +123,7 @@ public interface ProductMapper {
      * @param 
      * @return
      */
-    List<PackagingCodeModel> selectProductMatType();
+    List<EnvironPriceModel> selectProductMatType();
     
 	 /**
      * 상품 재활용분담금 목록을 조회한다.

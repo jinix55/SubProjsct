@@ -42,5 +42,6 @@ public class EnvironPriceModel extends Criteria{
     private LocalDateTime modiDt; // 수정일시
     private Integer ordSeq;			//정렬순서
     
-   
+    private String groupNm;         // 코드그룹ID
+    private String groupCodeNm;         // 코드그룹ID
 }

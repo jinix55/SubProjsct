@@ -130,13 +130,7 @@
 			upper(PRODUCT_CODE) = upper(#{productCode})
 	</update>
 	
-	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T1_PRODUCT
-		SET
-			RECYCLE_GRADE = #{recycleGrade}
-		WHERE
-			PRODUCT_ID = #{productId}
-	</update>
+
 	
 	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
 		UPDATE T1_PRODUCT
@@ -147,44 +141,107 @@
 		WHERE	upper(PRODUCT_CODE) = upper(#{productCode})
 		   	
 	</update>
-	
-	<select id="selectProductPackagingOrder" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
-		SELECT PRODUCT_ID, PACKAGING_ORDER, MAT_TYPE
-		FROM t_product_packaging
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		AND USE_YN = 'Y'
-		GROUP BY PACKAGING_ORDER
-	</select>	
 
-<!-- ************************************************************************************************** -->
-	
+
 	<select id="selectProductPackaging" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
 			  a.PACKAGING_ID
 			, a.PRODUCT_CODE
 			, b.PRODUCT_NM
 			, a.PACKAGING_ORDER
-			, a.MAT_LCLS_CODE
-			, a.MAT_MCLS_CODE
-			, a.USE_YN
-			, a.RGST_ID
-			, a.RGST_DT
-			, a.MODI_ID
-			, a.MODI_DT
+			, a.GROUP_ID
+			, c.CODE_NM  GROUP_NM
+			, a.CODE_ID
+			, d.CODE_NM  CODE_NM
 		FROM
-			t_product_packaging a 
-	    LEFT OUTER JOIN T_PRODUCT b
-	      ON upper(a.PRODUCT_CODE) = upper(#{productCode})
-         AND b.USE_YN = 'Y'			
+			t1_product_packaging a 
+	    LEFT OUTER JOIN T1_PRODUCT b
+	      ON upper(a.PRODUCT_CODE) = UPPER(b.PRODUCT_CODE)
+         AND b.USE_YN = 'Y'
+    
+        LEFT OUTER JOIN t_environ_price c
+	      ON c.GROUP_ID = 'GROUP_ID' 
+	     AND c.CODE_ID = a.GROUP_ID
+
+        LEFT OUTER JOIN t_environ_price d
+	      ON d.GROUP_ID = a.GROUP_ID 
+	     AND d.CODE_ID = a.CODE_ID
 		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
-		  AND a.USE_YN = 'Y'
+		  AND a.USE_YN = 'Y'	 
 		  <if test="packagingOrder  != null and packagingOrder != ''">
 				and (a.PACKAGING_ORDER = #{packagingOrder})
 		  </if>
 		  <if test="packagingId  != null and packagingId != ''">
 				and (a.PACKAGING_ID = #{packagingId})
 		  </if>
+	</select>	
+
+
+
+<!-- ************************************************************************************************** -->
+
+	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
+		UPDATE T1_PRODUCT
+		SET
+			RECYCLE_GRADE = #{recycleGrade}
+		WHERE
+			PRODUCT_ID = #{productId}
+	</update>
+	
+	<select id="selectProductPackagingOrder" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+ 		SELECT a.PRODUCT_CODE
+		     , a.PACKAGING_ID 
+			  , a.PACKAGING_ORDER
+			  , a.GROUP_ID
+			  , b.CODE_NM  GROUP_NM
+			  , a.CODE_ID
+			  , c.CODE_NM  CODE_NM
+		FROM t1_product_packaging a
+		     ,  t_environ_price b
+		     ,  t_environ_price c
+		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
+		AND b.GROUP_ID = 'GROUP_ID'
+		AND b.CODE_ID = a.GROUP_ID
+		AND c.GROUP_ID = a.GROUP_ID
+		AND c.CODE_ID  = a.CODE_ID
+		GROUP BY PACKAGING_ORDER
+	</select>	
+
+	<update id="deleteProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		UPDATE t1_product_packaging
+		SET
+			  USE_YN = 'N'
+			, MODI_ID              = #{modiId}           
+			, MODI_DT              = now()   
+		WHERE 1 = 1 
+	      <if test="productCode  != null and productCode != ''">	
+			    and (upper(PRODUCT_CODE) = upper(#{productCode}))
+	      </if>
+<!--20220518 	      		    
+		  <if test="packagingOrder  != null and packagingOrder != '' and packagingOrder != '-1'">
+				and (PACKAGING_ORDER = #{packagingOrder})
+		  </if>
+ -->		  
+		  <if test="packagingId  != null and packagingId != ''">
+				and (PACKAGING_ID = #{packagingId})
+		  </if>
+			
+	</update>	
+
+
+	
+	<select id="selectProductMatType" resultType="com.portal.adm.environPrice.model.EnvironPriceModel">
+		SELECT  a.CODE_ID   GROUP_ID
+		      , a.CODE_NM   GROUP_NM
+		      , b.CODE_ID   CODE_ID
+		      , b.CODE_NM   CODE_NM
+            , IF(a.CODE_NM = b.CODE_NM, a.CODE_NM, CONCAT('(',a.CODE_NM,'-', b.CODE_NM,')')) AS groupCodeNm		  
+		  FROM  t_environ_price a, 
+		        t_environ_price b
+		  WHERE a.code_id = b.group_id
+		ORDER BY a.ORD_SEQ, b.ORD_SEQ  
 	</select>
+
 	
 <!-- ************************************************************************************************** -->	
 	
@@ -330,30 +387,8 @@
 			PACKAGING_ID = #{packagingId}
 	</update>
 	
-	<update id="deleteProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
-		UPDATE t_product_packaging
-		SET
-			  USE_YN = 'N'
-			, MODI_ID              = #{modiId}           
-			, MODI_DT              = now()   
-		WHERE
-			PRODUCT_ID           = #{productId}
-		  <if test="packagingOrder  != null and packagingOrder != '' and packagingOrder != '-1'">
-				and (PACKAGING_ORDER = #{packagingOrder})
-		  </if>
-		  <if test="packagingId  != null and packagingId != ''">
-				and (PACKAGING_ID = #{packagingId})
-		  </if>
-			
-	</update>	
-	
-	<select id="selectProductMatType" resultType="com.portal.adm.packagingCode.model.PackagingCodeModel">
-		SELECT  concat(a.code_nm,'-', b.code_nm) AS codeNm
-				, b.code_id AS codeId
-		  FROM  t_environ_price a, 
-		        t_environ_price b
-		  WHERE a.code_id = b.group_id
-	</select>
+
+
 	
 	
 	<select id="selectProductRecyleContributions" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">

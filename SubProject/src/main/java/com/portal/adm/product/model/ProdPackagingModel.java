@@ -18,8 +18,8 @@ public class ProdPackagingModel extends Criteria{
 	private String packagingId;
 	private String productCode;
 	private int packagingOrder;
-	private String matLclsCode;
-	private String matMclsCode;
+	private String groupId;
+	private String codeId;
     private String useYn;           // 사용여부
     private String rgstId;          // 등록자ID
     private String modiId;          // 수정자ID
@@ -41,38 +41,10 @@ public class ProdPackagingModel extends Criteria{
     //-----------------------------------------------------------------------------------------------	
 	
     private String apiKey;
-    
-    
+   
     private String productNm;
-    private String packagingNm;
-    private String packagingDsc;
-    
-    private int packagingOrderCnt;
-    private String matType;
-    private String matTypeNm;
-    private String partType;
-    private String partTypeNm;
-    private int partTypeOrder;
-    private String revisionYear;
-    private String revisionMonth;
-    private String matInfo;
-    private String weight;
-    private String standard;
-    private String color;
-    private String addExplan;
-    private String matFileId;
-    private String matFileNm;
-    private String supplierCode;
-    private String supplierNm;
-    private String representativeNm;
-	private String managerId; 
-	private String managerNm; 
-	private String managerMail;
-	private String managementId;
-	private String managementNm;
+    private String groupNm;
+    private String codeNm;
     
     private String str;   //1차포장_종이팩_몸체_KAMILL 
-    
-    private String productId;
-
 }

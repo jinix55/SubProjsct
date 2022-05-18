@@ -131,12 +131,16 @@ public class ApiExtrnlService {
 	 */
 	public String upload(HttpServletRequest request, MultipartRequest multipart,
 			ProdPackagingModel prodPackagingModel) {
+		String result = "success";
+/*20220518----------------------------------------------------------------------		
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		final Map<String, MultipartFile> files = multipart.getFileMap();
 		ArrayList<String> fileIds = new ArrayList<String>();
 		String fileId = "";
 		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductCode() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
+		String fileUrl = "";
 		String result = "success";
 		String resultMessage = "성공";
 		MultipartFile file = null;
@@ -255,7 +259,7 @@ public class ApiExtrnlService {
 			}
 			fileUrl = f.getFileUrl();
 		}
-
+-------------------------------------------------*/
 		return result;
 	}
 }

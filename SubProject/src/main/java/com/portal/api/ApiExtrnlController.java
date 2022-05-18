@@ -74,6 +74,9 @@ public class ApiExtrnlController {
     public String sendMail(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @ModelAttribute ProdPackagingModel prodPackagingModel) {
     	ApiExtrnlModel extrnlModel = new ApiExtrnlModel();
     	
+    	/*20220518-------------------------------------------------------------------------------------
+    	
+    	
     	//임시 데이터(셋팅 되어야 할 목록)
         String fromCompanyNm = authUser.getMemberModel().getCompanyNm();		// 보내는 회사 명
         String fromCompanyCode = authUser.getMemberModel().getCompanyCode();		// 보내는 회사 코드
@@ -104,6 +107,8 @@ public class ApiExtrnlController {
         
         apiExtrnlService.insert(extrnlModel);
         
+        
+        ---------------------------------------------------------------*/
         return "success";
     }
     
@@ -201,12 +206,12 @@ public class ApiExtrnlController {
         	middleEnv = codeService.selectGroupIdList(codeModel);
         	prodPackagingModel.setApiKey(apiKey);
         	// 공급업체 담당자 정보
-        	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
+        	//20220518 List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
         	
         	model.addAttribute("packagingModel",prodPackagingModel);
         	model.addAttribute("largeEnv",largeEnv);
         	model.addAttribute("middleEnv",middleEnv);
-        	model.addAttribute("managers",managersModel);
+        	//20220518----------------------------------------------model.addAttribute("managers",managersModel);
         	model.addAttribute("company",companyModels);
         	return "/api/emailCf";
         }else {

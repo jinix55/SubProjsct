@@ -42,5 +42,9 @@ public class ProdPackagingMatModel extends Criteria{
     //-----------------------------------------------------------------------------------------------
     
     private String productCode;
+    
+    private String groupNm;
+    private String codeNm;
+    private String groupCodeNm;
  
 } 
