@@ -133,6 +133,7 @@ public class ProductController {
      */
     @RequestMapping(value="/detail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
+    //public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     public ResponseEntity<ProductModel> selectProduct(@RequestBody ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
     	System.out.println("productModel" + productModel.getProductCode());
@@ -147,9 +148,12 @@ public class ProductController {
      * @param request
      * @return
      */
-    @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    //@RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
+    //public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
+    public ResponseEntity<String> insertProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
+    	System.out.println("productModel" + productModel.getProductCode());
         if(productService.selectProductListCountByProductCode(productModel.getProductCode()) > 0) {
         	return ResponseEntity.badRequest().body("동일한 상품코드로 등록된 상품이 있습니다.");
         }
@@ -157,7 +161,7 @@ public class ProductController {
         if(productModel.getProductNm() == null || productModel.getProductNm().trim().equals("")) {
         	return ResponseEntity.badRequest().body("상품명이 누락 되었습니다");
         }
-        
+/****************************************************************        
     	try {
     		productModel.setRgstId(authUser.getMemberModel().getUserId());
     		productModel.setModiId(authUser.getMemberModel().getUserId());
@@ -301,16 +305,20 @@ public class ProductController {
         } catch (Exception e) {
         	return ResponseEntity.badRequest().body(e.getMessage());
         }
+        
+******************************************/   
+		productModel.setRgstId(authUser.getMemberModel().getUserId());
+		productModel.setModiId(authUser.getMemberModel().getUserId());
+		String result = productService.insertProduct(productModel);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
-//    @PostMapping("/update")
-    @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/update")
+    //@RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> update(HttpServletRequest request,
-                                       @ModelAttribute ProductModel productModel,
-                                       @AuthenticationPrincipal AuthUser authUser
-                                       , @RequestParam("photos") MultipartFile[] photos
-                                       , @RequestParam("specs") MultipartFile[] specs) {
+    //public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
+    public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
     	
     	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
     		if(!(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals(""))) {
@@ -353,7 +361,7 @@ public class ProductController {
     	   productModel.setMappingProductCode(""); 
     	}    	
     	
-
+/*********************************************************************************************************
         try {
     		productModel.setModiId(authUser.getMemberModel().getUserId());
     		String result = "";
@@ -497,16 +505,22 @@ public class ProductController {
         } catch (Exception e) {
         	return ResponseEntity.badRequest().body(e.getMessage());
         }
+        
+*********************************************************************/
+		productModel.setModiId(authUser.getMemberModel().getUserId());
+		String result = productService.updateProduct(productModel);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
     /**
-     * 상품을 삭제한다.
+     * 상품을 삭제한다.  UseYn = N
      *
      * @param request
      * @return
      */
     @PostMapping("/delete")
-    public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    //public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> productDelete(@RequestBody ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {	
         try {            
             productModel.setModiId(authUser.getMemberModel().getUserId());
             String result = productService.deleteProduct(productModel);

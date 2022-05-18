@@ -68,7 +68,7 @@
 			, a.APPROVAL_NO
 			
 			, a.MASTER_MAPPING_CODE
-			, a.MAPPING_PRODUCT_CODE
+			, b.MAPPING_PRODUCT_CODE
 			, b.PRODUCT_NM           MAPPING_PRODUCT_NM 
 			
 			, a.RGST_ID
@@ -141,9 +141,10 @@
 	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
 		UPDATE T1_PRODUCT
 		SET
-				USE_YN = 'N'
+			  USE_YN = 'N'
+	 		, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
 		WHERE	upper(PRODUCT_CODE) = upper(#{productCode})
-		  AND	USE_YN = 'Y'   
 		   	
 	</update>
 	

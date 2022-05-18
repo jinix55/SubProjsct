@@ -81,9 +81,8 @@ public class ProductService {
 	 * @return
 	 */
 	public ProductModel selectProduct(ProductModel productModel) {
-		ProductModel outProductModel = new ProductModel();
 		ProductModel productRecyleContributionsModel = new ProductModel();
-		outProductModel = productMapper.selectProduct(productModel);
+		ProductModel outProductModel = productMapper.selectProduct(productModel);
 
 //		int year = Calendar.getInstance().get(Calendar.YEAR);
 //		for(int i = 1; i <= 3; i++) {
@@ -119,11 +118,12 @@ public class ProductService {
 //	                break;            	
 //            }
 //		}
-		
-		
-//		System.out.println("outProductModel.getProductId() " + outProductModel.getProductCode());
-		
-		
+ 
+//		
+//		System.out.println("outProductModel" + outProductModel);
+//		System.out.println("outProductModel.getProductCode() " + outProductModel.getProductCode());
+//		
+//		
 //		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
 //		prodPackagingModel.setProductCode(outProductModel.getProductCode());
 //
@@ -154,10 +154,10 @@ public class ProductService {
 //		
 //		outProductModel.setProdPackagingList(prodPackagingList);
 //		
-//		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
-//		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
-//		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
-//		outProductModel.setMappingStatCode(mappingStatCode);
+		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
+		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
+		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
+		outProductModel.setMappingStatCode(mappingStatCode);
 		
 		return outProductModel;
 	}
