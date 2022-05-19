@@ -1,22 +1,15 @@
 package com.portal.adm.product;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,11 +37,12 @@ import com.portal.adm.member.service.MemberService;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
+import com.portal.adm.product.model.ProductGroupFileModel;
 import com.portal.adm.product.model.ProductModel;
+import com.portal.adm.product.service.ProductGroupFileService;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
-import com.portal.common.Constant;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -74,8 +68,12 @@ public class ProductController {
     @Resource
     private IdUtil idUtil;
     
+    @Resource
+    private ProductGroupFileService productGroupFileService;
+    
     @Resource(name="fileService")
 	private FileService fileService;
+    
     
     @Resource
     private EnvironmentCodeService environmentCodeService;
@@ -134,8 +132,8 @@ public class ProductController {
      */
     @RequestMapping(value="/detail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    //public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    public ResponseEntity<ProductModel> selectProduct(@RequestBody ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+//    public ResponseEntity<ProductModel> selectProduct(@RequestBody ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
     	System.out.println("productModel" + productModel.getProductCode());
     	ProductModel product = productService.selectProduct(productModel);
@@ -152,8 +150,8 @@ public class ProductController {
     //@RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    //public ResponseEntity<String> groupSave(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
-    public ResponseEntity<String> insertProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> saveProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
+//    public ResponseEntity<String> insertProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
     	System.out.println("productModel" + productModel.getProductCode());
         if(productService.selectProductListCountByProductCode(productModel.getProductCode()) > 0) {
         	return ResponseEntity.badRequest().body("동일한 상품코드로 등록된 상품이 있습니다.");
@@ -162,163 +160,35 @@ public class ProductController {
         if(productModel.getProductNm() == null || productModel.getProductNm().trim().equals("")) {
         	return ResponseEntity.badRequest().body("상품명이 누락 되었습니다");
         }
-/*20220518****************************************************************        
-    	try {
-    		productModel.setRgstId(authUser.getMemberModel().getUserId());
-    		productModel.setModiId(authUser.getMemberModel().getUserId());
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
-    		String result = "success";
-    		String resultMessage = "성공";
-    		//사진 업로드
-    		for(MultipartFile photo : photos) {
-    			if(photo.getOriginalFilename().equals("")) {
-    				continue;
-    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
-    			}
-    			
-    			FileModel f = new FileModel();
-				f.setFileId(idUtil.getFileId());
-				
-				// s3 기본 처리
-    			f.setStorageSe("LOCAL");
-    			f.setFileNm(photo.getOriginalFilename());
-    			f.setFileExtsn(FilenameUtils.getExtension(photo.getOriginalFilename()));
-    			f.setFileSize(photo.getSize());
-    			f.setFileUrl(fileUrl+f.getFileId() + "/");
-    			f.setUseYn("Y");
-    			f.setRefId("photos_"+productModel.getProductCode());
-    			f.setRgstId(productModel.getRgstId());
-    			f.setModiId(productModel.getRgstId());
-    			f.setFileCl(Constant.File.API);
-    			
-    			try {
-    				f.setInputStream(photo.getResource().getInputStream());
-    			} catch (IOException e) {
-    				result = "fail";
-    				resultMessage = "실패";
-    			}
-    			
-    			// 파일 생성
-    			if (!"fail".equals(result)) {
-    				fileService.insertFile(f);
-    				if(productModel.getPhotoGfileId() == null || "".equals(productModel.getPhotoGfileId())) {
-    					productModel.setPhotoGfileId(f.getFileId());
-    				}
-    				
-    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
-
-    				try {
-    					Files.createDirectories(directoryPath);
-    				} catch (IOException e1) {
-    					return ResponseEntity.badRequest().body("1.파일 생성시 오류났습니다.");
-    				}
-
-    				try {
-    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + photo.getOriginalFilename());
-
-    					InputStream is = photo.getInputStream();
-
-    					int readCount = 0;
-    					byte[] buffer = new byte[1024];
-    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
-    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
-    					while ((readCount = is.read(buffer)) != -1) {
-    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-    						fos.write(buffer, 0, readCount);
-    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
-    					}
-    				} catch (FileNotFoundException e) {
-    					return ResponseEntity.badRequest().body("1.FileNotFoundException.");
-    				}
-    				catch (IOException e) {
-    					return ResponseEntity.badRequest().body("1.IOException.");
-    				}
-    			}
-    		}
-    		
-    		//도면첨부파일 업로드
-    		for(MultipartFile spec : specs) {
-    			if(spec.getOriginalFilename().equals("")) {
-    				continue;
-    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
-    			}
-
-    			FileModel f = new FileModel();
-				f.setFileId(idUtil.getFileId());
-				
-				// s3 기본 처리
-    			f.setStorageSe("LOCAL");
-    			f.setFileNm(spec.getOriginalFilename());
-    			f.setFileExtsn(FilenameUtils.getExtension(spec.getOriginalFilename()));
-    			f.setFileSize(spec.getSize());
-    			f.setFileUrl(fileUrl+f.getFileId() + "/");
-    			f.setUseYn("Y");
-    			f.setRefId("specs_"+productModel.getProductCode());
-    			f.setRgstId(productModel.getRgstId());
-    			f.setModiId(productModel.getRgstId());
-    			f.setFileCl(Constant.File.API);
-    			
-    			try {
-    				f.setInputStream(spec.getResource().getInputStream());
-    			} catch (IOException e) {
-    				result = "fail";
-    				resultMessage = "실패";
-    			}
-    			
-    			// 파일 생성
-    			if (!"fail".equals(result)) {
-    				fileService.insertFile(f);
-    				
-    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
-
-    				try {
-    					Files.createDirectories(directoryPath);
-    				} catch (IOException e1) {
-    					return ResponseEntity.badRequest().body("2.파일 생성시 오류났습니다.");
-    				}
-
-    				try {
-    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + spec.getOriginalFilename());
-
-    					InputStream is = spec.getInputStream();
-
-    					int readCount = 0;
-    					byte[] buffer = new byte[1024];
-    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
-    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
-    					while ((readCount = is.read(buffer)) != -1) {
-    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-    						fos.write(buffer, 0, readCount);
-    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
-    					}
-    				} catch (FileNotFoundException e) {
-    					return ResponseEntity.badRequest().body("2.FileNotFoundException.");
-    				}
-    				catch (IOException e) {
-    					return ResponseEntity.badRequest().body("2.IOException.");
-    				}
-    			}
-    		}
-    		
-            result = productService.insertProduct(productModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-        	return ResponseEntity.badRequest().body(e.getMessage());
-        }
         
-******************************************/   
+        try {
+        	String result = "success";
+        	productModel.setRgstId(authUser.getMemberModel().getUserId());
+    		productModel.setModiId(authUser.getMemberModel().getUserId());
+        	String photoGfileId = productGroupFileService.saveProuductGroupFile(productModel, photos, "");
+	        productModel.setPhotoGfileId(photoGfileId);
+	        String specGfileId = productGroupFileService.saveProuductGroupFile(productModel, specs, "");
+	        productModel.setSpecGfileId(specGfileId);
+	        
+	        result = productService.insertProduct(productModel);
+	
+	        return new ResponseEntity<>(result, HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return ResponseEntity.badRequest().body(e.getMessage());
+	    }
+        /**
 		productModel.setRgstId(authUser.getMemberModel().getUserId());
 		productModel.setModiId(authUser.getMemberModel().getUserId());
 		String result = productService.insertProduct(productModel);
         return new ResponseEntity<>(result, HttpStatus.OK);
+        **/
     }
     
     //@RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    //public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
-    public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
+//    public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
     	
     	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
     		if(!(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals(""))) {
@@ -361,155 +231,26 @@ public class ProductController {
     	   productModel.setMappingProductCode(""); 
     	}    	
     	
-/*20220518********************************************************************************************************
-        try {
-    		productModel.setModiId(authUser.getMemberModel().getUserId());
-    		String result = "";
-    		String resultMessage = "성공";
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
-    		int count = 0;
-    		//사진 업로드
-    		for(MultipartFile photo : photos) {
-    			System.out.println("----"+count+"---");
-    			System.out.println(photo.getOriginalFilename());
-    			count++;
-    			if(photo.getOriginalFilename().equals("")) {
-    				continue;
-    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
-    			}
-    			
-    			FileModel f = new FileModel();
-				f.setFileId(idUtil.getFileId());
-				
-				// s3 기본 처리
-    			f.setStorageSe("LOCAL");
-    			f.setFileNm(photo.getOriginalFilename());
-    			f.setFileExtsn(FilenameUtils.getExtension(photo.getOriginalFilename()));
-    			f.setFileSize(photo.getSize());
-    			f.setFileUrl(fileUrl+f.getFileId() + "/");
-    			f.setUseYn("Y");
-    			f.setRefId("photos_"+productModel.getProductCode());
-    			f.setRgstId(productModel.getModiId());
-    			f.setModiId(productModel.getModiId());
-    			f.setFileCl(Constant.File.API);
-    			
-    			try {
-    				f.setInputStream(photo.getResource().getInputStream());
-    			} catch (IOException e) {
-    				return ResponseEntity.badRequest().body("1.IOException.");
-    			}
-    			
-    			// 파일 생성
-    			if (!"fail".equals(result)) {
-    				fileService.insertFile(f);
-    				if(productModel.getPhotoGfileId() == null || "".equals(productModel.getPhotoGfileId())) {
-    				}
-    				
-    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
-
-    				try {
-    					Files.createDirectories(directoryPath);
-    				} catch (IOException e1) {
-    					e1.printStackTrace();
-    				}
-
-    				try {
-    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + photo.getOriginalFilename());
-
-    					InputStream is = photo.getInputStream();
-
-    					int readCount = 0;
-    					byte[] buffer = new byte[1024];
-    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
-    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
-    					while ((readCount = is.read(buffer)) != -1) {
-    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-    						fos.write(buffer, 0, readCount);
-    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
-    					}
-    				} catch (FileNotFoundException e) {
-    					return ResponseEntity.badRequest().body("2.FileNotFoundException.");
-    				}
-    				catch (IOException e) {
-    					return ResponseEntity.badRequest().body("3.IOException.");
-    				}
-    			}
-    		}
-    		
-    		//도면첨부파일 업로드
-    		for(MultipartFile spec : specs) {
-    			if(spec.getOriginalFilename().equals("")) {
-    				continue;
-    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
-    			}
-
-    			FileModel f = new FileModel();
-				f.setFileId(idUtil.getFileId());
-				
-				// s3 기본 처리
-    			f.setStorageSe("LOCAL");
-    			f.setFileNm(spec.getOriginalFilename());
-    			f.setFileExtsn(FilenameUtils.getExtension(spec.getOriginalFilename()));
-    			f.setFileSize(spec.getSize());
-    			f.setFileUrl(fileUrl+f.getFileId() + "/");
-    			f.setUseYn("Y");
-    			f.setRefId("specs_"+productModel.getProductCode());
-    			f.setRgstId(productModel.getModiId());
-    			f.setModiId(productModel.getModiId());
-    			f.setFileCl(Constant.File.API);
-    			
-    			try {
-    				f.setInputStream(spec.getResource().getInputStream());
-    			} catch (IOException e) {
-    				return ResponseEntity.badRequest().body("1.IOException.");
-    			}
-    			
-    			// 파일 생성
-    			if (!"fail".equals(result)) {
-    				fileService.insertFile(f);
-    				
-    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
-
-    				try {
-    					Files.createDirectories(directoryPath);
-    				} catch (IOException e1) {
-    					e1.printStackTrace();
-    				}
-
-    				try {
-    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + spec.getOriginalFilename());
-
-    					InputStream is = spec.getInputStream();
-
-    					int readCount = 0;
-    					byte[] buffer = new byte[1024];
-    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
-    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
-    					while ((readCount = is.read(buffer)) != -1) {
-    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-    						fos.write(buffer, 0, readCount);
-    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
-    					}
-    				} catch (FileNotFoundException e) {
-    					return ResponseEntity.badRequest().body("2.IOException.");
-    				}
-    				catch (IOException e) {
-    					return ResponseEntity.badRequest().body("3.IOException.");
-    				}
-    			}
-    		}
-    		
-            result = productService.updateProduct(productModel);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-        	return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        
-*********************************************************************/
+    	try {
+        	String result = "success";
+        	productModel.setModiId(authUser.getMemberModel().getUserId());
+        	String photoGfileId = productGroupFileService.saveProuductGroupFile(productModel, photos, productModel.getPhotoGfileId());
+	        productModel.setPhotoGfileId(photoGfileId);
+	        String specGfileId = productGroupFileService.saveProuductGroupFile(productModel, specs, productModel.getSpecGfileId());
+	        productModel.setSpecGfileId(specGfileId);
+	        
+	        productModel.setModiId(authUser.getMemberModel().getUserId());
+			result = productService.updateProduct(productModel);
+	        return new ResponseEntity<>(result, HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return ResponseEntity.badRequest().body(e.getMessage());
+	    }
+    	
+    	/**
 		productModel.setModiId(authUser.getMemberModel().getUserId());
 		String result = productService.updateProduct(productModel);
         return new ResponseEntity<>(result, HttpStatus.OK);
+        **/
     }
     
     /**
@@ -531,6 +272,58 @@ public class ProductController {
         }
     }    
     
+    /**
+	 * Product File list 조회
+	 * @param request
+	 * @param multipart
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/detail/file/list/{gfileId}", method=RequestMethod.GET)
+	public ResponseEntity<List<FileModel>> selectList(HttpServletRequest request, @PathVariable String gfileId, @AuthenticationPrincipal AuthUser authUser) {
+		//파일 조회
+		List<FileModel> fileList = new ArrayList<>();
+		ProductGroupFileModel productGroupFileModel = new ProductGroupFileModel();
+		productGroupFileModel.setGfileId(gfileId);
+		List<ProductGroupFileModel> groupFileList = productGroupFileService.selectProductGroupFileListByGfileId(productGroupFileModel);
+		for(ProductGroupFileModel gfile: groupFileList) {
+			FileModel f = new FileModel();
+			f.setFileId(gfile.getFileId());
+			f = fileService.selectFile(f);
+			fileList.add(f);
+		}
+		return new ResponseEntity<>(fileList, HttpStatus.OK);
+	}
+
+    /**
+	 * File delete
+	 * @param request
+	 * @param multipart
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/detail/file/delete/{uuid}", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	public Map<String,Object> delete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String uuid) {
+		//product group 에서 삭제
+		ProductGroupFileModel productGroupFileModel = new ProductGroupFileModel();
+		productGroupFileModel.setFileId(uuid);
+		productGroupFileModel.setModiId(authUser.getMemberModel().getUserId());
+		productGroupFileService.deleteProduct(productGroupFileModel);
+		
+		//첨부 파일에서 삭제
+		//Map<String,Object> result = null;
+		Map<String,Object> result = new HashMap<String, Object>();
+		FileModel fileModel = new FileModel();
+		fileModel.setFileId(uuid);
+		fileModel = fileService.selectFile(fileModel);
+//		fileModel.setFileUrl(uuid);
+		fileModel.setUseYn("N");
+		fileModel.setModiId(authUser.getMemberModel().getUserId());
+		long cnt = fileService.deleteFile(fileModel);
+
+		result.put("cnt", cnt);
+		return result;
+	}
     
     @RequestMapping(value="/detail/selectProductPackaging", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -542,7 +335,7 @@ public class ProductController {
         return new ResponseEntity<>(prodPackagingModelList, HttpStatus.OK);
     }    
     
-    
+	
     /**
      * 상품포장정보을 삭제한다.
      *

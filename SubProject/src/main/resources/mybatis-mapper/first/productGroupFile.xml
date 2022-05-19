@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.product.mapper.ProductGroupFIleMapper">
+
+	<sql id="paging">
+		LIMIT #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectProductGroupFileListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		SELECT COUNT(*)
+		FROM t_group_file
+		WHERE USE_YN = 'Y' AND DEL_YN = 'N'
+	</select>
+	
+	<select id="selectProductGroupFileList" resultType="com.portal.adm.product.model.ProductGroupFileModel" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		SELECT
+		    ROW_NUMBER() OVER (ORDER BY PRODUCT_NM DESC) AS ROWNUM,
+			GFILE_ID,
+			FILE_ID,
+			DEL_YN,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT	
+		FROM
+			t_group_file 
+		WHERE USE_YN = 'Y' AND DEL_YN = 'N'
+        ORDER BY RGST_DT DESC
+        <include refid="paging"></include>		
+	</select>
+	
+	<select id="selectProductGroupFileListByGfileId" resultType="com.portal.adm.product.model.ProductGroupFileModel" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		SELECT
+			GFILE_ID,
+			FILE_ID,
+			DEL_YN,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT	
+		FROM
+			t_group_file
+		WHERE GFILE_ID = #{gfileId} AND USE_YN = 'Y' AND DEL_YN = 'N'
+        ORDER BY RGST_DT DESC	
+	</select>
+
+	<select id="selectProductGroupFile" resultType="com.portal.adm.product.model.ProductGroupFileModel" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		SELECT
+			GFILE_ID,
+			FILE_ID,
+			DEL_YN,
+			USE_YN,
+			RGST_ID,
+			RGST_DT,
+			MODI_ID,
+			MODI_DT	
+		FROM
+			t_group_file 
+		WHERE GFILE_ID = #{gfileId} AND FILE_ID = #{fileId}
+		  AND USE_YN = 'Y'
+		  AND DEL_YN = 'N'
+	</select>
+	
+	<insert id="insertProductGroupFile" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		INSERT INTO t_group_file (
+			  GFILE_ID
+			, FILE_ID
+			, DEL_YN
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			  #{gfileId}
+			, #{fileId}
+			, 'N'
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+	
+	<update id="updateProductGroupFile" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		UPDATE t_group_file
+		SET
+			  USE_YN              = 'N'
+			, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE GFILE_ID = #{gfileId} 
+		  AND FILE_ID = #{fileId}
+	</update>
+	
+
+	
+	<update id="deleteProductGroupFile" parameterType="com.portal.adm.product.model.ProductGroupFileModel">
+		UPDATE t_group_file
+		SET
+			  DEL_YN   = 'Y'
+			, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE FILE_ID = #{fileId}
+	</update>
+</mapper>

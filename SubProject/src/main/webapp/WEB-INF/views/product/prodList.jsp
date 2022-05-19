@@ -596,8 +596,8 @@
 						  <input id="edit_productCode" type="text" class="text-input" disabled>
 						  <input id="edit_productIdSave" name="productId" type="hidden" class="text-input">
 						  <input id="edit_productCodeSave" name="productCode" type="hidden" class="text-input">
-						  <input id="edit_photo" name="photo" type="hidden" class="text-input">
-						  <input id="edit_spec" name="spec" type="hidden" class="text-input">
+						  <input id="edit_photo" name="photoGfileId" type="hidden" class="text-input">
+						  <input id="edit_spec" name="specGfileId" type="hidden" class="text-input">
 						</div>
 					  </div>
 					</div>
@@ -1730,7 +1730,7 @@
 
   function getFileList(refId, placeId, savedId){
 	  $.ajax({
-			url : '/file/list/'+refId,
+			url : '/product/detail/file/list/'+savedId,
 			dataType : 'json',
 			type : "GET",
 			async: false,
@@ -1752,11 +1752,11 @@
 						}
 					});
 				}else {
-					if(refId.indexOf('photos_') > -1){
-						$('#edit_photo').val('');
-					}else if(refId.indexOf('specs_') > -1){
-						$('#edit_spec').val('');
-					}
+// 					if(refId.indexOf('photos_') > -1){
+// 						$('#edit_photo').val('');
+// 					}else if(refId.indexOf('specs_') > -1){
+// 						$('#edit_spec').val('');
+// 					}
 				}
 			}
 		});
@@ -1766,7 +1766,7 @@
   function deleteFileAjax(fileId, savedId, refId, obj) {
   	$.ajax({
 		type : 'post',
-		url : '/file/delete/' + fileId,
+		url : '/product/detail/file/delete/' + fileId,
 		dataType : 'json',
 		error: function(request, status, error){
 			console.log(request.responseText);
@@ -1776,11 +1776,11 @@
 			console.log(result);
 			$(obj).parent().remove();
 			if(fileId == savedId) {
-				if(refId.indexOf('photos_') > -1){
-					$('#edit_photo').val('');
-				}else if(refId.indexOf('specs_') > -1){
-					$('#edit_spec').val('');
-				}
+// 				if(refId.indexOf('photos_') > -1){
+// 					$('#edit_photo').val('');
+// 				}else if(refId.indexOf('specs_') > -1){
+// 					$('#edit_spec').val('');
+// 				}
 			}
 // 			if (result == action) {
 // 				var param = $('#searchFrm').serialize();
@@ -1877,7 +1877,8 @@
 	$('#edit_accumulateSaleQty_2').val(data.accumulateSaleQty_2);
 	$('#edit_packingTotalWeight_2').val(data.packingTotalWeight_2);
 	$('#edit_recyleContributions_2').val(data.recyleContributions_2);
-	
+
+	/**
 	$('#edit_productMaker').empty();
 	console.log(data.prodPackagingList.length);
 	//상품제조사정보
@@ -1891,15 +1892,15 @@
 		});
 	}
 	
-	
+	**/
 	$('#edit_summary').val(data.summary);
 
 	
 	//photos and specs 정보 있으면 뿌려줌
 	$('#edit_photo').val(data.photoGfileId);
 	$('#edit_spec').val(data.specGfileId);
-	getFileList('photos_'+data.productId, "edit_photos", data.photoGfileId);
-	getFileList('specs_'+data.productId, "edit_specs", data.specGfileId);
+	getFileList('photos_'+data.productCode, "edit_photos", data.photoGfileId);
+	getFileList('specs_'+data.productCode, "edit_specs", data.specGfileId);
 
 	$('#edit_masterApplyNm').empty();
 	console.log(data.environmentProceedStatCode.length);
