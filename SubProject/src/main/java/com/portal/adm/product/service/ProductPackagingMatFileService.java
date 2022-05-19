@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -16,11 +17,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.portal.adm.file.model.FileModel;
 import com.portal.adm.file.service.FileService;
-import com.portal.adm.product.mapper.ProductGroupFIleMapper;
-import com.portal.adm.product.model.ProductGroupFileModel;
+import com.portal.adm.product.mapper.ProductPackagingMatFIleMapper;
+import com.portal.adm.product.model.ProductPackagingMatFileModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.common.Constant;
 import com.portal.common.IdUtil;
@@ -29,10 +31,10 @@ import com.portal.common.IdUtil;
  * 상품 그룹 첨부파일 서비스 클래스
  */
 @Service
-public class ProductGroupFileService {
+public class ProductPackagingMatFileService {
 
     @Resource
-    private ProductGroupFIleMapper productGroupFIleMapper;
+    private ProductPackagingMatFIleMapper productPackagingMatFIleMapper;
 
     @Resource(name="fileService")
 	private FileService fileService;
@@ -46,8 +48,8 @@ public class ProductGroupFileService {
    	 * @param criteria 페이징 모델
    	 * @return
    	 */
-   	public int selectProductGroupFileListCount(ProductGroupFileModel productGroupFileModel) {
-   		return productGroupFIleMapper.selectProductGroupFileListCount(productGroupFileModel);
+   	public int selectProductPackagingMatFileListCount(ProductPackagingMatFileModel productPackagingMatFileModel) {
+   		return productPackagingMatFIleMapper.selectProductPackagingMatFileListCount(productPackagingMatFileModel);
    	}
     
     /**
@@ -56,9 +58,9 @@ public class ProductGroupFileService {
 	 * @param criteria 페이징 모델
 	 * @return
 	 */
-    public List<ProductGroupFileModel> selectProductGroupFileList(ProductGroupFileModel productGroupFileModel) {
-    	List<ProductGroupFileModel> productGroupFileList = productGroupFIleMapper.selectProductGroupFileList(productGroupFileModel);
-        return productGroupFileList;
+    public List<ProductPackagingMatFileModel> selectProductPackagingMatFileList(ProductPackagingMatFileModel productPackagingMatFileModel) {
+    	List<ProductPackagingMatFileModel> productPackagingMatFileList = productPackagingMatFIleMapper.selectProductPackagingMatFileList(productPackagingMatFileModel);
+        return productPackagingMatFileList;
     }
 	
     /**
@@ -67,20 +69,20 @@ public class ProductGroupFileService {
 	 * @param criteria 페이징 모델
 	 * @return
 	 */
-    public List<ProductGroupFileModel> selectProductGroupFileListByGfileId(ProductGroupFileModel productGroupFileModel) {
-    	List<ProductGroupFileModel> productGroupFileList = productGroupFIleMapper.selectProductGroupFileListByGfileId(productGroupFileModel);
-        return productGroupFileList;
+    public List<ProductPackagingMatFileModel> selectProductPackagingMatFileListByGfileId(ProductPackagingMatFileModel productPackagingMatFileModel) {
+    	List<ProductPackagingMatFileModel> productPackagingMatFileList = productPackagingMatFIleMapper.selectProductPackagingMatFileListByGfileId(productPackagingMatFileModel);
+        return productPackagingMatFileList;
     }
     
     /**
 	 * 첨부파일관리 상세정보을 조회한다.
 	 *
-	 * @param productGroupFileModel 모델
+	 * @param productPackagingMatFileModel 모델
 	 * @return
 	 */
-    public ProductGroupFileModel selectProductGroupFile(ProductGroupFileModel productGroupFileModel) {
-    	ProductGroupFileModel productGroupFile = productGroupFIleMapper.selectProductGroupFile(productGroupFileModel);
-        return productGroupFile;
+    public ProductPackagingMatFileModel selectProductPackagingMatFile(ProductPackagingMatFileModel productPackagingMatFileModel) {
+    	ProductPackagingMatFileModel productPackagingMatFile = productPackagingMatFIleMapper.selectProductPackagingMatFile(productPackagingMatFileModel);
+        return productPackagingMatFile;
     }
     
 	/**
@@ -90,8 +92,8 @@ public class ProductGroupFileService {
 	 * @return
 	 */
 	@Transactional
-	public String insertProductGroupFile(ProductGroupFileModel productGroupFileModel) {
-		long count = productGroupFIleMapper.insertProductGroupFile(productGroupFileModel);
+	public String insertProductPackagingMatFile(ProductPackagingMatFileModel productPackagingMatFileModel) {
+		long count = productPackagingMatFIleMapper.insertProductPackagingMatFile(productPackagingMatFileModel);
 		
 		if (count > 0) {
 			return Constant.DB.INSERT;
@@ -108,8 +110,8 @@ public class ProductGroupFileService {
 	 */
 	
 	@Transactional
-	public String updateProductRecycleGrade(ProductGroupFileModel productGroupFileModel) {
-		long count = productGroupFIleMapper.updateProductGroupFile(productGroupFileModel);
+	public String updateProductRecycleGrade(ProductPackagingMatFileModel productPackagingMatFileModel) {
+		long count = productPackagingMatFIleMapper.updateProductPackagingMatFile(productPackagingMatFileModel);
 		if (count > 0) {
 			return Constant.DB.UPDATE;
 		} else {
@@ -124,8 +126,8 @@ public class ProductGroupFileService {
 	 * @return
 	 */
 	@Transactional
-	public String deleteProduct(ProductGroupFileModel productGroupFileModel) {
-		long count = productGroupFIleMapper.deleteProductGroupFile(productGroupFileModel);
+	public String deleteProduct(ProductPackagingMatFileModel productPackagingMatFileModel) {
+		long count = productPackagingMatFIleMapper.deleteProductPackagingMatFile(productPackagingMatFileModel);
 		if (count > 0) {
 			return Constant.DB.DELETE;
 		} else {
@@ -139,16 +141,18 @@ public class ProductGroupFileService {
 	 * @param model 첨부파일아이디를 사용
 	 * @return
 	 */
-	public String saveProuductGroupFile(ProductModel productModel, MultipartFile[] files, String productGroupFileId) {
+	public String saveProuductPackagingMatFile(ProductModel productModel, MultipartRequest multipart, String productPackagingMatFileId) {
 		try {
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/selfPackaging/";
     		String result = "success";
     		String resultMessage = "성공";
     		
-    		ProductGroupFileModel productGroupFileModel = new ProductGroupFileModel();
+    		ProductPackagingMatFileModel productPackagingMatFileModel = new ProductPackagingMatFileModel();
     		
     		//사진 업로드
-    		for(MultipartFile file : files) {
+    		final Map<String, MultipartFile> files = multipart.getFileMap();
+        	MultipartFile file = null;
+        	for (String key : files.keySet()) {
     			if(file.getOriginalFilename().equals("")) {
     				continue;
     				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
@@ -180,14 +184,14 @@ public class ProductGroupFileService {
     			if (!"fail".equals(result)) {
     				fileService.insertFile(f);
     				
-    				if(productGroupFileId == null || "".equals(productGroupFileId)) {
-    					productGroupFileId = idUtil.getProductGroupFileId();
+    				if(productPackagingMatFileId == null || "".equals(productPackagingMatFileId)) {
+//    					productPackagingMatFileId = idUtil.getProductPackagingMatFileId();
     				}
-    				productGroupFileModel.setGfileId(productGroupFileId);
-    				productGroupFileModel.setFileId(f.getFileId());
-    				productGroupFileModel.setRgstId(productModel.getModiId());
-    				productGroupFileModel.setModiId(productModel.getModiId());
-    				insertProductGroupFile(productGroupFileModel);
+    				productPackagingMatFileModel.setPackagingMatFileId(productPackagingMatFileId);
+    				productPackagingMatFileModel.setFileId(f.getFileId());
+    				productPackagingMatFileModel.setRgstId(productModel.getModiId());
+    				productPackagingMatFileModel.setModiId(productModel.getModiId());
+    				insertProductPackagingMatFile(productPackagingMatFileModel);
     				
     				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
 
@@ -223,7 +227,7 @@ public class ProductGroupFileService {
 			System.out.println(e.getMessage());
 //        	return e.getMessage();
         }
-		return productGroupFileId;
+		return productPackagingMatFileId;
 	}
 	
 }

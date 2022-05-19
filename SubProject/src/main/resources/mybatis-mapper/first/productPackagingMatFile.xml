@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.adm.product.mapper.ProductPackagingMatFIleMapper">
+
+	<sql id="paging">
+		LIMIT #{offSet}, #{pageSize}
+	</sql>
+
+	<select id="selectProductPackagingMatFileListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		SELECT COUNT(*)
+		FROM t1_product_packaging_mat_file
+		WHERE USE_YN = 'Y'
+	</select>
+	
+	<select id="selectProductPackagingMatFileList" resultType="com.portal.adm.product.model.ProductPackagingMatFileModel" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		SELECT
+		    ROW_NUMBER() OVER (ORDER BY PRODUCT_NM DESC) AS ROWNUM,
+			  PACKAGING_MAT_FILE_ID
+			, PACKAGING_ID
+			, PART_CODE
+			, MAT_FILE_CODE
+			, FILE_ID
+			, REVISION_YEAR
+			, REVISION_MONTH
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t1_product_packaging_mat_file 
+		WHERE USE_YN = 'Y'
+        ORDER BY RGST_DT DESC
+        <include refid="paging"></include>		
+	</select>
+	
+	<select id="selectProductPackagingMatFileListByMatFileId" resultType="com.portal.adm.product.model.ProductPackagingMatFileModel" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		SELECT
+			  PACKAGING_MAT_FILE_ID
+			, PACKAGING_ID
+			, PART_CODE
+			, MAT_FILE_CODE
+			, FILE_ID
+			, REVISION_YEAR
+			, REVISION_MONTH
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT	
+		FROM
+			t1_product_packaging_mat_file
+		WHERE PACKAGING_MAT_FILE_ID = #{packagingMatFileId} AND USE_YN = 'Y'
+        ORDER BY RGST_DT DESC	
+	</select>
+
+	<select id="selectProductPackagingMatFile" resultType="com.portal.adm.product.model.ProductPackagingMatFileModel" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		SELECT
+			  PACKAGING_MAT_FILE_ID
+			, PACKAGING_ID
+			, PART_CODE
+			, MAT_FILE_CODE
+			, FILE_ID
+			, REVISION_YEAR
+			, REVISION_MONTH
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		FROM
+			t1_product_packaging_mat_file 
+		WHERE PACKAGING_MAT_FILE_ID = #{packagingMatFileId} AND FILE_ID = #{fileId}
+		  AND USE_YN = 'Y'
+	</select>
+	
+	<insert id="insertProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		INSERT INTO t1_product_packaging_mat_file (
+			  PACKAGING_MAT_FILE_ID
+			, PACKAGING_ID
+			, PART_CODE
+			, MAT_FILE_CODE
+			, FILE_ID
+			, REVISION_YEAR
+			, REVISION_MONTH
+			, USE_YN
+			, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+		) VALUES (
+			  #{packagingMatFileId}
+			, #{packagingId}
+			, #{partCode}
+			, #{matFileCode}
+			, #{fileId}
+			, #{revisionYear}
+			, #{revisionMonth}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+	
+	<update id="updateProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		UPDATE t1_product_packaging_mat_file
+		SET
+			  USE_YN   = 'N'
+			, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE PACKAGING_MAT_FILE_ID = #{packagingMatFileId} 
+		  AND FILE_ID = #{fileId}
+	</update>
+	
+
+	
+	<update id="deleteProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
+		UPDATE t1_product_packaging_mat_file
+		SET
+			  USE_YN   = 'N'
+			, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE FILE_ID = #{fileId}
+	</update>
+</mapper>
