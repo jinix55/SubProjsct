@@ -442,6 +442,13 @@ public class ProductController {
 	    return new ResponseEntity<>(prodPackagingDetailList, HttpStatus.OK);
     }
     
+    @RequestMapping(value="/detail/selectProdPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProdPackagingDetailModel> selectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
+   
+		ProdPackagingDetailModel outModel = productService.selectProdPackagingDetail(prodPackagingDetailModel);
+	    return new ResponseEntity<>(outModel, HttpStatus.OK);
+    }
     
     @RequestMapping(value="/delete/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody

@@ -278,6 +278,13 @@ public class ProductService {
 	{
 		return productMapper.selectProdPackagingDetailList(prodPackagingDetailModel);
 	}	
+
+	@Transactional
+	public ProdPackagingDetailModel selectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel)
+	{
+		return productMapper.selectProdPackagingDetail(prodPackagingDetailModel);
+	}	
+		
 	
 	@Transactional
 	public String delectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel) {
@@ -291,7 +298,6 @@ public class ProductService {
 	
 	@Transactional
 	public String insertProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel) {
-		System.out.println("insertProdPackagingDetail prodPackagingDetailModel " + prodPackagingDetailModel);
 		long count = productMapper.insertProdPackagingDetail(prodPackagingDetailModel);
 		if (count > 0) {
 			return Constant.DB.INSERT;

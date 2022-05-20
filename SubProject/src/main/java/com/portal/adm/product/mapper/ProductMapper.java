@@ -146,6 +146,7 @@ public interface ProductMapper {
      */
    
     List<ProdPackagingDetailModel> selectProdPackagingDetailList(ProdPackagingDetailModel prodPackagingDetailModel);    
+    ProdPackagingDetailModel selectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
     
     
 	long delectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);

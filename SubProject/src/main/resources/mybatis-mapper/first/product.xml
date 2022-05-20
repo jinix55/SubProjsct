@@ -289,13 +289,32 @@
 		      ,  b.CODE_NM
 		      ,  b.ORD_SEQ      
 		  FROM  t_code              b
-		 WHERE  b.GROUP_ID = 'PROD_PACK_TYPE'
+		 WHERE  b.GROUP_ID = 'PROD_PART_TYPE'
 		  AND   b.CODE_ID  = 'S'
 		) aa  
 		ORDER BY aa.ORD_SEQ
 	</select>
 	
 	<select id="selectProdPackagingDetailList" resultType="com.portal.adm.product.model.ProdPackagingDetailModel" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
+	 		SELECT a.PACKAGING_DETAIL_ID
+			     , a.PACKAGING_ID 
+				  , a.PART_CODE
+				  , b.CODE_NM    PART_NM
+				  , b.ORD_SEQ
+			FROM t1_product_packaging_detail a
+			
+	      LEFT OUTER JOIN t_code b
+	        ON   b.GROUP_ID   = 'PROD_PART_TYPE' 
+	        AND  a.PART_CODE  =  b.CODE_ID
+	        AND  b.USE_YN  = 'Y'
+	        
+	     WHERE  a.PACKAGING_ID = #{packagingId}
+		    AND  a.USE_YN = 'Y'     
+			 
+	     ORDER BY b.ORD_SEQ, a.PACKAGING_DETAIL_ID		 	
+	</select>	
+	
+	<select id="selectProdPackagingDetail" resultType="com.portal.adm.product.model.ProdPackagingDetailModel" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
 	 		SELECT a.PACKAGING_DETAIL_ID
 			     , a.PACKAGING_ID 
 				  , a.PART_CODE
@@ -329,11 +348,10 @@
 	        AND  a.MANAGER_ID  =  d.MANAGER_ID
 	        AND  d.USE_YN  = 'Y'     
 			  
-	     WHERE  a.PACKAGING_ID = #{packagingId}
+	     WHERE  a.PACKAGING_DETAIL_ID = #{packagingDetailId}
 		    AND  a.USE_YN = 'Y'     
-			 
-	     ORDER BY b.ORD_SEQ		 	
-	</select>	
+ 	
+	</select>		
 	
 	<update id="delectProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
 		UPDATE t1_product_packaging_detail
