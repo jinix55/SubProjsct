@@ -177,9 +177,6 @@
 	</select>	
 
 
-
-<!-- ************************************************************************************************** -->
-
 	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
 		UPDATE T1_PRODUCT
 		SET
@@ -230,7 +227,7 @@
 
 
 	
-	<select id="selectProductMatType" resultType="com.portal.adm.environPrice.model.EnvironPriceModel">
+	<select id="selectProductMatTypeList" resultType="com.portal.adm.environPrice.model.EnvironPriceModel">
 		SELECT  a.CODE_ID   GROUP_ID
 		      , a.CODE_NM   GROUP_NM
 		      , b.CODE_ID   CODE_ID
@@ -242,8 +239,174 @@
 		ORDER BY a.ORD_SEQ, b.ORD_SEQ  
 	</select>
 
+	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+		INSERT INTO t1_product_packaging (
+			  PACKAGING_ID   
+			, PRODUCT_CODE     
+			, PACKAGING_ORDER
+			, GROUP_ID       
+			, CODE_ID      
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingId}
+			, #{productCode}
+			, #{packagingOrder}
+			, #{groupId}
+			, #{codeId}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+
+
+	<select id="selectProdPartList" resultType="com.portal.adm.product.model.ProdPartModel" parameterType="com.portal.adm.product.model.ProdPartModel">
+		SELECT   aa.ENV_CODE_ID
+		      ,  aa.ENV_CODE_NM
+		      ,  aa.CODE_ID
+		      ,  aa.CODE_NM
+		 FROM  (       
+		SELECT  a.CODE_ID   ENV_CODE_ID
+		      ,  a.CODE_NM  ENV_CODE_NM
+		      ,  b.CODE_ID
+		      ,  b.CODE_NM
+		      ,  b.ORD_SEQ
+		  FROM  t1_environment_code a
+		      ,  t_code              b
+		 WHERE  a.GROUP_ID = #{inGroupId}
+		  AND   b.GROUP_ID = 'PROD_PART_TYPE'
+		  AND   b.CODE_ID  = right(a.CODE_ID,1)
+		UNION
+		SELECT  ''          ENV_CODE_ID
+		      ,  ''         ENV_CODE_NM
+		      ,  b.CODE_ID
+		      ,  b.CODE_NM
+		      ,  b.ORD_SEQ      
+		  FROM  t_code              b
+		 WHERE  b.GROUP_ID = 'PROD_PACK_TYPE'
+		  AND   b.CODE_ID  = 'S'
+		) aa  
+		ORDER BY aa.ORD_SEQ
+	</select>
 	
+	<select id="selectProdPackagingDetailList" resultType="com.portal.adm.product.model.ProdPackagingDetailModel" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
+	 		SELECT a.PACKAGING_DETAIL_ID
+			     , a.PACKAGING_ID 
+				  , a.PART_CODE
+				  , b.CODE_NM    PART_NM
+				  , b.ORD_SEQ
+				  , a.MAT_INFO
+				  , a.WEIGHT
+				  , a.STANDARD
+				  , a.COLOR
+				  , a.SUMMARY
+				  , a.MAT_FILE_ID
+				  , a.SUPPLIER_CODE
+				  , c.SUPPLIER_NM
+				  , a.MANAGER_ID
+				  , d.MANAGER_NM
+				  , d.MANAGER_MAIL
+			FROM t1_product_packaging_detail a
+			
+	      LEFT OUTER JOIN t_code b
+	        ON   b.GROUP_ID   = 'PROD_PART_TYPE' 
+	        AND  a.PART_CODE  =  b.CODE_ID
+	        AND  b.USE_YN  = 'Y'
+	        
+	      LEFT OUTER JOIN t_supplier c
+	        ON   a.SUPPLIER_CODE  = c.SUPPLIER_CODE
+	        AND  c.USE_YN  = 'Y'        
+	        
+	        
+	      LEFT OUTER JOIN t_supplier_manager d
+	        ON   a.SUPPLIER_CODE  = d.SUPPLIER_CODE
+	        AND  a.MANAGER_ID  =  d.MANAGER_ID
+	        AND  d.USE_YN  = 'Y'     
+			  
+	     WHERE  a.PACKAGING_ID = #{packagingId}
+		    AND  a.USE_YN = 'Y'     
+			 
+	     ORDER BY b.ORD_SEQ		 	
+	</select>	
+	
+	<update id="delectProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
+		UPDATE t1_product_packaging_detail
+		SET
+			  USE_YN = 'N'
+	 		, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE PACKAGING_DETAIL_ID = #{packagingDetailId}
+		   	
+	</update>	
+	
+	
+	<insert id="insertProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
+		INSERT INTO t1_product_packaging_detail (
+			  PACKAGING_DETAIL_ID   
+			, PACKAGING_ID     
+			, PART_CODE
+			, MAT_INFO       
+			, WEIGHT      
+			, STANDARD
+			, COLOR
+			, SUMMARY
+			, MAT_FILE_ID
+			, SUPPLIER_CODE
+			, MANAGER_ID
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingDetailId}
+			, #{packagingId}
+			, #{partCode}
+			, #{matInfo}
+			, #{weight}
+			, #{standard}
+			, #{color}
+			, #{summary}
+			, #{matFileId}
+			, #{supplierCode}
+			, #{managerId}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>
+		
+		
+	<update id="updateProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
+		UPDATE t1_product_packaging_detail                    
+		SET                                                   
+			  PACKAGING_ID  = #{packagingId}                    
+			, PART_CODE     = #{partCode}                       
+			, MAT_INFO      = #{matInfo}                        
+			, WEIGHT        = #{weight}                         
+			, STANDARD      = #{standard}                       
+			, COLOR         = #{color}                          
+			, SUMMARY       = #{summary}                        
+			, MAT_FILE_ID   = #{matFileId}                      
+			, SUPPLIER_CODE = #{supplierCode}                   
+			, MANAGER_ID    = #{managerId}                      
+	 		, MODI_ID       = #{modiId}                         
+			, MODI_DT       = now()                             
+		WHERE PACKAGING_DETAIL_ID = #{packagingDetailId}			
+	</update>
+	
+				
 <!-- ************************************************************************************************** -->	
+<!-- ************************************************************************************************** -->
+<!-- ************************************************************************************************** -->
 	
 	<select id="selectProductPackagingDetailList" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
@@ -317,51 +480,7 @@
 
 	
 	
-	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
-		INSERT INTO t_product_packaging (
-			  PACKAGING_ID   
-			, PRODUCT_ID     
-			, PACKAGING_NM   
-			, PACKAGING_DSC  
-			, PACKAGING_ORDER
-			, MAT_TYPE       
-			, PART_TYPE      
-			, MAT_INFO       
-			, WEIGHT         
-			, STANDARD       
-			, COLOR          
-			, ADD_EXPLAN     
-			, MAT_FILE_ID    
-			, SUPPLIER_CODE 
-			, MANAGER_ID 
-			, USE_YN         
-			, RGST_ID        
-			, RGST_DT        
-			, MODI_ID        
-			, MODI_DT        
-		) VALUES (
-			  #{packagingId}
-			, #{productId}
-			, #{packagingNm}
-			, #{packagingDsc}
-			, #{packagingOrder}
-			, #{matType}
-			, #{partType}
-			, #{matInfo}
-			, #{weight}
-			, #{standard}
-			, #{color}
-			, #{addExplan}
-			, #{matFileId}
-			, #{supplierCode}
-			, #{managerId}
-			, 'Y'
-			, #{rgstId}
-			, now()
-			, #{modiId}
-			, now()
-		)
-	</insert>
+
 	
 	<update id="updateProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		UPDATE t_product_packaging

@@ -14,6 +14,8 @@ import com.portal.adm.code.service.CodeService;
 import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.mapper.ProductMapper;
+import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProductModel;
@@ -257,6 +259,57 @@ public class ProductService {
 		}
 	}
 	
+	
+    /**
+     * 제품 PACK TYPE 정보를 조회한다.
+     *  
+     *  몸체, 라벨 ....
+     * @param 
+     * @return
+     */
+	@Transactional
+	public List<ProdPartModel> selectProdPartList(ProdPartModel prodPartModel)
+	{
+		return productMapper.selectProdPartList(prodPartModel);
+	}
+	
+	@Transactional
+	public List<ProdPackagingDetailModel> selectProdPackagingDetailList(ProdPackagingDetailModel prodPackagingDetailModel)
+	{
+		return productMapper.selectProdPackagingDetailList(prodPackagingDetailModel);
+	}	
+	
+	@Transactional
+	public String delectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel) {
+		long count = productMapper.delectProdPackagingDetail(prodPackagingDetailModel);
+		if (count > 0) {
+			return Constant.DB.DELETE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}	
+	
+	@Transactional
+	public String insertProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel) {
+		System.out.println("insertProdPackagingDetail prodPackagingDetailModel " + prodPackagingDetailModel);
+		long count = productMapper.insertProdPackagingDetail(prodPackagingDetailModel);
+		if (count > 0) {
+			return Constant.DB.INSERT;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}	
+	
+	@Transactional
+	public String updateProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel) {
+		long count = productMapper.updateProdPackagingDetail(prodPackagingDetailModel);
+		if (count > 0) {
+			return Constant.DB.UPDATE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}		
+	
 	//##################################################################################################################################################
 	
 	 /**
@@ -346,8 +399,8 @@ public class ProductService {
 	 * @param
 	 * @return
 	 */
-	public List<EnvironPriceModel> selectProductMatType() {
-        return productMapper.selectProductMatType();
+	public List<EnvironPriceModel> selectProductMatTypeList() {
+        return productMapper.selectProductMatTypeList();
     }
 	
 	

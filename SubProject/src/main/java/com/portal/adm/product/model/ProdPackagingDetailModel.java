@@ -46,14 +46,18 @@ public class ProdPackagingDetailModel extends Criteria{
 	
     //-----------------------------------------------------------------------------------------------	
      
-    private String matFileNm;
+    
+    private String partNm;
     private String supplierNm;
-    private String representativeNm;
-	private String managerNm; 
-	private String managerMail;
+    private String managerNm;
+    private String managerMail;
+    
+    
 	private String managementId;
 	private String managementNm;
-    
-    private String str;   //1차포장_종이팩_몸체_KAMILL 
+	private String matFileNm;
+    private String representativeNm;
+	
+    private String str;    
 
 }

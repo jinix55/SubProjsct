@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
+import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProductModel;
@@ -123,7 +125,32 @@ public interface ProductMapper {
      * @param 
      * @return
      */
-    List<EnvironPriceModel> selectProductMatType();
+    List<EnvironPriceModel> selectProductMatTypeList();
+    
+    /**
+     * 제품 PACK TYPE 정보를 조회한다.
+     *  
+     *  몸체, 라벨 ....
+     * @param 
+     * @return
+     */
+   
+    List<ProdPartModel> selectProdPartList(ProdPartModel prodPartModel);
+    
+    
+    /**
+     * 제품 재질정보 정보를 조회한다.
+     *  
+     * @param 
+     * @return
+     */
+   
+    List<ProdPackagingDetailModel> selectProdPackagingDetailList(ProdPackagingDetailModel prodPackagingDetailModel);    
+    
+    
+	long delectProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
+	long insertProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
+	long updateProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
     
 	 /**
      * 상품 재활용분담금 목록을 조회한다.
@@ -147,6 +174,9 @@ public interface ProductMapper {
      * @param productModel
      * @return
      */
+    
+    
+    
     
     int selectMaxProductPackagingOrder(String productId);
     

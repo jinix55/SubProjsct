@@ -34,6 +34,8 @@ import com.portal.adm.file.model.FileModel;
 import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
+import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
@@ -382,61 +384,15 @@ public class ProductController {
     }
     
     
-    @RequestMapping(value="/detail/selectProductMatType", method= {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/detail/selectProductMatTypeList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<EnvironPriceModel>> selectProductMatType() {
+    public ResponseEntity<List<EnvironPriceModel>> selectProductMatTypeList() {
     	// 포창차수 등록시 재질 조회
-    	List<EnvironPriceModel> environPriceModelList = productService.selectProductMatType();
+    	List<EnvironPriceModel> environPriceModelList = productService.selectProductMatTypeList();
     	
         return new ResponseEntity<>(environPriceModelList, HttpStatus.OK);
     }
     
-    
-    //################################################################################################################################
-
-    /**
-     * 상품포장정보 상세정보를 조회한다.
-     *
-     * @param productId
-     * @return
-     */
-    @RequestMapping(value="/detail/packaging/{packagingId}", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<ProdPackagingModel> selectProduct(@ModelAttribute ProductModel productModel, @PathVariable("packagingId") String packagingId) {
-    	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-    	prodPackagingModel.setPackagingId(packagingId);
-    	prodPackagingModel.setProductCode(productModel.getProductCode());
-    	ProdPackagingModel productPackaging = productService.selectProductPackagingDetail(prodPackagingModel);
-    	
-/*    	
-    	if(productPackaging.getMatFileId() != null && !"".equals(productPackaging.getMatFileId())) {
-    		FileModel f = new FileModel();
-    		f.setFileId(productPackaging.getMatFileId());
-    		FileModel f1 = fileService.selectFile(f);
-    		if(f1 != null) {
-    			productPackaging.setMatFileNm(f1.getFileNm());
-//    			productPackaging.setMatFileId(f1.getFileUrl());
-    		}else {
-    			productPackaging.setMatFileId("");
-    			productPackaging.setMatFileNm("");
-    		}
-    	}else {
-    		productPackaging.setMatFileId("");
-			productPackaging.setMatFileNm("");
-    	}
-    	EnvironmentCodeModel environmentCode = new EnvironmentCodeModel();
-    	environmentCode.setCodeId(productPackaging.getPartType());
-    	environmentCode.setGroupId(productPackaging.getMatType().split("_")[0]);
-    	environmentCode.setRevisionYear("2022");
-    	environmentCode.setRevisionMonth("03");
-    	
-    	EnvironmentCodeModel detailCodeList = environmentCodeService.select(environmentCode);
-    	if(detailCodeList != null) {
-    		productPackaging.setPartTypeNm(detailCodeList.getCodeNm());
-    	}
-    	*/
-        return new ResponseEntity<>(productPackaging, HttpStatus.OK);
-    }
     
     /**
      * 상품포장정보을 저장한다.
@@ -444,27 +400,82 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/insert/packaging")
-    public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+    @PostMapping("/insert/productPackaging")
+    //public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
     	try {
-    		
 			prodPackagingModel.setRgstId(authUser.getMemberModel().getUserId());
 			prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
-			//----------------------------------------------------prodPackagingModel.setProductCode(prodPackagingModel.getProductCode());
-/*			
-			prodPackagingModel.setProductNm("상품1");
-//			prodPackagingModel.setPackagingNm("1차포장");
 			prodPackagingModel.setPackagingId(idUtil.getPackagingId());
-			int x= prodPackagingModel.getManagerId().indexOf("||");
-			String managerId = prodPackagingModel.getManagerId().substring(0, x);
-        	prodPackagingModel.setManagerId(managerId);
-			productService.insertProductPackaging(prodPackagingModel);
-*/
-            return new ResponseEntity<>(prodPackagingModel, HttpStatus.OK);
+			String result = productService.insertProductPackaging(prodPackagingModel);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-        	return ResponseEntity.badRequest().body(new ProdPackagingModel());
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }    
+    
+    
+    /**
+     * 상품포장정보을 저장한다.
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/detail/selectProdPartList")
+    public ResponseEntity<List<ProdPartModel>> selectProdPartList(HttpServletRequest request, @RequestBody ProdPartModel prodPartModel,@AuthenticationPrincipal AuthUser authUser) {
+		List<ProdPartModel> prodPartList = productService.selectProdPartList(prodPartModel);
+	    return new ResponseEntity<>(prodPartList, HttpStatus.OK);
+    }    
+    
+    /**
+     * 상품포장 재질 정보 상세정보를 조회한다.
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value="/detail/selectProdPackagingDetailList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingDetailModel>> selectProdPackagingDetailList(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
+    	System.out.println("ProdPackagingDetailModel " + prodPackagingDetailModel );   
+		List<ProdPackagingDetailModel> prodPackagingDetailList = productService.selectProdPackagingDetailList(prodPackagingDetailModel);
+	    return new ResponseEntity<>(prodPackagingDetailList, HttpStatus.OK);
     }
+    
+    
+    @RequestMapping(value="/delete/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> delectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
+		String result  = productService.delectProdPackagingDetail(prodPackagingDetailModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }    
+    
+    @RequestMapping(value="/insert/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> insertProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
+    	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
+    	prodPackagingDetailModel.setPackagingDetailId(idUtil.getPackagingDetailId());
+		String result  = productService.insertProdPackagingDetail(prodPackagingDetailModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }     
+    
+    @RequestMapping(value="/update/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> updateProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
+    	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
+		String result  = productService.updateProdPackagingDetail(prodPackagingDetailModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }      
+    //################################################################################################################################
+    //################################################################################################################################
+    //################################################################################################################################
+
+
+    
+
     
 //    @PostMapping("/update/{productId}/packaging")
 //    public ResponseEntity<ProdPackagingModel> updateProductPackaging(HttpServletRequest request, @PathVariable("productId") String productId,
