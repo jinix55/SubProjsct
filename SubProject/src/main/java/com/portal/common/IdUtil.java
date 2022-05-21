@@ -204,6 +204,11 @@ public class IdUtil {
 		return service.getId(Constant.ID.PACKAGING_DETAIL);
 	}
 	
+	public String getPackagingSelfId() {
+		return service.getId(Constant.ID.PACKAGING_SELF);
+	}
+	
+	
 	
 	/**
 	 * 알람 ID : 상품 ID

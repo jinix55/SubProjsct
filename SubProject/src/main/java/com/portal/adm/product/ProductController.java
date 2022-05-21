@@ -38,6 +38,7 @@ import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductGroupFileModel;
 import com.portal.adm.product.model.ProductModel;
@@ -476,6 +477,53 @@ public class ProductController {
 		String result  = productService.updateProdPackagingDetail(prodPackagingDetailModel);
 	    return new ResponseEntity<>(result, HttpStatus.OK);
     }      
+    
+    @RequestMapping(value="/detail/selectProdPackagingSelfList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingSelfModel>> selectProdPackagingSelfList(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	System.out.println("selectProdPackagingSelfList prodPackagingSelfModel " + prodPackagingSelfModel );   
+    	List<ProdPackagingSelfModel>  prodPackagingSelfList  = productService.selectProdPackagingSelfList(prodPackagingSelfModel);
+	    return new ResponseEntity<>(prodPackagingSelfList, HttpStatus.OK);
+    }      
+    
+    @RequestMapping(value="/insert/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
+		
+		for(ProdPackagingSelfModel p : prodPackagingSelfList) {
+			p.setPackagingSelfId(idUtil.getPackagingSelfId());
+	    	p.setModiId(authUser.getMemberModel().getUserId());
+	    	p.setRgstId(authUser.getMemberModel().getUserId());			
+			productService.insertProdPackagingSelf(p);
+		}	
+	    return new ResponseEntity<>("", HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/delete/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> deleteNinsertProdPackagingSelf(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingSelfModel.setModiId(authUser.getMemberModel().getUserId());
+		String result = productService.delectProdPackagingSelf(prodPackagingSelfModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }      
+    
+    
+    @RequestMapping(value="/detail/selectProdPackagingOrderNmList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	List<ProdPackagingModel>  prodPackagingList  = productService.selectProdPackagingOrderNmList(prodPackagingModel);
+    	List<ProdPackagingModel>  outList = new ArrayList<>();
+    	
+    	for(ProdPackagingModel p : prodPackagingList) {
+    		if (p.getPackagingOrder() == 1) {
+    			outList.add(p);
+    			break;
+    		}
+    		outList.add(p);
+    	}
+	    return new ResponseEntity<>(outList, HttpStatus.OK);
+    }      
+    
     //################################################################################################################################
     //################################################################################################################################
     //################################################################################################################################

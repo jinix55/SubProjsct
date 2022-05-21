@@ -189,6 +189,7 @@
  		SELECT a.PRODUCT_CODE
 		     , a.PACKAGING_ID 
 			  , a.PACKAGING_ORDER
+			  , a.PACKAGING_ORDER_NM
 			  , a.GROUP_ID
 			  , b.CODE_NM  GROUP_NM
 			  , a.CODE_ID
@@ -240,10 +241,12 @@
 	</select>
 
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+	    <![CDATA[
 		INSERT INTO t1_product_packaging (
 			  PACKAGING_ID   
 			, PRODUCT_CODE     
 			, PACKAGING_ORDER
+			, PACKAGING_ORDER_NM
 			, GROUP_ID       
 			, CODE_ID      
 			, USE_YN         
@@ -255,6 +258,7 @@
 			  #{packagingId}
 			, #{productCode}
 			, #{packagingOrder}
+			, IF(#{packagingOrder}<10, CONCAT(CAST(#{packagingOrder} AS CHAR),'차포장'), '부속포장')
 			, #{groupId}
 			, #{codeId}
 			, 'Y'
@@ -263,6 +267,7 @@
 			, #{modiId}
 			, now()
 		)
+		]]>			
 	</insert>
 
 
@@ -422,6 +427,98 @@
 	</update>
 	
 				
+				
+	<select id="selectProdPackagingSelfList" resultType="com.portal.adm.product.model.ProdPackagingSelfModel" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
+		SELECT  right(a.CODE_ID,1) AS PART_CODE  
+		     ,  aa.CODE_NM PART_NM
+		     ,  right(b.CODE_ID,1) AS GRADE_CODE 
+		     ,  bb.CODE_NM GRADE_NM
+		     ,  c.GROUP_ID
+		     ,  c.CODE_ID
+		     ,  c.CODE_NM
+		     ,  cc.CODE_ID  AS CHECKED
+		  FROM  t1_environment_code a
+		   LEFT OUTER JOIN t_code aa
+		     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'
+		     AND  aa.CODE_ID    =  right(a.CODE_ID,1)
+		     AND  aa.USE_YN  = 'Y'
+		
+		     ,  t1_environment_code b			       
+		   LEFT OUTER JOIN t_code bb
+		     ON   bb.GROUP_ID   =  'PROD_GRADE_TYPE'
+		     AND  bb.CODE_ID    =  right(b.CODE_ID,1)
+		     AND  bb.USE_YN  = 'Y'
+		     
+		     ,  t1_environment_code c	
+		   LEFT OUTER JOIN t1_product_packaging_self cc
+		     ON   cc.PACKAGING_ID  = #{packagingId}
+			  AND  c.GROUP_ID   =  cc.GROUP_ID
+		     AND  c.CODE_ID    =  cc.CODE_ID
+		     AND  cc.USE_YN  = 'Y'   
+		     
+		    ,  t1_product_packaging d	 
+		 WHERE  d.PACKAGING_ID = #{packagingId}
+		   AND  a.GROUP_ID  = d.GROUP_ID
+		   AND  b.GROUP_ID  = a.CODE_ID 
+		   AND  c.GROUP_ID  = b.CODE_ID 
+		ORDER BY aa.ORD_SEQ, bb.ORD_SEQ, c.ORD_SEQ
+ 	
+	</select>				
+				
+				
+	<update id="delectProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
+		UPDATE t1_product_packaging_self
+		SET
+			  USE_YN = 'N'
+	 		, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE PACKAGING_ID = #{packagingId}
+		   	
+	</update>	
+	
+	<insert id="insertProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
+		INSERT INTO t1_product_packaging_self (
+			  PACKAGING_SELF_ID   
+			, PACKAGING_ID     
+			, GROUP_ID
+			, CODE_ID       
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingSelfId}
+			, #{packagingId}
+			, #{groupId}
+			, #{codeId}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>	
+			
+			
+				
+	<select id="selectProdPackagingOrderNmList" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
+	    <![CDATA[
+		SELECT  IFNULL(MAX(PACKAGING_ORDER) + 1 , 1) AS PACKAGING_ORDER
+		     ,  CONCAT(IFNULL(MAX(PACKAGING_ORDER) + 1 , 1),'차포장') AS PACKAGING_ORDER_NM
+		  FROM  t1_product_packaging
+		 WHERE  PRODUCT_CODE = #{productCode}
+		   AND  USE_YN = 'Y'
+		   AND  PACKAGING_ORDER < 9  
+		UNION    
+		SELECT IFNULL(MAX(PACKAGING_ORDER) + 1 , 11)  AS PACKAGING_ORDER
+		     ,  '부속포장' AS PACKAGING_ORDER_NM
+		  FROM  t1_product_packaging
+		 WHERE  PRODUCT_CODE = #{productCode}
+		   AND  USE_YN = 'Y'
+		   AND  PACKAGING_ORDER > 10  
+		]]>	 	
+	</select>							
 <!-- ************************************************************************************************** -->	
 <!-- ************************************************************************************************** -->
 <!-- ************************************************************************************************** -->

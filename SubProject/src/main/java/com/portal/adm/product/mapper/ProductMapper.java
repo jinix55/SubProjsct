@@ -8,6 +8,7 @@ import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.common.annotation.ConnMapperFirst;
 
@@ -96,6 +97,8 @@ public interface ProductMapper {
      * @return
      */
     ProdPackagingModel selectProductPackagingDetail(ProdPackagingModel productPackagingModel);
+    List <ProdPackagingModel> selectProdPackagingOrderNmList(ProdPackagingModel productPackagingModel);
+    
     
     /**
      * 상품포장정보 모델 신규 등록 insert
@@ -153,6 +156,12 @@ public interface ProductMapper {
 	long insertProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
 	long updateProdPackagingDetail(ProdPackagingDetailModel prodPackagingDetailModel);
     
+	
+	
+	List<ProdPackagingSelfModel> selectProdPackagingSelfList(ProdPackagingSelfModel prodPackagingSelfModel);
+	long delectProdPackagingSelf(ProdPackagingSelfModel prodPackagingSelfModel);
+	long insertProdPackagingSelf(ProdPackagingSelfModel prodPackagingSelfModel);
+	
 	 /**
      * 상품 재활용분담금 목록을 조회한다.
      *

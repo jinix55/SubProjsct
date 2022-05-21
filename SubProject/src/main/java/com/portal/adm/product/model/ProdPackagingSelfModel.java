@@ -13,12 +13,10 @@ import lombok.Data;
  * 코드관리 모델
  */
 @Data
-public class ProdPackagingModel extends Criteria{
-    
+public class ProdPackagingSelfModel extends Criteria{
+	
+	private String packagingSelfId;
 	private String packagingId;
-	private String productCode;
-	private int packagingOrder;
-	private String packagingOrderNm;
 	private String groupId;
 	private String codeId;
     private String useYn;           // 사용여부
@@ -40,12 +38,15 @@ public class ProdPackagingModel extends Criteria{
     private Integer ordSeq;			//정렬순서
 	
     //-----------------------------------------------------------------------------------------------	
-	
-    private String apiKey;
-   
-    private String productNm;
-    private String groupNm;
+     
+    private String partCode;
+    private String partNm;
+    private String gradeCode;
+    private String gradeNm;
     private String codeNm;
+    private String checked;
     
-    private String str;   //1차포장_종이팩_몸체_KAMILL 
+    	
+    private String str;    
+
 }
