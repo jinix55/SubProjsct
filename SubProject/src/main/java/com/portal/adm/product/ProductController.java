@@ -193,7 +193,7 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
 //    public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
-    	
+    	System.out.println("updateProduct productModel " + productModel);
     	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
     		if(!(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals(""))) {
     			return ResponseEntity.badRequest().body("접수번호를 등록 할수 없습니다.");	
