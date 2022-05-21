@@ -199,7 +199,7 @@ public class ApiExtrnlController {
 //        	environmentCodeModel.setGroupId(prodPackagingModel.getMatType());
 //        	middleEnv = environmentCodeService.selectGroupIdList(environmentCodeModel);
         	CodeModel codeModel = new CodeModel();
-        	codeModel.setGroupId("PROD_PACK_TYPE");
+        	codeModel.setGroupId("PROD_PART_TYPE");
         	middleEnv = codeService.selectGroupIdList(codeModel);
         	prodPackagingDetailModel.setApiKey(apiKey);
         	// 공급업체 담당자 정보
