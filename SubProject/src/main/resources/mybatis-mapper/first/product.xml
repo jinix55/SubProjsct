@@ -437,6 +437,12 @@
 		     ,  c.CODE_ID
 		     ,  c.CODE_NM
 		     ,  cc.CODE_ID  AS CHECKED
+		     ,  c.RPT_MAT_STRUCT
+		     ,  c.RPT_DEV_ANAL
+		     ,  c.RPT_VISUAL_JUDG
+		     ,  c.RPT_TEST
+		     ,  c.RPT_PERMISSION
+		     ,  c.RPT_ETC		     
 		  FROM  t1_environment_code a
 		   LEFT OUTER JOIN t_code aa
 		     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'
@@ -518,7 +524,69 @@
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER > 10  
 		]]>	 	
-	</select>							
+	</select>	
+	
+	<select id="selectProdPackagingSelfFileList" resultType="com.portal.adm.product.model.ProdPackagingSelfFileModel" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
+		SELECT  a.PACKAGING_SELF_FILE_ID
+			  ,  a.PACKAGING_ID
+			  ,  a.PART_CODE
+			  ,  aa.CODE_NM PART_NM
+			  ,  a.MAT_REPORT_CODE
+			  ,  bb.CODE_NM MAT_REPORT_NM
+			  ,  a.FILE_ID
+		  FROM  t1_product_packaging_self_file a 	
+		   LEFT OUTER JOIN t_code aa	
+		     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'	
+		     AND  aa.CODE_ID    =  a.PART_CODE	
+		     AND  aa.USE_YN  = 'Y'	  
+		     
+		   LEFT OUTER JOIN t_code bb	
+		     ON   bb.GROUP_ID   =  'MAT_REPORT_CODE'	
+		     AND  bb.CODE_ID    =  a.MAT_REPORT_CODE
+		     AND  bb.USE_YN  = 'Y'	       
+		  
+		 WHERE  a.PACKAGING_ID  =  #{packagingId}   
+		 ORDER BY aa.ORD_SEQ, bb.ORD_SEQ
+ 	
+	</select>		
+	
+	<update id="deleteProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
+		UPDATE t1_product_packaging_self_file
+		SET
+			  USE_YN = 'N'
+	 		, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE PACKAGING_ID = #{packagingId}
+		   	
+	</update>	
+	
+	<insert id="insertProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
+		INSERT INTO t1_product_packaging_self_file (
+			  PACKAGING_SELF_FILE_ID   
+			, PACKAGING_ID     
+			, PART_CODE
+			, MAT_REPORT_CODE
+			, FILE_ID       
+			, USE_YN         
+			, RGST_ID        
+			, RGST_DT        
+			, MODI_ID        
+			, MODI_DT        
+		) VALUES (
+			  #{packagingSelfFileId}
+			, #{packagingId}
+			, #{partCode}
+			, #{matReportCode}
+			, #{fileId}
+			, 'Y'
+			, #{rgstId}
+			, now()
+			, #{modiId}
+			, now()
+		)
+	</insert>	
+
+
 <!-- ************************************************************************************************** -->	
 <!-- ************************************************************************************************** -->
 <!-- ************************************************************************************************** -->

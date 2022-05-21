@@ -13,12 +13,12 @@ import lombok.Data;
  * 코드관리 모델
  */
 @Data
-public class ProdPackagingSelfModel extends Criteria{
-	
-	private String packagingSelfId;
+public class ProdPackagingSelfFileModel extends Criteria{
+	private String packagingSelfFileId;
 	private String packagingId;
-	private String groupId;
-	private String codeId;
+	private String partCode;
+	private String matReportCode;
+	private String fileId;
     private String useYn;           // 사용여부
     private String rgstId;          // 등록자ID
     private String modiId;          // 수정자ID
@@ -38,19 +38,9 @@ public class ProdPackagingSelfModel extends Criteria{
     private Integer ordSeq;			//정렬순서
 	
     //-----------------------------------------------------------------------------------------------	
-     
-    private String partCode;
+
     private String partNm;
-    private String gradeCode;
-    private String gradeNm;
-    private String codeNm;
-    private String checked;
-    private String rptMatStruct;
-    private String rptDevAnal;
-    private String rptVisualJudg;
-    private String rptTest;
-    private String rptPermission;
-    private String rptEtc;
+    private String matReportNm;
     	
     private String str;    
 

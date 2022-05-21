@@ -38,6 +38,7 @@ import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductGroupFileModel;
@@ -524,6 +525,38 @@ public class ProductController {
 	    return new ResponseEntity<>(outList, HttpStatus.OK);
     }      
     
+    
+    
+    @RequestMapping(value="/detail/selectProdPackagingSelfFileList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdPackagingSelfFileModel>> selectProdPackagingSelfFileList(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	List<ProdPackagingSelfFileModel>  ProdPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
+	    return new ResponseEntity<>(ProdPackagingSelfFileList, HttpStatus.OK);
+    }    
+    
+    @RequestMapping(value="/insert/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> insertProdPackagingSelfFile(@RequestBody List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
+		
+		for(ProdPackagingSelfFileModel p : prodPackagingSelfFileList) {
+			p.setPackagingSelfFileId(idUtil.getPackagingSelfFileId());
+	    	p.setModiId(authUser.getMemberModel().getUserId());
+	    	p.setRgstId(authUser.getMemberModel().getUserId());			
+			productService.insertProdPackagingSelfFile(p);
+		}	
+	    return new ResponseEntity<>("", HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/delete/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> deleteProdPackagingSelfFile(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	
+    	System.out.println("deleteProdPackagingSelfFile prodPackagingSelfFileModel " + prodPackagingSelfFileModel );  
+    	
+    	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
+		String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }      
     //################################################################################################################################
     //################################################################################################################################
     //################################################################################################################################

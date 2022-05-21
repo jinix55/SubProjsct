@@ -208,7 +208,9 @@ public class IdUtil {
 		return service.getId(Constant.ID.PACKAGING_SELF);
 	}
 	
-	
+	public String getPackagingSelfFileId() {
+		return service.getId(Constant.ID.PACKAGING_SELF_FILE);
+	}	
 	
 	/**
 	 * 알람 ID : 상품 ID

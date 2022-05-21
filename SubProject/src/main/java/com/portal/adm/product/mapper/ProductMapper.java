@@ -8,6 +8,7 @@ import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.common.annotation.ConnMapperFirst;
@@ -162,6 +163,10 @@ public interface ProductMapper {
 	long delectProdPackagingSelf(ProdPackagingSelfModel prodPackagingSelfModel);
 	long insertProdPackagingSelf(ProdPackagingSelfModel prodPackagingSelfModel);
 	
+	
+	List<ProdPackagingSelfFileModel> selectProdPackagingSelfFileList(ProdPackagingSelfFileModel prodPackagingSelfFileModel);	
+	long deleteProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
+	long insertProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
 	 /**
      * 상품 재활용분담금 목록을 조회한다.
      *

@@ -209,6 +209,8 @@ public interface Constant {
 		public static final String PACKAGING_DETAIL = "pad";
 		
 		public static final String PACKAGING_SELF = "pas";
+		
+		public static final String PACKAGING_SELF_FILE = "pasf";
 		//상품번호
 		public static final String PRODUCT = "pd";
 		//상품첨부파일그룹

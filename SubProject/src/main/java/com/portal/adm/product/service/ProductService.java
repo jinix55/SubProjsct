@@ -18,6 +18,7 @@ import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProductModel;
 import com.portal.common.Constant;
@@ -344,11 +345,35 @@ public class ProductService {
 	}	 	
 	
 	
-	
 	@Transactional
 	public List<ProdPackagingModel> selectProdPackagingOrderNmList(ProdPackagingModel prodPackagingModel)
 	{
 		return productMapper.selectProdPackagingOrderNmList(prodPackagingModel);
+	}
+	
+	@Transactional
+	public List<ProdPackagingSelfFileModel> selectProdPackagingSelfFileList(ProdPackagingSelfFileModel prodPackagingSelfFileModel)
+	{
+		return productMapper.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
+	}		
+	@Transactional
+	public String deleteProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel) {
+		long count = productMapper.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
+		if (count > 0) {
+			return Constant.DB.DELETE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}	
+	
+	@Transactional
+	public String insertProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel) {
+		long count = productMapper.insertProdPackagingSelfFile(prodPackagingSelfFileModel);
+		if (count > 0) {
+			return Constant.DB.INSERT;
+		} else {
+			return Constant.DB.FAIL;
+		}
 	}		
 	//##################################################################################################################################################
 	
