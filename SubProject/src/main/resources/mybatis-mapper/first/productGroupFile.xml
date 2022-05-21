@@ -28,7 +28,7 @@
 		FROM
 			t_group_file 
 		WHERE USE_YN = 'Y' AND DEL_YN = 'N'
-        ORDER BY RGST_DT DESC
+        ORDER BY RGST_DT ASC
         <include refid="paging"></include>		
 	</select>
 	
@@ -45,7 +45,7 @@
 		FROM
 			t_group_file
 		WHERE GFILE_ID = #{gfileId} AND USE_YN = 'Y' AND DEL_YN = 'N'
-        ORDER BY RGST_DT DESC	
+        ORDER BY RGST_DT ASC	
 	</select>
 
 	<select id="selectProductGroupFile" resultType="com.portal.adm.product.model.ProductGroupFileModel" parameterType="com.portal.adm.product.model.ProductGroupFileModel">

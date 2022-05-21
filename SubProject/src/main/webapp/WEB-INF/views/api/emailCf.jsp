@@ -145,26 +145,26 @@ body {
 				<input type="hidden" id="telephoneNo" name="telephoneNo" value="${company.telephoneNo }">
 				<input type="hidden" id="address" name="address" value="${company.address }">
 				<input id="apiKey" name="apiKey" type="hidden" class="text-input w200" value="${packagingModel.apiKey }">
-				<input id="packagingId" name="packagingId" type="hidden" class="text-input w200" value="${packagingModel.packagingId }">
+				<input id="packagingId" name="packagingDetailId" type="hidden" class="text-input w200" value="${packagingModel.packagingDetailId }">
 				<input id="packagingNm" name="packagingNm" type="hidden" class="text-input w200" value="${packagingModel.packagingNm }">
 				<input id="packagingOrder" name="packagingOrder" type="hidden" class="text-input w200" value="${packagingModel.packagingOrder }">
-				<input id="productId" name="productId" type="hidden" class="text-input w200" value="${packagingModel.productId }">
+				<input id="productId" name="productCode" type="hidden" class="text-input w200" value="${packagingModel.productCode }">
 				<input id="managementId" name="managementId" type="hidden" class="text-input w200" value="${packagingModel.managementId }">
 				<div class="tab-in-nav d-flex">
 					<span class="pt10 pr10">ㆍ재질유형</span>
 					<c:forEach items="${largeEnv}" var="list" varStatus="status">
-						<c:if test="${list.codeId eq packagingModel.matType.substring(0,2)}">
-							<input id="matType" name="matType" type="hidden" class="text-input w200" value="${packagingModel.matType }">
-							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled>
+						<c:if test="${list.codeId eq packagingModel.groupId}">
+							<input id="matType" name="groupId" type="hidden" class="text-input w200" value="${packagingModel.groupId }">
+<%-- 							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled> --%>
 						</c:if>
 					</c:forEach>
 					<div class=" mr10 tc pt05 ml20">
 						<c:set var="partTypeNm" value=""></c:set>
 			          	<c:choose>
-			          		<c:when test="${!empty packagingModel.partType}">
+			          		<c:when test="${!empty packagingModel.partCode}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
-   						          	<c:if test="${list.codeId eq fn:split(packagingModel.partType, '_')[1]}">
-										<input id="partType" name="partType" value="${fn:split(packagingModel.partType, '_')[1]}" type="hidden">
+   						          	<c:if test="${list.codeId eq packagingModel.partCode}">
+										<input id="partType" name="partCode" value="${packagingModel.partCode}" type="hidden">
 <%-- 										<button id="partTypeNm" name="partTypeNm" value="${list.codeNm}" type="button" class="button btn-radius partTypeCheck on"> --%>
 <!-- 										</button> -->
 										<c:set var="partTypeNm" value="${list.codeNm}"></c:set>
@@ -172,19 +172,19 @@ body {
 								</c:forEach>
 			          		</c:when>
 			          		<c:otherwise>
-			          			<button type="button" name="partType" class="button btn-radius partTypeCheck" value="B">
+			          			<button type="button" name="partCode" class="button btn-radius partTypeCheck" value="B">
 									몸체
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="L">
+								<button type="button" name="partCode" class="button btn-radius partTypeCheck" value="L">
 									라벨
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="C">
+								<button type="button" name="partCode" class="button btn-radius partTypeCheck" value="C">
 									마개
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="M">
+								<button type="button" name="partCode" class="button btn-radius partTypeCheck" value="M">
 									잡자재
 								</button>
-								<button type="button" name="partType" class="button btn-radius partTypeCheck" value="S">
+								<button type="button" name="partCode" class="button btn-radius partTypeCheck" value="S">
 									별도포장
 								</button>
 			          		</c:otherwise>
@@ -252,7 +252,7 @@ body {
 							<label class="col-25 form-label-textarea">추가설명</label>
 							<div class="col-75">
 								<div class="form-input">
-									<textarea id="addExplan" name="addExplan" class="textarea">${packagingModel.addExplan}</textarea>
+									<textarea id="addExplan" name="summary" class="textarea">${packagingModel.summary}</textarea>
 								</div>
 							</div>
 						</div>
@@ -349,7 +349,7 @@ body {
 						<th>포장재 종류</th>
 						<td class="packagingNm">
 						<c:forEach items="${largeEnv}" var="list" varStatus="status">
-							<c:if test="${list.codeId eq packagingModel.matType}">
+							<c:if test="${list.codeId eq packagingModel.groupId}">
 								${list.codeNm}
 							</c:if>
 						</c:forEach>

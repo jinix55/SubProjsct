@@ -23,6 +23,7 @@ import com.portal.adm.company.model.CompanyModel;
 import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
+import com.portal.adm.product.model.ProdPackagingDetailApiModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
@@ -71,23 +72,20 @@ public class ApiExtrnlController {
 	 */
     @RequestMapping(value="/call/sendMail" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public String sendMail(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @ModelAttribute ProdPackagingModel prodPackagingModel) {
+    public String sendMail(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @ModelAttribute ProdPackagingDetailApiModel prodPackagingDetailModel) {
     	ApiExtrnlModel extrnlModel = new ApiExtrnlModel();
     	
-    	/*20220518-------------------------------------------------------------------------------------
     	
     	
     	//임시 데이터(셋팅 되어야 할 목록)
         String fromCompanyNm = authUser.getMemberModel().getCompanyNm();		// 보내는 회사 명
         String fromCompanyCode = authUser.getMemberModel().getCompanyCode();		// 보내는 회사 코드
         
-        String toCompanyNm = prodPackagingModel.getSupplierNm();				// 받는 회사 명
-        String toCompanyCode = prodPackagingModel.getSupplierCode();				// 받는 회사 코드
-        String managerNm = prodPackagingModel.getManagerNm();					// 받는 사람(담당자 명)
-        int x= prodPackagingModel.getManagerId().indexOf("||");
-		String managerId = prodPackagingModel.getManagerId().substring(0, x);
-//		String managerId = prodPackagingModel.getManagerId();// 받는 사암 ID(담당자 ID)
-        String managerMail = prodPackagingModel.getManagerMail();					// 받는 사람(담당자 메일)
+        String toCompanyNm = prodPackagingDetailModel.getSupplierNm();				// 받는 회사 명
+        String toCompanyCode = prodPackagingDetailModel.getSupplierCode();				// 받는 회사 코드
+        String managerNm = prodPackagingDetailModel.getManagerNm();					// 받는 사람(담당자 명)
+		String managerId = prodPackagingDetailModel.getManagerId();// 받는 사암 ID(담당자 ID)
+        String managerMail = prodPackagingDetailModel.getManagerMail();					// 받는 사람(담당자 메일)
         String uuid = "";
         
         extrnlModel.setToCompanyNm(toCompanyNm);
@@ -97,7 +95,7 @@ public class ApiExtrnlController {
         extrnlModel.setManagerId(managerId);
         extrnlModel.setManagerNm(managerNm);
         extrnlModel.setManagerMail(managerMail);
-        extrnlModel.setPackagingId(prodPackagingModel.getPackagingId());
+        extrnlModel.setPackagingId(prodPackagingDetailModel.getPackagingDetailId());
         extrnlModel.setRgstId(authUser.getMemberModel().getUserId());
         extrnlModel.setModiId(authUser.getMemberModel().getUserId());
         
@@ -108,7 +106,6 @@ public class ApiExtrnlController {
         apiExtrnlService.insert(extrnlModel);
         
         
-        ---------------------------------------------------------------*/
         return "success";
     }
     
@@ -183,9 +180,9 @@ public class ApiExtrnlController {
         	// 보낸 회사 정보
         	CompanyModel companyModels = companyService.selectCompanyCode(extrnlModel.getFromCompanyCode());
         	
-        	ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-        	prodPackagingModel.setPackagingId(extrnlModel.getPackagingId());
-        	prodPackagingModel = apiExtrnlService.selectProdApiInfo(prodPackagingModel);
+        	ProdPackagingDetailApiModel prodPackagingDetailModel = new ProdPackagingDetailApiModel();
+        	prodPackagingDetailModel.setPackagingDetailId(extrnlModel.getPackagingId());
+        	prodPackagingDetailModel = apiExtrnlService.selectProdApiInfo(prodPackagingDetailModel);
         	
         	dayList = environmentCodeService.selectCodeDayList();
         	
@@ -204,14 +201,14 @@ public class ApiExtrnlController {
         	CodeModel codeModel = new CodeModel();
         	codeModel.setGroupId("PROD_PACK_TYPE");
         	middleEnv = codeService.selectGroupIdList(codeModel);
-        	prodPackagingModel.setApiKey(apiKey);
+        	prodPackagingDetailModel.setApiKey(apiKey);
         	// 공급업체 담당자 정보
-        	//20220518 List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingModel.getSupplierCode());
+        	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingDetailModel.getSupplierCode());
         	
-        	model.addAttribute("packagingModel",prodPackagingModel);
+        	model.addAttribute("packagingModel",prodPackagingDetailModel);
         	model.addAttribute("largeEnv",largeEnv);
         	model.addAttribute("middleEnv",middleEnv);
-        	//20220518----------------------------------------------model.addAttribute("managers",managersModel);
+        	model.addAttribute("managers",managersModel);
         	model.addAttribute("company",companyModels);
         	return "/api/emailCf";
         }else {
@@ -227,7 +224,7 @@ public class ApiExtrnlController {
      */
     @RequestMapping(value="/setProdPackaging/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String updatePackagingData(HttpServletRequest request, ProdPackagingModel prodPackagingModel,Model model,  MultipartRequest multipart) {
+    public String updatePackagingData(HttpServletRequest request, ProdPackagingDetailApiModel prodPackagingModel,Model model,  MultipartRequest multipart) {
     	return apiExtrnlService.upload(request, multipart, prodPackagingModel);
     }
     

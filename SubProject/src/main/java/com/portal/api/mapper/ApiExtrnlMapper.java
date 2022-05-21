@@ -2,6 +2,7 @@ package com.portal.api.mapper;
 
 import com.portal.adm.alarm.model.AlarmModel;
 import com.portal.adm.file.model.FileModel;
+import com.portal.adm.product.model.ProdPackagingDetailApiModel;
 import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.common.annotation.ConnMapperFirst;
@@ -26,7 +27,7 @@ public interface ApiExtrnlMapper {
 	 * @param model 외부시스템ID를 사용
 	 * @return
 	 */
-	ProdPackagingModel selectProdApiInfo(ProdPackagingModel model);
+	ProdPackagingDetailApiModel selectProdApiInfo(ProdPackagingDetailApiModel model);
 	
 	/**
 	 * 포장 api 따른 데이터를 저장한다.
@@ -48,8 +49,8 @@ public interface ApiExtrnlMapper {
     
     long registAlarm(AlarmModel model);
     
-    long updatePackagingInfo(ProdPackagingModel model);
+    long updatePackagingInfo(ProdPackagingDetailApiModel model);
     
-    long updateUseYnN(ProdPackagingModel model);
+    long updateUseYnN(ProdPackagingDetailApiModel model);
 
 }

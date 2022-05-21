@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import com.portal.adm.alarm.mapper.AlarmMapper;
 import com.portal.adm.alarm.model.AlarmModel;
 import com.portal.adm.file.model.FileModel;
-import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingDetailApiModel;
 import com.portal.api.mapper.ApiExtrnlMapper;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.common.Constant;
@@ -57,7 +57,7 @@ public class ApiExtrnlService {
 	 * @param model 포장 api key를 사용
 	 * @return
 	 */
-	public ProdPackagingModel selectProdApiInfo(ProdPackagingModel model) {
+	public ProdPackagingDetailApiModel selectProdApiInfo(ProdPackagingDetailApiModel model) {
 		return apiExtrnlMapper.selectProdApiInfo(model);
 	}
 
@@ -87,7 +87,7 @@ public class ApiExtrnlService {
 	 * @param
 	 * @return
 	 */
-	public long updatePackagingInfo(ProdPackagingModel model) {
+	public long updatePackagingInfo(ProdPackagingDetailApiModel model) {
 		return apiExtrnlMapper.updatePackagingInfo(model);
 	}
 	
@@ -107,7 +107,7 @@ public class ApiExtrnlService {
 	 * @param model
 	 * @return
 	 */
-	public long updateUseYnN(ProdPackagingModel model) {
+	public long updateUseYnN(ProdPackagingDetailApiModel model) {
 		return apiExtrnlMapper.updateUseYnN(model);
 	}
 
@@ -130,9 +130,8 @@ public class ApiExtrnlService {
 	 * @throws IOException
 	 */
 	public String upload(HttpServletRequest request, MultipartRequest multipart,
-			ProdPackagingModel prodPackagingModel) {
+			ProdPackagingDetailApiModel prodPackagingModel) {
 		String result = "success";
-/*20220518----------------------------------------------------------------------		
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -140,8 +139,6 @@ public class ApiExtrnlService {
 		ArrayList<String> fileIds = new ArrayList<String>();
 		String fileId = "";
 		String fileUrl = "C:/" + prodPackagingModel.getCompanyCode() + "/" + prodPackagingModel.getSupplierCode() + "/" + prodPackagingModel.getProductCode() + "/" + prodPackagingModel.getPackagingId() + "/" + prodPackagingModel.getPackagingOrder() + "/";
-		String fileUrl = "";
-		String result = "success";
 		String resultMessage = "성공";
 		MultipartFile file = null;
 		for (String key : files.keySet()) {
@@ -231,22 +228,22 @@ public class ApiExtrnlService {
 				}
 				AlarmModel alarm = new AlarmModel();
 				String type = "";
-				if(prodPackagingModel.getPartType().equals("BODY")) {
+				if(prodPackagingModel.getPartCode().equals("B")) {
 					type = "몸체";
-				}else if(prodPackagingModel.getPartType().equals("LABEL")){
+				}else if(prodPackagingModel.getPartCode().equals("L")){
 					type = "라벨";
-				}else if(prodPackagingModel.getPartType().equals("COVER")){
+				}else if(prodPackagingModel.getPartCode().equals("C")){
 					type = "마개";
-				}else if(prodPackagingModel.getPartType().equals("MISCELLANEOUS")){
+				}else if(prodPackagingModel.getPartCode().equals("M")){
 					type = "잡자재";
-				}else if(prodPackagingModel.getPartType().equals("SEPARATELYPACK")){
+				}else if(prodPackagingModel.getPartCode().equals("S")){
 					type = "별도포장";
 				}
-				prodPackagingModel.setPartTypeNm(type);
+//				prodPackagingModel.setPartTypeNm(type);
 				
 				alarm.setAlarmId(idUtil.getAlarmId());
 				alarm.setSj("포장재 재질 구조 증명서 등록");
-				alarm.setCn(prodPackagingModel.getSupplierNm()+"에서 "+ prodPackagingModel.getProductNm() + "의 제품인 " + prodPackagingModel.getMatTypeNm() +" "+ prodPackagingModel.getPartTypeNm() + "의 "+prodPackagingModel.getPackagingOrder()+"차 포장재 재질 구조 증명서가 등록 되었습니다.");
+				alarm.setCn(prodPackagingModel.getSupplierNm()+"에서 "+ prodPackagingModel.getProductNm() + "의 제품인 " + prodPackagingModel.getGroupNm() +" "+ prodPackagingModel.getPartNm() + "의 "+prodPackagingModel.getPackagingOrder()+"차 포장재 재질 구조 증명서가 등록 되었습니다.");
 				alarm.setSenderId(prodPackagingModel.getManagerNm());
 				alarm.setRecipientId(prodPackagingModel.getManagementId());
 				alarm.setCheckYn("N");
@@ -259,7 +256,6 @@ public class ApiExtrnlService {
 			}
 			fileUrl = f.getFileUrl();
 		}
--------------------------------------------------*/
 		return result;
 	}
 }

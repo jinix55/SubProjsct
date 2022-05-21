@@ -22,8 +22,8 @@
 			, PART_CODE
 			, MAT_FILE_CODE
 			, FILE_ID
-			, REVISION_YEAR
-			, REVISION_MONTH
+<!-- 			, REVISION_YEAR -->
+<!-- 			, REVISION_MONTH -->
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -43,8 +43,8 @@
 			, PART_CODE
 			, MAT_FILE_CODE
 			, FILE_ID
-			, REVISION_YEAR
-			, REVISION_MONTH
+<!-- 			, REVISION_YEAR -->
+<!-- 			, REVISION_MONTH -->
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -63,8 +63,8 @@
 			, PART_CODE
 			, MAT_FILE_CODE
 			, FILE_ID
-			, REVISION_YEAR
-			, REVISION_MONTH
+<!-- 			, REVISION_YEAR -->
+<!-- 			, REVISION_MONTH -->
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -83,8 +83,8 @@
 			, PART_CODE
 			, MAT_FILE_CODE
 			, FILE_ID
-			, REVISION_YEAR
-			, REVISION_MONTH
+<!-- 			, REVISION_YEAR -->
+<!-- 			, REVISION_MONTH -->
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -96,8 +96,8 @@
 			, #{partCode}
 			, #{matFileCode}
 			, #{fileId}
-			, #{revisionYear}
-			, #{revisionMonth}
+<!-- 			, #{revisionYear} -->
+<!-- 			, #{revisionMonth} -->
 			, 'Y'
 			, #{rgstId}
 			, now()
