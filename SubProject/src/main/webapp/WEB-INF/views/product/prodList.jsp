@@ -1965,7 +1965,7 @@
 									selfPackInfo += '	                  <ul>';
 									orgResult.forEach(function(lItem, index) {
 										if(lItem.gradeCode == sItem.gradeCode && lItem.partCode == sItem.partCode){
-											selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.partCode+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.groupId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+											selfPackInfo += '	                    <li><input type="checkbox" '+lItem.checked+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+lItem.groupId.split('_')[0]+'_'+lItem.groupId.split('_')[1]+'-'+index+'" data-key="'+sItem.partCode+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 										}
 									});
 									selfPackInfo += '	                  </ul>';
