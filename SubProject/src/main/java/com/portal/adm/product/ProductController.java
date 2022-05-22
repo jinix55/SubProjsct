@@ -718,7 +718,8 @@ try {
     
     @RequestMapping(value="/detail/selectProdRecycleList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdRecycleCalclModel>> selectProdRecycleList(@RequestBody ProdRecycleCalclModel prodRecycleCalclModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<List<ProdRecycleCalclModel>> selectProdRecycleList(@ModelAttribute ProdRecycleCalclModel prodRecycleCalclModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<List<ProdRecycleCalclModel>> selectProdRecycleList(@RequestBody ProdRecycleCalclModel prodRecycleCalclModel,@AuthenticationPrincipal AuthUser authUser ) {
     	List<ProdRecycleCalclModel>  prodRecycleCalcList  = productService.selectProdRecycleList(prodRecycleCalclModel);
 	    return new ResponseEntity<>(prodRecycleCalcList, HttpStatus.OK);
     }      

@@ -158,7 +158,11 @@
 										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a>
 									</c:if>
 								</td>
-								<td><a href="javascript:void(0);#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
+								<td>
+									<c:if test="${not empty product.matType}">
+										<a href="javascript:void(0);" onclick="openProductPackagingEnviResultLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">결과확인</a>
+									</c:if>
+								</td>
 								<td>
 									<div class="btn-group">
 										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productCode}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
@@ -277,7 +281,6 @@
   
   <!-- 레이어 팝업 - 상품수정  -->
   <form id="frmUpdate"  enctype="multipart/form-data">
-	  <!-- 레이어 팝업 - 수정  -->
 	  <div id="edit" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:1100px">
 		  <div class="modal-header">
@@ -535,7 +538,6 @@
   
   <!-- 레이어 팝업 - 상품삭제  -->
   <form id="frmDelete">
-	  <!-- 레이어 팝업 - delete -->
 	  <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true" data-modal-parent="#myModal">
 		<input type="hidden" name="productCode" >
@@ -736,7 +738,73 @@
 		</div>
 	  </div>
   </form>
-  
+
+  <!-- 레이어 팝업 - 재활용분단금 레이어 -->
+  <form id="frmResult">
+	  <!-- 레이어 팝업 - 결과  -->
+	  <div id="envi_result" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-content" style="width:1200px">
+		  <div class="modal-header">
+			<h4 class="modal-title">재활용분담금결과등록</h4>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(envi_result);"><img src="/images/icon_close.png"></button>
+		  </div>
+		  <div class="modal-body">
+			<!--<span class="mt10 pb04">√ 라디오버튼 선택시 상품기본정보의 누적판매량이 표시됩니다.</span>
+				<div class="title-model-s">
+					<h4 class="d-inblock pt10"><span class="title-point">[포장기준]</span></h4>
+				</div> -->
+		  <div  id="enviRecycleList"></div>
+		  <div class="row pt30">
+			<div class="col-25">
+			  <div class="form-group">
+				<label class="col-60 form-label">누적판매량/수량합계</label>
+				<div class="col-40">
+				  <input type="number" class="text-input" placeholder="1" min="0" max="5">
+				</div>
+			  </div>
+			</div>
+			<div class="col-25">
+			  <div class="form-group">
+				<label class="col-60 form-label">할증</label>
+				<div class="col-40">
+				  <input type="number" class="text-input" placeholder="1" min="0" max="5">
+				</div>
+			  </div>
+			</div>
+			<div class="col-25">
+			  <div class="form-group">
+				<label class="col-35 form-label">할인</label>
+				<div class="col-75">
+				  <input type="text" class="text-input" placeholder="4차포장 (입력x)">
+				</div>
+			  </div>
+			</div>
+			<div class="col-25">
+			  <div class="form-group">
+				<label class="col-40 form-label">재활용분담금 </label>
+				<div class="col-60">
+				  <input type="text" class="text-input" placeholder="자동계산">
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <span class="fr pt10 text-point">
+			※ 재활용분담금 : 누적판매수량/년 x 중량/원 x 재활용의무율 x 단가
+			<ul class="desc02 mt10">할증
+			  <li>1. 복합재질 및 필름시티 10%</li>
+			  <li>2. 발포합성수지 PSP</li>
+			</ul>
+		  </span>
+		  <!-- 버튼 -->
+		  <div class="modal-footer btn-group">
+			<button type="button" class="button btn-success" data-dismiss="modal" onclick="saveEnviRecycleInfo();">저장</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(envi_result);">취소</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </form>  
+
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script>
 	var selectedPartCode ="";
@@ -1296,6 +1364,10 @@
 		$('#detailTitle').text('상품포장정보('+productNm+')');
 		$('#tab-list').empty();
 		$('#tab-list li.active').removeClass('active');
+		if(self){
+			$('#self-tab-list').empty();
+			$('#self-tab-list li.active').removeClass('active');
+		}
 		$('.tabnav04 a:first').addClass('active');
 		$.ajax({
 				url : '/product/detail/selectProductPackaging',
@@ -1321,12 +1393,13 @@
 										packagingOrder +
 								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingSelfTab("'+ item.packagingId + '", this);\' title="Remove this page">×</button></a></li>'
 								     );
-								layerPopup($('#selfDetail'));
-
+								
 								// 텝 추가후 1차 포장자가진단 정보 서버에서 조회 함
 								if(index == 0) {
 									getProdPackagingSelfList(item.packagingId);
 								}
+								
+								layerPopup($('#selfDetail'));
 							}else {
 								$('#tab-list').append('<li class="active"><a href="#" onclick=\'getProdPackagingDetailList("'+item.packagingId+'", this);\' role="tab" data-toggle="tab"><span>' +
 										packagingOrder +
@@ -1510,7 +1583,8 @@
 								    $('#mytable_1_in1:last').append(getProductDetailInfoHtml(item.codeId, item.codeNm));
 									$('#tab04_1_in1').show();
 								}
-								$("#detail").modal('show');
+// 								layerPopup($('#selfDetail'));
+// 								$("#detail").modal('show');
 							}
 					});
 				}
@@ -1931,14 +2005,14 @@
 	  }
 
 	  //자가진단 목록 조회
-	  function getProdPackagingSelfList(packagingId) {
+	  function getProdPackagingSelfList(packagingId, obj) {
 		     selectedPackagingId = packagingId;
 		     var param = {};
 			 param.packagingId=packagingId;
 			 
 			 $.ajax({
 				type : 'post',
-				url : '/product/detail/selectProdPackagingSelfList/',
+				url : '/product/detail/selectProdPackagingSelfAndFileList',
 				data : param,
 				dataType : 'json',
 				error: function(request, status, error){
@@ -1946,12 +2020,12 @@
 				},
 				success : function(result) {
 					var selfPackInfo = "";
-					var orgResult = result;
+					var orgResult = result.prodPackagingSelfList;
 					var partCode = "";
 					var gradeCode = "";
 					console.log(orgResult);
 					$("#Accordion_wrap").empty();
-					result.forEach(function(item, index) {
+					result.prodPackagingSelfList.forEach(function(item, index) {
 						if(partCode !== item.partCode){
 							selfPackInfo += '<div class="Accordion-box">';
 							selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"><span class="title-point">['+item.partNm+']</span></h4>';
@@ -1966,7 +2040,11 @@
 									selfPackInfo += '	                  <ul>';
 									orgResult.forEach(function(lItem, index) {
 										if(lItem.gradeCode == sItem.gradeCode && lItem.partCode == sItem.partCode){
-											selfPackInfo += '	                    <li><input type="checkbox" '+lItem.checked+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+lItem.groupId.split('_')[0]+'_'+lItem.groupId.split('_')[1]+'-'+index+'" data-key="'+sItem.partCode+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+											var checked = "";
+											if(lItem.checked === lItem.codeId){
+												checked = "checked";
+											}
+											selfPackInfo += '	                    <li><input type="checkbox" '+checked+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+lItem.groupId.split('_')[0]+'_'+lItem.groupId.split('_')[1]+'-'+index+'" data-key="'+sItem.partCode+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
 										}
 									});
 									selfPackInfo += '	                  </ul>';
@@ -1977,46 +2055,24 @@
 								}
 							});
 	
-							var chk_rptMatStruct = "";
-							var chk_rptDevAnal = "";
-							var chk_rptVisualJudg = "";
-							var chk_rptTest = "";
-							var chk_rptPermission = "";
-							var chk_rptEtc = "";
-	// 						result.selfPackagingModels.forEach(function(selfItem, index) {
-	// 							if(selfItem.file === 'rptMatStruct_'+item.codeId){
-	// 								chk_rptMatStruct = "checked";
-	// 							}
-	// 							if(selfItem.file === 'rptDevAnal_'+item.codeId){
-	// 								chk_rptDevAnal = "checked";
-	// 							}
-	// 							if(selfItem.file === 'rptVisualJudg_'+item.codeId){
-	// 								chk_rptVisualJudg = "checked";
-	// 							}
-	// 							if(selfItem.file === 'rptTest_'+item.codeId){
-	// 								chk_rptTest = "checked";
-	// 							}
-	// 							if(selfItem.file === 'rptPermission_'+item.codeId){
-	// 								chk_rptPermission = "checked";
-	// 							}
-	// 							if(selfItem.file === 'rptEtc_'+item.codeId){
-	// 								chk_rptEtc = "checked";
-	// 							}
-	// 						});
-							
-							selfPackInfo += '				  <li class="choice-box2">';
-							selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
-							selfPackInfo += '                    <div class="choice-cont2">';
-							selfPackInfo += '                      <ul>';
-							selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'" style="margin:0 4px">포장재질구조증명서</label><input type="file" name="RPT_MAT_STRUCT-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
-		  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'" style="margin:0 4px">기기분석</label><input type="file" name="RPT_DEV_ANAL-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
-		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'" style="margin:0 4px">육안판정</label><input type="file" name="RPT_VISUAL_JUDGE-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
-		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'" style="margin:0 4px">공인시험성적서</label><input type="file" name="RPT_TEST-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
-		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'" style="margin:0 4px">신고허가서류</label><input type="file" name="RPT_PERMISSION-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
-		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'" style="margin:0 4px">기타</label><input type="file" name="RPT_ETC-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
-							selfPackInfo += '                      </ul>';
-							selfPackInfo += '    				 </div>';
-							selfPackInfo += '                  </li>';
+									selfPackInfo += '				  <li class="choice-box2">';
+									selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
+									selfPackInfo += '                    <div class="choice-cont2">';
+									selfPackInfo += '                      <ul>';
+									
+									result.prodPackagingSelfFileList.forEach(function(f, index) {
+										if(f.partCode === item.partCode && partCode !== f.partCode){
+											var fileChecked = "";
+											if(f.fileId && f.fileId !== null && f.fileId !==''){
+												fileChecked = "checked";
+											}
+											selfPackInfo += '<li><input type="checkbox" '+fileChecked+' class="word_check-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'" value="'+item.groupId+'||'+item.codeId+'" name="chk_'+f.matReportCode+'" id="chk_'+f.matReportCode+'-'+item.groupId.split('_')[0]+'_'+item.groupId.split('_')[1]+'"  onclick="return false;"><label for="chk_'+f.matReportCode+'-'+item.codeId+'" style="margin:0 4px">'+f.matReportNm+'</label><input type="file" name="'+f.matReportCode+'-'+item.partCode+'" multiple="multiple" class="afile-txt" id="file_'+f.matReportCode+'-'+item.partCode+'"></li>';
+										}
+									});
+									selfPackInfo += '                      </ul>';
+									selfPackInfo += '    				 </div>';
+									selfPackInfo += '                  </li>';
+								
 							selfPackInfo += '            </ul>';
 	//	                                 <!-- E_결과확인-->
 		                    selfPackInfo += '           </div>';
@@ -2038,16 +2094,19 @@
 				        }
 				      });
 
-					result.files.forEach(function(f, index) {
-						result.middleModels.forEach(function(item, index) {
-							console.log(f.refId.split('_pd')[0]);
-							console.log(f.refId.split('-')[0]+'-'+item.codeId);
-							console.log('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list');
-							if(f.refId.split('_pd')[0] === f.refId.split('-')[0]+'-'+item.codeId){
-								$('#file_'+f.refId.split('_pd')[0]+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteFileAjax("'+f.fileId+'","","'+f.refId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
-							}			
-						});				
+					result.prodPackagingSelfFileList.forEach(function(f, index) {
+						if(f.fileId && f.fileId !== null && f.fileId !==''){
+							$('#file_'+f.matReportCode+'-'+f.partCode+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteProdPackagingSelfFileAjax("'+f.fileId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
+							$('.MultiFile-remove').show();
+						}			
 					});
+					
+					$('#self-tab-list li.active').removeClass('active');
+			        if(obj) {
+			        	$(obj).parent().addClass('active');
+				    }else {
+				    	$('#self-tab-list li:first').addClass('active');
+					}
 				}
 			});
 	  }
@@ -2089,22 +2148,22 @@
 			// 몸체는 단독체크, 그외 멀티체크 분리
 			if(id.split('-')[0].split('_')[1] == 'B'){
 				if(rptMatStruct == 'Y'){
-					$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_MAT_STRUCT-'+id.split('-')[0]).prop('checked',true);
 				}
 				if(rptDevAnal == 'Y'){
-					$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_DEV_ANAL-'+id.split('-')[0]).prop('checked',true);
 				}
 				if(rptVisualJudg == 'Y'){
-					$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_VISUAL_JUDG-'+id.split('-')[0]).prop('checked',true);
 				}
 				if(rptTest == 'Y'){
-					$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_TEST-'+id.split('-')[0]).prop('checked',true);
 				}
 				if(rptPermission == 'Y'){
-					$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_PERMISSION-'+id.split('-')[0]).prop('checked',true);
 				}
 				if(rptEtc == 'Y'){
-					$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+					$('#chk_RPT_ETC-'+id.split('-')[0]).prop('checked',true);
 				}
 			}else{
 				var aJson = new Object();
@@ -2355,5 +2414,118 @@
 				lastPart.click();
 			}
 		});
+	  }
+
+	  //포장자가진단 파일 삭제
+	  function deleteProdPackagingSelfFileAjax(id, obj){
+		  $.ajax({
+				type : 'post',
+				url : '/product/delete/ProdPackagingSelfFile',
+				data : {'packagingId': selectedPackagingId, 'fileId': id},
+				dataType : 'json',
+				error : function(request, status, error) {
+					console.log(request.responseText);
+					alert(request.responseText);
+				},
+				success : function(result) {
+					console.log(result);
+					$(obj).parent().remove();
+				}
+			});
+	  }
+
+	  //재활용 분담금결과 확인
+	  function openProductPackagingEnviResultLayer(productCode, productNm) {
+		  $.ajax({
+				url : '/product/detail/selectProdRecycleList/',
+				dataType : 'JSON',
+				data : {'productCode': productCode},
+				type : "POST",
+				async: false,
+				error: function(request, status, error){
+					console.log(request.responseText);
+					alert(request.responseText);
+				},
+				success : function(data) {
+					$('#enviRecycleList').empty();
+					data.forEach(function(item, index) {
+						console.log(item);
+						$('#enviRecycleList').append(getProductPackagingEnviResultItem(item));
+					});
+		  			layerPopup($('#envi_result'));
+				}
+			});
+	  }
+
+	  //재활용분단금 html 생성
+	  function getProductPackagingEnviResultItem(item){
+		    var innerHtml = "";
+			innerHtml += '<div>';
+			innerHtml += '<div class="col-35">';
+			innerHtml += '   <div class="form-group">';
+			innerHtml += '		<label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">'+item.packagingOrderNm+'</label>';
+			innerHtml += '		<div class="col-55">';
+			innerHtml += item.groupNm+'('+item.codeNm+')';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	</div>';
+			innerHtml += '	<div class="row">';
+			innerHtml += '	  <div class="col-16">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-40 form-label">출고량</label>';
+			innerHtml += '		  <div class="col-60">';
+			innerHtml += '			<input type="text" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	  <div class="col-16">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-40 form-label">기준중량</label>';
+			innerHtml += '		  <div class="col-60">';
+			innerHtml += '			<input type="text" class="text-input" placeholder="1차포장 (입력x)" value="'+item.weight+'">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	  <div class="col-16">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-60 form-label">재활용의무율</label>';
+			innerHtml += '		  <div class="col-40">';
+			innerHtml += '			<input type="number" value="'+item.recyclDutyRate+'" class="text-input" placeholder="1" min="0" max="5">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	  <div class="col-16">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-40 form-label">단가</label>';
+			innerHtml += '		  <div class="col-60">';
+			innerHtml += '			<input type="text" value="'+item.unitPrice+'" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	  <div class="col-16">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-40 form-label">활증</label>';
+			innerHtml += '		  <div class="col-60">';
+			innerHtml += '			<input type="text" value="'+item.premium+'" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	  <div class="col-20">';
+			innerHtml += '		<div class="form-group">';
+			innerHtml += '		  <label class="col-45 form-label">재활용분담금</label>';
+			innerHtml += '		  <div class="col-55">';
+			innerHtml += '			<input type="text" value="'+item.premium+'" class="text-input" placeholder="자동계산">';
+			innerHtml += '		  </div>';
+			innerHtml += '		</div>';
+			innerHtml += '	  </div>';
+			innerHtml += '	</div>';
+			innerHtml += '</div>';
+
+			return innerHtml;
+	  }
+
+	  //재활용 분담금정보 저장
+	  function saveEnviRecycleInfo(){
+
 	  }
 </script>

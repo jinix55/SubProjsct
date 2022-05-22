@@ -561,8 +561,8 @@
 			     , z.MAT_REPORT_NM
 			     
 			     , z1.FILE_ID
-				  , z2.FILE_NM AS MAT_FILE_NM
-				  , z2.FILE_URL AS MAT_FILE_URL     
+				  , z2.FILE_NM
+				  , z2.FILE_URL     
 			     , z.A_ORD_SEQ
 			     , z.C_ORD_SEQ
 			 FROM (    
