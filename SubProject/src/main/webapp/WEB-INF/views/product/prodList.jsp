@@ -662,7 +662,7 @@
 	              <label class="col-25 form-label">상품코드</label>
 	              <div class="form-input">
 	                <input type="hidden" id="matTypeSelectProductMatTypeMapped" name="mappedGroupId">
-	                <input type="text" id="matTypeSelectProductCodeVal" class="text-input" name="mappingProductCode">
+	                <input type="text" id="matTypeSelectProductCodeVal" class="text-input" name="subProductCode">
 	              </div>
 	            </div>
 	          </div>
@@ -1425,12 +1425,15 @@
 		  }
 		  
 		  if(packagingOrder > 10 && mappedProductCodeChecked === true) {
-				if($("#frmPackagingOrder input[name=mappingProductCode]").val() !== '') {
-					if($("#frmPackagingOrder input[name=mappingProductCode]").val() === selectedProductCode){
+				if($("#frmPackagingOrder input[name=subProductCode]").val() !== '') {
+					if($("#frmPackagingOrder input[name=subProductCode]").val() === selectedProductCode){
 						alert('동일한 상품을 부속포장으로 할수 없습니다.');
 						return;
 				    }else {
-			    		//mapProductCodeApply('matTypeSelectProductCodeVal', packagingOrderNmApplyVal, selectedPackagingOrderNmText);
+				    	$("#frmPackagingOrder input[name=subProductCode]").val(selectedProductCode);
+						$("#frmPackagingOrder input[name=codeId]").val(groupId);
+						$("#frmPackagingOrder input[name=groupId]").val(groupId.split("_")[0]);
+						insertProductPackagingAjax();
 					}
 				}else {
 					alert('등록된 부속상품코드를 입력해주세요.');
