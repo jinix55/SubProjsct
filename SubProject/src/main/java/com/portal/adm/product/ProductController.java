@@ -1,5 +1,12 @@
 package com.portal.adm.product;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +17,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +42,6 @@ import com.portal.adm.file.model.FileModel;
 import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
-import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
@@ -42,6 +49,7 @@ import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.product.model.ProdPackagingSelfAndFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
+import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductGroupFileModel;
 import com.portal.adm.product.model.ProductModel;
@@ -49,6 +57,7 @@ import com.portal.adm.product.service.ProductGroupFileService;
 import com.portal.adm.product.service.ProductService;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
+import com.portal.common.Constant;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -502,8 +511,8 @@ public class ProductController {
     
     @RequestMapping(value="/insert/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingSelf(@ModelAttribute List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
-//    public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> insertProdPackagingSelf(@ModelAttribute List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
 		
 		for(ProdPackagingSelfModel p : prodPackagingSelfList) {
 			p.setPackagingSelfId(idUtil.getPackagingSelfId());
@@ -553,15 +562,94 @@ public class ProductController {
     
     @RequestMapping(value="/insert/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingSelfFile(@ModelAttribute List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> insertProdPackagingSelfFile(@ModelAttribute ProdPackagingSelfFileModel prodPackagingSelfFileList, MultipartRequest multipart,@AuthenticationPrincipal AuthUser authUser ) {
 //    public ResponseEntity<String> insertProdPackagingSelfFile(@RequestBody List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
 		
-		for(ProdPackagingSelfFileModel p : prodPackagingSelfFileList) {
-			p.setPackagingSelfFileId(idUtil.getPackagingSelfFileId());
-	    	p.setModiId(authUser.getMemberModel().getUserId());
-	    	p.setRgstId(authUser.getMemberModel().getUserId());			
-			productService.insertProdPackagingSelfFile(p);
-		}	
+try {
+    		
+        	prodPackagingSelfFileList.setModiId(authUser.getMemberModel().getUserId());
+        	prodPackagingSelfFileList.setRgstId(authUser.getMemberModel().getUserId());			
+    		
+    		String fileUrl = "C:/PPLUS/" + prodPackagingSelfFileList.getPackagingId() + "/selfPackaging/";
+    		String result = "success";
+    		String resultMessage = "성공";
+    		
+    		
+    		//사진 업로드
+    		final Map<String, MultipartFile> files = multipart.getFileMap();
+        	MultipartFile file = null;
+        	for (String key : files.keySet()) {
+        		file = files.get(key);
+        		if(file.getOriginalFilename().equals("")) {
+    				continue;
+    				//return new ResponseEntity<>("notFile", HttpStatus.NOT_ACCEPTABLE);
+    			}
+    			
+    			FileModel f = new FileModel();
+				f.setFileId(idUtil.getFileId());
+				
+				// s3 기본 처리
+    			f.setStorageSe("LOCAL");
+    			f.setFileNm(file.getOriginalFilename());
+    			f.setFileExtsn(FilenameUtils.getExtension(file.getOriginalFilename()));
+    			f.setFileSize(file.getSize());
+    			f.setFileUrl(fileUrl+f.getFileId() + "/");
+    			f.setUseYn("Y");
+    			f.setRefId(prodPackagingSelfFileList.getPackagingId());
+    			f.setRgstId(prodPackagingSelfFileList.getModiId());
+    			f.setModiId(prodPackagingSelfFileList.getModiId());
+    			f.setFileCl(Constant.File.API);
+    			
+    			try {
+    				f.setInputStream(file.getResource().getInputStream());
+    			} catch (IOException e) {
+    				result = "fail";
+    				resultMessage = "실패";
+    			}
+    			
+    			// 파일 생성
+    			if (!"fail".equals(result)) {
+    				fileService.insertFile(f);
+    				
+    				prodPackagingSelfFileList.setPackagingSelfFileId(idUtil.getPackagingSelfFileId());
+    				prodPackagingSelfFileList.setPartCode(key.split("-")[1]);
+    				prodPackagingSelfFileList.setMatReportCode(key.split("-")[0]);
+    				prodPackagingSelfFileList.setFileId(f.getFileId());
+    				productService.insertProdPackagingSelfFile(prodPackagingSelfFileList);
+    				Path directoryPath = Paths.get(fileUrl+f.getFileId() + "/");
+
+    				try {
+    					Files.createDirectories(directoryPath);
+    				} catch (IOException e1) {
+//    					return "1.파일 생성시 오류났습니다.";
+    				}
+
+    				try {
+    					FileOutputStream fos = new FileOutputStream(fileUrl+f.getFileId() + "/" + file.getOriginalFilename());
+
+    					InputStream is = file.getInputStream();
+
+    					int readCount = 0;
+    					byte[] buffer = new byte[1024];
+    					// 파일을 읽을 크기 만큼의 buffer를 생성하고
+    					// ( 보통 1024, 2048, 4096, 8192 와 같이 배수 형식으로 버퍼의 크기를 잡는 것이 일반적이다.)
+    					while ((readCount = is.read(buffer)) != -1) {
+    						// 파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
+    						fos.write(buffer, 0, readCount);
+    						// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
+    					}
+    				} catch (FileNotFoundException e) {
+//    					return "1.FileNotFoundException.";
+    				}
+    				catch (IOException e) {
+//    					return "1.IOException.";
+    				}
+    			}
+    		}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>("Error!", HttpStatus.NOT_ACCEPTABLE);
+        }	
 	    return new ResponseEntity<>("", HttpStatus.OK);
     }
     
