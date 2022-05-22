@@ -13,7 +13,7 @@ import lombok.Data;
  * 코드관리 모델
  */
 @Data
-public class ProdPackagingDetailModel extends Criteria{
+public class ProdMappingModel extends Criteria{
 	
 	private String packagingDetailId;
 	private String packagingId;
@@ -60,6 +60,6 @@ public class ProdPackagingDetailModel extends Criteria{
 
     private String representativeNm;
 	
-    private String str;    
+    private String errorString;    
 
 }

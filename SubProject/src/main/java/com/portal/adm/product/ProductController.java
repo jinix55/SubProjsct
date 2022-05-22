@@ -35,6 +35,7 @@ import com.portal.adm.file.service.FileService;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
 import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -141,7 +142,7 @@ public class ProductController {
     	//상품 상세정보 조회
     	System.out.println("productModel" + productModel.getProductCode());
     	ProductModel product = productService.selectProduct(productModel);
-    	System.out.println("product" + product);
+    	System.out.println("selectProduct " + product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
     
@@ -556,7 +557,32 @@ public class ProductController {
     	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
 		String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
 	    return new ResponseEntity<>(result, HttpStatus.OK);
-    }      
+    }  
+    
+    
+    
+    /**
+     * 환경부 승인번호 상품 매핑 ##########
+     *  1
+     * @param 
+     * @return
+     */
+
+    @RequestMapping(value="/detail/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProdMappingModel> mapping(@RequestBody ProductModel productModel) {
+    	System.out.println("mapping prodMappingModel" + productModel);
+    	ProdMappingModel prodMappingModel = new ProdMappingModel();
+    	
+    	if(!(productModel.getMasterApplyCode().equals("UNPROCEED"))) { //미진행
+    		prodMappingModel.setErrorString("진행상태가 미진행이 아닙니다.");
+  	    	return ResponseEntity.badRequest().body(prodMappingModel);	
+    	}
+    	
+    	prodMappingModel = productService.mapping(productModel);
+        return new ResponseEntity<>(prodMappingModel, HttpStatus.OK);
+
+    }    
     //################################################################################################################################
     //################################################################################################################################
     //################################################################################################################################
@@ -1042,28 +1068,7 @@ public class ProductController {
         return productService.calcRecyleContributions(productModel);
     }    
     
-    
-    /**
-     * 환경부 승인번호 상품 매핑 ##########
-     *  1
-     * @param 
-     * @return
-     */
 
-    @RequestMapping(value="/detail/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<ProductModel> mapping(@ModelAttribute ProductModel productModel) {
-    	System.out.println("mapping productModel" + productModel);
-    	
-    	if(!(productModel.getMasterApplyCode().equals("UNPROCEED"))) { //미진행
-    		productModel.setErrorString("진행상태가 미진행이 아닙니다.");
-  	    	return ResponseEntity.badRequest().body(productModel);	
-    	}
-    	
-    	ProductModel product = productService.mapping(productModel);
-        return new ResponseEntity<>(product, HttpStatus.OK);
-
-    }
     
     
     /**

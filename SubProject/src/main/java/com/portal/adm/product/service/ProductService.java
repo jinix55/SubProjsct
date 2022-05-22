@@ -15,6 +15,7 @@ import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.mapper.ProductMapper;
 import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -375,6 +376,44 @@ public class ProductService {
 			return Constant.DB.FAIL;
 		}
 	}		
+	
+	
+	public ProdMappingModel mapping(ProductModel productModel) {
+		ProdMappingModel outProductModel = new ProdMappingModel();
+		
+		String producCode = productModel.getProductCode();
+		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_CODE", producCode, null);
+		if((matType == null) || ("".equals(matType))) {
+			return outProductModel;
+		}
+//		outProductModel.setMasterApplyCode("UNPROCEED");
+//		outProductModel.setMasterMappingCode("NONEMAPPING");
+		
+		ProductModel inProductModel = new ProductModel();
+		ProductModel mappingProductModel = new ProductModel();
+		inProductModel.setMatType(matType);
+		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
+		
+		int productMatMappingCount = 0;
+		String mappingProductCode = "";
+		for(ProductModel p : ProductList) {
+			mappingProductModel.setProductCode(producCode);
+			mappingProductModel.setMappingProductCode(mappingProductCode);
+			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
+			if(productMatMappingCount == 0) {
+//				outProductModel.setMasterApplyCode("COMPLETION");
+//				outProductModel.setApprovalNo(p.getApprovalNo());
+//				outProductModel.setMasterMappingCode("MAPPING");
+//				outProductModel.setMappingProductCode(p.getProductCode());
+//				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
+			}
+		}
+		return outProductModel;
+	}	
+	
+	
+	//##################################################################################################################################################
+	//##################################################################################################################################################
 	//##################################################################################################################################################
 	
 	 /**
@@ -479,38 +518,7 @@ public class ProductService {
 		return "987";
 	}
 
-	public ProductModel mapping(ProductModel productModel) {
-		ProductModel outProductModel = new ProductModel();
-		
-		String producCode = productModel.getProductCode();
-		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_CODE", producCode, null);
-		if((matType == null) || ("".equals(matType))) {
-			return outProductModel;
-		}
-		outProductModel.setMasterApplyCode("UNPROCEED");
-		outProductModel.setMasterMappingCode("NONEMAPPING");
-		
-		ProductModel inProductModel = new ProductModel();
-		ProductModel mappingProductModel = new ProductModel();
-		inProductModel.setMatType(matType);
-		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
-		
-		int productMatMappingCount = 0;
-		String mappingProductCode = "";
-		for(ProductModel p : ProductList) {
-			mappingProductModel.setProductCode(producCode);
-			mappingProductModel.setMappingProductCode(mappingProductCode);
-			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
-			if(productMatMappingCount == 0) {
-				outProductModel.setMasterApplyCode("COMPLETION");
-				outProductModel.setApprovalNo(p.getApprovalNo());
-				outProductModel.setMasterMappingCode("MAPPING");
-				outProductModel.setMappingProductCode(p.getProductCode());
-				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
-			}
-		}
-		return outProductModel;
-	}	
+
 
 	
 

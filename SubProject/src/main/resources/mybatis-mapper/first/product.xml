@@ -6,8 +6,6 @@
 
 	<sql id="searchProduct">
 		<where>
-			and USE_YN = 'Y'
-
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
 				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
@@ -26,23 +24,39 @@
 
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-		    ROW_NUMBER() OVER (ORDER BY PRODUCT_NM DESC) AS ROWNUM,
-			PRODUCT_CODE,
-			PRODUCT_NM,
+		    ROW_NUMBER() OVER (ORDER BY a.PRODUCT_NM DESC) AS ROWNUM,
+			a.PRODUCT_CODE,
+			a.PRODUCT_NM,
 			(SELECT FILE_ID FROM t_group_file WHERE GFILE_ID = PHOTO_GFILE_ID AND DEL_YN = 'N' AND USE_YN = 'Y' ORDER BY RGST_DT ASC LIMIT 1) AS PHOTO_GFILE_ID,
-			'포장유형명'   AS   MAT_CLS_NM,
-			'미진행' AS   MASTER_APPLY_NM,
+			cc.CODE_NM     AS   MAT_CLS_NM,
+			bb.CODE_NM     AS   MASTER_APPLY_NM,
 			'보통'       AS 	SELF_EVL_GRAD_NM	
 		FROM
-			T1_PRODUCT 
+			T1_PRODUCT a 
+
+	   LEFT OUTER JOIN t1_product_packaging aa
+	     ON  a.PRODUCT_CODE       =  aa.PRODUCT_CODE
+	    AND  aa.USE_YN  = 'Y'		
+	    AND  aa.PACKAGING_ORDER  = 1
+			
+	   LEFT OUTER JOIN t1_environment_code cc
+	     ON  cc.GROUP_ID     = 'GROUP_ID' 
+	    AND  cc.CODE_ID      =  aa.GROUP_ID
+	    AND  cc.USE_YN  = 'Y'	
+		 			
+	   LEFT OUTER JOIN t_code bb
+	     ON  bb.GROUP_ID          = 'ENVIRONMENT_PROCEED_STAT_CODE' 
+	    AND  a.MASTER_APPLY_CODE  =  bb.CODE_ID
+	    AND  bb.USE_YN  = 'Y'			
 		<include refid="searchProduct"></include>	
-        ORDER BY PRODUCT_CODE, ROWNUM	
+        ORDER BY a.PRODUCT_CODE, ROWNUM	
         <include refid="paging"></include>		
 	</select>
 	
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
 		FROM T1_PRODUCT
+		WHERE USE_YN = 'Y'
 		<include refid="searchProduct"></include>	
 	</select>	
 
@@ -331,6 +345,8 @@
 				  , a.COLOR
 				  , a.SUMMARY
 				  , a.MAT_FILE_ID
+				  , e.FILE_NM AS MAT_FILE_NM
+				  , e.FILE_URL AS MAT_FILE_URL
 				  , a.SUPPLIER_CODE
 				  , c.SUPPLIER_NM
 				  , a.MANAGER_ID
@@ -347,11 +363,15 @@
 	        ON   a.SUPPLIER_CODE  = c.SUPPLIER_CODE
 	        AND  c.USE_YN  = 'Y'        
 	        
-	        
 	      LEFT OUTER JOIN t_supplier_manager d
 	        ON   a.SUPPLIER_CODE  = d.SUPPLIER_CODE
 	        AND  a.MANAGER_ID  =  d.MANAGER_ID
 	        AND  d.USE_YN  = 'Y'     
+	        
+	      LEFT OUTER JOIN t_file e
+	        ON   a.MAT_FILE_ID  = e.FILE_ID
+	        AND  e.USE_YN  = 'Y'
+	        AND  e.DEL_YN  = 'N'   	        
 			  
 	     WHERE  a.PACKAGING_DETAIL_ID = #{packagingDetailId}
 		    AND  a.USE_YN = 'Y'     
@@ -534,6 +554,8 @@
 			  ,  a.MAT_REPORT_CODE
 			  ,  bb.CODE_NM MAT_REPORT_NM
 			  ,  a.FILE_ID
+		      ,  cc.FILE_NM AS FILE_NM
+			  ,  cc.FILE_URL AS FILE_URL			  
 		  FROM  t1_product_packaging_self_file a 	
 		   LEFT OUTER JOIN t_code aa	
 		     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'	
@@ -545,6 +567,11 @@
 		     AND  bb.CODE_ID    =  a.MAT_REPORT_CODE
 		     AND  bb.USE_YN  = 'Y'	       
 		  
+	      LEFT OUTER JOIN t_file cc
+	        ON   a.FILE_ID  = cc.FILE_ID
+	        AND  cc.USE_YN  = 'Y'
+	        AND  cc.DEL_YN  = 'N'   
+	        		  
 		 WHERE  a.PACKAGING_ID  =  #{packagingId}   
 		 ORDER BY aa.ORD_SEQ, bb.ORD_SEQ
  	
@@ -611,7 +638,7 @@
 			, a.MODI_DT
 		FROM
 			t_product_packaging a
-		WHERE a.PACKING_ID = upper(#{PACKING_ID})
+		WHERE a.PACKAGING_ID = #{packaging}
 		  AND a.USE_YN = 'Y'
 	</select>
 	

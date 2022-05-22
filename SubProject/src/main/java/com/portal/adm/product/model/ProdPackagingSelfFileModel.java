@@ -41,6 +41,8 @@ public class ProdPackagingSelfFileModel extends Criteria{
 
     private String partNm;
     private String matReportNm;
+    private String fileNm;
+    private String fileUrl;
     	
     private String str;    
 
