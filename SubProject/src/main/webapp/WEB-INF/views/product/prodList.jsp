@@ -714,7 +714,7 @@
 								  </div>
 								  <!-- 버튼 -->
 								  <div class="modal-footer btn-group" id="selfPackagingInfo">
-									<button type="button" class="button btn-success" onclick="insertSelfDiagnoseAjax();">결과저장</button>
+									<button type="button" class="button btn-success" onclick="insertProdPackagingSelfAjax();">결과저장</button>
 									<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(selfDetail);">취소</button>
 								  </div>
 								</div>
@@ -1946,81 +1946,87 @@
 				success : function(result) {
 					var selfPackInfo = "";
 					var orgResult = result;
+					var partCode = "";
+					var gradeCode = "";
 					console.log(orgResult);
 					$("#Accordion_wrap").empty();
 					result.forEach(function(item, index) {
-						selfPackInfo += '<div class="Accordion-box">';
-						selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.groupId+'"><span class="title-point">['+item.partNm+']</span></h4>';
-						selfPackInfo += '	<div class="anw">';
-						selfPackInfo += '	            <ul class="choice-wrapper">';
-						orgResult.forEach(function(sItem, index) {
-							if(sItem.partCode === item.partCode){
-								
-								selfPackInfo += '	              <li class="choice-box">';
-								selfPackInfo += '	                <h4 class="line-br">재활용-'+sItem.gradeNm+'</h4>';
-								selfPackInfo += '	                <div class="choice-cont">';
-								selfPackInfo += '	                  <ul>';
-								orgResult.forEach(function(lItem, index) {
-									if(lItem.groupId === sItem.codeId){
-										selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.codeKey+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.codeId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
-									}
-								});
-		
-								selfPackInfo += '	                  </ul>';
-								selfPackInfo += '	                </div>';
-								selfPackInfo += '	              </li>';
-							}
-						});
+						if(partCode !== item.partCode){
+							selfPackInfo += '<div class="Accordion-box">';
+							selfPackInfo += '<h4 class="que pt15 choice-title" id="'+item.groupId+'"><span class="title-point">['+item.partNm+']</span></h4>';
+							selfPackInfo += '	<div class="anw">';
+							selfPackInfo += '	            <ul class="choice-wrapper">';
+							orgResult.forEach(function(sItem, index) {
+								if(gradeCode !== sItem.gradeCode && item.partCode == sItem.partCode){
+									
+									selfPackInfo += '	              <li class="choice-box">';
+									selfPackInfo += '	                <h4 class="line-br">재활용-'+sItem.gradeNm+'</h4>';
+									selfPackInfo += '	                <div class="choice-cont">';
+									selfPackInfo += '	                  <ul>';
+									orgResult.forEach(function(lItem, index) {
+										if(lItem.gradeCode == sItem.gradeCode && lItem.partCode == sItem.partCode){
+											selfPackInfo += '	                    <li><input type="checkbox" '+lItem.str+' value="'+lItem.groupId+'||'+lItem.codeId+'" id="'+item.codeId+'-'+index+'" data-key="'+sItem.partCode+'" data-a="'+lItem.rptMatStruct+'" data-b="'+lItem.rptDevAnal+'" data-c="'+lItem.rptVisualJudg+'" data-d="'+lItem.rptTest+'" data-e="'+lItem.rptPermission+'" data-f="'+lItem.rptEtc+'" name="checkbox_self" class="checkbox_'+item.groupId+'" onclick=\'chkClick(this);\'><label for="">'+lItem.codeNm+'</label></li>';
+										}
+									});
+									selfPackInfo += '	                  </ul>';
+									selfPackInfo += '	                </div>';
+									selfPackInfo += '	              </li>';
 
-						var chk_rptMatStruct = "";
-						var chk_rptDevAnal = "";
-						var chk_rptVisualJudg = "";
-						var chk_rptTest = "";
-						var chk_rptPermission = "";
-						var chk_rptEtc = "";
-// 						result.selfPackagingModels.forEach(function(selfItem, index) {
-// 							if(selfItem.file === 'rptMatStruct_'+item.codeId){
-// 								chk_rptMatStruct = "checked";
-// 							}
-// 							if(selfItem.file === 'rptDevAnal_'+item.codeId){
-// 								chk_rptDevAnal = "checked";
-// 							}
-// 							if(selfItem.file === 'rptVisualJudg_'+item.codeId){
-// 								chk_rptVisualJudg = "checked";
-// 							}
-// 							if(selfItem.file === 'rptTest_'+item.codeId){
-// 								chk_rptTest = "checked";
-// 							}
-// 							if(selfItem.file === 'rptPermission_'+item.codeId){
-// 								chk_rptPermission = "checked";
-// 							}
-// 							if(selfItem.file === 'rptEtc_'+item.codeId){
-// 								chk_rptEtc = "checked";
-// 							}
-// 						});
-						
-						selfPackInfo += '				  <li class="choice-box2">';
-						selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
-						selfPackInfo += '                    <div class="choice-cont2">';
-						selfPackInfo += '                      <ul>';
-						selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'" style="margin:0 4px">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
-	  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'" style="margin:0 4px">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
-	   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'" style="margin:0 4px">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
-	   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'" style="margin:0 4px">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
-	   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'" style="margin:0 4px">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
-	   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'" style="margin:0 4px">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
-						selfPackInfo += '                      </ul>';
-						selfPackInfo += '    				 </div>';
-						selfPackInfo += '                  </li>';
-						selfPackInfo += '            </ul>';
-//	                                 <!-- E_결과확인-->
-	                    selfPackInfo += '           </div>';
-	                    selfPackInfo += '</div>';
+									gradeCode = sItem.gradeCode;
+								}
+							});
+	
+							var chk_rptMatStruct = "";
+							var chk_rptDevAnal = "";
+							var chk_rptVisualJudg = "";
+							var chk_rptTest = "";
+							var chk_rptPermission = "";
+							var chk_rptEtc = "";
+	// 						result.selfPackagingModels.forEach(function(selfItem, index) {
+	// 							if(selfItem.file === 'rptMatStruct_'+item.codeId){
+	// 								chk_rptMatStruct = "checked";
+	// 							}
+	// 							if(selfItem.file === 'rptDevAnal_'+item.codeId){
+	// 								chk_rptDevAnal = "checked";
+	// 							}
+	// 							if(selfItem.file === 'rptVisualJudg_'+item.codeId){
+	// 								chk_rptVisualJudg = "checked";
+	// 							}
+	// 							if(selfItem.file === 'rptTest_'+item.codeId){
+	// 								chk_rptTest = "checked";
+	// 							}
+	// 							if(selfItem.file === 'rptPermission_'+item.codeId){
+	// 								chk_rptPermission = "checked";
+	// 							}
+	// 							if(selfItem.file === 'rptEtc_'+item.codeId){
+	// 								chk_rptEtc = "checked";
+	// 							}
+	// 						});
+							
+							selfPackInfo += '				  <li class="choice-box2">';
+							selfPackInfo += '                    <h4 class="line-br">판정방법</h4>';
+							selfPackInfo += '                    <div class="choice-cont2">';
+							selfPackInfo += '                      <ul>';
+							selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptMatStruct+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptMatStruct" id="chk_rptMatStruct-'+item.codeId+'"  onclick="return false;"><label for="chk_rptMatStruct-'+item.codeId+'" style="margin:0 4px">포장재질구조증명서</label><input type="file" name="rptMatStruct-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptMatStruct-'+item.codeId+'"></li>';
+		  					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptDevAnal+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptDevAnal" id="chk_rptDevAnal-'+item.codeId+'"  onclick="return false;"><label for="chk_rptDevAnal-'+item.codeId+'" style="margin:0 4px">기기분석</label><input type="file" name="rptDevAnal-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptDevAnal-'+item.codeId+'"></li>';
+		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptVisualJudg+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptVisualJudg" id="chk_rptVisualJudg-'+item.codeId+'"  onclick="return false;"><label for="chk_rptVisualJudg-'+item.codeId+'" style="margin:0 4px">육안판정</label><input type="file" name="rptVisualJudg-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptVisualJudg-'+item.codeId+'"></li>';
+		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptTest+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptTest" id="chk_rptTest-'+item.codeId+'"  onclick="return false;"><label for="chk_rptTest-'+item.codeId+'" style="margin:0 4px">공인시험성적서</label><input type="file" name="rptTest-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptTest-'+item.codeId+'"></li>';
+		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptPermission+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptPermission" id="chk_rptPermission-'+item.codeId+'"  onclick="return false;"><label for="chk_rptPermission-'+item.codeId+'" style="margin:0 4px">신고허가서류</label><input type="file" name="rptPermission-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptPermission-'+item.codeId+'"></li>';
+		   					selfPackInfo += '                        <li><input type="checkbox" class="word_check-'+item.codeId+'" '+chk_rptEtc+' value="'+item.groupId+'||'+item.codeId+'" name="chk_rptEtc" id="chk_rptEtc-'+item.codeId+'"  onclick="return false;"><label for="chk_rptEtc-'+item.codeId+'" style="margin:0 4px">기타</label><input type="file" name="rptEtc-'+item.codeId+'" multiple="multiple" class="afile-txt" id="file_rptEtc-'+item.codeId+'"></li>';
+							selfPackInfo += '                      </ul>';
+							selfPackInfo += '    				 </div>';
+							selfPackInfo += '                  </li>';
+							selfPackInfo += '            </ul>';
+	//	                                 <!-- E_결과확인-->
+		                    selfPackInfo += '           </div>';
+		                    selfPackInfo += '</div>';
+		                    partCode = item.partCode;
+						}
 					});
 					$("#Accordion_wrap").append(selfPackInfo);
 					$('.afile-txt').MultiFile({
 				        // 옵션 설정
-				        max: 3, //업로할수있는 최대 파일 갯수
+				        max: 1, //업로할수있는 최대 파일 갯수
 				        accept: 'txt|pptx|xlsx|pdf|hwp', //허용할수있는 파일 확장자
 				        STRING: { //Multi-lingual support : 메시지 수정 가능
 				          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
@@ -2045,14 +2051,257 @@
 			});
 	  }
 
-	  //
+	  //자가진단 항목 선택시
+	  var aJsonArray = new Array();
+	  function chkClick(that){
+	 		var id = $(that).attr('id');
+			if(id.split('-')[0].split('_')[1] == 'B'){
+	 			if($('.checkbox_'+id.split('-')[0]).is(':checked')){
+			   		$('.checkbox_'+id.split('-')[0]).prop('checked',false);
+	 			}
+	 			$('#'+id).prop('checked', true);
+	 		}else{
+	 			if(!$('.checkbox_'+id.split('-')[0]).is(':checked')){
+	 				console.log('>> '+$(that).attr('data-Key'));
+	 				if($(that).attr('data-Key') == 'D'){
+	      			if(grade.indexOf(id.split('-')[0]) == -1){
+	      				grade.push(id.split('-')[0]);
+	      			}else{
+	      				for (var i = 0; i < grade.length; i++) {
+	              		    if (grade[i] === id.split('-')[0]) {
+	              		    	grade.splice(i, 1);
+	              		    }
+	              		}
+	      			}
+	          	}
+	 			}
+	 		}
+			
+			var rptMatStruct = $(that).attr('data-a');
+			var rptDevAnal = $(that).attr('data-b');
+			var rptVisualJudg = $(that).attr('data-c');
+			var rptTest = $(that).attr('data-d');
+			var rptPermission = $(that).attr('data-e');
+			var rptEtc = $(that).attr('data-f');
+			$('.word_check-'+id.split('-')[0]).prop('checked',false);
+			
+			// 몸체는 단독체크, 그외 멀티체크 분리
+			if(id.split('-')[0].split('_')[1] == 'B'){
+				if(rptMatStruct == 'Y'){
+					$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(rptDevAnal == 'Y'){
+					$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(rptVisualJudg == 'Y'){
+					$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(rptTest == 'Y'){
+					$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(rptPermission == 'Y'){
+					$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+				}
+				if(rptEtc == 'Y'){
+					$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+				}
+			}else{
+				var aJson = new Object();
+				var bJson = new Object();
+				bJson.rptMatStruct = rptMatStruct;
+				bJson.rptDevAnal = rptDevAnal;
+				bJson.rptVisualJudg = rptVisualJudg;
+				bJson.rptTest = rptTest;
+				bJson.rptPermission = rptPermission;
+				bJson.rptEtc = rptEtc;
+				aJson.codeId = id;
+				
+				var chk = false;
+				console.log(aJsonArray.length);
+				aJsonArray.forEach(function(item,index){
+					console.log(index);
+					if(item.codeId == id){
+						console.log(item.codeId);
+						console.log(id);
+						chk = true;
+						aJsonArray.splice(index, 1);
+					}
+				})
+				if(aJsonArray.length == 0 && !chk){
+					aJson.value = bJson;
+					aJsonArray.push(aJson);
+				}else{
+					if(!chk){
+						aJson.value = bJson;
+						aJsonArray.push(aJson);
+					}
+				}
+				
+				aJsonArray.forEach(function(item){
+					if(item.value.rptMatStruct == 'Y'){
+						$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+					}
+					if(item.value.rptDevAnal == 'Y'){
+						$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+					}
+					if(item.value.rptVisualJudg == 'Y'){
+						$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+					}
+					if(item.value.rptTest == 'Y'){
+						$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+					}
+					if(item.value.rptPermission == 'Y'){
+						$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+					}
+					if(item.value.rptEtc == 'Y'){
+						$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+					}
+				})
+			}
+			
+			
+		  var isSeasonChk = false;
+	      var chk = $('.checkbox_'+id.split('-')[0]);
+	      for(var i=0;i<chk.length;i++){
+	          if(chk[i].checked == true) {
+	          	if($(that).attr('data-Key') == 'D'){
+	              	isSeasonChk = true;
+	      			if(grade.indexOf(id.split('-')[0]) == -1){
+	      				grade.push(id.split('-')[0]);
+	      			}
+	              	break;
+	          	}else{
+	          		if(grade.indexOf(id.split('-')[0]) > -1){
+		            		for (var i = 0; i < grade.length; i++) {
+		            		    if (grade[i] === id.split('-')[0]) {
+		            		    	grade.splice(i, 1);
+		            		    }
+		            		}
+	          		}
+	          	}
+	          }
+	      }
+	  }
+
+	 //자가진단 등록
+	 function insertProdPackagingSelfAjax(){
+	    var res = prodPackagingSelfResult();
+	    $("#frmSelfDiagnose input[name=recycleGrade]").val(res);
+	    if(res){
+		    	alert(res);
+		}else {
+			alert('결과확인이 어려웠습니다. 잘 선택이 되었는지 확인해주세요.');
+			return;
+		}
+		
+		var form = $('#frmSelfDiagnose')[0];
+	    var data = new FormData(form);
+	  	$.ajax({
+			type : 'post',
+			url : '/product/insert/ProdPackagingSelf',
+			enctype: 'multipart/form-data',
+			data : data,
+			dataType : 'text',
+			processData: false,
+	        contentType: false,
+	        cache: false,
+	        timeout: 600000,
+			error: function(request, status, error){
+				console.log(request.responseText);
+				alert(request.responseText);
+			},
+			success : function(result){
+				alert('정상적으로 등록되었습니다.');
+			    console.log(result);
+			}
+	   });
+     }
+	  
+     //자가진단 결과 검증
+	 function prodPackagingSelfResult(){
+		  var retResult = "";
+		  var gradeResult = [];
+	      var chkCnt = 0;
+	      var sc = $('.choice-title').length;
+	      var text = '';
+	      var isAlert = true; 
+	      for(var i = 0 ; i < sc ; i++){
+	      	var id = $('.choice-title')[i].id;
+	      	var chkList = $('.checkbox_'+id);
+	      	for(var j=0;j<chkList.length;j++){
+	      		if(chkList[j].checked == true) {
+	      			gradeResult.push(chkList[j].dataset.key);
+	      			chkCnt++;
+	      			isAlert = false;
+	      			if(id.split('_')[1] == 'B'){
+		        			break;        				
+	      			}
+	      		}
+	      	}
+	      	text = $('.choice-title')[i].children[0].innerText;
+	      	if(isAlert){
+		        	alert(text+' 항목을 선택하지 않으셨습니다.');
+		        	isAlert = false;
+		        	break;
+	      	}
+	      	isAlert = true;
+	      }
+	      if(isAlert){
+	      	var gradeNum = 0;
+	      	gradeResult.forEach(function(item){
+			        if(item == 'A'){
+			        	if(gradeNum < 1){
+//	 			        	$('.rating').text('최우수');
+//	 			        	$('.rating').css('color','black');
+				        	retResult = '최우수';
+				        	gradeNum = 1;
+			        	}
+			        }else if(item == 'B'){
+			        	if(gradeNum < 2){
+//	 			        	$('.rating').text('우수');
+//	 			        	$('.rating').css('color','black');
+				        	retResult = '우수';
+				        	gradeNum = 2;
+			        	}
+			        }else if(item == 'C'){
+			        	if(gradeNum < 3){
+//	 			        	$('.rating').text('보통');
+//	 			        	$('.rating').css('color','black');
+							retResult = '보통';
+				        	gradeNum = 3;
+			        	}
+			        }else if(item == 'D'){
+			        	if(gradeNum < 4){
+//	 			        	$('.rating').text('어려움');
+//	 			        	$('.rating').css('color','red');
+				        	retResult = '어려움';
+				        	gradeNum = 4;
+			        	}
+			        }
+	      	})
+	      	if($('.checkbox_PE_L')){
+	      		var boxs = $('.checkbox_PE_L');
+	      		for(var i = 0 ; i < boxs.length ; i++){
+	      			if($('#'+boxs[i].id).prop('checked') && $('#'+boxs[i].id).attr('data-key') == 'A' && gradeNum != 4){
+//	       				$('.rating').text('최우수');
+//	       				$('.rating').css('color','black');
+	      				retResult = '어려움';
+	      			}
+	      		}
+	      	}
+	      	return retResult;
+//	 	        $('#score').show();
+//	 	        $('.btn-success.isClose').focus();
+	      }
+	      return retResult;
+	  }
 	  
 	 // 포장 자가진단 차수 삭제 버튼 클릭시
 	 function deleteProductPackagingSelfTab(packagingId, packagingOrder) {
 		  var result = confirm(packagingOrder+"차 자가진단 정보를 삭제하시겠습니까?");
 		  if(result)deletePackagingSelfAjax(packagingId);
-	  }
-
+	 }
+	  
 	 //포장자가진단 삭제
 	 function deletePackagingSelfAjax(packagingId) {
 		  	$.ajax({
