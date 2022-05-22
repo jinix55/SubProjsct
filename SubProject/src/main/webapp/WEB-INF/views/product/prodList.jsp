@@ -348,56 +348,56 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-35">
-					  <div class="form-group">
-						<label class="col-40 form-label"  id="edit_baseYear_1">누적판매량(1년전)</label>
-						<div class="col-60">
-						  <input name="accumulateSaleQty_1" type="text" class="text-input" placeholder="누적판매량(년)"  autocomplete="off">
-						</div>
-					  </div>
-					</div>
-					<div class="col-25">
-					  <div class="form-group">
-						<label class="col-40 form-label">포장재총중량</label>
-						<div class="col-60">
-						  <input name="packingTotalWeight_1" type="text" class="text-input" placeholder="포장재총중량"  autocomplete="off">
-						</div>
-					  </div>
-					</div>
-					<div class="col-40">
-					  <div class="form-group">
-						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60 d-flex">
-						  <input name="recyleContributions_1" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
-						</div>
-					  </div>
-					</div>
-					<div class="col-35">
-					  <div class="form-group">
-						<label class="col-40 form-label"  id="edit_baseYear_2">누적판매량(2년전)</label>
-						<div class="col-60">
-						  <input name="accumulateSaleQty_2" type="text" class="text-input" placeholder="누적판매량(년)"  autocomplete="off">
-						</div>
-					  </div>
-					</div>
-					<div class="col-25">
-					  <div class="form-group">
-						<label class="col-40 form-label">포장재총중량</label>
-						<div class="col-60">
-						  <input name="packingTotalWeight_2" type="text" class="text-input" placeholder="포장재총중량"  autocomplete="off">
-						</div>
-					  </div>
-					</div>
-					<div class="col-40">
-					  <div class="form-group">
-						<label class="col-40 form-label">재활용분담금</label>
-						<div class="col-60 d-flex">
-						  <input name="recyleContributions_2" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off">
-						  <button onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button>
-						</div>
-					  </div>
-					</div>
+<!-- 					<div class="col-35"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label"  id="edit_baseYear_1">누적판매량(1년전)</label> -->
+<!-- 						<div class="col-60"> -->
+<!-- 						  <input name="accumulateSaleQty_1" type="text" class="text-input" placeholder="누적판매량(년)"  autocomplete="off"> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-25"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label">포장재총중량</label> -->
+<!-- 						<div class="col-60"> -->
+<!-- 						  <input name="packingTotalWeight_1" type="text" class="text-input" placeholder="포장재총중량"  autocomplete="off"> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-40"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label">재활용분담금</label> -->
+<!-- 						<div class="col-60 d-flex"> -->
+<!-- 						  <input name="recyleContributions_1" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off"> -->
+<!-- 						  <button onclick="calculateRecyleContributions('recyleContributions_1');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-35"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label"  id="edit_baseYear_2">누적판매량(2년전)</label> -->
+<!-- 						<div class="col-60"> -->
+<!-- 						  <input name="accumulateSaleQty_2" type="text" class="text-input" placeholder="누적판매량(년)"  autocomplete="off"> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-25"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label">포장재총중량</label> -->
+<!-- 						<div class="col-60"> -->
+<!-- 						  <input name="packingTotalWeight_2" type="text" class="text-input" placeholder="포장재총중량"  autocomplete="off"> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-40"> -->
+<!-- 					  <div class="form-group"> -->
+<!-- 						<label class="col-40 form-label">재활용분담금</label> -->
+<!-- 						<div class="col-60 d-flex"> -->
+<!-- 						  <input name="recyleContributions_2" type="text" class="text-input" placeholder="누적판매량 등록시 자동계산" readonly  autocomplete="off"> -->
+<!-- 						  <button onclick="calculateRecyleContributions('recyleContributions_2');" type="button" class="button btn-success"  style="width:70px;padding: 0px;">계산</button> -->
+<!-- 						</div> -->
+<!-- 					  </div> -->
+<!-- 					</div> -->
 					<div class="col-100">
 					  <div class="form-group">
 						<label class="col-25 form-label">상품제조사</label>
@@ -561,11 +561,11 @@
   
   <!-- 레이어 팝업 - 포장정보등록 및 상세  -->
   <form id="frmDetail">
-	  <div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div id="packagingDetail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:auto;max-width:1100px">
 		  <div class="modal-header">
 			<h4 class="modal-title" id="detailTitle"></h4>
-			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(detail);"><img src="/images/icon_close.png"></button>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(packagingDetail);"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
 			<div class="row">
@@ -607,7 +607,7 @@
 								  </div>
 								  <div class="modal-footer btn-group">
 									<button  id="savePackagingBtn" type="button" class="button btn-success">저장</button>
-									<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(detail);">취소</button>
+									<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(packagingDetail);">취소</button>
 								  </div>
 								  <!--E_몸체 -->
 								</div>
@@ -630,7 +630,6 @@
   </form>
   
   <!-- 레이어 팝업 - 재질유형 정보 조회 -->
-  
   <form id="frmPackagingOrder">
 	  <div id="insertPackagingOrder" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-content" style="width:400px">
@@ -1097,19 +1096,19 @@
 		
 		//재활용분담금
 		$('#edit_baseYear').text('누적판매량('+data.baseYear+'년)');
-		$('#edit_baseYear_1').text('누적판매량('+data.baseYear_1+'년)');
-		$('#edit_baseYear_2').text('누적판매량('+data.baseYear_2+'년)');
+// 		$('#edit_baseYear_1').text('누적판매량('+data.baseYear_1+'년)');
+// 		$('#edit_baseYear_2').text('누적판매량('+data.baseYear_2+'년)');
 		$("#frmUpdate input[name=baseYear]").val(data.baseYear);
-		$("#frmUpdate input[name=baseYear_1]").val(data.baseYear_1);
-		$("#frmUpdate input[name=baseYear_2]").val(data.baseYear_2);
+// 		$("#frmUpdate input[name=baseYear_1]").val(data.baseYear_1);
+// 		$("#frmUpdate input[name=baseYear_2]").val(data.baseYear_2);
 		
-		$("#frmUpdate input[name=accumulateSaleQty_1]").val(data.accumulateSaleQty_1);
-		$("#frmUpdate input[name=packingTotalWeight_1]").val(data.packingTotalWeight_1);
-		$("#frmUpdate input[name=recyleContributions_1]").val(data.recyleContributions_1);
+// 		$("#frmUpdate input[name=accumulateSaleQty_1]").val(data.accumulateSaleQty_1);
+// 		$("#frmUpdate input[name=packingTotalWeight_1]").val(data.packingTotalWeight_1);
+// 		$("#frmUpdate input[name=recyleContributions_1]").val(data.recyleContributions_1);
 		
-		$("#frmUpdate input[name=accumulateSaleQty_2]").val(data.accumulateSaleQty_2);
-		$("#frmUpdate input[name=packingTotalWeight_2]").val(data.packingTotalWeight_2);
-		$("#frmUpdate input[name=recyleContributions_2]").val(data.recyleContributions_2);
+// 		$("#frmUpdate input[name=accumulateSaleQty_2]").val(data.accumulateSaleQty_2);
+// 		$("#frmUpdate input[name=packingTotalWeight_2]").val(data.packingTotalWeight_2);
+// 		$("#frmUpdate input[name=recyleContributions_2]").val(data.recyleContributions_2);
 		
 		//상품추가정보
 // 		$("#frmUpdate textarea[name=productMaker]").val(data.productMaker);
@@ -1338,7 +1337,7 @@
 									getProductPartList(item.groupId, 'tab-list', 'selfpartCode1', item.groupNm, item);
 									tabID = item.packagingOrder;
 								}
-								layerPopup($('#detail'));
+								layerPopup($('#packagingDetail'));
 							}
 						});
 					}else {
