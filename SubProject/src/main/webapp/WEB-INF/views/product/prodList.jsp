@@ -637,7 +637,7 @@
 	    <div class="modal-content" style="width:400px">
 	      <div class="modal-header">
 	        <h4 class="modal-title">포장정보</h4>
-	        <button type="button"  onclick="showTab();" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
+	        <button type="button" onclick="javascript:layerPopupClose(insertPackagingOrder);" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
 	      </div>
 	      <div class="modal-body">
 	        <div class="row">
@@ -672,7 +672,7 @@
 	      <!-- 버튼 -->
 	      <div class="modal-footer btn-group">
 	        <button type="button" class="button btn-success" onclick="addPackagingTab();">적용</button>
-	        <button type="button" class="button btn-cancel" onclick="showTab();" data-dismiss="modal">취소</button>
+	        <button type="button" class="button btn-cancel" onclick="javascript:layerPopupClose(insertPackagingOrder);" data-dismiss="modal">취소</button>
 	      </div>
 	    </div>
 	  </div>
@@ -876,7 +876,7 @@
 		});
 
 		$('#btn-add-tab').click(function () {
-			$('#btn-add-tab').hide();
+// 			$('#btn-add-tab').hide();
 			getPodPackagingOrderNmList(selectedProductCode);
 			getMatTypeList();
 	    });
@@ -891,7 +891,7 @@
 //	       resetTab();
 //	       tabFirst.tab('show');
 	      tabFirst.click();
-	      $('#btn-add-tab').show();
+// 	      $('#btn-add-tab').show();
 	    });
 
 	    var list = document.getElementById("tab-list");
@@ -1382,7 +1382,7 @@
 							}
 						}
 					});
-					$("#insertPackagingOrder").modal('show');
+					layerPopup($('#insertPackagingOrder'));
 				}
 			}
 		});
@@ -1468,7 +1468,7 @@
 			},
 			success : function(result) {
 				//레이어창 취소
-				$("#insertPackagingOrder").modal('hide');
+				layerPopupClose($("#insertPackagingOrder"));
 				//포장정보 레이어 노출 시킴
 				openProductPackagingLayer(selectedProductCode, selectedProductNm);
 			}
@@ -1606,9 +1606,8 @@
 		  summary = data.summary; 
 		  packagingDetailId = data.packagingDetailId;
 		  packagingOrder = data.packagingOrder;
-		  matFileNm = data.matFileNm;
-		  matFileId = data.matFileId;
-		  matFileId = data.matFileId;
+		  matFileNm = data.matFileNm ? data.matFileNm : '';
+		  matFileId = data.matFileId ? data.matFileId : '';
 		  managerId = data.managerId;
 	  }else {
 		  packagingOrder = tabID;
@@ -1739,7 +1738,7 @@
 
 	//첨부파일 다운로드
 	function downloadFile(id) {
-		if(id != '') {
+		if(id != '' && id) {
 			window.open('/file/detail/'+id, '_blank').focus();
 		}
 	}
@@ -1771,7 +1770,7 @@
 				alert(request.responseText);
 			},
 			success : function(result) {
-				$('#btn-add-tab').show();
+// 				$('#btn-add-tab').show();
 				var data = JSON.parse(result);
 				console.log(data.packagingDetailId);
 				$("#frmDetail input[name=packagingDetailId]").val(data.packagingDetailId);
@@ -2212,7 +2211,6 @@
 	    		}
 	    	}
 	    }
-	    console.log('<>'+JSON.stringify(param));
 
 	    var settings = {
    		  "url": "/product/insert/ProdPackagingSelf/",
