@@ -611,7 +611,7 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProdPackagingSelfAndFileList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProdPackagingSelfAndFileModel> selectProdPackagingSelfAndFileList(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<ProdPackagingSelfAndFileModel> selectProdPackagingSelfAndFileList(@ModelAttribute ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
     	ProdPackagingSelfAndFileModel prodPackagingSelfAndFileModel = new ProdPackagingSelfAndFileModel();
     	ProdPackagingSelfFileModel prodPackagingSelfFileModel = new ProdPackagingSelfFileModel();
     	
