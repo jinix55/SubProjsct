@@ -471,13 +471,13 @@ public class ProductController {
     
     @RequestMapping(value="/insert/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<ProdPackagingDetailModel> insertProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
 //    public ResponseEntity<String> insertProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setPackagingDetailId(idUtil.getPackagingDetailId());
 		String result  = productService.insertProdPackagingDetail(prodPackagingDetailModel);
-	    return new ResponseEntity<>(result, HttpStatus.OK);
+	    return new ResponseEntity<>(prodPackagingDetailModel, HttpStatus.OK);
     }     
     
     @RequestMapping(value="/update/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
