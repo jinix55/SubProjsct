@@ -155,7 +155,7 @@ body {
 					<c:forEach items="${largeEnv}" var="list" varStatus="status">
 						<c:if test="${list.codeId eq packagingModel.groupId}">
 							<input id="matType" name="groupId" type="hidden" class="text-input w200" value="${packagingModel.groupId }">
-<%-- 							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled> --%>
+							<input id="matTypeNm" name="matTypeNm" type="text" class="text-input w200" value="${list.codeNm }" disabled>
 						</c:if>
 					</c:forEach>
 					<div class=" mr10 tc pt05 ml20">
@@ -164,9 +164,8 @@ body {
 			          		<c:when test="${!empty packagingModel.partCode}">
 					          	<c:forEach items="${middleEnv}" var="list" varStatus="status">
    						          	<c:if test="${list.codeId eq packagingModel.partCode}">
-										<input id="partType" name="partCode" value="${packagingModel.partCode}" type="hidden">
-<%-- 										<button id="partTypeNm" name="partTypeNm" value="${list.codeNm}" type="button" class="button btn-radius partTypeCheck on"> --%>
-<!-- 										</button> -->
+										<input id="partType" name="partCode" value="${packagingModel.partCode}" type="hidden"  class="partTypeCheck on">
+<%-- 										<button id="partTypeNm" name="partTypeNm" value="${list.codeNm}" type="button" class="button btn-radius partTypeCheck on"></button> --%>
 										<c:set var="partTypeNm" value="${list.codeNm}"></c:set>
 			          				</c:if>
 								</c:forEach>
@@ -469,6 +468,7 @@ $(document).ready(function() {
 
 		$('.preView').click(function() {
 			var tr = $('.partTypeCheck.on').val();
+			alert(tr);
 			var target = '';
 			if (tr == 'B') {
 				target = 'b_';

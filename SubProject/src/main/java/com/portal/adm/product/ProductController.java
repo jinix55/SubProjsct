@@ -265,8 +265,8 @@ public class ProductController {
      * @return
      */
     @PostMapping("/delete")
-    //public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    public ResponseEntity<String> productDelete(@RequestBody ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {	
+    public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+//    public ResponseEntity<String> productDelete(@RequestBody ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {	
         try {            
             productModel.setModiId(authUser.getMemberModel().getUserId());
             String result = productService.deleteProduct(productModel);
@@ -306,8 +306,8 @@ public class ProductController {
 	 * @param multipart
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value="/detail/file/delete/{uuid}", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
 	public Map<String,Object> delete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String uuid) {
 		//product group 에서 삭제
 		ProductGroupFileModel productGroupFileModel = new ProductGroupFileModel();
@@ -332,8 +332,8 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProductPackaging", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    //public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@ModelAttribute ProdPackagingModel productPackagingModel) {
-    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@RequestBody ProdPackagingModel productPackagingModel) {
+    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@ModelAttribute ProdPackagingModel productPackagingModel) {
+//    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@RequestBody ProdPackagingModel productPackagingModel) {
     	// 상품 목록 조회
         System.out.println("productPackagingModel " + productPackagingModel );       
     	List<ProdPackagingModel> prodPackagingModelList = productService.selectProductPackaging(productPackagingModel);
@@ -347,9 +347,10 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/delete/productPackaging")
-    //public ResponseEntity<String> deleteProductPackaging(@ModelAttribute ProdPackagingModel prodPackagingModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-    public ResponseEntity<String> deleteProductPackaging(@RequestBody ProdPackagingModel prodPackagingModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+//    @PostMapping("/delete/productPackaging")
+    @RequestMapping(value="/delete/productPackaging", method= {RequestMethod.GET,RequestMethod.POST})
+    public ResponseEntity<String> deleteProductPackaging(@ModelAttribute ProdPackagingModel prodPackagingModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
+//    public ResponseEntity<String> deleteProductPackaging(@RequestBody ProdPackagingModel prodPackagingModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {            
         	prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
             String result = productService.deleteProductPackaging(prodPackagingModel);
@@ -403,9 +404,11 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping("/insert/productPackaging")
-    //public ResponseEntity<ProdPackagingModel> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
-    public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+//    @PostMapping("/insert/productPackaging")
+    @RequestMapping(value="/insert/productPackaging", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
+//    public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
     	try {
 			prodPackagingModel.setRgstId(authUser.getMemberModel().getUserId());
 			prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
@@ -424,9 +427,11 @@ public class ProductController {
      * @param request
      * @return
      */
+//    @PostMapping("/detail/selectProdPartList")
+    @RequestMapping(value="/detail/selectProductPartList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    @PostMapping("/detail/selectProdPartList")
-    public ResponseEntity<List<ProdPartModel>> selectProdPartList(HttpServletRequest request, @RequestBody ProdPartModel prodPartModel,@AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<List<ProdPartModel>> selectProdPartList(@ModelAttribute ProdPartModel prodPartModel) {
+//    public ResponseEntity<List<ProdPartModel>> selectProdPartList(HttpServletRequest request, @RequestBody ProdPartModel prodPartModel,@AuthenticationPrincipal AuthUser authUser) {
 		List<ProdPartModel> prodPartList = productService.selectProdPartList(prodPartModel);
 	    return new ResponseEntity<>(prodPartList, HttpStatus.OK);
     }    
@@ -439,7 +444,8 @@ public class ProductController {
      */
     @RequestMapping(value="/detail/selectProdPackagingDetailList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingDetailModel>> selectProdPackagingDetailList(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
+    public ResponseEntity<List<ProdPackagingDetailModel>> selectProdPackagingDetailList(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel) {
+//    public ResponseEntity<List<ProdPackagingDetailModel>> selectProdPackagingDetailList(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
     	System.out.println("ProdPackagingDetailModel " + prodPackagingDetailModel );   
 		List<ProdPackagingDetailModel> prodPackagingDetailList = productService.selectProdPackagingDetailList(prodPackagingDetailModel);
 	    return new ResponseEntity<>(prodPackagingDetailList, HttpStatus.OK);
@@ -447,7 +453,8 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProdPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProdPackagingDetailModel> selectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
+    public ResponseEntity<ProdPackagingDetailModel> selectProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel) {
+//    public ResponseEntity<ProdPackagingDetailModel> selectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel) {
    
 		ProdPackagingDetailModel outModel = productService.selectProdPackagingDetail(prodPackagingDetailModel);
 	    return new ResponseEntity<>(outModel, HttpStatus.OK);
@@ -455,7 +462,8 @@ public class ProductController {
     
     @RequestMapping(value="/delete/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> delectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> delectProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> delectProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
 		String result  = productService.delectProdPackagingDetail(prodPackagingDetailModel);
 	    return new ResponseEntity<>(result, HttpStatus.OK);
@@ -463,7 +471,8 @@ public class ProductController {
     
     @RequestMapping(value="/insert/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> insertProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> insertProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setPackagingDetailId(idUtil.getPackagingDetailId());
@@ -473,7 +482,8 @@ public class ProductController {
     
     @RequestMapping(value="/update/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> updateProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> updateProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> updateProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
 		String result  = productService.updateProdPackagingDetail(prodPackagingDetailModel);
@@ -482,7 +492,8 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProdPackagingSelfList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingSelfModel>> selectProdPackagingSelfList(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<List<ProdPackagingSelfModel>> selectProdPackagingSelfList(@ModelAttribute ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<List<ProdPackagingSelfModel>> selectProdPackagingSelfList(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
     	System.out.println("selectProdPackagingSelfList prodPackagingSelfModel " + prodPackagingSelfModel );   
     	List<ProdPackagingSelfModel>  prodPackagingSelfList  = productService.selectProdPackagingSelfList(prodPackagingSelfModel);
 	    return new ResponseEntity<>(prodPackagingSelfList, HttpStatus.OK);
@@ -490,7 +501,8 @@ public class ProductController {
     
     @RequestMapping(value="/insert/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> insertProdPackagingSelf(@ModelAttribute List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
 		
 		for(ProdPackagingSelfModel p : prodPackagingSelfList) {
 			p.setPackagingSelfId(idUtil.getPackagingSelfId());
@@ -503,7 +515,8 @@ public class ProductController {
     
     @RequestMapping(value="/delete/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> deleteNinsertProdPackagingSelf(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> deleteNinsertProdPackagingSelf(@ModelAttribute ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> deleteNinsertProdPackagingSelf(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingSelfModel.setModiId(authUser.getMemberModel().getUserId());
 		String result = productService.delectProdPackagingSelf(prodPackagingSelfModel);
 	    return new ResponseEntity<>(result, HttpStatus.OK);
@@ -512,7 +525,8 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProdPackagingOrderNmList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
     	List<ProdPackagingModel>  prodPackagingList  = productService.selectProdPackagingOrderNmList(prodPackagingModel);
     	List<ProdPackagingModel>  outList = new ArrayList<>();
     	
@@ -530,14 +544,16 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProdPackagingSelfFileList", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingSelfFileModel>> selectProdPackagingSelfFileList(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<List<ProdPackagingSelfFileModel>> selectProdPackagingSelfFileList(@ModelAttribute ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<List<ProdPackagingSelfFileModel>> selectProdPackagingSelfFileList(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
     	List<ProdPackagingSelfFileModel>  ProdPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
 	    return new ResponseEntity<>(ProdPackagingSelfFileList, HttpStatus.OK);
     }    
     
     @RequestMapping(value="/insert/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> insertProdPackagingSelfFile(@RequestBody List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> insertProdPackagingSelfFile(@ModelAttribute List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> insertProdPackagingSelfFile(@RequestBody List<ProdPackagingSelfFileModel> prodPackagingSelfFileList,@AuthenticationPrincipal AuthUser authUser ) {
 		
 		for(ProdPackagingSelfFileModel p : prodPackagingSelfFileList) {
 			p.setPackagingSelfFileId(idUtil.getPackagingSelfFileId());
@@ -550,7 +566,8 @@ public class ProductController {
     
     @RequestMapping(value="/delete/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> deleteProdPackagingSelfFile(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<String> deleteProdPackagingSelfFile(@ModelAttribute ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+//    public ResponseEntity<String> deleteProdPackagingSelfFile(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
     	
     	System.out.println("deleteProdPackagingSelfFile prodPackagingSelfFileModel " + prodPackagingSelfFileModel );  
     	
@@ -570,7 +587,8 @@ public class ProductController {
 
     @RequestMapping(value="/detail/mapping/", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<ProdMappingModel> mapping(@RequestBody ProductModel productModel) {
+    public ResponseEntity<ProdMappingModel> mapping(@ModelAttribute ProductModel productModel) {
+//    public ResponseEntity<ProdMappingModel> mapping(@RequestBody ProductModel productModel) {
     	System.out.println("mapping prodMappingModel" + productModel);
     	ProdMappingModel prodMappingModel = new ProdMappingModel();
     	
