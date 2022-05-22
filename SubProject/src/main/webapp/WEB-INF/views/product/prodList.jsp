@@ -154,7 +154,9 @@
 									<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a>
 								</td>
 								<td>
-									<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a>
+									<c:if test="${not empty product.matType}">
+										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a>
+									</c:if>
 								</td>
 								<td><a href="javascript:void(0);#envi_result" role="button" data-toggle="modal" class="btn-small02">결과확인</a></td>
 								<td>
