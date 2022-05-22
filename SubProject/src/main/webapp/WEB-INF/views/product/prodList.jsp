@@ -1768,9 +1768,9 @@
 			},
 			success : function(result) {
 				$('#btn-add-tab').show();
-// 				var data = JSON.parse(result);
-// 				console.log(data.packagingDetailId);
-// 				$("#frmDetail input[name=packagingId]").val(data.packagingDetailId);
+				var data = JSON.parse(result);
+				console.log(data.packagingDetailId);
+				$("#frmDetail input[name=packagingDetailId]").val(data.packagingDetailId);
 				if(sendMail) {
 					sendEmail($('#frmDetail').serialize());
 				}else {
