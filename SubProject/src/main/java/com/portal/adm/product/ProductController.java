@@ -39,6 +39,7 @@ import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
+import com.portal.adm.product.model.ProdPackagingSelfAndFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
@@ -606,6 +607,24 @@ public class ProductController {
         return new ResponseEntity<>(prodMappingModel, HttpStatus.OK);
 
     }    
+    
+    
+    @RequestMapping(value="/detail/selectProdPackagingSelfAndFileList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<ProdPackagingSelfAndFileModel> selectProdPackagingSelfAndFileList(@RequestBody ProdPackagingSelfModel prodPackagingSelfModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	ProdPackagingSelfAndFileModel prodPackagingSelfAndFileModel = new ProdPackagingSelfAndFileModel();
+    	ProdPackagingSelfFileModel prodPackagingSelfFileModel = new ProdPackagingSelfFileModel();
+    	
+    	List<ProdPackagingSelfModel>  prodPackagingSelfList  = productService.selectProdPackagingSelfList(prodPackagingSelfModel);
+    	System.out.println("selectProdPackagingSelfAndFileList prodPackagingSelfList " + prodPackagingSelfList);
+    	prodPackagingSelfAndFileModel.setProdPackagingSelfList(prodPackagingSelfList);
+    	
+    	prodPackagingSelfFileModel.setPackagingId(prodPackagingSelfModel.getPackagingId());
+    	List<ProdPackagingSelfFileModel>  prodPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
+    	System.out.println("selectProdPackagingSelfAndFileList prodPackagingSelfFileList " + prodPackagingSelfFileList);
+    	prodPackagingSelfAndFileModel.setProdPackagingSelfFileList(prodPackagingSelfFileList);
+	    return new ResponseEntity<>(prodPackagingSelfAndFileModel, HttpStatus.OK);
+    }       
     //################################################################################################################################
     //################################################################################################################################
     //################################################################################################################################
