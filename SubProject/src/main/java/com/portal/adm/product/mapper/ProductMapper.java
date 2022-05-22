@@ -5,6 +5,7 @@ import java.util.List;
 import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdRecycleCalclModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -167,13 +168,17 @@ public interface ProductMapper {
 	List<ProdPackagingSelfFileModel> selectProdPackagingSelfFileList(ProdPackagingSelfFileModel prodPackagingSelfFileModel);	
 	long deleteProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
 	long insertProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
+	
+	
+	List<ProdRecycleCalclModel> selectProdRecycleList(ProdRecycleCalclModel prodRecycleCalclModel);
+	
 	 /**
      * 상품 재활용분담금 목록을 조회한다.
      *
      * @param productModel 페이징 모델
      * @return
      */
-    ProductModel selectProductRecyleContributions(ProductModel productModel);
+    ProductModel selectProductRecyle(ProductModel productModel);
     
 	 /**
      * 상품 재활용분담금 등록한다.

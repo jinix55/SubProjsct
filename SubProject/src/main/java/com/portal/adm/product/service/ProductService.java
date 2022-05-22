@@ -16,6 +16,7 @@ import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.mapper.ProductMapper;
 import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdRecycleCalclModel;
 import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
@@ -94,76 +95,21 @@ public class ProductService {
 		ProductModel productRecyleContributionsModel = new ProductModel();
 		ProductModel outProductModel = productMapper.selectProduct(productModel);
 
-//		int year = Calendar.getInstance().get(Calendar.YEAR);
-//		for(int i = 1; i <= 3; i++) {
-//			productModel.setInBaseYear( Integer.toString(year - i));
-//			
-//			productRecyleContributionsModel = new ProductModel();
-//			productRecyleContributionsModel = productMapper.selectProductRecyleContributions(productModel);
-//			
-//            switch (i) {
-//	            case 1:
-//	            	outProductModel.setBaseYear(Integer.toString(year - i));
-//	            	if(productRecyleContributionsModel != null) {
-//	            		outProductModel.setAccumulateSaleQty(productRecyleContributionsModel.getAccumulateSaleQty());
-//	            		outProductModel.setPackingTotalWeight(productRecyleContributionsModel.getPackingTotalWeight());
-//	            		outProductModel.setRecyleContributions(productRecyleContributionsModel.getRecyleContributions());
-//	            	}
-//	                break;
-//	            case 2:
-//	            	outProductModel.setBaseYear_1(Integer.toString(year - i));
-//	            	if(productRecyleContributionsModel != null) {
-//	            		outProductModel.setAccumulateSaleQty_1(productRecyleContributionsModel.getAccumulateSaleQty());
-//	            		outProductModel.setPackingTotalWeight_1(productRecyleContributionsModel.getPackingTotalWeight());
-//	            		outProductModel.setRecyleContributions_1(productRecyleContributionsModel.getRecyleContributions());
-//	            	}
-//	                break;            	
-//	            case 3:
-//	            	outProductModel.setBaseYear_2(Integer.toString(year - i));
-//	            	if(productRecyleContributionsModel != null) {
-//	            		outProductModel.setAccumulateSaleQty_2(productRecyleContributionsModel.getAccumulateSaleQty());
-//	            		outProductModel.setPackingTotalWeight_2(productRecyleContributionsModel.getPackingTotalWeight());
-//	            		outProductModel.setRecyleContributions_2(productRecyleContributionsModel.getRecyleContributions());
-//	            	}
-//	                break;            	
-//            }
-//		}
- 
-//		
-//		System.out.println("outProductModel" + outProductModel);
-//		System.out.println("outProductModel.getProductCode() " + outProductModel.getProductCode());
-//		
-//		
-//		ProdPackagingModel prodPackagingModel = new ProdPackagingModel();
-//		prodPackagingModel.setProductCode(outProductModel.getProductCode());
-//
-//		List<ProdPackagingModel> prodPackagingList = productMapper.selectProductPackagingListByProductId(prodPackagingModel);
-//		String CodeNm = "";
-//		for (ProdPackagingModel p :  prodPackagingList) {
-//			CodeNm = codeService.getCodeNm("MAT_TYPE", p.getMatType(), null);
-//			p.setMatTypeNm(CodeNm);
-//			
-//			CodeNm = codeService.getCodeNm("PART_TYPE", p.getPartType(), null);
-//			p.setPartTypeNm(CodeNm);
-//			
-//			CodeNm = codeService.getCodeNm("SUPPLIER_CODE", p.getSupplierCode(), null);
-//			p.setSupplierNm(CodeNm);
-//			
-//			p.setStr(p.getPackagingNm() + "_" + p.getMatTypeNm() + "_" + p.getPartTypeNm() + "_" + p.getSupplierNm());
-//		}
-//		
-//		
-//		System.out.println("prodPackagingList " + prodPackagingList);
-//		
-//		//
-//		
-// 
-//		 
-//
-//		//ProdPackagingList.add(prodPackagingModel);
-//		
-//		outProductModel.setProdPackagingList(prodPackagingList);
-//		
+		productModel.setInBaseYear("2021");
+		
+		productRecyleContributionsModel = new ProductModel();
+		
+		System.out.println("productModel " + productModel);
+		
+		productRecyleContributionsModel = productMapper.selectProductRecyle(productModel);
+		
+       	outProductModel.setBaseYear("2021");
+    	if(productRecyleContributionsModel != null) {
+    		outProductModel.setAccumulateSaleQty(productRecyleContributionsModel.getAccumulateSaleQty());
+    		outProductModel.setPackingTotalWeight(productRecyleContributionsModel.getPackingTotalWeight());
+    		outProductModel.setRecyleContributions(productRecyleContributionsModel.getRecyleContributions());
+    	}
+  	
 		List<CodeModel> environmentProceedStatCode = codeService.selectGroupIdAllList("ENVIRONMENT_PROCEED_STAT_CODE");
 		outProductModel.setEnvironmentProceedStatCode(environmentProceedStatCode);
 		List<CodeModel> mappingStatCode = codeService.selectGroupIdAllList("MAPPING_STAT_CODE");
@@ -421,6 +367,10 @@ public class ProductService {
 		return null; //outProductModel;
 	}	
 	
+	
+	public List<ProdRecycleCalclModel>  selectProdRecycleList(ProdRecycleCalclModel prodRecycleCalclModel) {
+		return productMapper.selectProdRecycleList(prodRecycleCalclModel);
+	}	
 	
 	//##################################################################################################################################################
 	//##################################################################################################################################################

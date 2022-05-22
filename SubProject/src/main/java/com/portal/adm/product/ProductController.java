@@ -50,6 +50,7 @@ import com.portal.adm.product.model.ProdPackagingSelfAndFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfFileModel;
 import com.portal.adm.product.model.ProdPackagingSelfModel;
 import com.portal.adm.product.model.ProdPartModel;
+import com.portal.adm.product.model.ProdRecycleCalclModel;
 import com.portal.adm.product.model.ProdSelfPackagingModel;
 import com.portal.adm.product.model.ProductGroupFileModel;
 import com.portal.adm.product.model.ProductModel;
@@ -712,7 +713,16 @@ try {
     	System.out.println("selectProdPackagingSelfAndFileList prodPackagingSelfFileList " + prodPackagingSelfFileList);
     	prodPackagingSelfAndFileModel.setProdPackagingSelfFileList(prodPackagingSelfFileList);
 	    return new ResponseEntity<>(prodPackagingSelfAndFileModel, HttpStatus.OK);
-    }       
+    }     
+    
+    
+    @RequestMapping(value="/detail/selectProdRecycleList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProdRecycleCalclModel>> selectProdRecycleList(@RequestBody ProdRecycleCalclModel prodRecycleCalclModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	List<ProdRecycleCalclModel>  prodRecycleCalcList  = productService.selectProdRecycleList(prodRecycleCalclModel);
+	    return new ResponseEntity<>(prodRecycleCalcList, HttpStatus.OK);
+    }      
+    
     //################################################################################################################################
     //################################################################################################################################
     //################################################################################################################################

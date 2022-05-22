@@ -14,7 +14,9 @@ import lombok.Data;
  */
 @Data
 public class ProdPackagingDetailModel extends Criteria{
-	
+
+
+    
 	private String packagingDetailId;
 	private String packagingId;
 	private String partCode;
@@ -61,5 +63,5 @@ public class ProdPackagingDetailModel extends Criteria{
     private String representativeNm;
 	
     private String str;    
-
+    
 }

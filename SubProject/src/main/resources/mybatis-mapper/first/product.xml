@@ -31,7 +31,8 @@
 			cc.CODE_ID     AS   MAT_TYPE,
 			cc.CODE_NM     AS   MAT_TYPE_NM,
 			bb.CODE_NM     AS   MASTER_APPLY_NM,
-			'보통'       AS 	SELF_EVL_GRAD_NM	
+			a.GRADE_CODE,
+			dd.CODE_NM     AS 	SELF_EVL_GRAD_NM	
 		FROM
 			T1_PRODUCT a 
 
@@ -48,7 +49,13 @@
 	   LEFT OUTER JOIN t_code bb
 	     ON  bb.GROUP_ID          = 'ENVIRONMENT_PROCEED_STAT_CODE' 
 	    AND  a.MASTER_APPLY_CODE  =  bb.CODE_ID
-	    AND  bb.USE_YN  = 'Y'			
+	    AND  bb.USE_YN  = 'Y'		
+	    
+	   LEFT OUTER JOIN t_code dd
+	     ON  dd.GROUP_ID = 'PROD_GRADE_TYPE' 
+	    AND  dd.CODE_ID  =  a.GRADE_CODE
+	    AND  dd.USE_YN   = 'Y'		
+	    	
 		<include refid="searchProduct"></include>	
         ORDER BY a.PRODUCT_CODE, ROWNUM	
         <include refid="paging"></include>		
@@ -652,6 +659,43 @@
 		]]>			  
 	</select>	
 	
+	<select id="selectProductRecyle" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		SELECT
+		    BASE_YEAR
+			, ACCUMULATE_SALE_QTY
+			, PACKING_TOTAL_WEIGHT
+			, RECYLE_CONTRIBUTIONS
+		FROM
+			T1_PRODUCT_RECYLE 
+		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
+		  AND BASE_YEAR = #{inBaseYear}
+		  
+	</select>	
+	
+	<select id="selectProdRecycleList" resultType="com.portal.adm.product.model.ProdRecycleCalclModel" parameterType="com.portal.adm.product.model.ProdRecycleCalclModel">
+		SELECT  a.PACKAGING_ORDER_NM
+		     ,  sum(b.WEIGHT) WEIGHT
+		     ,  c.CODE_NM GROUP_NM
+		     ,  d.CODE_NM CODE_NM
+		     ,  d.RECYCL_DUTY_RATE
+		     ,  d.UNIT_PRICE
+		     ,  d.PREMIUM
+		     ,  d.DISCOUNT
+		  FROM  t1_product_packaging a
+		     ,  t1_product_packaging_detail b
+		     ,  t_environ_price c
+		     ,  t_environ_price d
+		 WHERE  upper(PRODUCT_CODE) = upper(#{productCode})
+		   AND  a.PACKAGING_ID = b.PACKAGING_ID
+		   AND  c.GROUP_ID  = 'GROUP_ID'
+		   AND  c.CODE_ID   =  a.GROUP_ID
+		   AND  d.GROUP_ID  =  a.GROUP_ID
+		   AND  d.CODE_ID   =  a.CODE_ID
+		   
+		GROUP BY  a.PACKAGING_ORDER_NM 
+		  
+	</select>		
+	
 <!-- ************************************************************************************************** -->	
 <!-- ************************************************************************************************** -->
 <!-- ************************************************************************************************** -->
@@ -741,18 +785,7 @@
 
 	
 	
-	<select id="selectProductRecyleContributions" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
-		SELECT
-		    BASE_YEAR
-			, ACCUMULATE_SALE_QTY
-			, PACKING_TOTAL_WEIGHT
-			, RECYLE_CONTRIBUTIONS
-		FROM
-			T_PRODUCT_RECYLE_CONTRIBUTIONS 
-		WHERE upper(PRODUCT_ID) = upper(#{productId})
-		  AND BASE_YEAR = #{inBaseYear}
-		  
-	</select>
+
 	
 	
 	<insert id="mergeProductRecyleContributions" parameterType="com.portal.adm.product.model.ProductModel">
