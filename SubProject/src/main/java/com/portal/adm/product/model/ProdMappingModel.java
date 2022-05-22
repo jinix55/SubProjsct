@@ -15,7 +15,14 @@ import lombok.Data;
 @Data
 public class ProdMappingModel extends Criteria{
 	
-	private String packagingDetailId;
+	private String masterApplyCode;
+	private String masterApplyNm;
+	private String masterMappingCode;
+	private String masterMappingNM;	
+	
+	
+	
+	
 	private String packagingId;
 	private String partCode;
 	private String matInfo;

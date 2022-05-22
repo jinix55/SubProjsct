@@ -49,8 +49,9 @@ public class ProductModel extends Criteria{
     
     //-----------------------------------------------------------------------------------------------    
     private String masterApplyNm;    //매핑상품명
-    private String applyProductCode; 
-    private String matClsNm;      //포장유형명
+    private String applyProductCode;
+    private String matType;
+    private String matTypeNm;      //포장유형명
     
     
     
@@ -82,7 +83,6 @@ public class ProductModel extends Criteria{
     private Integer recyleContributions_2;       
     
     private String errorString;
-    private String matType;
     private String mappingProductId; 
     
     private List<ProdPackagingModel> ProdPackagingList;  

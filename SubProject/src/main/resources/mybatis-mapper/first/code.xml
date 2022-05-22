@@ -163,14 +163,10 @@
 	
 					
 	<select id="getMatType" resultType="String" parameterType="String">
-		SELECT   DISTINCT
-		         b.MAT_TYPE 
-		   FROM  t_product a
-		       , t_product_packaging b
-		  WHERE  a.USE_YN ='Y'
-		    AND  b.USE_YN ='Y' 
-		    AND  a.PRODUCT_ID = b.PRODUCT_ID   
-		    AND  a.PRODUCT_ID = #{productId}
-		    AND  b.PACKAGING_ORDER = 1
+		SELECT   GROUP_ID MAT_TYPE 
+		   FROM  t1_product_packaging 
+		  WHERE  USE_YN ='Y'
+		    AND  PRODUCT_CODE =  #{prodeuctCode}
+		    AND  PACKAGING_ORDER = 1
 	</select>
 </mapper>

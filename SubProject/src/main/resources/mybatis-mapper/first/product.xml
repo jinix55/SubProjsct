@@ -28,7 +28,8 @@
 			a.PRODUCT_CODE,
 			a.PRODUCT_NM,
 			(SELECT FILE_ID FROM t_group_file WHERE GFILE_ID = PHOTO_GFILE_ID AND DEL_YN = 'N' AND USE_YN = 'Y' ORDER BY RGST_DT ASC LIMIT 1) AS PHOTO_GFILE_ID,
-			cc.CODE_NM     AS   MAT_CLS_NM,
+			cc.CODE_ID     AS   MAT_TYPE,
+			cc.CODE_NM     AS   MAT_TYPE_NM,
 			bb.CODE_NM     AS   MASTER_APPLY_NM,
 			'보통'       AS 	SELF_EVL_GRAD_NM	
 		FROM
@@ -613,7 +614,25 @@
 		)
 	</insert>	
 
-
+	<select id="selectProductMappingList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+		<![CDATA[
+		SELECT   DISTINCT
+		         a.PRODUCT_CODE  
+		       , a.APPROVAL_NUMBER
+		       , b.MAT_TYPE 
+		   FROM  t_product a
+		       , t_product_packaging b
+		  WHERE  a.USE_YN ='Y'
+		    AND  b.USE_YN ='Y' 
+		    AND  a.PRODUCT_ID = b.PRODUCT_ID      
+		    AND  b.PACKAGING_ORDER = 1
+		    AND  a.MASTER_APPLY = 'COMPLETION'
+		    AND  ifnull(a.APPROVAL_NUMBER,'') <> ''
+		    AND  a.MASTER_MAPPING  = 'UNMAPPING'
+		    AND  b.MAT_TYPE = #{matType}
+		]]>			  
+	</select>	
+	
 <!-- ************************************************************************************************** -->	
 <!-- ************************************************************************************************** -->
 <!-- ************************************************************************************************** -->
@@ -643,24 +662,7 @@
 	</select>
 	
 	
-	<select id="selectProductMapping" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
-		<![CDATA[
-		SELECT   DISTINCT
-		         a.PRODUCT_CODE  
-		       , a.APPROVAL_NUMBER
-		       , b.MAT_TYPE 
-		   FROM  t_product a
-		       , t_product_packaging b
-		  WHERE  a.USE_YN ='Y'
-		    AND  b.USE_YN ='Y' 
-		    AND  a.PRODUCT_ID = b.PRODUCT_ID      
-		    AND  b.PACKAGING_ORDER = 1
-		    AND  a.MASTER_APPLY = 'COMPLETION'
-		    AND  ifnull(a.APPROVAL_NUMBER,'') <> ''
-		    AND  a.MASTER_MAPPING  = 'UNMAPPING'
-		    AND  b.MAT_TYPE = #{matType}
-		]]>			  
-	</select>	
+
 
 	<select id="selectProductMatMappingCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[

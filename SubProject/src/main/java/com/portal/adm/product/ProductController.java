@@ -579,6 +579,11 @@ public class ProductController {
   	    	return ResponseEntity.badRequest().body(prodMappingModel);	
     	}
     	
+		if((productModel.getMatType() == null) || ("".equals(productModel.getMatType()))) {
+			prodMappingModel.setErrorString("재질정보가 등록 되지 않았습니다.");
+			return ResponseEntity.badRequest().body(prodMappingModel);	
+		}
+    	
     	prodMappingModel = productService.mapping(productModel);
         return new ResponseEntity<>(prodMappingModel, HttpStatus.OK);
 

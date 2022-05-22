@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.portal.adm.code.mapper.CodeMapper;
 import com.portal.adm.code.model.CodeModel;
 import com.portal.adm.code.service.CodeService;
 import com.portal.adm.environPrice.model.EnvironPriceModel;
@@ -33,6 +34,9 @@ public class ProductService {
 
     @Resource
     private ProductMapper productMapper;
+    
+    @Resource
+    private CodeMapper codeMapper;
 
     @Resource
     private CodeService codeService;
@@ -379,25 +383,31 @@ public class ProductService {
 	
 	
 	public ProdMappingModel mapping(ProductModel productModel) {
-		ProdMappingModel outProductModel = new ProdMappingModel();
+		ProdMappingModel prodMappingModel = new ProdMappingModel();
+		CodeModel codeModel = new CodeModel();
+
+		prodMappingModel.setMasterApplyCode("UNPROCEED");
+		codeModel.setGroupId("ENVIRONMENT_PROCEED_STAT_CODE");
+		codeModel.setCodeId("UNPROCEED");
+		codeModel = codeMapper.select(codeModel);
+		prodMappingModel.setMasterApplyNm(codeModel.getCodeNm());
 		
-		String producCode = productModel.getProductCode();
-		String matType = codeService.getCodeNm("MAT_TYPE_PRODUCT_CODE", producCode, null);
-		if((matType == null) || ("".equals(matType))) {
-			return outProductModel;
-		}
-//		outProductModel.setMasterApplyCode("UNPROCEED");
-//		outProductModel.setMasterMappingCode("NONEMAPPING");
+		
+		prodMappingModel.setMasterMappingCode("NONEMAPPING");
+		codeModel.setGroupId("MAPPING_STAT_CODE");
+		codeModel.setCodeId("NONEMAPPING");
+		codeModel = codeMapper.select(codeModel);
+		prodMappingModel.setMasterMappingNM(codeModel.getCodeNm());
 		
 		ProductModel inProductModel = new ProductModel();
 		ProductModel mappingProductModel = new ProductModel();
-		inProductModel.setMatType(matType);
+		//inProductModel.setMatType(matType);
 		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
 		
 		int productMatMappingCount = 0;
 		String mappingProductCode = "";
 		for(ProductModel p : ProductList) {
-			mappingProductModel.setProductCode(producCode);
+			//mappingProductModel.setProductCode(producCode);
 			mappingProductModel.setMappingProductCode(mappingProductCode);
 			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
 			if(productMatMappingCount == 0) {
@@ -408,7 +418,7 @@ public class ProductService {
 //				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
 			}
 		}
-		return outProductModel;
+		return null; //outProductModel;
 	}	
 	
 	
