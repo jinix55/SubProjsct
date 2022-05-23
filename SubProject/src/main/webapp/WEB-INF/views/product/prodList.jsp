@@ -1344,7 +1344,7 @@
 			},
 			success : function(result) {
 				alert('정상작으로 삭제 되었습니다.')
-				$("#page").val(page);
+				$("#page").val(1);
 				$("#searchFrm").submit();
 			}
 		});
@@ -1993,8 +1993,13 @@
 				alert(request.responseText);
 			},
 			success : function(result) {
-				var lastPart = $('#self-tab-list span:last');
-				lastPart.click();
+				if($('#tab-list li').length > 0){
+					var lastPart = $('#tab-list span:last');
+					lastPart.click();
+				}else {
+					$("#page").val(page);
+					$("#searchFrm").submit();
+				}
 			}
 		});
 	  }
