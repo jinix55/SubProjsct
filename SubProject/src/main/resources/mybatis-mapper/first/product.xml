@@ -503,13 +503,8 @@
 				
 				
 	<update id="delectProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
-		UPDATE t1_product_packaging_self
-		SET
-			  USE_YN = 'N'
-	 		, MODI_ID  = #{modiId}
-			, MODI_DT  = now()
+		DELETE FROM t1_product_packaging_self
 		WHERE PACKAGING_ID = #{packagingId}
-		   	
 	</update>	
 	
 	<insert id="insertProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
@@ -607,21 +602,21 @@
 	</select>		
 	
 	<update id="deleteProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
+	<!-- 
 		UPDATE t1_product_packaging_self_file
 		SET
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
 			, MODI_DT  = now()
 		WHERE PACKAGING_ID = #{packagingId}
-		   	
+	 -->
+		DELETE FROM t1_product_packaging_self_file
+		WHERE PACKAGING_ID = #{packagingId}
+	 	   	
 	</update>	
 	
 	<update id="deleteProdPackagingSelfFileByFileId" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
-		UPDATE t1_product_packaging_self_file
-		SET
-			  USE_YN = 'N'
-	 		, MODI_ID  = #{modiId}
-			, MODI_DT  = now()
+		DELETE FROM t1_product_packaging_self_file
 		WHERE FILE_ID = #{fileId}
 		   	
 	</update>		
