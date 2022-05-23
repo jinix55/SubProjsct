@@ -196,6 +196,8 @@
 		  <if test="packagingId  != null and packagingId != ''">
 				and (a.PACKAGING_ID = #{packagingId})
 		  </if>
+		ORDER BY a.PACKAGING_ORDER		  
+		  		  
 	</select>	
 
 
