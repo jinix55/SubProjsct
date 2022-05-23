@@ -2556,6 +2556,7 @@
 			 param.masterApplyCode=masterApplyCode;
 			 param.receiptNo=receiptNo;
 			 param.approvalNo=approvalNo;
+			 param.matType=matType;
 			 if(productCode && productCode != '' && productCode != null) {
 				 $.ajax({
 						type : 'post',
