@@ -1204,7 +1204,7 @@
 				console.log(item);
 				$('#edit_masterMapping').append('<div class="button-Rsmall d-inblock"><input type="radio"  name="masterMappingCode" value="'+item.codeId+'"><label for="masterMapping" class="mr05">'+item.codeNm+'</label></div>');
 			});
-			$('#edit_masterMapping').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05">매핑실행</label></div>');
+			$('#edit_masterMapping').append('<div class="button-Rsmall d-inblock"  onclick="mapProductCode(\'edit_productCodeSave\');"><label class="mr05" style="background: #00baff;border: 1px solid #029bd4;width: 70px;font-size: 14px;color: #fff;margin-left: 65px;display: inline-block;text-align: center;cursor: pointer;">매핑실행</label></div>');
 		}
 		
 		$("#frmUpdate input[name=masterApplyCode]").val([data.masterApplyCode]);
