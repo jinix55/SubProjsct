@@ -149,7 +149,6 @@ public class ProductController {
     @RequestMapping(value="/detail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-//    public ResponseEntity<ProductModel> selectProduct(@RequestBody ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
     	System.out.println("productModel" + productModel.getProductCode());
     	ProductModel product = productService.selectProduct(productModel);

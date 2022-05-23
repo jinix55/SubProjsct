@@ -714,23 +714,44 @@
 	<select id="selectProductMatMappingCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[
 		SELECT COUNT(*) FROM (
-			SELECT DISTINCT a.CODE_ID
-			FROM t1_product_packaging_self a 
-			LEFT JOIN t1_product_packaging_self b
-			 ON a.CODE_ID = b.CODE_ID
-			 AND upper(b.PRODUCT_CODE) = upper(#{productId}) 
-			WHERE b.CODE_ID IS NULL
-			 AND upper(a.PRODUCT_CODE) = #{mappingProductCode} 
-		UNION 
-			 SELECT DISTINCT a.CODE_ID
-			FROM t1_product_packaging_self a 
-			LEFT JOIN t1_product_packaging_self b
-			 ON a.CODE_ID = b.CODE_ID
-			 AND b.file is null
-			 AND b.PRODUCT_ID = #{mappingProductId} 
-			WHERE b.CODE_ID IS NULL
-			 AND a.file is null
-			 AND a.PRODUCT_ID = #{productId} 
+			SELECT  DISTINCT
+			        a2.CODE_ID
+			  FROM  t1_product_packaging a1
+			     ,  t1_product_packaging_self a2
+			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{productCode})
+			  AND   a1.USE_YN = 'Y'
+			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
+			  AND   a2.USE_YN = 'Y'
+			  AND   a2.CODE_ID NOT IN (
+			SELECT  DISTINCT
+			        a2.CODE_ID
+			  FROM  t1_product_packaging a1
+			     ,  t1_product_packaging_self a2
+			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{mappingProductCode})
+			  AND   a1.USE_YN = 'Y'
+			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
+			  AND   a2.USE_YN = 'Y'
+			  )
+			UNION   
+			SELECT  DISTINCT
+			        a2.CODE_ID
+			  FROM  t1_product_packaging a1
+			     ,  t1_product_packaging_self a2
+			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{mappingProductCode})
+			  AND   a1.USE_YN = 'Y'
+			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
+			  AND   a2.USE_YN = 'Y'
+			  AND   a2.CODE_ID NOT IN (
+			SELECT  DISTINCT
+			        a2.CODE_ID
+			  FROM  t1_product_packaging a1
+			     ,  t1_product_packaging_self a2
+			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{productCode})
+			  AND   a1.USE_YN = 'Y'
+			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
+			  AND   a2.USE_YN = 'Y'
+			
+			) aa  
 		) c 
 		]]>			  
 	</select>		
