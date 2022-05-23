@@ -93,15 +93,25 @@
 			, b.MAPPING_PRODUCT_CODE
 			, b.PRODUCT_NM           MAPPING_PRODUCT_NM 
 			
+			, c.GROUP_ID   AS  MAT_TYPE
+			
 			, a.RGST_ID
 			, a.RGST_DT
 			, a.MODI_ID
 			, a.MODI_DT
 		FROM
 			T1_PRODUCT a 
+
 	    LEFT OUTER JOIN T1_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = upper(b.MAPPING_PRODUCT_CODE)
          AND b.USE_YN = 'Y'
+
+	    LEFT OUTER JOIN t1_product_packaging c
+	      ON upper(a.PRODUCT_CODE) = upper(c.PRODUCT_CODE)
+	     AND c.PACKAGING_ORDER = 1 
+         AND c.USE_YN = 'Y'
+
+
 		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
 		  AND a.USE_YN = 'Y'
 	</select>
@@ -538,14 +548,14 @@
 		SELECT  IFNULL(MAX(PACKAGING_ORDER) + 1 , 1) AS PACKAGING_ORDER
 		     ,  CONCAT(IFNULL(MAX(PACKAGING_ORDER) + 1 , 1),'차포장') AS PACKAGING_ORDER_NM
 		  FROM  t1_product_packaging
-		 WHERE  PRODUCT_CODE = #{productCode}
+		 WHERE  upper(PRODUCT_CODE) = upper(#{productCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER < 9  
 		UNION    
 		SELECT IFNULL(MAX(PACKAGING_ORDER) + 1 , 11)  AS PACKAGING_ORDER
 		     ,  '부속포장' AS PACKAGING_ORDER_NM
 		  FROM  t1_product_packaging
-		 WHERE  PRODUCT_CODE = #{productCode}
+		 WHERE   upper(PRODUCT_CODE) = upper(#{productCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER > 10  
 		]]>	 	
@@ -647,23 +657,19 @@
 		)
 	</insert>	
 
-	<select id="selectProductMappingList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
+	<select id="selectProductMappingList" resultType="com.portal.adm.product.model.ProdMappingModel" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[
-		SELECT   DISTINCT
-		         a.PRODUCT_CODE  
-		       , a.APPROVAL_NUMBER
-		       , b.MAT_TYPE 
-		   FROM  t_product a
-		       , t_product_packaging b
-		  WHERE  a.USE_YN ='Y'
-		    AND  b.USE_YN ='Y' 
-		    AND  a.PRODUCT_ID = b.PRODUCT_ID      
-		    AND  b.PACKAGING_ORDER = 1
-		    AND  a.MASTER_APPLY = 'COMPLETION'
-		    AND  ifnull(a.APPROVAL_NUMBER,'') <> ''
-		    AND  a.MASTER_MAPPING  = 'UNMAPPING'
-		    AND  b.MAT_TYPE = #{matType}
-		]]>			  
+			SELECT   a.PRODUCT_CODE  MAPPING_PRODUCT_CODE
+			   FROM  t1_product a
+			       , t1_product_packaging b
+			  WHERE  upper(a.PRODUCT_CODE) <> upper(#{product_code})
+			    AND  a.USE_YN ='Y'
+			    AND  b.USE_YN ='Y' 
+			    AND  a.PRODUCT_CODE = b.PRODUCT_CODE
+			    AND  b.PACKAGING_ORDER = 1
+			    AND  a.MASTER_APPLY_CODE = 'COMPLETION'
+			    AND  b.GROUP_ID  = #{matType}
+ 		]]>			  
 	</select>	
 	
 	<select id="selectProductRecyle" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
@@ -703,6 +709,32 @@
 		  
 	</select>		
 	
+
+
+	<select id="selectProductMatMappingCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
+		<![CDATA[
+		SELECT COUNT(*) FROM (
+			SELECT DISTINCT a.CODE_ID
+			FROM t1_product_packaging_self a 
+			LEFT JOIN t1_product_packaging_self b
+			 ON a.CODE_ID = b.CODE_ID
+			 AND upper(b.PRODUCT_CODE) = upper(#{productId}) 
+			WHERE b.CODE_ID IS NULL
+			 AND upper(a.PRODUCT_CODE) = #{mappingProductCode} 
+		UNION 
+			 SELECT DISTINCT a.CODE_ID
+			FROM t1_product_packaging_self a 
+			LEFT JOIN t1_product_packaging_self b
+			 ON a.CODE_ID = b.CODE_ID
+			 AND b.file is null
+			 AND b.PRODUCT_ID = #{mappingProductId} 
+			WHERE b.CODE_ID IS NULL
+			 AND a.file is null
+			 AND a.PRODUCT_ID = #{productId} 
+		) c 
+		]]>			  
+	</select>		
+	
 <!-- ************************************************************************************************** -->	
 <!-- ************************************************************************************************** -->
 <!-- ************************************************************************************************** -->
@@ -733,32 +765,6 @@
 	
 	
 
-
-	<select id="selectProductMatMappingCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
-		<![CDATA[
-		SELECT COUNT(*) FROM (
-			SELECT DISTINCT a.CODE_ID
-			FROM t_product_packaging_mat a 
-			LEFT JOIN t_product_packaging_mat b
-			 ON a.CODE_ID = b.CODE_ID
-			 AND b.file is null
-			 AND b.PRODUCT_ID = #{productId} 
-			WHERE b.CODE_ID IS NULL
-			 AND a.file is null
-			 AND a.PRODUCT_ID = #{mappingProductId} 
-		UNION 
-			 SELECT DISTINCT a.CODE_ID
-			FROM t_product_packaging_mat a 
-			LEFT JOIN t_product_packaging_mat b
-			 ON a.CODE_ID = b.CODE_ID
-			 AND b.file is null
-			 AND b.PRODUCT_ID = #{mappingProductId} 
-			WHERE b.CODE_ID IS NULL
-			 AND a.file is null
-			 AND a.PRODUCT_ID = #{productId} 
-		) c 
-		]]>			  
-	</select>	
 
 	
 	
@@ -925,7 +931,7 @@
 		FROM                                                       
 			T_PRODUCT 
        WHERE USE_YN = 'Y' 
-        AND  PRODUCT_CODE = #{productCode} 		    		
+        AND  upper(PRODUCT_CODE) = upper(#{productCode}) 		    		
 	</select>
 	
 	

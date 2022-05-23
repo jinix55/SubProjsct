@@ -6,6 +6,7 @@ import com.portal.adm.environPrice.model.EnvironPriceModel;
 import com.portal.adm.packagingCode.model.PackagingCodeModel;
 import com.portal.adm.product.model.ProdPartModel;
 import com.portal.adm.product.model.ProdRecycleCalclModel;
+import com.portal.adm.product.model.ProdMappingModel;
 import com.portal.adm.product.model.ProdPackagingDetailModel;
 import com.portal.adm.product.model.ProdPackagingMatModel;
 import com.portal.adm.product.model.ProdPackagingModel;
@@ -68,9 +69,9 @@ public interface ProductMapper {
     long deleteProduct(ProductModel productModel);
     
     
-    List<ProductModel> selectProductMapping(ProductModel productModel);
+    List<ProdMappingModel> selectProductMapping(ProductModel productModel);
     
-    int selectProductMatMappingCount(ProductModel productModel);
+    int selectProductMatMappingCount(ProdMappingModel prodMappingModel);
     
     /**
      * 상품포장정보관리 목록 조회한다.

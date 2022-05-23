@@ -355,18 +355,16 @@ public class ProductService {
 		codeModel.setCodeId("NONEMAPPING");
 		codeModel = codeMapper.select(codeModel);
 		prodMappingModel.setMasterMappingNM(codeModel.getCodeNm());
+
 		
-		ProductModel inProductModel = new ProductModel();
-		ProductModel mappingProductModel = new ProductModel();
-		//inProductModel.setMatType(matType);
-		List<ProductModel> ProductList =  productMapper.selectProductMapping(inProductModel);
+		List<ProdMappingModel> prodMappingList =  productMapper.selectProductMapping(productModel);
+		
+		System.out.println("prodMappingList " + prodMappingList);
 		
 		int productMatMappingCount = 0;
-		String mappingProductCode = "";
-		for(ProductModel p : ProductList) {
-			//mappingProductModel.setProductCode(producCode);
-			mappingProductModel.setMappingProductCode(mappingProductCode);
-			productMatMappingCount = productMapper.selectProductMatMappingCount(mappingProductModel);
+		for(ProdMappingModel p : prodMappingList) {
+			p.setProductCode(productModel.getProductCode());
+			productMatMappingCount = productMapper.selectProductMatMappingCount(p);
 			if(productMatMappingCount == 0) {
 //				outProductModel.setMasterApplyCode("COMPLETION");
 //				outProductModel.setApprovalNo(p.getApprovalNo());
