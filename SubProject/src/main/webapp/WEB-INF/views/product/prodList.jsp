@@ -1391,7 +1391,7 @@
 							if(self){
 								$('#self-tab-list').append('<li class="active"><a href="#" onclick=\'getProdPackagingSelfList("'+item.packagingId+'", this);\' role="tab" data-toggle="tab"><span>' +
 										packagingOrder +
-								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingSelfTab("'+ item.packagingId + '", this);\' title="Remove this page">×</button></a></li>'
+								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingSelfTab("'+ item.packagingId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 								     );
 								
 								// 텝 추가후 1차 포장자가진단 정보 서버에서 조회 함
@@ -1993,7 +1993,7 @@
 				alert(request.responseText);
 			},
 			success : function(result) {
-				var lastPart = $('#tab-list span:last');
+				var lastPart = $('#self-tab-list span:last');
 				lastPart.click();
 			}
 		});
@@ -2393,13 +2393,13 @@
 	  }
 	  
 	 // 포장 자가진단 차수 삭제 버튼 클릭시
-	 function deleteProductPackagingSelfTab(packagingId, packagingOrder) {
+	 function deleteProductPackagingSelfTab(packagingId, packagingOrder, obj) {
 		  var result = confirm(packagingOrder+"차 자가진단 정보를 삭제하시겠습니까?");
-		  if(result)deletePackagingSelfAjax(packagingId);
+		  if(result)deletePackagingSelfAjax(packagingId, obj);
 	 }
 	  
 	 //포장자가진단 삭제
-	 function deletePackagingSelfAjax(packagingId) {
+	 function deletePackagingSelfAjax(packagingId, obj) {
 		  	$.ajax({
 			type : 'post',
 			url : '/product/delete/ProdPackagingSelf',
@@ -2410,8 +2410,9 @@
 				alert(request.responseText);
 			},
 			success : function(result) {
-				var lastPart = $('#slef-tab-list span:last');
-				lastPart.click();
+				  var tabID = $(obj).parents('a');
+				  console.log(tabID+"<TAB>");
+			      $(tabID).click();
 			}
 		});
 	  }
