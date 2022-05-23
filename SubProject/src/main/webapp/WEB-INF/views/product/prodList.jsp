@@ -2569,8 +2569,12 @@
 						},
 						success : function(result) {
 							console.log(result);
+							if(result.masterApplyCode === 'UNPROCEED'){
+								alert(result.masterMappingNM);
+							}else {
+								$("#frmUpdate input[name=mappingProductCode]").val(result.productCode);
+							}
 // 							$("#frmUpdate input[name=masterMappingCode]").val([result.masterMappingCode]);
-							$("#frmUpdate input[name=mappingProductCode]").val(result.productCode);
 						}
 					});
 			 }

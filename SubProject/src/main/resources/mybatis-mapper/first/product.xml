@@ -751,7 +751,7 @@
 			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
 			  AND   a2.USE_YN = 'Y'
 			
-			) aa  
+			) 
 		) c 
 		]]>			  
 	</select>		
