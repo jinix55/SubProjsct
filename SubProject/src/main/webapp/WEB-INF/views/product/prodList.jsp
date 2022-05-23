@@ -1389,14 +1389,14 @@
 								packagingOrder = item.packagingOrder +'차 포장';
 							}
 							if(self){
-								$('#self-tab-list').append('<li class="active"><a href="#" onclick=\'getProdPackagingSelfList("'+item.packagingId+'", this);\' role="tab" data-toggle="tab"><span>' +
+								$('#self-tab-list').append('<li class="active"><a href="#" id="self-tab-list-'+item.packagingOrder+'" onclick=\'getProdPackagingSelfList("'+item.packagingId+'", "'+item.packagingOrder+'", this);\' role="tab" data-toggle="tab"><span>' +
 										packagingOrder +
 								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingSelfTab("'+ item.packagingId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 								     );
 								
 								// 텝 추가후 1차 포장자가진단 정보 서버에서 조회 함
 								if(index == 0) {
-									getProdPackagingSelfList(item.packagingId);
+									getProdPackagingSelfList(item.packagingId, item.packagingOrder);
 									layerPopup($('#selfDetail'));
 								}
 								
@@ -2005,7 +2005,7 @@
 	  }
 
 	  //자가진단 목록 조회
-	  function getProdPackagingSelfList(packagingId, obj) {
+	  function getProdPackagingSelfList(packagingId, packagingOrder, obj) {
 		     selectedPackagingId = packagingId;
 		     var param = {};
 			 param.packagingId=packagingId;
@@ -2096,7 +2096,7 @@
 
 					result.prodPackagingSelfFileList.forEach(function(f, index) {
 						if(f.fileId && f.fileId !== null && f.fileId !==''){
-							$('#file_'+f.matReportCode+'-'+f.partCode+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteProdPackagingSelfFileAjax("'+f.fileId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
+							$('#file_'+f.matReportCode+'-'+f.partCode+'  > .MultiFile-list').append('<div class="MultiFile-label"><a class="MultiFile-remove" href="#" onclick=\'deleteProdPackagingSelfFileAjax("'+f.fileId+'", "'+packagingOrder+'", this);\'>x</a> <span><span class="MultiFile-label" title='+f.fileNm+' 을 선택했습니다." onclick=\'downloadFile("'+f.fileId+'");\'><span class="MultiFile-title">'+f.fileNm+'</span></span></span></div>');
 							$('.MultiFile-remove').show();
 						}			
 					});
@@ -2417,7 +2417,7 @@
 	  }
 
 	  //포장자가진단 파일 삭제
-	  function deleteProdPackagingSelfFileAjax(id, obj){
+	  function deleteProdPackagingSelfFileAjax(id, packagingOrder, obj){
 		  $.ajax({
 				type : 'POST',
 				url : '/product/delete/ProdPackagingSelfFileByFileId/',
@@ -2426,14 +2426,16 @@
 				error : function(request, status, error) {
 					console.log(request.responseText);
 					if(request.responseText === 'Delete') {
-						$(obj).parent('.MultiFile-remove').remove();
+						$('#self-tab-list-'+packagingOrder).click();
+// 						$(obj).parent('.MultiFile-remove').remove();
 					}else {
 						alert(request.responseText);
 					}
 				},
 				success : function(result) {
 					console.log(result);
-					$(obj).parent('.MultiFile-remove').remove();
+					$('#self-tab-list-'+packagingOrder).click();
+// 					$(obj).parent('.MultiFile-remove').remove();
 // 					$(obj).parent().remove();
 				}
 			});
@@ -2470,7 +2472,7 @@
 			innerHtml += '   <div class="form-group">';
 			innerHtml += '		<label class="col-45 form-label"><input type="radio" id="radio" name="radio" checked="checked">'+item.packagingOrderNm+'</label>';
 			innerHtml += '		<div class="col-55">';
-			innerHtml += item.groupNm+'('+item.codeNm+')';
+			innerHtml += 			item.groupNm+'('+item.codeNm+')';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
 			innerHtml += '	</div>';

@@ -468,7 +468,6 @@ $(document).ready(function() {
 
 		$('.preView').click(function() {
 			var tr = $('.partTypeCheck.on').val();
-			alert(tr);
 			var target = '';
 			if (tr == 'B') {
 				target = 'b_';
