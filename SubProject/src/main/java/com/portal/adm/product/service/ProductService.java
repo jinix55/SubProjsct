@@ -316,6 +316,17 @@ public class ProductService {
 			return Constant.DB.FAIL;
 		}
 	}	
+
+	@Transactional
+	public String deleteProdPackagingSelfFileByFileId(ProdPackagingSelfFileModel prodPackagingSelfFileModel) {
+		long count = productMapper.deleteProdPackagingSelfFileByFileId(prodPackagingSelfFileModel);
+		if (count > 0) {
+			return Constant.DB.DELETE;
+		} else {
+			return Constant.DB.FAIL;
+		}
+	}	
+
 	
 	@Transactional
 	public String insertProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel) {

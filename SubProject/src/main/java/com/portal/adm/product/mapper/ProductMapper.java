@@ -167,6 +167,7 @@ public interface ProductMapper {
 	
 	List<ProdPackagingSelfFileModel> selectProdPackagingSelfFileList(ProdPackagingSelfFileModel prodPackagingSelfFileModel);	
 	long deleteProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
+	long deleteProdPackagingSelfFileByFileId(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
 	long insertProdPackagingSelfFile(ProdPackagingSelfFileModel prodPackagingSelfFileModel);
 	
 	

@@ -614,6 +614,16 @@
 		   	
 	</update>	
 	
+	<update id="deleteProdPackagingSelfFileByFileId" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
+		UPDATE t1_product_packaging_self_file
+		SET
+			  USE_YN = 'N'
+	 		, MODI_ID  = #{modiId}
+			, MODI_DT  = now()
+		WHERE PACKAGING_SELF_FILE_ID = #{packagingSelfFileId}
+		   	
+	</update>		
+	
 	<insert id="insertProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
 		INSERT INTO t1_product_packaging_self_file (
 			  PACKAGING_SELF_FILE_ID   

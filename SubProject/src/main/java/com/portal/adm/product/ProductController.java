@@ -657,15 +657,18 @@ try {
     @RequestMapping(value="/delete/ProdPackagingSelfFile", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<String> deleteProdPackagingSelfFile(@ModelAttribute ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
-//    public ResponseEntity<String> deleteProdPackagingSelfFile(@RequestBody ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
-    	
-    	System.out.println("deleteProdPackagingSelfFile prodPackagingSelfFileModel " + prodPackagingSelfFileModel );  
-    	
     	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
 		String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
 	    return new ResponseEntity<>(result, HttpStatus.OK);
     }  
     
+    @RequestMapping(value="/delete/ProdPackagingSelfFileByFileId", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<String> deleteProdPackagingSelfFileByFileId(@ModelAttribute ProdPackagingSelfFileModel prodPackagingSelfFileModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
+		String result = productService.deleteProdPackagingSelfFileByFileId(prodPackagingSelfFileModel);
+	    return new ResponseEntity<>(result, HttpStatus.OK);
+    }  
     
     
     /**
