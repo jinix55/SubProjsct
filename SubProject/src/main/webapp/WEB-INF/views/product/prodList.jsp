@@ -2455,7 +2455,7 @@
 					$('#enviRecycleList').empty();
 					data.forEach(function(item, index) {
 						console.log(item);
-						$('#enviRecycleList').append(getProductPackagingEnviResultItem(item));
+						$('#enviRecycleList').append(getProductPackagingEnviResultItem(productCode, item));
 					});
 		  			layerPopup($('#envi_result'));
 				}
@@ -2463,7 +2463,7 @@
 	  }
 
 	  //재활용분단금 html 생성
-	  function getProductPackagingEnviResultItem(item){
+	  function getProductPackagingEnviResultItem(productCode, item){
 		    var innerHtml = "";
 			innerHtml += '<div>';
 			innerHtml += '<div class="col-35">';
@@ -2479,7 +2479,8 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-40 form-label">출고량</label>';
 			innerHtml += '		  <div class="col-60">';
-			innerHtml += '			<input type="text" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '			<input type="hidden" name="productCode" class="text-input" value="'+productCode+'">';
+			innerHtml += '			<input type="text" name="saleQty" class="text-input" placeholder="1차포장 (입력x)">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
@@ -2487,7 +2488,7 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-40 form-label">기준중량</label>';
 			innerHtml += '		  <div class="col-60">';
-			innerHtml += '			<input type="text" class="text-input" placeholder="1차포장 (입력x)" value="'+item.weight+'">';
+			innerHtml += '			<input type="text" name="weight" class="text-input" placeholder="1차포장 (입력x)" value="'+item.weight+'">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
@@ -2495,7 +2496,7 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-60 form-label">재활용의무율</label>';
 			innerHtml += '		  <div class="col-40">';
-			innerHtml += '			<input type="number" value="'+item.recyclDutyRate+'" class="text-input" placeholder="1" min="0" max="5">';
+			innerHtml += '			<input type="number" name="recyclDutyRate" value="'+item.recyclDutyRate+'" class="text-input" placeholder="1" min="0" max="5">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
@@ -2503,7 +2504,7 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-40 form-label">단가</label>';
 			innerHtml += '		  <div class="col-60">';
-			innerHtml += '			<input type="text" value="'+item.unitPrice+'" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '			<input type="text" name="unitPrice" value="'+item.unitPrice+'" class="text-input" placeholder="1차포장 (입력x)">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
@@ -2511,7 +2512,7 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-40 form-label">활증</label>';
 			innerHtml += '		  <div class="col-60">';
-			innerHtml += '			<input type="text" value="'+item.premium+'" class="text-input" placeholder="1차포장 (입력x)">';
+			innerHtml += '			<input type="text" name="premium" value="'+item.premium+'" class="text-input" placeholder="1차포장 (입력x)">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
@@ -2519,7 +2520,7 @@
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-45 form-label">재활용분담금</label>';
 			innerHtml += '		  <div class="col-55">';
-			innerHtml += '			<input type="text" value="'+item.premium+'" class="text-input" placeholder="자동계산">';
+			innerHtml += '			<input type="text" name="discount" value="'+item.discount+'" class="text-input" placeholder="자동계산">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';
 			innerHtml += '	  </div>';
