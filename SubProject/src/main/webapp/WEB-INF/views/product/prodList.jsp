@@ -2569,7 +2569,7 @@
 						},
 						success : function(result) {
 							console.log(result);
-							if(result.masterApplyCode === 'UNPROCEED'){
+							if(result.masterMappingCode === 'NONEMAPPING'){
 								alert(result.masterMappingNM);
 							}else {
 								$("#frmUpdate input[name=mappingProductCode]").val(result.productCode);
