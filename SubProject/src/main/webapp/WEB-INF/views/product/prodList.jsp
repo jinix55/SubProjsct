@@ -2569,12 +2569,14 @@
 						},
 						success : function(result) {
 							console.log(result);
-							if(result.masterMappingCode === 'NONEMAPPING'){
-								alert(result.masterMappingNM);
-							}else {
-								$("#frmUpdate input[name=mappingProductCode]").val(result.productCode);
-							}
-// 							$("#frmUpdate input[name=masterMappingCode]").val([result.masterMappingCode]);
+							$("#frmUpdate input[name=masterApplyCode]").val([result.masterApplyCode]);
+							$("#frmUpdate input[name=masterMappingCode]").val([result.masterMappingCode]);
+							$("#frmUpdate input[name=mappingProductCode]").val(result.mappingProductCode);
+							$("#frmUpdate input[name=mappingProductNm]").val(result.mappingProductNm);
+// 							if(result.masterMappingCode === 'COMPLETION'){
+// 								alert(result.masterMappingNM);
+// 							}else {
+// 							}
 						}
 					});
 			 }
