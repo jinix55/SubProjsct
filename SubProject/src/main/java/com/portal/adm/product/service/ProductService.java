@@ -356,7 +356,7 @@ public class ProductService {
 		codeModel = codeMapper.select(codeModel);
 		prodMappingModel.setMasterMappingNM(codeModel.getCodeNm());
 
-		
+		System.out.println("productModel " + productModel);
 		List<ProdMappingModel> prodMappingList =  productMapper.selectProductMappingList(productModel);
 		
 		System.out.println("prodMappingList " + prodMappingList);
