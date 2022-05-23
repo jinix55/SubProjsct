@@ -2411,7 +2411,6 @@
 			},
 			success : function(result) {
 				  var tabID = $(obj).parents('a');
-				  console.log(tabID+"<TAB>");
 			      $(tabID).click();
 			}
 		});
@@ -2421,8 +2420,8 @@
 	  function deleteProdPackagingSelfFileAjax(id, obj){
 		  $.ajax({
 				type : 'post',
-				url : '/product/delete/ProdPackagingSelfFile',
-				data : {'packagingId': selectedPackagingId, 'fileId': id},
+				url : '/delete/ProdPackagingSelfFileByFileId',
+				data : {'fileId': id},
 				dataType : 'json',
 				error : function(request, status, error) {
 					console.log(request.responseText);

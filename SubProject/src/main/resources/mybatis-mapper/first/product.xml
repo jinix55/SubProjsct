@@ -622,7 +622,7 @@
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
 			, MODI_DT  = now()
-		WHERE PACKAGING_SELF_FILE_ID = #{packagingSelfFileId}
+		WHERE FILE_ID = #{fileId}
 		   	
 	</update>		
 	
