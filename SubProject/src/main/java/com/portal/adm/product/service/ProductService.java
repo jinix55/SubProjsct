@@ -357,7 +357,7 @@ public class ProductService {
 		prodMappingModel.setMasterMappingNM(codeModel.getCodeNm());
 
 		
-		List<ProdMappingModel> prodMappingList =  productMapper.selectProductMapping(productModel);
+		List<ProdMappingModel> prodMappingList =  productMapper.selectProductMappingList(productModel);
 		
 		System.out.println("prodMappingList " + prodMappingList);
 		
@@ -366,14 +366,14 @@ public class ProductService {
 			p.setProductCode(productModel.getProductCode());
 			productMatMappingCount = productMapper.selectProductMatMappingCount(p);
 			if(productMatMappingCount == 0) {
-//				outProductModel.setMasterApplyCode("COMPLETION");
-//				outProductModel.setApprovalNo(p.getApprovalNo());
-//				outProductModel.setMasterMappingCode("MAPPING");
-//				outProductModel.setMappingProductCode(p.getProductCode());
-//				outProductModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
+				prodMappingModel.setMasterApplyCode("COMPLETION");
+				prodMappingModel.setApprovalNo(productModel.getApprovalNo());
+				prodMappingModel.setMasterMappingCode("MAPPING");
+				prodMappingModel.setMappingProductCode(p.getProductCode());
+				prodMappingModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
 			}
 		}
-		return null; //outProductModel;
+		return prodMappingModel;
 	}	
 	
 	

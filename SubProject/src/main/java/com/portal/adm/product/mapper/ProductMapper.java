@@ -69,7 +69,7 @@ public interface ProductMapper {
     long deleteProduct(ProductModel productModel);
     
     
-    List<ProdMappingModel> selectProductMapping(ProductModel productModel);
+    List<ProdMappingModel> selectProductMappingList(ProductModel productModel);
     
     int selectProductMatMappingCount(ProdMappingModel prodMappingModel);
     

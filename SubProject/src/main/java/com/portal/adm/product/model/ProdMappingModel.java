@@ -20,7 +20,10 @@ public class ProdMappingModel extends Criteria{
 	private String masterMappingCode;
 	private String masterMappingNM;	
 	private String productCode;
-	private String mappingProductCode;	
+	private String mappingProductCode;
+	private String mappingProductNm;
+	
+	private String ApprovalNo;
 	
 	
     private String errorString;    
