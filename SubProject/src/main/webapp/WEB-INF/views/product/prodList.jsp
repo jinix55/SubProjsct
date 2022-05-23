@@ -301,6 +301,7 @@
 						<label class="col-25 form-label">상품코드</label>
 						<div class="col-75">
 						  <input name="productCode" type="hidden" class="text-input">
+						  <input name="matType" type="hidden" class="text-input">
 						  <input name="photoGfileId" type="hidden" class="text-input">
 						  <input name="specGfileId" type="hidden" class="text-input">
 						  <input name="productCodeView" type="text" class="text-input" value="" disabled>
@@ -1153,6 +1154,7 @@
 	function setProductDetailView(data){
 		//hidden 정보
 		$("#frmUpdate input[name=productCode]").val(data.productCode);
+		$("#frmUpdate input[name=matType]").val(data.matType);
 		$("#frmUpdate input[name=photoGfileId]").val(data.photoGfileId);
 		$("#frmUpdate input[name=specGfileId]").val(data.specGfileId);
 		
@@ -2541,4 +2543,35 @@
 	  function saveEnviRecycleInfo(){
 
 	  }
+
+	  // 매핑실행 버튼 클릭시 호출
+	  function mapProductCode(id){
+			 var productCode = $("#frmUpdate input[name=productCode]").val();
+			 var masterApplyCode = $("#frmUpdate input[name=masterApplyCode]").val();
+			 var receiptNo = $("#frmUpdate input[name=receiptNo]").val();
+			 var approvalNo =$("#frmUpdate input[name=approvalNo]").val();
+			 var matType = $("#frmUpdate input[name=matType]").val();
+			 var param = {};
+			 param.productCode=productCode;
+			 param.masterApplyCode=masterApplyCode;
+			 param.receiptNo=receiptNo;
+			 param.approvalNo=approvalNo;
+			 if(productCode && productCode != '' && productCode != null) {
+				 $.ajax({
+						type : 'post',
+						url : '/product/detail/mapping/',
+						data: param,
+						dataType : 'json',
+						error: function(request, status, error){
+							console.log(request.responseText);
+							alert(JSON.parse(request.responseText).errorString);
+						},
+						success : function(result) {
+							console.log(result);
+// 							$("#frmUpdate input[name=masterMappingCode]").val([result.masterMappingCode]);
+							$("#frmUpdate input[name=mappingProductCode]").val(result.productCode);
+						}
+					});
+			 }
+		  }
 </script>
