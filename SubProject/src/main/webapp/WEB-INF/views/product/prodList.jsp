@@ -2419,17 +2419,22 @@
 	  //포장자가진단 파일 삭제
 	  function deleteProdPackagingSelfFileAjax(id, obj){
 		  $.ajax({
-				type : 'post',
-				url : '/delete/ProdPackagingSelfFileByFileId',
+				type : 'POST',
+				url : '/product/delete/ProdPackagingSelfFileByFileId/',
 				data : {'fileId': id},
-				dataType : 'json',
+				dataType : 'JSON',
 				error : function(request, status, error) {
 					console.log(request.responseText);
-					alert(request.responseText);
+					if(request.responseText === 'Delete') {
+						$(obj).parent('.MultiFile-remove').remove();
+					}else {
+						alert(request.responseText);
+					}
 				},
 				success : function(result) {
 					console.log(result);
-					$(obj).parent().remove();
+					$(obj).parent('.MultiFile-remove').remove();
+// 					$(obj).parent().remove();
 				}
 			});
 	  }
