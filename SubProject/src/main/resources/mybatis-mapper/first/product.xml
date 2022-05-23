@@ -662,7 +662,7 @@
 			SELECT   a.PRODUCT_CODE  MAPPING_PRODUCT_CODE
 			   FROM  t1_product a
 			       , t1_product_packaging b
-			  WHERE  upper(a.PRODUCT_CODE) <> upper(#{product_code})
+			  WHERE  upper(a.PRODUCT_CODE) <> upper(#{productCode})
 			    AND  a.USE_YN ='Y'
 			    AND  b.USE_YN ='Y' 
 			    AND  a.PRODUCT_CODE = b.PRODUCT_CODE
