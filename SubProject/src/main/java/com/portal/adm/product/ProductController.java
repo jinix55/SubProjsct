@@ -522,7 +522,7 @@ public class ProductController {
     	
     	List<ProdPackagingSelfFileModel>  ProdPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
     	prodPackagingSelfList.get(0).setModiId(authUser.getMemberModel().getUserId());
-		result = productService.delectProdPackagingSelf(prodPackagingSelfList.get(0));
+    	String result = productService.delectProdPackagingSelf(prodPackagingSelfList.get(0));
     	
 		for(ProdPackagingSelfModel p : prodPackagingSelfList) {
 			p.setPackagingSelfId(idUtil.getPackagingSelfId());
