@@ -517,7 +517,7 @@ public class ProductController {
     	ProdPackagingSelfFileModel prodPackagingSelfFileModel = new ProdPackagingSelfFileModel();
     	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
     	prodPackagingSelfFileModel.setPackagingId(prodPackagingSelfList.get(0).getPackagingId());
-    	String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
+//    	String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
     	
     	
     	List<ProdPackagingSelfFileModel>  ProdPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
