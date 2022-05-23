@@ -169,7 +169,7 @@
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
-										<a href="javascript:void(0);"  onclick="javascript:openProductDeleteLayer('${product.productCode}');layerPopup(delete);" role="button" data-toggle="modal" class="btn-icon">
+										<a href="javascript:openProductDeleteLayer('${product.productCode}');"  onclick="javascript:layerPopup(deleteProduct);" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
@@ -538,13 +538,13 @@
   
   <!-- 레이어 팝업 - 상품삭제  -->
   <form id="frmDelete">
-	  <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	  <div id="deleteProduct" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true" data-modal-parent="#myModal">
 		<input type="hidden" name="productCode" >
 		<div class="modal-content" style="width:400px">
 		  <div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
-			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(delete);"><img src="/images/icon_close.png"></button>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteProduct);"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
 			<div class="row">
@@ -557,7 +557,7 @@
 		  </div>
 		  <div class="modal-footer btn-group">
 			<button id="delBtn" type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(delete);">취소</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteProduct);">취소</button>
 		  </div>
 		</div>
 	  </div>
