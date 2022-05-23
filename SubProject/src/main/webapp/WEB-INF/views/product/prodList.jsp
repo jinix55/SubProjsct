@@ -2196,25 +2196,25 @@
 						aJsonArray.push(aJson);
 					}
 				}
-				
+
 				aJsonArray.forEach(function(item){
 					if(item.value.rptMatStruct == 'Y'){
-						$('#chk_rptMatStruct-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_MAT_STRUCT-'+id.split('-')[0]).prop('checked',true);
 					}
 					if(item.value.rptDevAnal == 'Y'){
-						$('#chk_rptDevAnal-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_DEV_ANAL-'+id.split('-')[0]).prop('checked',true);
 					}
 					if(item.value.rptVisualJudg == 'Y'){
-						$('#chk_rptVisualJudg-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_VISUAL_JUDG-'+id.split('-')[0]).prop('checked',true);
 					}
 					if(item.value.rptTest == 'Y'){
-						$('#chk_rptTest-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_TEST-'+id.split('-')[0]).prop('checked',true);
 					}
 					if(item.value.rptPermission == 'Y'){
-						$('#chk_rptPermission-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_PERMISSION-'+id.split('-')[0]).prop('checked',true);
 					}
 					if(item.value.rptEtc == 'Y'){
-						$('#chk_rptEtc-'+id.split('-')[0]).prop('checked',true);
+						$('#chk_RPT_ETC-'+id.split('-')[0]).prop('checked',true);
 					}
 				})
 			}
