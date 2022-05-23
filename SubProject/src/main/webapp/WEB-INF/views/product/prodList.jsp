@@ -2571,6 +2571,7 @@
 							console.log(result);
 							$("#frmUpdate input[name=masterApplyCode]").val([result.masterApplyCode]);
 							$("#frmUpdate input[name=masterMappingCode]").val([result.masterMappingCode]);
+							$("#frmUpdate input[name=approvalNo]").val(result.approvalNo);
 							$("#frmUpdate input[name=mappingProductCode]").val(result.mappingProductCode);
 							$("#frmUpdate input[name=mappingProductNm]").val(result.mappingProductNm);
 // 							if(result.masterMappingCode === 'COMPLETION'){

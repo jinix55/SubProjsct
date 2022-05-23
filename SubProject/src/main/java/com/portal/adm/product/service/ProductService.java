@@ -367,10 +367,10 @@ public class ProductService {
 			productMatMappingCount = productMapper.selectProductMatMappingCount(p);
 			if(productMatMappingCount == 0) {
 				prodMappingModel.setMasterApplyCode("COMPLETION");
-				prodMappingModel.setApprovalNo(productModel.getApprovalNo());
+				prodMappingModel.setApprovalNo(p.getApprovalNo());
 				prodMappingModel.setMasterMappingCode("MAPPING");
-				prodMappingModel.setMappingProductCode(p.getProductCode());
-				prodMappingModel.setMappingProductNm(this.getProductNm(p.getProductCode()));
+				prodMappingModel.setMappingProductCode(p.getMappingProductCode());
+				prodMappingModel.setMappingProductNm(this.getProductNm(p.getMappingProductCode()));
 			}
 		}
 		return prodMappingModel;

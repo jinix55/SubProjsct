@@ -659,7 +659,7 @@
 
 	<select id="selectProductMappingList" resultType="com.portal.adm.product.model.ProdMappingModel" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[
-			SELECT   a.PRODUCT_CODE  MAPPING_PRODUCT_CODE
+			SELECT   a.PRODUCT_CODE  MAPPING_PRODUCT_CODE, APPROVAL_NO
 			   FROM  t1_product a
 			       , t1_product_packaging b
 			  WHERE  upper(a.PRODUCT_CODE) <> upper(#{productCode})
