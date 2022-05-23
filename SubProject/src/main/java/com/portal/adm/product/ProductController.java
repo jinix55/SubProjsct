@@ -512,9 +512,18 @@ public class ProductController {
     
     @RequestMapping(value="/insert/ProdPackagingSelf", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-//    public ResponseEntity<String> insertProdPackagingSelf(@ModelAttribute List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
     public ResponseEntity<String> insertProdPackagingSelf(@RequestBody List<ProdPackagingSelfModel> prodPackagingSelfList,@AuthenticationPrincipal AuthUser authUser ) {
-		
+    	
+    	ProdPackagingSelfFileModel prodPackagingSelfFileModel = new ProdPackagingSelfFileModel();
+    	prodPackagingSelfFileModel.setModiId(authUser.getMemberModel().getUserId());
+    	prodPackagingSelfFileModel.setPackagingId(prodPackagingSelfList.get(0).getPackagingId());
+    	String result = productService.deleteProdPackagingSelfFile(prodPackagingSelfFileModel);
+    	
+    	
+    	List<ProdPackagingSelfFileModel>  ProdPackagingSelfFileList  = productService.selectProdPackagingSelfFileList(prodPackagingSelfFileModel);
+    	prodPackagingSelfList.get(0).setModiId(authUser.getMemberModel().getUserId());
+		result = productService.delectProdPackagingSelf(prodPackagingSelfList.get(0));
+    	
 		for(ProdPackagingSelfModel p : prodPackagingSelfList) {
 			p.setPackagingSelfId(idUtil.getPackagingSelfId());
 	    	p.setModiId(authUser.getMemberModel().getUserId());
