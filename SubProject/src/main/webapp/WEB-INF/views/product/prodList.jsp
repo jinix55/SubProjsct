@@ -1397,9 +1397,9 @@
 								// 텝 추가후 1차 포장자가진단 정보 서버에서 조회 함
 								if(index == 0) {
 									getProdPackagingSelfList(item.packagingId);
+									layerPopup($('#selfDetail'));
 								}
 								
-								layerPopup($('#selfDetail'));
 							}else {
 								$('#tab-list').append('<li class="active"><a href="#" onclick=\'getProdPackagingDetailList("'+item.packagingId+'", this);\' role="tab" data-toggle="tab"><span>' +
 										packagingOrder +
@@ -1411,8 +1411,8 @@
 									//제품 부위 타입(몸채, 등등)
 									getProductPartList(item.groupId, 'tab-list', 'selfpartCode1', item.groupNm, item);
 									tabID = item.packagingOrder;
+									layerPopup($('#packagingDetail'));
 								}
-								layerPopup($('#packagingDetail'));
 							}
 						});
 					}else {
