@@ -30,10 +30,10 @@
 					</c:if>
 					<c:if test="${subMenu.menuSe eq 'M'}">
 						<c:set var="downMenuYn" value="N" />
-						<li data-menu="UserMgt" <c:if test="${subMenu.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu.menuUrl}" title="${subMenu.menuNm}"><span class="hexagon"></span>${subMenu.menuNm}</a></li>
+						<li data-menu="UserMgt" <c:if test="${subMenu.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu.menuUrl}" title="${subMenu.menuNm}">${subMenu.menuNm}</a></li>
 					</c:if>
 					<c:set var="menuhg" value="0" />
-					<c:set var="menuHginit" value="45" />
+					<c:set var="menuHginit" value="36" />
 					<c:forEach var="menuGpCnt" items="${menuGpCnt}" varStatus="status2">
 						<c:if test="${menuGpCnt.key eq subMenu.menuId && fn:startsWith(myUri,subMenu.menuUrl)}">
 							<c:set var="menuhg" value="${menuHginit * menuGpCnt.value}" />
@@ -43,7 +43,7 @@
 						<ul style="height: ${menuhg}px;">
 							<c:forEach var="subMenu2" items="${subMenuList}" varStatus="status3">
 								<c:if test="${subMenu2.lv ne 1 && subMenu.menuId eq subMenu2.upMenuId}">
-									<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}"><span class="hexagon"></span>${subMenu2.menuNm}</a></li>
+									<li data-menu="UserMgt" <c:if test="${subMenu2.menuUrl eq myUri}">class="on"</c:if>><a href="${subMenu2.menuUrl}" title="${subMenu2.menuNm}">${subMenu2.menuNm}</a></li>
 								</c:if>
 							</c:forEach>
 						</ul>
@@ -65,7 +65,6 @@
 <!-- 				</li> -->
 <%-- 			</c:if> --%>
      	</ul>
-     	<span style="font-size:12px;position: absolute;bottom: 60px;"><a href="https://www.flaticon.com/kr/free-icons/" title="블로거 아이콘">블로거 아이콘  제작자: Freepik - Flaticon</a></span>
 		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;">
 			<div class="iScrollIndicator" style="box-sizing: border-box; position: absolute; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 811px; transform: translate(0px, 0px) translateZ(0px);"></div>
 		</div>	
