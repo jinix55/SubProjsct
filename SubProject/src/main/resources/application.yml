@@ -23,7 +23,7 @@ spring:
     first:
         datasource:  # mysql
             #jdbc-url: jdbc:mysql://localhost:13306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
-            jdbc-url: jdbc:mysql://ppluseco.com:43306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
+            jdbc-url: jdbc:mysql://120.50.86.30:43306/portal?allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
             driver-class-name: com.mysql.cj.jdbc.Driver
             type: com.zaxxer.hikari.HikariDataSource
             username: portal
