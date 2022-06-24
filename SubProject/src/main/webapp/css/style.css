@@ -281,10 +281,10 @@ button {font-weight: 600;font-size: 13px;width: auto;height: 32px;border: 0;colo
 .btn-group button[type="button"] {margin-left: 3px;}
 .btn-group button[type="button"]:first-child {margin-left: 0px;}
 .btn-group .btn-round[disabled], .btn-group[disabled], .btn-form-small[disabled] {opacity: 0.5;}
-.btn-success {background: #f9f9f9;border: 1px solid #ddd;}/*확인,등록*/
+.btn-success {background: #4b96e6;border: 1px solid #ddd;color: #fff;}/*확인,등록*/
 .btn-modify {background: #f9f9f9;border: 1px solid #ddd;}/*수정*/
 .btn-warning {background: #f9f9f9;border: 1px solid #ddd;}/*경고*/
-.btn-cancel {color: #f9f9f9;border: 1px solid #ddd;}/*취소*/
+.btn-cancel {/*color: #f9f9f9;*/border: 1px solid #ddd;}/*취소*/
 .btn-default {background: #f9f9f9;border:1px solid #ddd;}/*기본*/
 .btn-none {background-color: initial;color: #000;}
 .btn-radius {color: #333;background: #f4f4f4;border: 1px solid #f4f4f4;border-radius: 18px;padding: 10px 20px;height: 30px;line-height: 10px;}/*라운드버튼*/
