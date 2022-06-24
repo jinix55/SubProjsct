@@ -1,6 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%
+	String serverName = request.getServerName();
+	String subdomain = "";
+	if(serverName.contains(".")) {
+		subdomain = serverName.split("\\.")[0];
+	}else {
+		subdomain = "";
+	}
+	if("www".equals(subdomain)) {
+		subdomain = "";
+	}
+	System.out.println(subdomain);
+	pageContext.setAttribute("subdomain", subdomain);
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -213,8 +226,8 @@
 	<div class="wrapper">
 		<!-- S_본문-->
 		<section class="container">
-			<div class="logon-logo"><img src="../images/logo_03.png" alt="회사로고" style="width:140px;"></div>
-			<h2 class="com-title" style="margin-bottom:20px;">희성전자</h2>
+			<div class="logon-logo"><img src="../images/${subdomain}logo_03.png" alt="회사로고" style="width:140px;"></div>
+<!-- 			<h2 class="com-title" style="margin-bottom:20px;">희성전자</h2> -->
 			<div class="login-tltle login" style="margin-bottom:20px;">로그인</div>
 			<div class="login-tltle pass_reset" style="margin-bottom:20px;">비밀번호 초기화</div>
 			<div class="login-tltle pass_change" style="margin-bottom:20px;">비밀번호 변경</div>

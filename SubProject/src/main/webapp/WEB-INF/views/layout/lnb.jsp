@@ -1,6 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%
+	String serverName = request.getServerName();
+	String subdomain = "";
+	if(serverName.contains(".")) {
+		subdomain = serverName.split("\\.")[0];
+	}else {
+		subdomain = "p";
+	}
+	if("www".equals(subdomain)) {
+		subdomain = "p";
+	}
+	pageContext.setAttribute("subdomain", subdomain);
+%>
 <script type="text/javascript">
 
 </script>
@@ -8,7 +21,7 @@
 <section id="lnb">
 	<a href="#" class="menu" title="메뉴 열기/닫기"><img src="/images/arr_menu_left.png" alt="메뉴 열기/닫기"/></a>
 	<div class="btn-lnb-comp">
-		<img src="/images/logo_p.png" alt="회사로고">
+		<img src="/images/logo_${subdomain}.png" alt="회사로고">
 	</div>
 	<div class="lnb-user">
 		<span class="img"><img src="/images/icon_user02.png" alt="정보수정"></span>
