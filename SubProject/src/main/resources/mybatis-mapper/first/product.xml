@@ -55,17 +55,20 @@
 	     ON  dd.GROUP_ID = 'PROD_GRADE_TYPE' 
 	    AND  dd.CODE_ID  =  a.GRADE_CODE
 	    AND  dd.USE_YN   = 'Y'		
-	    	
+<!--TODO 	    	
 		<include refid="searchProduct"></include>	
         ORDER BY a.PRODUCT_CODE, ROWNUM	
-        <include refid="paging"></include>		
+        <include refid="paging"></include>
+ -->        		
 	</select>
 	
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
 		FROM T1_PRODUCT
 		WHERE USE_YN = 'Y'
-		<include refid="searchProduct"></include>	
+<!--TODO		
+		<include refid="searchProduct"></include>
+ -->			
 	</select>	
 
 	<select id="selectProductListCountByProductCode" resultType="int" parameterType="String">
