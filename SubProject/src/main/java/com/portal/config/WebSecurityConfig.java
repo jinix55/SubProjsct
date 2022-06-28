@@ -59,7 +59,7 @@ public class WebSecurityConfig<S extends Session> extends WebSecurityConfigurerA
 		
 		// Spring Session
 		http.sessionManagement()
-				.maximumSessions(1)    				 // 사용자별 최대세션
+				.maximumSessions(10)    				 // 사용자별 최대세션
 				.maxSessionsPreventsLogin(false)	 // 세션이 사용중이면 이전 사용자를 로그아웃 처리
 				.expiredUrl("/login")
 				.sessionRegistry(sessionRegistry()); // prinicipal 문자열 이름으로 동일한 사용자를 체크
