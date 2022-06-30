@@ -81,7 +81,7 @@ public interface CompanyMapper {
     * @param companyModel
     * @return  회사 삭제
     */
-   CompanyModel select(String companyId);
+   CompanyModel select(String companyCode);
    
    /**
     * 회사정보를 조회한다.

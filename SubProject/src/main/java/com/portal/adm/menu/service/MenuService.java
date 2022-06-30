@@ -170,9 +170,9 @@ public class MenuService {
      * @return
      */
     @Transactional
-    public List<ReportModel> reportMenuList(String companyId,String authId) {
+    public List<ReportModel> reportMenuList(String companyCode,String authId) {
     	Map<String,String> param = new HashMap<>();
-    	param.put("companyId", companyId);
+    	param.put("companyCode", companyCode);
     	param.put("authId", authId);
     	return menuMapper.reportMenuList(param);
     }

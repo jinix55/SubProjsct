@@ -89,7 +89,7 @@ public class CompanyController {
     			for (String key : request.getParameterMap().keySet()) {
 //    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
     			}
-    			String companyId = request.getParameter("companyId");
+
     			String companyCode = request.getParameter("companyCode");
     			String companyNo = request.getParameter("companyNo");
     			String companyNm = request.getParameter("companyNm");
@@ -98,12 +98,10 @@ public class CompanyController {
     			String telephoneNo = request.getParameter("telephoneNo");
     			String representativeNm = request.getParameter("representativeNm");
     			String note = request.getParameter("note");
+    			String logoFileId = request.getParameter("logoFileId");
     			String useYn = request.getParameter("useYn");
     			
-    			if(StringUtils.equals(companyId, null) || StringUtils.equals(companyId, "")) {
-    				companyId = idUtil.getCompanyId();
-    			}
-    			companyModel.setCompanyId(companyId);
+
     			companyModel.setCompanyCode(companyCode);
     			companyModel.setCompanyNo(companyNo);
     			companyModel.setCompanyNm(companyNm);
@@ -112,6 +110,7 @@ public class CompanyController {
     			companyModel.setTelephoneNo(telephoneNo);
     			companyModel.setRepresentativeNm(representativeNm);
     			companyModel.setNote(note);
+    			companyModel.setLogoFileId(logoFileId);
     			companyModel.setUseYn(useYn);
     			
     			companyModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -170,8 +169,8 @@ public class CompanyController {
         	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
 	            CompanyModel companyModel = new CompanyModel();
 	
-	            String companyId = request.getParameter("companyId");
-	            companyModel.setCompanyId(companyId);
+	            String companyCode = request.getParameter("companyCode");
+	            companyModel.setCompanyCode(companyCode);
 	
 	            companyModel.setModiId(authUser.getMemberModel().getUserId());
 	
@@ -189,15 +188,15 @@ public class CompanyController {
     /**
      * 회사 정보를 조회한다.
      *
-     * @param companyId
+     * @param companyCode
      * @return
      */
-    @PostMapping("/company/detail/{companyId}")
+    @PostMapping("/company/detail/{companyCode}")
     @ResponseBody
-    public CompanyModel getCompanysForCompanyId(@PathVariable("companyId") String companyId) {
-		CompanyModel companyModels = companyService.selectCompanyId(companyId);
+    public CompanyModel getCompanysForCompanyId(@PathVariable("companyCode") String companyCode) {
+		CompanyModel companyModels = companyService.selectCompanyCode(companyCode);
 
-        return companyService.selectCompanyId(companyId);
+        return companyService.selectCompanyCode(companyCode);
     }
     
 }

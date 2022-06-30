@@ -341,6 +341,6 @@ LIMIT 1
     
      <select id="reportMenuList" resultType="com.portal.adm.report.model.ReportModel" parameterType="map">
      	SELECT * FROM t_report
-		WHERE GROUP_ID = #{authId} AND COMPANY_ID = #{companyId}
+		WHERE GROUP_ID = #{authId} AND COMPANY_CODE = #{companyCode}
      </select>
 </mapper>

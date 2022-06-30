@@ -103,8 +103,8 @@ public class CompanyService {
      * @param companyCode
      * @return
      */
-    public CompanyModel selectCompanyId(String companyId) {
-    	return companyMapper.select(companyId);
+    public CompanyModel selectCompanyId(String companyCode) {
+    	return companyMapper.select(companyCode);
     }
     
     /**
