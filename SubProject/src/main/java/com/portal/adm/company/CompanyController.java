@@ -139,7 +139,7 @@ public class CompanyController {
     			
     			String searchCode = request.getParameter("search");
     			
-    			String comapnyCdoe = companyService.selectCode(searchCode);
+    			String comapnyCdoe = null; //companyService.selectCode(searchCode); 확인 필요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 				if( comapnyCdoe == null || StringUtils.equals(comapnyCdoe, "")) {
 					return searchCode.toUpperCase();
 				}else {

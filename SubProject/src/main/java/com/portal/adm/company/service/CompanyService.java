@@ -86,27 +86,7 @@ public class CompanyService {
             return Constant.DB.FAIL;
         }
     }
-    
-    /**
-     * 회사정보를 조회한다.
-     *
-     * @param companyCode
-     * @return
-     */
-    public String selectCode(String companyCode) {
-    	return companyMapper.selectCode(companyCode);
-    }
-    
-    /**
-     * 회사정보를 삭제한다.
-     *
-     * @param companyCode
-     * @return
-     */
-    public CompanyModel selectCompanyId(String companyCode) {
-    	return companyMapper.select(companyCode);
-    }
-    
+ 
     /**
      * 회사정보를 삭제한다.
      *
@@ -114,7 +94,8 @@ public class CompanyService {
      * @return
      */
     public CompanyModel selectCompanyCode(String companyCode) {
-    	return companyMapper.selectCompanyCode(companyCode);
+    	return companyMapper.select(companyCode);
     }
-
+    
+ 
 }

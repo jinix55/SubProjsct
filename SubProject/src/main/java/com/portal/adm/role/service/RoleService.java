@@ -86,7 +86,7 @@ public class RoleService {
     @Transactional
     public String delete(RoleModel model) {
 
-        int memberCount = memberService.selectMemberListCountForRoleId(model.getAuthId());
+        int memberCount = 0; //memberService.selectMemberListCountForRoleId(model.getAuthId()); 확인필요@@@@@@@@@@@@@@@@@
 
         if(memberCount > 0) {
             return Constant.DB.USE_ROLE_ID;
@@ -190,7 +190,7 @@ public class RoleService {
     @Transactional
     public String deleteMgrSysAuth(RoleModel model) {
 
-        int memberCount = memberService.selectMemberListCountForMgrRoleId(model.getAuthId());
+        int memberCount = 0; // = memberService.selectMemberListCountForMgrRoleId(model.getAuthId()); 확인필요 @@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         if(memberCount > 0) {
             return Constant.DB.USE_ROLE_ID;

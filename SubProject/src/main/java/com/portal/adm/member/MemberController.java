@@ -232,7 +232,9 @@ public class MemberController {
     	Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		
-		List<MemberModel> members = memberService.selectMemberAllList(criteria);
+		// ?????????????????List<MemberModel> members = memberService.selectMemberAllList(criteria);
+		
+		List<MemberModel> members = null;  //확인 필요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		
 		if(members != null) {
 			res = true;

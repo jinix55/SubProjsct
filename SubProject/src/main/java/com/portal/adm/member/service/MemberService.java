@@ -42,25 +42,7 @@ public class MemberService {
 		return memberMapper.selectMemberListCount(criteria);
 	}
 
-	/**
-	 * 권한ID를 사용하는 사용자의 카운트를 조회한다.
-	 *
-	 * @param roleId 권한ID
-	 * @return
-	 */
-	public int selectMemberListCountForRoleId(String roleId) {
-		return memberMapper.selectMemberListCountForRoleId(roleId);
-	}
-
-	/**
-	 * 사용자 목록을 조회한다.(전체)
-	 *
-	 * @param criteria 페이징 모델
-	 * @return
-	 */
-	public List<MemberModel> selectMemberAllList(Criteria criteria) {
-		return memberMapper.selectMemberAllList(criteria);
-	}
+ 
 
 	/**
 	 * 사번을 이용하여 사용자를 조회한다.
@@ -80,28 +62,9 @@ public class MemberService {
 	 */
 	@Transactional
 	public String insert(MemberModel model) {
-		if ("Y".equals(model.getUserAuthChage())) {
-			memberMapper.upsertAuth(model);
-		}
-
-		if ("Y".equals(model.getMgrAuthChange())) {
-			MemberModel m = new MemberModel();
-			m.setAuthId(model.getMgrAuthId());
-			m.setUserId(model.getUserId());
-			m.setRgstId(model.getRgstId());
-			m.setRgstDt(model.getRgstDt());
-			m.setModiId(model.getModiId());
-			m.setModiDt(model.getModiDt());
-			if ("".equals(model.getMgrAuthId())) {
-				m.setUseYn("N");
-			} else {
-				m.setUseYn("Y");
-			}
-			memberMapper.upsertMgrAuth(m);
-		}
+ 
 		long count = memberMapper.insertUser(model);
-		memberMapper.updateUsertAuth(model);
-		memberMapper.insertUserHst(model);
+ 
 		
 		if (count > 0) {
 			return Constant.DB.INSERT;
@@ -118,32 +81,9 @@ public class MemberService {
 	 */
 	@Transactional
 	public String save(MemberModel model) {
-		if ("Y".equals(model.getUserAuthChage())) {
-			memberMapper.upsertAuth(model);
-		}
-
-		if ("Y".equals(model.getMgrAuthChange())) {
-			MemberModel m = new MemberModel();
-			m.setAuthId(model.getMgrAuthId());
-			m.setUserId(model.getUserId());
-			m.setRgstId(model.getRgstId());
-			m.setRgstDt(model.getRgstDt());
-			m.setModiId(model.getModiId());
-			m.setModiDt(model.getModiDt());
-			if ("".equals(model.getMgrAuthId())) {
-				m.setUseYn("N");
-			} else {
-				m.setUseYn("Y");
-			}
-			memberMapper.upsertMgrAuth(m);
-		}
-		
+ 
 		long count = memberMapper.update(model);
-		memberMapper.updateUsertAuth(model);
-		if(StringUtils.equals(model.getLockYn(),"Y")) {
-			memberMapper.unlockAccount(model);
-		}
-		memberMapper.insertUserHst(model);
+ 
 		if (count > 0) {
 			return Constant.DB.UPDATE;
 		} else {
@@ -160,7 +100,7 @@ public class MemberService {
 	@Transactional
 	public String delete(MemberModel model) {
 		long count = memberMapper.delete(model);
-		memberMapper.insertUserHst(model);
+ 
 		if (count > 0) {
 			return Constant.DB.DELETE;
 		} else {
@@ -168,15 +108,7 @@ public class MemberService {
 		}
 	}
 
-	/**
-	 * 관리자 권한ID를 사용하는 사용자의 카운트를 조회한다.
-	 *
-	 * @param roleId 권한ID
-	 * @return
-	 */
-	public int selectMemberListCountForMgrRoleId(String roleId) {
-		return memberMapper.selectMemberListCountForMgrRoleId(roleId);
-	}
+ 
 
 	@Transactional
 	public long unlockAccount(MemberModel model) {
