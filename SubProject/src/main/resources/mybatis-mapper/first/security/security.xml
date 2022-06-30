@@ -2,52 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.portal.config.security.mapper.SecurityMapper">
 
-    <select id="selectUser" parameterType="string" resultType="memberModel">
+    <select id="selectUser" parameterType="memberModel" resultType="memberModel">
 		<![CDATA[
-		SELECT
-		    U.USER_ID
-		  , U.USER_NM
-		  , U.PSTN_CODE
-		  , P.PSTN_NM
-		  , U.DEPT_CODE
-		  , D.DEPT_NM
-		  , U.ADOF_DEPT_CODE
-		  , AD.DEPT_NM AS ADOF_DEPT_NM
-		  , U.HDEPT_CODE
-		  , H.HDEPT_NM
-		  , U.COMPANY_CODE
-		  , (SELECT COMPANY_NM FROM T_COMPANY WHERE COMPANY_CODE = U.COMPANY_CODE) AS COMPANY_NM
-		  , U.DUTY_SE
-		  , U.USE_YN
-		  , U.MODI_SE
-		  , U.LAST_LOG_DT
-		  , U.START_DT
-		  , U.END_DT
-		  , CASE WHEN COALESCE(to_days(U.LAST_LOG_DT), to_days(NOW())) + (SELECT CODE_NM FROM T_CODE WHERE GROUP_ID = 'ACCOUNT_LOCK_PD' AND CODE_ID = 'LOCK_PD') < to_days(NOW()) THEN 'N' ELSE 'N' END AS LOCK_YN
-		  , CASE WHEN DATE(NOW()) BETWEEN DATE(COALESCE(U.START_DT,NOW())) AND DATE(COALESCE(U.END_DT,NOW())) THEN 'N' WHEN DT_LIMIT_YN = 'N' THEN 'N' ELSE 'Y' END AS EXPIRED_YN
-		  , U.MGR_SYS_ENV
-		  , U.USER_SYS_ENV
-		  , U.USER_SYS_HOME
-		  , U.BF_DEPT_CODE
-		  , U.DEPT_UPDT_DT
-		  , A.AUTH_ID
-		  , UA.AUTH_CL
-		  , COALESCE(A.USE_YN,'N') AS AUTH_USE_YN
-		  , UA.AUTH_NM
-		  , COALESCE(A.USE_YN,'N') AS MGR_YN
-		  , F.FILE_ID
-		  , F.FILE_URL
-		  , U.PHONE
-		  , U.EMAIL
-		FROM T_USER U
-		LEFT OUTER JOIN T_HDEPT H ON U.HDEPT_CODE = H.HDEPT_CODE
-		LEFT OUTER JOIN T_DEPT D ON U.DEPT_CODE = D.DEPT_CODE
-		LEFT OUTER JOIN T_DEPT AD ON U.ADOF_DEPT_CODE = AD.DEPT_CODE
-		LEFT OUTER JOIN T_PSTN P ON U.PSTN_CODE = P.PSTN_CODE
-		LEFT OUTER JOIN T_GROUP A ON U.USER_ID = A.USER_ID
-		LEFT OUTER JOIN t_group_auth UA ON A.AUTH_ID = UA.AUTH_ID
-		LEFT OUTER JOIN T_FILE F ON U.USER_ID = F.REF_ID AND F.USE_YN = 'Y'
-		WHERE U.USER_ID = #{userId}
+		select
+			u.company_code,
+			u.user_id,
+			u.user_nm,
+			u.email,
+			u.phone,
+			u.pstn_nm,
+			u.dept_nm,
+			c.company_nm,
+			u.auth_code,
+			cc.code_nm as auth_nm,
+			u.use_yn,
+			u.last_log_dt,
+			u.rgst_id,
+			u.rgst_dt,
+			u.modi_id,
+			u.modi_dt
+		from
+			t1_user u
+			left outer join t_company c ON c.company_code = u.company_code
+			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
+		where u.company_code = #{companyCode}
+		  and u.user_id  =  #{userId}	
 		]]>
     </select>
     

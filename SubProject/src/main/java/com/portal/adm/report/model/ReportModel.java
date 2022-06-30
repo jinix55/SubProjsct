@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class ReportModel extends Criteria{
 
     private String rownum;          					// 순번
-    private String authId;							// 레포트 ID
+    private String authCode;							// 레포트 ID
     private String reportId;							// 레포트 ID
     private String reportNm;							// 레포트이름
     private String reportUrl;							// 레포트 url

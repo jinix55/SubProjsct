@@ -31,15 +31,18 @@ public class AuthUserDetailServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username)  {
 
-    	MemberModel model = mapper.selectUser(username);
+    	MemberModel reqModel = new MemberModel();
+    	reqModel.setCompanyCode(username.split("@")[0]);
+    	reqModel.setUserId(username.split("@")[1]);
+    	MemberModel model = mapper.selectUser(reqModel);
 
         if (model == null) {
             throw new UsernameNotFoundException("1|"+mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_NOT_MATCH));
         }
         
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        if (StringUtils.isNotBlank(model.getAuthId())) {
-        	authorities.add(new SimpleGrantedAuthority("ROLE_"+model.getAuthId()));
+        if (StringUtils.isNotBlank(model.getAuthCode())) {
+        	authorities.add(new SimpleGrantedAuthority("ROLE_"+model.getAuthCode()));
         }
 
         return new AuthUser(model, authorities,false);

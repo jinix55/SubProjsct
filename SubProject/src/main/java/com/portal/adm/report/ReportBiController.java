@@ -56,7 +56,7 @@ public class ReportBiController {
     public String getReportView(@PathVariable("reportId") String reportId, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	ReportModel reportModel = new ReportModel();
     	reportModel.setReportId(reportId);
-    	reportModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	reportModel.setAuthCode(authUser.getMemberModel().getAuthCode());
 		reportModel = reportService.selectReportId(reportModel);
 		model.addAttribute("report", reportModel);
 

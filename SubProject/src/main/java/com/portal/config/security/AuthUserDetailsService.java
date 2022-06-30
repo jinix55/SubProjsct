@@ -37,30 +37,34 @@ public class AuthUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AuthUser authUser = null;
-
+		MemberModel reqModel = new MemberModel();
+		
 		// login.jsp 에서 SSO 갔다오고 난 후에 /ssologin 에서 SSO 인증 확인하고 login.jsp 에서 바로 form submit 호출 하여 스프링 시큐리티 시작
 		boolean isSso = StringUtils.equalsIgnoreCase("Y", request.getParameter("sso"));
 		if (StringUtils.isNotBlank(username)) {
 			// 사용자 정보 DB 조회
-			MemberModel member = mapper.selectUser(username);
+	    	
+	    	reqModel.setCompanyCode(username.split("@")[0]);
+	    	reqModel.setUserId(username.split("@")[1]);
+			MemberModel member = mapper.selectUser(reqModel);
 			if (member != null) {
 				// 계정 활성 : useYn
 				if (StringUtils.equals("N", member.getUseYn())) {
 					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.ACCOUNT_DISABLE));
 				}
 				//계정 잠김 : lastLogDt
-				if (StringUtils.equals("Y", member.getLockYn())) {
-					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.ACCOUNT_LOCK));
-				}
+//				if (StringUtils.equals("Y", member.getLockYn())) {
+//					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.ACCOUNT_LOCK));
+//				}
 				// 계정 만료 : startDt ~ endDt
-				if (StringUtils.equals("Y", member.getExpiredYn())) {
-					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.ACCOUNT_EXPIRE));
-				}
+//				if (StringUtils.equals("Y", member.getExpiredYn())) {
+//					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.ACCOUNT_EXPIRE));
+//				}
 				log.info("member : {}",member.toString());
 				// 권한
-				if (StringUtils.equals("Y",member.getAuthUseYn()) && StringUtils.isNotBlank(member.getAuthId())) {
+				if (StringUtils.isNotBlank(member.getAuthCode())) {
 					Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-					authorities.add(new SimpleGrantedAuthority(StringUtils.joinWith("_", "ROLE",member.getAuthId())));
+					authorities.add(new SimpleGrantedAuthority(StringUtils.joinWith("_", "ROLE",member.getAuthCode())));
 					authUser = new AuthUser(member, authorities, isSso);
 				} else {
 					throw new UsernameNotFoundException(mapper.selectLoginMessage(Constant.LoginMessage.AUTH_FAIL));

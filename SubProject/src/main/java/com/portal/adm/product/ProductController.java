@@ -130,7 +130,7 @@ public class ProductController {
     	
     	//공급업체 정보 조회
     	SupplierModel supplierModel = new SupplierModel();
-    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	supplierModel.setAuthCode(authUser.getMemberModel().getAuthCode());
     	supplierModel.setOffSet(0);
     	supplierModel.setPageSize(9999);
         List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
@@ -1138,7 +1138,7 @@ try {
     @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	supplierModel.setAuthCode(authUser.getMemberModel().getAuthCode());
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         

@@ -70,7 +70,7 @@ public class MemberController {
         model.addAttribute("companys", companyService.selectListAll());
 
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        criteria.setAuthId(authUser.getMemberModel().getAuthId());
+        criteria.setAuthCode(authUser.getMemberModel().getAuthCode());
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
         model.addAttribute("pages", criteria);
@@ -90,7 +90,7 @@ public class MemberController {
         model.addAttribute("companys", companyService.selectListAll());
 
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        criteria.setAuthId(authUser.getMemberModel().getAuthId());
+        criteria.setAuthCode(authUser.getMemberModel().getAuthCode());
         
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));

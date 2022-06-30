@@ -10,7 +10,7 @@ import com.portal.common.annotation.ConnMapperFirst;
 @ConnMapperFirst
 public interface SecurityMapper {
 
-	MemberModel selectUser(String userId);
+	MemberModel selectUser(MemberModel model);
 	
 	int updateLastLogDt(String userId);
 	

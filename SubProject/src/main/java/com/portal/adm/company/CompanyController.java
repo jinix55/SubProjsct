@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -57,6 +58,17 @@ public class CompanyController {
         return "company/companyMgt";
     }
 
+    @GetMapping("/detail/company")
+    @ResponseBody
+    public List<CompanyModel> company(@RequestBody CompanyModel companyModel) {
+        List<CompanyModel> models = companyService.selectCompanyList(companyModel);
+        System.out.println("models = " + models);
+        
+        
+        companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
+        return models;
+    }
+    
     /**
      * 회사관리 페이지로 이동
      *
@@ -83,7 +95,7 @@ public class CompanyController {
     @ResponseBody
     public String companySave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
     			
     			CompanyModel companyModel = new CompanyModel();
     			for (String key : request.getParameterMap().keySet()) {
@@ -135,7 +147,7 @@ public class CompanyController {
     public String companySelect(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
     			
     			String searchCode = request.getParameter("search");
     			
@@ -166,7 +178,7 @@ public class CompanyController {
     public String companyDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
-        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
 	            CompanyModel companyModel = new CompanyModel();
 	
 	            String companyCode = request.getParameter("companyCode");

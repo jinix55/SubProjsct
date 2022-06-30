@@ -17,26 +17,17 @@ import lombok.Data;
 public class MemberModel implements Serializable {
 
     private String rownum;          // 순번
+    private String companyCode;       // 회사코드
     private String userId;        // 사번
     private String userNm;        // 사용자명
-    private String pstnCode;           // 직위코드
     private String pstnNm;           // 직위명
-    private String deptCode;           // 부서코드
+    private String deptNm;           // 부서코드
     private String email;           // 부서코드
     private String phone;           // 부서코드
-    private String deptNm;           // 부서명
-    private String hdeptCode;           // 상위부서코드
-    private String companyCode;       // 회사코드
     private String companyNm;       // 회사명
-    private String adofDeptCode; //겸직 부서
-    private String adofDeptNm;   //겸직 부서명
-    private String dutySe;  //승인권 구분 Y: 승인권자 / N: 비승인권자
-    private String authId;          // 권한ID
-    private String authCl;          // 권한 분류
-    private String authUseYn;       // 권한 사용 여부
+    private String authCode;          // 권한ID
     private String authNm;          // 권한명
     private String useYn;           // 사용여부
-    private String modiSe;          // 수정 구분
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastLogDt;  // 마지막로그일시
@@ -55,7 +46,6 @@ public class MemberModel implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modiDt;     // 수정일시
-    private String expiredYn;// 계정 만료 :  - 접속일이 start_dt와 end_dt 사이에 있는지
     private String lockYn;// 계정 잠금 :  - 최종 로그인 180일 경과
     private String mgrYn;// 관리자 여부
     private String fileId; // 사진 파일 ID

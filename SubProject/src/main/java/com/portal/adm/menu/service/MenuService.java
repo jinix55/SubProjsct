@@ -37,8 +37,8 @@ public class MenuService {
      *
      * @return
      */
-    public List<MenuModel> selectList(String authId) {
-        return menuMapper.selectList(authId);
+    public List<MenuModel> selectList(String authCode) {
+        return menuMapper.selectList(authCode);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MenuService {
     @Transactional
     public long delete(MenuModel model) {
     	menuMapper.deleteAuth(model);
-    	if(model.getAuthId() == "au2000001") {
+    	if(model.getAuthCode() == "P") {
     		return menuMapper.delete(model);
     	}else {
     		return menuMapper.delete(model);

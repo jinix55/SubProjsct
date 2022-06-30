@@ -50,7 +50,7 @@ public class MenuController {
 	 */
 	@GetMapping("/menu")
 	public String menu(Model model, @AuthenticationPrincipal AuthUser authUser) {
-		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthCode());
 		String rootMenuId = null;
 		for (MenuModel menu : list) {
 			if (menu.getLv() == 0) {
@@ -71,7 +71,7 @@ public class MenuController {
 	 */
 	@PostMapping("/menu")
 	public String menuPost(Model model, @AuthenticationPrincipal AuthUser authUser) {
-		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthCode());
 		String rootMenuId = null;
 		for (MenuModel menu : list) {
 			if (menu.getLv() == 0) {
@@ -104,13 +104,13 @@ public class MenuController {
 			menuModel.setAuthUseYn("Y");
 			menuModel.setRgstId(authUser.getUsername());
 			menuModel.setModiId(authUser.getUsername());
-			menuModel.setAuthId(authUser.getMemberModel().getAuthId());
+			menuModel.setAuthCode(authUser.getMemberModel().getAuthCode());
 			
 			long menuAuths = menuService.updateMenuListWithAuth(menuModel);
 			
 			// 담당관리자 권한 등록 성공 이후 등록자가 최고관리자가 아닐경우 최고관리자 등록
-			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthId(),"au2000001")) {
-				menuModel.setAuthId("au2000001");
+			if(menuAuths > 0 && !StringUtils.equals(authUser.getMemberModel().getAuthCode(),"P")) {
+				menuModel.setAuthCode("P");
 				menuService.updateMenuListWithAuth(menuModel);	
 			}
 
@@ -156,7 +156,7 @@ public class MenuController {
 		try {
 			menuModel.setRgstId(authUser.getMemberModel().getUserId());
 			menuModel.setModiId(authUser.getMemberModel().getUserId());
-			menuModel.setAuthId(authUser.getMemberModel().getAuthId());
+			menuModel.setAuthCode(authUser.getMemberModel().getAuthCode());
 
 			long count = menuService.delete(menuModel);
 

@@ -29,7 +29,7 @@ public class IndexController {
     public String index(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl(null, authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl(null, authUser.getMemberModel().getAuthCode());
     	}
         return result;
     }
@@ -39,7 +39,7 @@ public class IndexController {
     public String admin(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/admin",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/admin",authUser.getMemberModel().getAuthCode());
     	}
         return result;
     }
@@ -49,7 +49,7 @@ public class IndexController {
     public String member(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/member",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/member",authUser.getMemberModel().getAuthCode());
     	}
     	return result;
     }
@@ -59,7 +59,7 @@ public class IndexController {
     public String system(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/system",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/system",authUser.getMemberModel().getAuthCode());
     	}
     	return result;
     }
@@ -69,7 +69,7 @@ public class IndexController {
     public String board(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/board",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/board",authUser.getMemberModel().getAuthCode());
     	}
         return result;
     }
@@ -79,7 +79,7 @@ public class IndexController {
     public String menu(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/menu",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/menu",authUser.getMemberModel().getAuthCode());
     	}
         return result;
     }
@@ -89,7 +89,7 @@ public class IndexController {
     public String log(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/log",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/log",authUser.getMemberModel().getAuthCode());
     	}
         return result;
     }
@@ -99,7 +99,7 @@ public class IndexController {
     public String alarm(Model model, HttpServletRequest request, HttpSession session, @ModelAttribute String modiId, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "redirect:/login";
     	if (authUser != null) {
-    		result = "redirect:"+menuService.selectFirstMenuUrl("/alarm",authUser.getMemberModel().getAuthId());
+    		result = "redirect:"+menuService.selectFirstMenuUrl("/alarm",authUser.getMemberModel().getAuthCode());
     	}
     	return result;
     }

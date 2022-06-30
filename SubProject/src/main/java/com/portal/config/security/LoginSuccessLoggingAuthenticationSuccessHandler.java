@@ -66,13 +66,12 @@ public class LoginSuccessLoggingAuthenticationSuccessHandler extends SavedReques
 			params.put(Constant.LOG.USER_INFO, customAuthUser.getMemberModel());
 			// 로그인 이력 저장
 			LogModel model = new LogModel();
+			model.setCompanyCode(customAuthUser.getMemberModel().getCompanyCode());
 			model.setUserId(customAuthUser.getMemberModel().getUserId());
 			model.setUserNm(customAuthUser.getMemberModel().getUserNm());
-			model.setAuthId(customAuthUser.getMemberModel().getAuthId());
+			model.setAuthCode(customAuthUser.getMemberModel().getAuthCode());
 			model.setAuthNm(customAuthUser.getMemberModel().getAuthNm());
-			model.setPstnCode(customAuthUser.getMemberModel().getPstnCode());
 			model.setPstnNm(customAuthUser.getMemberModel().getPstnNm());
-			model.setDeptCode(customAuthUser.getMemberModel().getDeptCode());
 			model.setDeptNm(customAuthUser.getMemberModel().getDeptNm());
 			model.setServerIp(commonUtil.getServerIP());
 			model.setClientIp(commonUtil.getClientIP(request));

@@ -128,7 +128,7 @@ public class AlarmController {
     public ResponseEntity<String> alarmDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
-        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
 	            AlarmModel alarmModel = new AlarmModel();
 	
 	            String alarmId = request.getParameter("alarmId");

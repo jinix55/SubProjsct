@@ -57,7 +57,7 @@ public class PackagingCodeController {
     	
     	// 대분류 리스트
     	packagingCodeModel.setGroupId(largeCategory);
-		packagingCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
+		packagingCodeModel.setAuthCode(authUser.getMemberModel().getAuthCode());
         largeModels = packagingCodeService.selectGroupIdList(packagingCodeModel);
         model.addAttribute("largeCodeList", largeModels);
         
