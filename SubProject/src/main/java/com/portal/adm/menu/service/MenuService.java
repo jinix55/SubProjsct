@@ -130,7 +130,7 @@ public class MenuService {
     public String selectFirstMenuUrl(String menuUrl, String authId) {
     	Map<String,String> param = new HashMap<>();
     	param.put("menuUrl", menuUrl);
-    	param.put("authId", authId);
+    	param.put("authCode", authId);
     	return menuMapper.selectFirstMenuUrl(param);
     }
     

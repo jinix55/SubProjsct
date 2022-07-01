@@ -79,11 +79,12 @@
 			t1_user u
 			left outer join t_company c ON c.company_code = u.company_code
 			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
+			where 1 =1
 		<if test="authCode = 'P'">
-			where u.auth_code in ('P', 'A')
+			and u.auth_code in ('P', 'A')
 		</if>
 		<if test="authCode = 'A'">
-			where u.auth_code != 'P'
+			and u.auth_code != 'P'
 		      and u.company_code = #{companyCode} 		
 		</if>		
 		<include refid="searchMember"></include>
@@ -98,11 +99,12 @@
 			t1_user u
 			left outer join t_company c ON c.company_code = u.company_code
 			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
+			where 1 =1
 		<if test="authCode = 'P'">
-			where u.auth_code in ('P', 'A')
+			and u.auth_code in ('P', 'A')
 		</if>
 		<if test="authCode = 'A'">
-			where u.auth_code != 'P'
+			and u.auth_code != 'P'
 		      and u.company_code = #{companyCode} 		
 		</if>		
 		<include refid="searchMember"></include>

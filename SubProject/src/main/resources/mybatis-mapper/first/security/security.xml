@@ -69,7 +69,7 @@
 		      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
 		      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
 		    FROM t_group_menu M
-		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
 		    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
 		    UNION ALL
 		    SELECT
@@ -80,7 +80,7 @@
 		      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
 		    FROM R
 		    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.USE_YN = 'Y'
-		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
 		) SELECT
 		    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
 		  , LV

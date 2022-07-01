@@ -29,9 +29,9 @@
 		      , M.ICON_NM
 		    FROM R
 		    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
-			<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(authId)'>
+			<if test='@org.apache.commons.lang3.StringUtils@isNotBlank(authCode)'>
 			    JOIN t_group_menu_auth A ON	M.MENU_ID = A.MENU_ID 
-				AND A.AUTH_ID = #{authId}
+				AND A.AUTH_CODE = #{authCode}
 			</if>
 		) SELECT
 		    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
@@ -183,7 +183,7 @@ WITH RECURSIVE R AS (
       , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
       , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
     FROM t_group_menu M
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
     WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
     UNION ALL
     SELECT
@@ -194,7 +194,7 @@ WITH RECURSIVE R AS (
       , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
     FROM R
     JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE = 'M' AND M.USE_YN = 'Y'
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
 ) SELECT
     MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
   , LV
@@ -215,7 +215,7 @@ WITH RECURSIVE R AS (
       , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
       , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
     FROM t_group_menu M
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
     WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
     UNION ALL
     SELECT
@@ -226,7 +226,7 @@ WITH RECURSIVE R AS (
       , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
     FROM R
     JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y'
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
 ) SELECT
     MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, ICON_NM, RGST_ID, RGST_DT, MODI_ID, MODI_DT
   , LV
@@ -245,7 +245,7 @@ WITH RECURSIVE R AS (
         M.MENU_ID, M.UP_MENU_ID, M.MENU_NM, M.MENU_URL, M.MENU_DSC, M.ORD_SEQ, M.MENU_SE, M.MENU_ATTR, M.USE_YN, M.RGST_ID, M.RGST_DT, M.MODI_ID, M.MODI_DT
       , 0 AS LV
     FROM t_group_menu M
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y' AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
     WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
     UNION ALL
     SELECT
@@ -253,7 +253,7 @@ WITH RECURSIVE R AS (
       , R.LV + 1 AS LV
     FROM R
     JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID AND M.MENU_SE != 'F' AND M.USE_YN = 'Y'
-    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_ID = #{authId}
+    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.USE_YN = 'Y' AND A.AUTH_CODE = #{authCode}
 ) SELECT
     MENU_URL
 FROM R
@@ -295,7 +295,7 @@ LIMIT 1
 		      , JSON_ARRAY(cast(M.MENU_NM as varchar(4000))) AS FULL_PATH_NM
 		      , cast(LPAD(M.ORD_SEQ,5,'0') as varchar(4000)) AS FULL_ORD_SEQ
 		    FROM t_group_menu M
-		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_CODE = #{authCode}
 		    WHERE NULLIF(M.UP_MENU_ID,'') IS NULL
 		    UNION ALL
 		    SELECT
@@ -306,7 +306,7 @@ LIMIT 1
 		      , CONCAT(R.FULL_ORD_SEQ,'-',LPAD(M.ORD_SEQ,5,'0')) AS FULL_ORD_SEQ
 		    FROM R
 		    JOIN t_group_menu M ON R.MENU_ID = M.UP_MENU_ID
-		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_ID = #{authId}
+		    JOIN t_group_menu_auth A ON M.MENU_ID = A.MENU_ID AND A.AUTH_CODE = #{authCode}
 		) SELECT
 		    MENU_ID, UP_MENU_ID, MENU_NM, MENU_URL, MENU_DSC, ORD_SEQ, MENU_SE, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT
 		  , LV
@@ -319,10 +319,10 @@ LIMIT 1
     
     <update id="updateMenuListWithAuth" parameterType="com.portal.adm.menu.model.MenuModel">
 		INSERT INTO t_group_menu_auth
-		(AUTH_ID, MENU_ID, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT)
-		VALUES(#{authId}, #{menuId}, #{menuAttr}, #{authUseYn}, #{rgstId}, now(), #{modiId}, now())
+		(AUTH_CODE, MENU_ID, MENU_ATTR, USE_YN, RGST_ID, RGST_DT, MODI_ID, MODI_DT)
+		VALUES(#{authCode}, #{menuId}, #{menuAttr}, #{authUseYn}, #{rgstId}, now(), #{modiId}, now())
 		ON DUPLICATE KEY UPDATE
-		AUTH_ID = #{authId}
+		AUTH_CODE = #{authCode}
 		, MENU_ID =  #{menuId}
 		, MENU_ATTR = (SELECT MENU_ATTR FROM t_group_menu WHERE MENU_ID = #{menuId})
 		, USE_YN = #{authUseYn}
@@ -341,6 +341,6 @@ LIMIT 1
     
      <select id="reportMenuList" resultType="com.portal.adm.report.model.ReportModel" parameterType="map">
      	SELECT * FROM t_report
-		WHERE GROUP_ID = #{authId} AND COMPANY_CODE = #{companyCode}
+		WHERE GROUP_ID = #{authCode} AND COMPANY_CODE = #{companyCode}
      </select>
 </mapper>
