@@ -183,32 +183,34 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">회사명<em>*</em></label>
-						<div class="col-75">
-							<select id="companyCode" name="companyCode" class="select-box">
-								<option value="none">선택안함</option>
-								<c:forEach items="${companys }" var="company">
-									<option value="${company.companyCode}">${company.companyNm }</option>
-								</c:forEach> 
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">그룹 ID<em>*</em></label>
-						<div class="col-75">
-							<select id="authId" name="authId" class="select-box">
-								<option value="none">선택안함</option>
-								<c:forEach items="${roles }" var="role">
-									<option value="${role.authId}">${role.authNm }</option>
-								</c:forEach> 
-							</select>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="col-50"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-25 form-label">회사명<em>*</em></label> -->
+<!-- 						<div class="col-75"> -->
+<!-- 							<select id="companyCode" name="companyCode" class="select-box"> -->
+<!-- 								<option value="none">선택안함</option> -->
+<%-- 								<c:forEach items="${companys }" var="company"> --%>
+<%-- 									<option value="${company.companyCode}">${company.companyNm }</option> --%>
+<input id="companyCode" name="companyCode" value="${companyCode}" type="hidden">
+<input id="authId" name="companyCode" value="${roles[0].authId}" type="hidden">
+<%-- 								</c:forEach>  --%>
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<div class="col-50"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-25 form-label">그룹 ID<em>*</em></label> -->
+<!-- 						<div class="col-75"> -->
+<!-- 							<select id="authId" name="authId" class="select-box"> -->
+<!-- 								<option value="none">선택안함</option> -->
+<%-- 								<c:forEach items="${roles }" var="role"> --%>
+<%-- 									<option value="${role.authId}">${role.authNm }</option> --%>
+<%-- 								</c:forEach>  --%>
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">이메일 주소<em>*</em></label>

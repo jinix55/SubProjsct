@@ -54,7 +54,7 @@ public class SupplierController {
     @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	supplierModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
         

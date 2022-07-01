@@ -25,6 +25,7 @@
 	<select id="selectCompanyList" resultType="com.portal.adm.company.model.CompanyModel" parameterType="com.portal.adm.company.model.CompanyModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
+			, COMPANY_ID
 			, COMPANY_CODE
 			, COMPANY_NO
 			, COMPANY_NM
@@ -33,13 +34,12 @@
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
 			, NOTE
-			, LOGO_FILE_ID
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
 			, MODI_ID
 			, MODI_DT
-		FROM T1_COMPANY
+		FROM T_COMPANY
 		<include refid="searchCompany"></include>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
@@ -48,12 +48,13 @@
 	<select id="selectCompanyListCount" resultType="int">
 		SELECT
 			count(1)
-		FROM T1_COMPANY
+		FROM T_COMPANY
 		<include refid="searchCompany"></include>
 	</select>
 	
 	<insert id="insert" parameterType="com.portal.adm.company.model.CompanyModel">
-		INSERT INTO t1_company (
+		INSERT INTO t_company (
+			COMPANY_ID,
 			COMPANY_CODE,
 			COMPANY_NO,
 			COMPANY_NM,
@@ -62,13 +63,13 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
-			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
 		) VALUES (
+			#{companyId},
 			#{companyCode},
 			#{companyNo},
 			#{companyNm},
@@ -77,7 +78,6 @@
 			#{telephoneNo},
 			#{representativeNm},
 			#{note},
-			#{logoFileId},
 			#{useYn},
 			#{rgstId},
 			NOW(),
@@ -87,7 +87,8 @@
 	</insert>
 	
 	<update id="update" parameterType="com.portal.adm.company.model.CompanyModel">
-		UPDATE t1_company SET
+		UPDATE t_company SET
+			COMPANY_CODE = #{companyCode},
 			COMPANY_NO = #{companyNo},
 			COMPANY_NM = #{companyNm},
 			COMPANY_DSC = #{companyDsc},
@@ -95,17 +96,25 @@
 			TELEPHONE_NO = #{telephoneNo},
 			REPRESENTATIVE_NM = #{representativeNm},
 			NOTE = #{note},
-			LOGO_FILE_ID = #{logoFileId},
 			USE_YN = #{useYn},
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE
-			COMPANY_CODE = #{companyCode}
+			COMPANY_ID = #{companyId}
 	</update>
 	
+	<select id="selectCode" resultType="string" parameterType="string">
+		SELECT
+			COMPANY_CODE
+		FROM
+			t_company
+		WHERE
+			COMPANY_Code = #{companyCode}
+	</select>
 	
 	<select id="select" resultType="com.portal.adm.company.model.CompanyModel" parameterType="string">
 		SELECT
+			COMPANY_ID,
 			COMPANY_CODE,
 			COMPANY_NO,
 			COMPANY_NM,
@@ -114,20 +123,20 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
-			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
 		FROM
-			t1_company
+			t_company
 		WHERE
-			COMPANY_CODE = #{companyCode}
+			COMPANY_ID = #{companyId}
 	</select>
 	
 	<select id="selectCompanyCode" resultType="com.portal.adm.company.model.CompanyModel" parameterType="string">
 		SELECT
+			COMPANY_ID,
 			COMPANY_CODE,
 			COMPANY_NO,
 			COMPANY_NM,
@@ -136,20 +145,20 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
-			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
 		FROM
-			t1_company
+			t_company
 		WHERE
 			COMPANY_CODE = #{companyCode}
 	</select>
 	
 	<select id="selectListAll" resultType="com.portal.adm.company.model.CompanyModel">
 		SELECT
+			COMPANY_ID,
 			COMPANY_CODE,
 			COMPANY_NO,
 			COMPANY_NM,
@@ -158,23 +167,22 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
-			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
 			MODI_DT
 		FROM
-			t1_company
+			t_company
 	</select>
 	
 	<update id="delete" parameterType="com.portal.adm.company.model.CompanyModel">
-		UPDATE t1_company SET
+		UPDATE t_company SET
 			USE_YN = 'N',
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
 		WHERE
-			COMPANY_CODE = #{companyCode}
+			COMPANY_ID = #{companyId}
 	</update>
 	
 	

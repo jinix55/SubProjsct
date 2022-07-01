@@ -70,19 +70,18 @@ public class AuthProvider extends DaoAuthenticationProvider {
 			// 개발 및 로컬
 			// 외주 개발자 테스트 인 경우 MODI_SE = "R"
 			log.info("=개발 및 로컬 security 1====");
-//			if (StringUtils.equals("R", authUser.getMemberModel().getModiSe())) {
-//				log.info("=개발 및 로컬 security 2==== : {}",authentication.getCredentials().toString());
-//				if (!StringUtils.equals(authentication.getCredentials().toString(), "test")) {
-//					if (checkDB(authentication.getName(), authentication.getCredentials().toString())) {
-//						//DB 인증 성공
-//					} else {
-//						//DB 인증 실패
-//						throw new LockedException(mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_FAIL));
-//					}
-////					throw new BadCredentialsException(mapper.selectLoginMessage(Constant.LoginMessage.LOGIN_FAIL));
-//				}
-//			} else {
-			{
+			if (StringUtils.equals("R", authUser.getMemberModel().getModiSe())) {
+				log.info("=개발 및 로컬 security 2==== : {}",authentication.getCredentials().toString());
+				if (!StringUtils.equals(authentication.getCredentials().toString(), "test")) {
+					if (checkDB(authentication.getName(), authentication.getCredentials().toString())) {
+						//DB 인증 성공
+					} else {
+						//DB 인증 실패
+						throw new LockedException(mapper.selectLoginMessage(Constant.LoginMessage.DB_LOGIN_FAIL));
+					}
+//					throw new BadCredentialsException(mapper.selectLoginMessage(Constant.LoginMessage.LOGIN_FAIL));
+				}
+			} else {
 				log.info("=authUser.isSso()====");
 				if (authUser.isSso()) {
 					// SSO 로그인
@@ -111,8 +110,7 @@ public class AuthProvider extends DaoAuthenticationProvider {
 	private boolean checkDB(String userId, String password) {
 		boolean result = false;
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("companyCode",userId.split("@")[0]);
-		map.put("userId",userId.split("@")[1]);
+		map.put("userId",userId);
 		map.put("password",password);
 		int errorNo = 0;
 		String init = "";

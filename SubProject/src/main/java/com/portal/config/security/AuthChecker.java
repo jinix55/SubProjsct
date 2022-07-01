@@ -45,9 +45,8 @@ public class AuthChecker {
 			//인증 사용자의 권한, 요청 URL을 메뉴, 권한 테이블에서 조회하여 허용되는 권한이면 true 반환
 			//  현재는 인증 사용자면 모두 접근 가능하도록 true 반환
 			AuthUser user = (AuthUser) principal;
-			String authCode = user.getMemberModel().getAuthCode();
-			//if (StringUtils.isNotBlank(authCode) && StringUtils.equals(Constant.YES, user.getMemberModel().getAuthUseYn())) {
-			{
+			String authId = user.getMemberModel().getAuthId();
+			if (StringUtils.isNotBlank(authId) && StringUtils.equals(Constant.YES, user.getMemberModel().getAuthUseYn())) {
 				
 				String uri = request.getRequestURI();
 				/*
@@ -108,7 +107,7 @@ public class AuthChecker {
 					 *  	~/기능명/delete 
 					 */
 					Map<String,String> param = new HashMap<String,String>();
-					param.put("authCode", authCode);
+					param.put("authId", authId);
 					param.put("menuUrl", uri);
 					MenuModel menu = mapper.selectMenuWithAuth(param);
 					if (menu != null) {

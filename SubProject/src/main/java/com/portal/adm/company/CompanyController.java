@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -58,17 +57,6 @@ public class CompanyController {
         return "company/companyMgt";
     }
 
-    @GetMapping("/detail/company")
-    @ResponseBody
-    public List<CompanyModel> company(@RequestBody CompanyModel companyModel) {
-        List<CompanyModel> models = companyService.selectCompanyList(companyModel);
-        System.out.println("models = " + models);
-        
-        
-        companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
-        return models;
-    }
-    
     /**
      * 회사관리 페이지로 이동
      *
@@ -95,13 +83,13 @@ public class CompanyController {
     @ResponseBody
     public String companySave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
     			CompanyModel companyModel = new CompanyModel();
     			for (String key : request.getParameterMap().keySet()) {
 //    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
     			}
-
+    			String companyId = request.getParameter("companyId");
     			String companyCode = request.getParameter("companyCode");
     			String companyNo = request.getParameter("companyNo");
     			String companyNm = request.getParameter("companyNm");
@@ -110,10 +98,12 @@ public class CompanyController {
     			String telephoneNo = request.getParameter("telephoneNo");
     			String representativeNm = request.getParameter("representativeNm");
     			String note = request.getParameter("note");
-    			String logoFileId = request.getParameter("logoFileId");
     			String useYn = request.getParameter("useYn");
     			
-
+    			if(StringUtils.equals(companyId, null) || StringUtils.equals(companyId, "")) {
+    				companyId = idUtil.getCompanyId();
+    			}
+    			companyModel.setCompanyId(companyId);
     			companyModel.setCompanyCode(companyCode);
     			companyModel.setCompanyNo(companyNo);
     			companyModel.setCompanyNm(companyNm);
@@ -122,7 +112,6 @@ public class CompanyController {
     			companyModel.setTelephoneNo(telephoneNo);
     			companyModel.setRepresentativeNm(representativeNm);
     			companyModel.setNote(note);
-    			companyModel.setLogoFileId(logoFileId);
     			companyModel.setUseYn(useYn);
     			
     			companyModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -147,11 +136,11 @@ public class CompanyController {
     public String companySelect(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
     			String searchCode = request.getParameter("search");
     			
-    			String comapnyCdoe = null; //companyService.selectCode(searchCode); 확인 필요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    			String comapnyCdoe = companyService.selectCode(searchCode);
 				if( comapnyCdoe == null || StringUtils.equals(comapnyCdoe, "")) {
 					return searchCode.toUpperCase();
 				}else {
@@ -178,11 +167,11 @@ public class CompanyController {
     public String companyDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
-        	if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
 	            CompanyModel companyModel = new CompanyModel();
 	
-	            String companyCode = request.getParameter("companyCode");
-	            companyModel.setCompanyCode(companyCode);
+	            String companyId = request.getParameter("companyId");
+	            companyModel.setCompanyId(companyId);
 	
 	            companyModel.setModiId(authUser.getMemberModel().getUserId());
 	
@@ -200,15 +189,15 @@ public class CompanyController {
     /**
      * 회사 정보를 조회한다.
      *
-     * @param companyCode
+     * @param companyId
      * @return
      */
-    @PostMapping("/company/detail/{companyCode}")
+    @PostMapping("/company/detail/{companyId}")
     @ResponseBody
-    public CompanyModel getCompanysForCompanyId(@PathVariable("companyCode") String companyCode) {
-		CompanyModel companyModels = companyService.selectCompanyCode(companyCode);
+    public CompanyModel getCompanysForCompanyId(@PathVariable("companyId") String companyId) {
+		CompanyModel companyModels = companyService.selectCompanyId(companyId);
 
-        return companyService.selectCompanyCode(companyCode);
+        return companyService.selectCompanyId(companyId);
     }
     
 }

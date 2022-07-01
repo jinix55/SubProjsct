@@ -82,7 +82,7 @@ public class ResetController {
     public ResponseEntity<String> resetSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
     			ResetModel resetModel = new ResetModel();
     			for (String key : request.getParameterMap().keySet()) {
@@ -127,7 +127,7 @@ public class ResetController {
     public ResponseEntity<String> resetDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
-        	if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
 	            ResetModel resetModel = new ResetModel();
 	
     			String resetId = request.getParameter("resetId");

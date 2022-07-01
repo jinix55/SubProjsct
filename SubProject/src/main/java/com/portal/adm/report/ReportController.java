@@ -64,13 +64,13 @@ public class ReportController {
     public String reportGet(@ModelAttribute ReportModel reportModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	ReportModel repoModel = new ReportModel();
     	repoModel = reportModel;
-    	repoModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+    	repoModel.setAuthId(authUser.getMemberModel().getAuthId());
     	repoModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
         List<ReportModel> models = reportService.selectReportList(repoModel);
         reportModel.setTotalCount(reportService.selectReportListCount(repoModel));
         RoleModel roleModel = new RoleModel();
         roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        roleModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+        roleModel.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("roles", roleService.selectList(roleModel));
         model.addAttribute("reports", models);
         model.addAttribute("pages", reportModel);
@@ -90,7 +90,7 @@ public class ReportController {
         reportModel.setTotalCount(reportService.selectReportListCount(reportModel));
         RoleModel roleModel = new RoleModel();
         roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        roleModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+        roleModel.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("roles", roleService.selectList(roleModel));
         model.addAttribute("reports", models);
         model.addAttribute("pages", reportModel);
@@ -109,7 +109,7 @@ public class ReportController {
     public ResponseEntity<String> reportSave(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
     			
     			ReportModel reportModel = new ReportModel();
     			for (String key : request.getParameterMap().keySet()) {
@@ -131,7 +131,7 @@ public class ReportController {
     			reportModel.setReportId(reportId);
     			reportModel.setReportNm(reportNm);
     			reportModel.setReportUrl(reportUrl);
-    			reportModel.setGroupId(authUser.getMemberModel().getAuthCode());
+    			reportModel.setGroupId(authUser.getMemberModel().getAuthId());
     			reportModel.setReportType(reportType);
     			reportModel.setReportDsc(reportDsc);
     			reportModel.setCompanyCode(companyCode);
@@ -163,7 +163,7 @@ public class ReportController {
     public ResponseEntity<String> reportDelete(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
         try {
         	 String result = null;
-        	if(StringUtils.equals(authUser.getMemberModel().getAuthCode(), "P")) {
+        	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
 	            ReportModel reportModel = new ReportModel();
 	
 	            String reportId = request.getParameter("reportId");

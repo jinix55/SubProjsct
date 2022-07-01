@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,6 +31,7 @@ import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.member.model.MemberCriteria;
 import com.portal.adm.member.model.MemberModel;
 import com.portal.adm.member.service.MemberService;
+import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
 import com.portal.config.security.AuthUser;
 
@@ -61,16 +64,24 @@ public class MemberController {
      * @return
      */
     @GetMapping("/member")
-    public String list(@ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String list(HttpServletRequest request, @RequestParam String companyCode, @ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
         // 모든 권한 조회
-        model.addAttribute("roles", roleService.selectAllList());
+    	List<RoleModel> roles = roleService.selectAllList();
         
         // 모든 회사 조회
-        model.addAttribute("companys", companyService.selectListAll());
+//        model.addAttribute("companys", companyService.selectListAll());
 
-        criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        criteria.setAuthCode(authUser.getMemberModel().getAuthCode());
+        if("au2000001".equals(authUser.getMemberModel().getAuthId())) {
+        	model.addAttribute("companyCode", companyCode);
+        	model.addAttribute("roles", roles.stream().filter(r -> r.getAuthId().equals("au2000002")).collect(Collectors.toList()));
+        	criteria.setCompanyCode(companyCode);
+        }else {
+        	model.addAttribute("roles", roles.stream().filter(r -> r.getAuthId().equals("au2000003")).collect(Collectors.toList()));
+        	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        	model.addAttribute("companyCode", authUser.getMemberModel().getCompanyCode());
+        }
+        criteria.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
         model.addAttribute("pages", criteria);
@@ -83,14 +94,24 @@ public class MemberController {
 
         attributes.addFlashAttribute("criteria", criteria);
 
-        // 모든 권한 조회
-        model.addAttribute("roles", roleService.selectAllList());
+     // 모든 권한 조회
+    	List<RoleModel> roles = roleService.selectAllList();
         
         // 모든 회사 조회
-        model.addAttribute("companys", companyService.selectListAll());
+//        model.addAttribute("companys", companyService.selectListAll());
+
+        if("au2000001".equals(authUser.getMemberModel().getAuthId())) {
+        	model.addAttribute("companyCode", criteria.getCompanyCode());
+        	model.addAttribute("roles", roles.stream().filter(r -> r.getAuthId().equals("au2000002")).collect(Collectors.toList()));
+        	criteria.setCompanyCode(criteria.getCompanyCode());
+        }else {
+        	model.addAttribute("roles", roles.stream().filter(r -> r.getAuthId().equals("au2000003")).collect(Collectors.toList()));
+        	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        	model.addAttribute("companyCode", authUser.getMemberModel().getCompanyCode());
+        }
 
         criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        criteria.setAuthCode(authUser.getMemberModel().getAuthCode());
+        criteria.setAuthId(authUser.getMemberModel().getAuthId());
         
         model.addAttribute("members", memberService.selectMemberList(criteria));
         criteria.setTotalCount(memberService.selectMemberListCount(criteria));
@@ -100,20 +121,20 @@ public class MemberController {
         return "member/member";
     }
 
-    @PostMapping("/member/detail/{memberId}")
+    @PostMapping("/member/detail/{memberId}/{companyCode}")
     @ResponseBody
-    public MemberModel selectPopup(@PathVariable String memberId, Model model) {
+    public MemberModel selectPopup(@PathVariable String memberId, @PathVariable String companyCode, Model model) {
     	MemberModel memberModel = new MemberModel();
-    	memberModel.setUserId(memberId);
+    	memberModel.setUserId(memberId+"@"+companyCode);
     	return memberService.selectMember(memberModel);
     }
     
-    @PostMapping("/member/detail/popup/{memberId}")
+    @PostMapping("/member/detail/popup/{memberId}/{companyCode}")
     @ResponseBody
-    public String select(@PathVariable String memberId, Model model) {
+    public String select(@PathVariable String memberId, @PathVariable String companyCode, Model model) {
         MemberModel memberModel = new MemberModel();
         if(!StringUtils.equals(memberId, "")) {
-        	memberModel.setUserId(memberId);
+        	memberModel.setUserId(memberId+"@"+companyCode);
         	memberModel = memberService.selectMember(memberModel);
         }
         
@@ -156,6 +177,7 @@ public class MemberController {
 		for (String key : request.getParameterMap().keySet()) {
 //			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
 		}
+		String subdomain = request.getServerName().split("\\.")[0];
         try {
             if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
                 memberModel.setStartDt(LocalDateTime.parse(request.getParameter("dateFrom") + "T" + LocalTime.now().toString()));
@@ -166,7 +188,8 @@ public class MemberController {
 
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
             memberModel.setModiId(authUser.getMemberModel().getUserId());
-
+            //저장시 회사코드와 같이 적용
+            memberModel.setUserId(memberModel.getUserId()+"@"+memberModel.getCompanyCode());	
             String result = memberService.insert(memberModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -232,9 +255,7 @@ public class MemberController {
     	Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		
-		// ?????????????????List<MemberModel> members = memberService.selectMemberAllList(criteria);
-		
-		List<MemberModel> members = null;  //확인 필요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		List<MemberModel> members = memberService.selectMemberAllList(criteria);
 		
 		if(members != null) {
 			res = true;

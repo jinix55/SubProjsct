@@ -33,7 +33,7 @@ public class MenuPreparer implements ViewPreparer {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AuthUser) {
 				AuthUser authUser = (AuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-				List<MenuModel> menuModelList = menuService.selectTopMenuListWithAuth(authUser.getMemberModel().getAuthCode());
+				List<MenuModel> menuModelList = menuService.selectTopMenuListWithAuth(authUser.getMemberModel().getAuthId());
 				if (menuModelList == null) {
 					menuModelList = new ArrayList<MenuModel>();
 				}

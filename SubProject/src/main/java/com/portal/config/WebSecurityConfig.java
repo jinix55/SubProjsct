@@ -72,7 +72,7 @@ public class WebSecurityConfig<S extends Session> extends WebSecurityConfigurerA
 		
 		//http.formLogin().loginPage("/login").defaultSuccessUrl("/", true).permitAll();
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/", true).loginProcessingUrl("/lgn")
-				.usernameParameter("userName").passwordParameter("userPwd")
+				.usernameParameter("userId").passwordParameter("userPwd")
 				.successHandler(loginSuccessHandler()).failureHandler(authFailure()).permitAll();
 		http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutHandler()).invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
 		//SSO LOGIN 중간 처리

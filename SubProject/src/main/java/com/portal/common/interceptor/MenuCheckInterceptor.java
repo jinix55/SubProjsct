@@ -62,7 +62,7 @@ public class MenuCheckInterceptor implements HandlerInterceptor {
 					try {
 						Map<String,Object> menuGpCnt = new  HashMap<String,Object>();
 						String upperMenuId = menuService.selectUpperMenuIdForMenuUrl(uri);
-						List<MenuModel> subMenuList = menuService.selectLeftMenuListWithAuth(upperMenuId,authUser.getMemberModel().getAuthCode());
+						List<MenuModel> subMenuList = menuService.selectLeftMenuListWithAuth(upperMenuId,authUser.getMemberModel().getAuthId());
 						String id = "";
 						
 						int cnt = 0;

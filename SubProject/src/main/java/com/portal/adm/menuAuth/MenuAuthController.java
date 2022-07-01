@@ -66,7 +66,7 @@ public class MenuAuthController {
 	 */
 	@GetMapping("/menuAuth")
 	public String menu(@ModelAttribute MemberCriteria Mcriteria,@ModelAttribute Criteria criteria ,Model model, @AuthenticationPrincipal AuthUser authUser) {
-		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthCode());
+		List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
     	String rootMenuId = null;
     	for (MenuModel menu : list) {
     		if (menu.getLv() == 0) {
@@ -74,7 +74,7 @@ public class MenuAuthController {
     			break;
     		}
     	}
-    	criteria.setAuthCode(authUser.getMemberModel().getAuthCode());
+    	criteria.setAuthId(authUser.getMemberModel().getAuthId());
     	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	model.addAttribute("roles", roleService.selectList(criteria));
         model.addAttribute("menus", list);
@@ -94,7 +94,7 @@ public class MenuAuthController {
         model.addAttribute("depts", deptService.selectDeptClList());
 
         Mcriteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-        Mcriteria.setAuthCode(authUser.getMemberModel().getAuthCode());
+        Mcriteria.setAuthId(authUser.getMemberModel().getAuthId());
         model.addAttribute("members", memberService.selectMemberList(Mcriteria));
         criteria.setTotalCount(memberService.selectMemberListCount(Mcriteria));
         model.addAttribute("pages", Mcriteria);
@@ -139,8 +139,8 @@ public class MenuAuthController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/menuAuth/update/{authCode}/popup", method=RequestMethod.POST)
-	public Map<String,Object> updateMenuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authCode, @ModelAttribute MenuModel menuModel) {
+	@RequestMapping(value="/menuAuth/update/{authId}/popup", method=RequestMethod.POST)
+	public Map<String,Object> updateMenuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId, @ModelAttribute MenuModel menuModel) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		
@@ -149,7 +149,7 @@ public class MenuAuthController {
 		for(int i=0; i < jsons.length();i++) {
 			JSONObject json = jsons.getJSONObject(i);
 			MenuModel model = new MenuModel();
-			model.setAuthCode(authCode);
+			model.setAuthId(authId);
 			model.setMenuId(json.getString("menuId"));
 			String authUseYn = "N";
 			if("true".equals(json.getString("checked"))) {

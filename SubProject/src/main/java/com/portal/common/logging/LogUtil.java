@@ -47,9 +47,11 @@ public class LogUtil {
 
                 model.setUserId(memberModel.getUserId());
                 model.setUserNm(memberModel.getUserNm());
+                model.setPstnCode(memberModel.getPstnCode());
                 model.setPstnNm(memberModel.getPstnNm());
+                model.setDeptCode(memberModel.getDeptCode());
                 model.setDeptNm(memberModel.getDeptNm());
-                model.setAuthCode(memberModel.getAuthCode());
+                model.setAuthId(memberModel.getAuthId());
                 model.setAuthNm(memberModel.getAuthNm());
             } else {
                 model.setUserId((String) logData.get(Constant.LOG.USER_INFO));

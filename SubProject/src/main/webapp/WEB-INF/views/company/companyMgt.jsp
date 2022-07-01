@@ -56,6 +56,7 @@
 					<col style="width: 14%;">
 					<col style="width: 8%;">
 					<col style="width: 8%;">
+					<col style="width: 8%;">
 				</colgroup>
 				<thead>
 					<tr class="th-bg">
@@ -66,6 +67,7 @@
 						<th scope="col">사업자번호</th>
 						<th scope="col">등록일</th>
 						<th scope="col">사용여부</th>
+						<th scope="col">계정관리</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -82,6 +84,9 @@
 							<td><spring:eval expression="company.rgstDt" /></td>
 							<td>
 								<button type="button" class="btn-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
+							</td>
+							<td>
+								<a href="/member/member?companyCode=${company.companyCode}" class="btn-small02">계정관리</a>
 							</td>
 							<td>
 								<div class="btn-group">
@@ -101,7 +106,7 @@
 					</c:when>
 					<c:otherwise>
 						<tr>
-							<td colspan="8">데이터가 없습니다.</td>
+							<td colspan="9">데이터가 없습니다.</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
@@ -515,6 +520,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 

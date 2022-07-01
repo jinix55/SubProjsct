@@ -48,9 +48,11 @@
             log_dt,
             user_id,
             user_nm,
+            pstn_code,
             pstn_nm,
+            dept_code,
             dept_nm,
-            auth_code,
+            auth_id,
             auth_nm,
             client_ip,
             server_ip,
@@ -82,9 +84,11 @@
 			log_dt,
 			user_id,
 			user_nm,
+			pstn_code,
 			pstn_nm,
+			dept_code,
 			dept_nm,
-			auth_code,
+			auth_id,
 			auth_nm,
 			client_ip,
 			server_ip,
@@ -116,9 +120,11 @@
               log_dt
             , user_id
             , user_nm
+            , pstn_code
             , pstn_nm
+            , dept_code
             , dept_nm
-            , auth_code
+            , auth_id
             , auth_nm
             , client_ip
             , server_ip
@@ -134,9 +140,11 @@
               NOW()
             , #{userId}
             , #{userNm}
+            , #{pstnCode}
             , #{pstnNm}
+            , #{deptCode}
             , #{deptNm}
-            , #{authCode}
+            , #{authId}
             , #{authNm}
             , #{clientIp}
             , #{serverIp}
@@ -156,9 +164,11 @@
               LOG_DT
             , USER_ID
             , USER_NM
+            , PSTN_CODE
             , PSTN_NM
+            , DEPT_CODE
             , DEPT_NM
-            , AUTH_CODE
+            , AUTH_ID
             , AUTH_NM
             , CLIENT_IP
             , SERVER_IP
@@ -166,9 +176,11 @@
               NOW()
             , #{userId}
             , #{userNm}
+            , #{pstnCode}
             , #{pstnNm}
+            , #{deptCode}
             , #{deptNm}
-            , #{authCode}
+            , #{authId}
             , #{authNm}
             , #{clientIp}
             , #{serverIp}

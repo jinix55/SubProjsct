@@ -37,8 +37,8 @@ public class MenuService {
      *
      * @return
      */
-    public List<MenuModel> selectList(String authCode) {
-        return menuMapper.selectList(authCode);
+    public List<MenuModel> selectList(String authId) {
+        return menuMapper.selectList(authId);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MenuService {
     @Transactional
     public long delete(MenuModel model) {
     	menuMapper.deleteAuth(model);
-    	if(model.getAuthCode() == "P") {
+    	if(model.getAuthId() == "au2000001") {
     		return menuMapper.delete(model);
     	}else {
     		return menuMapper.delete(model);
@@ -130,7 +130,7 @@ public class MenuService {
     public String selectFirstMenuUrl(String menuUrl, String authId) {
     	Map<String,String> param = new HashMap<>();
     	param.put("menuUrl", menuUrl);
-    	param.put("authCode", authId);
+    	param.put("authId", authId);
     	return menuMapper.selectFirstMenuUrl(param);
     }
     
@@ -170,9 +170,9 @@ public class MenuService {
      * @return
      */
     @Transactional
-    public List<ReportModel> reportMenuList(String companyCode,String authId) {
+    public List<ReportModel> reportMenuList(String companyId,String authId) {
     	Map<String,String> param = new HashMap<>();
-    	param.put("companyCode", companyCode);
+    	param.put("companyId", companyId);
     	param.put("authId", authId);
     	return menuMapper.reportMenuList(param);
     }

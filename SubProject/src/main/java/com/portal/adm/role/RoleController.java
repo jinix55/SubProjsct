@@ -66,14 +66,14 @@ public class RoleController {
         model.addAttribute("companys", companyService.selectListAll());
     	
     	roleModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	roleModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+    	roleModel.setAuthId(authUser.getMemberModel().getAuthId());
     	
         model.addAttribute("roles", roleService.selectList(roleModel));
         roleModel.setTotalCount(roleService.selectListCount(roleModel));
         model.addAttribute("pages", roleModel);
         
         
-        List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthCode());
+        List<MenuModel> list = menuService.selectList(authUser.getMemberModel().getAuthId());
     	String rootMenuId = null;
     	for (MenuModel menu : list) {
     		if (menu.getLv() == 0) {
@@ -192,8 +192,8 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/role/update/{authCode}/popup", method=RequestMethod.POST)
-	public Map<String,Object> updateMenuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authCode, @ModelAttribute MenuModel menuModel) {
+	@RequestMapping(value="/role/update/{authId}/popup", method=RequestMethod.POST)
+	public Map<String,Object> updateMenuAuth(HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser, @PathVariable String authId, @ModelAttribute MenuModel menuModel) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		boolean res = false;
 		
@@ -202,7 +202,7 @@ public class RoleController {
 		for(int i=0; i < jsons.length();i++) {
 			JSONObject json = jsons.getJSONObject(i);
 			MenuModel model = new MenuModel();
-			model.setAuthCode(authCode);
+			model.setAuthId(authId);
 			model.setMenuId(json.getString("menuId"));
 			String authUseYn = "N";
 			if("true".equals(json.getString("checked"))) {

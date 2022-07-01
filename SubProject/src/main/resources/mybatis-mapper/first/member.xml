@@ -59,34 +59,51 @@
 	<select id="selectMemberList" resultType="com.portal.adm.member.model.MemberModel" parameterType="com.portal.adm.member.model.MemberCriteria">
 		select
 			row_number() over () as rownum,
-			u.company_code,
 			u.user_id,
 			u.user_nm,
+			u.pstn_code,
 			u.email,
 			u.phone,
-			u.pstn_nm,
-			u.dept_nm,
+			p.pstn_nm,
+			u.dept_code,
+			d.dept_nm,
+			u.company_code,
 			c.company_nm,
-			u.auth_code,
-			cc.code_nm as auth_nm,
+			u.adof_dept_code,
+			ad.dept_nm as adof_dept_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
 			u.use_yn,
 			u.last_log_dt,
+			case
+			when coalesce(to_days(last_log_dt), to_days(now())) + (SELECT CODE_NM FROM T_CODE WHERE GROUP_ID = 'ACCOUNT_LOCK_PD' AND CODE_ID = 'LOCK_PD') <![CDATA[<]]> to_days(now()) then 'Y'
+			else 'N' end as lock_yn,
+			u.start_dt,
+			u.end_dt,
+			'N' as expired_yn,
 			u.rgst_id,
 			u.rgst_dt,
 			u.modi_id,
-			u.modi_dt
+			u.modi_dt,
+			u.file_url,
+			u.dt_limit_yn
 		from
-			t1_user u
+			t_user u
+			left outer join t_pstn p on u.pstn_code = p.pstn_code
+			left outer join t_dept d on u.dept_code = d.dept_code
+			left outer join t_hdept h on u.hdept_code = h.hdept_code
+			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
+			left outer join t_group tgm on u.user_id = tgm.user_id
+			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
-			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
-			where 1 =1
-		<if test="authCode = 'P'">
-			and u.auth_code in ('P', 'A')
-		</if>
-		<if test="authCode = 'A'">
-			and u.auth_code != 'P'
-		      and u.company_code = #{companyCode} 		
-		</if>		
+<!-- 		<if test="authId != 'au2000001'"> -->
+			<if test="companyCode != null and companyCode != ''">
+			where
+				c.company_code = #{companyCode}
+<!-- 				AND tgm.auth_id != 'au2000001' -->
+			</if>
+<!-- 		</if> -->
 		<include refid="searchMember"></include>
 		order by user_nm ASC
 		<include refid="paging"></include>
@@ -96,132 +113,371 @@
 		select
 			count(*)
 		from
-			t1_user u
+			t_user u
+			left outer join t_pstn p on u.pstn_code = p.pstn_code
+			left outer join t_dept d on u.dept_code = d.dept_code
+			left outer join t_hdept h on u.hdept_code = h.hdept_code
+			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
+			left outer join t_group tgm on u.user_id = tgm.user_id
+			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
-			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
-			where 1 =1
-		<if test="authCode = 'P'">
-			and u.auth_code in ('P', 'A')
-		</if>
-		<if test="authCode = 'A'">
-			and u.auth_code != 'P'
-		      and u.company_code = #{companyCode} 		
-		</if>		
+<!-- 		<if test="authId != 'au2000001'"> -->
+			<if test="companyCode != null and companyCode != ''">
+			where
+				c.company_code = #{companyCode}
+<!-- 				AND tgm.auth_id != 'au2000001' -->
+			</if>
+<!-- 		</if> -->
 		<include refid="searchMember"></include>
 	</select>
 
-	
-	<select id="selectMember" parameterType="com.portal.adm.member.model.MemberModel" resultType="com.portal.adm.member.model.MemberModel">
+	<select id="selectMemberAllList" resultType="com.portal.adm.member.model.MemberModel" parameterType="com.portal.adm.member.model.MemberCriteria">
 		select
-			u.company_code,
+			row_number() over () as rownum,
 			u.user_id,
 			u.user_nm,
+			u.pstn_code,
 			u.email,
 			u.phone,
-			u.pstn_nm,
-			u.dept_nm,
+			p.pstn_nm,
+			u.dept_code,
+			d.dept_nm,
+			u.company_code,
 			c.company_nm,
-			u.auth_code,
-			cc.code_nm as auth_nm,
+			u.adof_dept_code,
+			ad.dept_nm as adof_dept_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
 			u.use_yn,
 			u.last_log_dt,
+			case
+			when coalesce(to_days(last_log_dt), to_days(now())) + (SELECT CODE_NM FROM T_CODE WHERE GROUP_ID = 'ACCOUNT_LOCK_PD' AND CODE_ID = 'LOCK_PD') <![CDATA[<]]>  to_days(now()) then 'Y'
+			else 'N' end as lock_yn,
+			u.start_dt,
+			u.end_dt,
+			'N' as expired_yn,
 			u.rgst_id,
 			u.rgst_dt,
 			u.modi_id,
-			u.modi_dt
+			u.modi_dt,
+			u.file_url,
+			u.dt_limit_yn,
+			tga.AUTH_CL 
 		from
-			t1_user u
+			t_user u
+			left outer join t_pstn p on u.pstn_code = p.pstn_code
+			left outer join t_dept d on u.dept_code = d.dept_code
+			left outer join t_hdept h on u.hdept_code = h.hdept_code
+			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
+			left outer join t_group tgm on u.user_id = tgm.user_id
+			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
-			left outer join t_code cc ON cc.code_id = u.auth_code and cc.group_id = 'AUTH_CD'
-		where u.company_code = #{companyCode}
-		  and u.user_id  =  #{userId}			
+		<include refid="searchMember"></include>
+		ORDER BY U.USER_NM
 	</select>
 	
+	<select id="selectMember" parameterType="com.portal.adm.member.model.MemberModel" resultType="com.portal.adm.member.model.MemberModel">
+		select
+			u.user_id,
+			u.user_nm,
+			u.pstn_code,
+			u.email,
+			u.phone,
+			p.pstn_nm,
+			u.dept_code,
+			d.dept_nm,
+			u.company_code,
+			c.company_nm,
+			u.adof_dept_code,
+			ad.dept_nm as adof_dept_nm,
+			tga.auth_id,
+			COALESCE(tga.use_yn,'N') as auth_use_yn,
+			tga.auth_nm,
+			u.use_yn,
+			u.last_log_dt,
+			case
+			when coalesce(to_days(last_log_dt), to_days(now())) + (SELECT CODE_NM FROM T_CODE WHERE GROUP_ID = 'ACCOUNT_LOCK_PD' AND CODE_ID = 'LOCK_PD') <![CDATA[<]]> to_days(now()) then 'Y'
+			else 'N' end as lock_yn,
+			u.start_dt,
+			u.end_dt,
+			'N' as expired_yn,
+			u.rgst_id,
+			u.rgst_dt,
+			u.modi_id,
+			u.modi_dt,
+			u.file_url,
+			u.dt_limit_yn,
+			tga.AUTH_CL 
+		from
+			t_user u
+			left outer join t_pstn p on u.pstn_code = p.pstn_code
+			left outer join t_dept d on u.dept_code = d.dept_code
+			left outer join t_hdept h on u.hdept_code = h.hdept_code
+			left outer join t_dept ad on u.adof_dept_code = ad.dept_code
+			left outer join t_group tgm on u.user_id = tgm.user_id
+			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
+			left outer join t_company c ON c.company_code = u.company_code
+		where
+			upper(u.user_id) = upper(#{userId})
+	</select>
 	
+	<select id="selectMemberListCountForRoleId" resultType="int" parameterType="String">
+		select
+			count(*)
+		from
+			t_user_auth
+		where
+			auth_id = #{authId}
+	</select>
 
-	 <update id="update" parameterType="com.portal.adm.member.model.MemberModel">
-		update t1_user
-		set
-		    auth_code = #{authCode}
-		  , email = #{email}
-		  , phone = #{phone}
-		  , use_yn = #{useYn}
+	<insert id="upsertAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		insert into t_user_auth (user_id, auth_id, use_yn, rgst_id, rgst_dt, modi_id, modi_dt)
+		values (#{userId}, #{authId}, #{useYn}, #{rgstId}, now(), #{modiId}, now())
+		ON DUPLICATE KEY UPDATE
+			use_yn = #{useYn}
+		  , auth_id = #{authId}
 		  , modi_dt = now()
 		  , modi_id = #{modiId}
-		where company_code = #{companyCode}
-		  and user_id = #{userId}
+	</insert>
+
+	<insert id="upsertMgrAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		INSERT INTO t_group (user_id, auth_id, use_yn, rgst_id, rgst_dt, modi_id, modi_dt)
+		values (#{userId}, #{authId}, #{useYn}, #{rgstId}, now(), #{modiId}, now())
+		ON DUPLICATE KEY UPDATE
+			use_yn = #{useYn}
+		<if test="useYn == 'Y'.toString()">
+		  , auth_id = #{authId}
+		</if>	
+		  , modi_dt = now()
+		  , modi_id = #{modiId}
+	</insert>
+	
+	<insert id="updateUsertAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		INSERT INTO t_group (user_id, auth_id, use_yn, rgst_id, rgst_dt, modi_id, modi_dt)
+		values (#{userId}, #{authId}, #{useYn}, #{rgstId}, now(), #{modiId}, now())
+		ON DUPLICATE KEY UPDATE
+			use_yn = #{useYn}
+		  , auth_id = #{authId}
+		  , modi_dt = now()
+		  , modi_id = #{modiId}
+	</insert>
+	
+	 <update id="update" parameterType="com.portal.adm.member.model.MemberModel">
+		update t_user
+		set
+		  company_code = #{companyCode}
+		  , email = #{email}
+		  , phone = #{phone}
+		  , dt_limit_yn = #{dtLimitYn}
+		  , use_yn = #{useYn}
+		  , start_dt = #{startDt}
+		  , end_dt = #{endDt}
+		  , modi_dt = now()
+		  , modi_id = #{modiId}
+		where
+			user_id = #{userId}
 	</update>
 	
 	 <update id="delete" parameterType="com.portal.adm.member.model.MemberModel">
-		update t1_user
+		update t_user
 		set
 		  use_yn = 'N'
 		  , modi_dt = now()
 		  , modi_id = #{modiId}
-		where company_code = #{companyCode}
-		  and user_id = #{userId}
+		where
+			user_id = #{userId}
 	</update>
 	
 	<insert id="insertUser" parameterType="com.portal.adm.member.model.MemberModel">
-		INSERT INTO T1_USER (
-		    COMPANY_CODE,
+		INSERT INTO T_USER (
 			USER_ID,
 			USER_NM,
 			EMAIL,
 			PHONE,
 			PASSWORD,
-			PSTN_NM,
-			DEPT_NM,
+			PSTN_CODE,
+			DEPT_CODE,
+			HDEPT_CODE,
+			ADOF_DEPT_CODE,
+			COMPANY_CODE,
+			DUTY_SE,
+			LAST_LOG_DT,
+			START_DT,
+			END_DT,
+			FILE_URL,
+			MGR_SYS_ENV,
+			USER_SYS_HOME,
+			USER_SYS_ENV,
+			BF_DEPT_CODE,
+			DEPT_UPDT_DT,
 			USE_YN,
+			MODI_SE,
 			RGST_ID,
 			RGST_DT,
 			MODI_ID,
-			MODI_DT
+			MODI_DT,
+			DT_LIMIT_YN
 		)
 		VALUES(
-		    #{companyCode}
-			, #{userId}
+			#{userId}
 			, #{userNm}
 			, #{email}
 			, #{phone}
 			, <![CDATA[SHA2('pp12#$',256)]]>
-			, #{pstnNm}
-			, #{deptNm}
+			, #{pstnCode}
+			, #{deptCode}
+			, #{hdeptCode}
+			, NULL
+			, #{companyCode}
+			, #{dutySe}
+			, NOW()
+			, #{startDt}
+			, #{endDt}
+			, NULL
+			, NULL
+			, NULL
+			, NULL
+			, NULL
+			, NOW()
 			, #{useYn}
+			, 'I'
 			, #{rgstId}
 			, NOW()
 			, #{modiId}
 			, NOW()
+			, #{dtLimitYn}
 		)
 	</insert>
 	
+	 <insert id="insertUserHst" parameterType="com.portal.adm.member.model.MemberModel">
+		insert into t_user_hist (
+			hist_dt,
+			user_id,
+			user_nm,
+			pstn_code,
+			pstn_nm,
+			dept_code,
+			dept_nm,	
+			adof_dept_code,
+			adof_dept_nm,	
+			hdept_code,
+			hdept_nm,	
+			company_code,
+			company_nm,
+			duty_se,
+			use_yn,
+			last_log_dt,
+			start_dt,
+			end_dt,
+			modi_se,
+			rgst_id,
+			rgst_dt,
+			modi_id,
+			modi_dt
+		)
+		select 
+			current_timestamp hist_dt,
+			tu.user_id,
+			tu.user_nm,
+			tu.pstn_code,
+			(select tp.pstn_nm from t_pstn tp where tp.pstn_code = tu.pstn_code) pstn_nm,
+			tu.dept_code,
+			(select td.dept_nm from t_dept td where td.dept_code = tu.dept_code) dept_nm,	
+			tu.adof_dept_code,
+			(select td.dept_nm from t_dept td where td.dept_code = tu.adof_dept_code) adof_dept_nm,	
+			tu.hdept_code,
+			(select th.hdept_nm from t_hdept th where th.hdept_code = tu.hdept_code) hdept_nm,	
+			tu.company_code,
+			(select tc.code_nm from t_code tc where tc.group_id = 'COMPANY_CODE' and tc.code_id = tu.company_code) company_nm,
+			tu.duty_se,
+			tu.use_yn,
+			tu.last_log_dt,
+			tu.start_dt,
+			tu.end_dt,
+			tu.modi_se,
+			tu.rgst_id,
+			tu.rgst_dt,
+			tu.modi_id,
+			tu.modi_dt	
+		from 
+			t_user tu
+		where 
+			tu.user_id = #{userId}
+	</insert>	
+	
+	<select id="selectMemberListCountForMgrRoleId" resultType="int" parameterType="String">
+		SELECT
+			COUNT(1) AS CNT
+		FROM
+			t_group
+		WHERE
+			AUTH_ID = #{authId}
+	</select>
+	
+	<insert id="insertMgrAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		INSER INTO t_group(
+    		  USER_ID
+    		, AUTH_ID
+    		, USE_YN
+    		, RGST_ID
+			, RGST_DT
+			, MODI_ID
+			, MODI_DT
+    	)VALUES(
+    		#{userId}
+    		, #{authId}
+    		, #{useYn}
+    		, #{rgstId}
+    		, NOW()
+    		, #{modiId}
+    		, NOW()
+    	)
+	</insert>
 
+	<update id="updateMgrAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		UPDATE t_group
+        SET
+			  AUTH_ID = #{authId}
+            , USE_YN = #{useYn}
+            , MODI_ID = #{modiId}
+            , MODI_DT = now()
+        WHERE
+            USER_ID = #{userId}
+	</update>
+
+	<delete id="deleteMgrAuth" parameterType="com.portal.adm.member.model.MemberModel">
+		UPDATE t_group
+        SET
+            USE_YN = 'N'
+        WHERE USER_ID = #{userId}
+	</delete>
+	
 	<update id="unlockAccount" parameterType="com.portal.adm.member.model.MemberModel">
-		UPDATE t1_user
+		UPDATE t_user
         SET
             last_log_dt = NULL
-		where company_code = #{companyCode}
-		  and user_id = #{userId}
+        WHERE USER_ID = #{userId}
 	</update>
 	
 	 <select id="selectMemberOne" resultType="int" parameterType="com.portal.adm.member.model.MemberModel">
 		SELECT 
 			COUNT(1) 
 		FROM 
-			T1_USER 
-		where company_code = #{companyCode}
-		  and user_id = #{userId}
+			T_USER 
+		WHERE
+			USER_ID = #{userId}
 	</select>
 	
 	 <update id="updateMember" parameterType="com.portal.adm.member.model.MemberModel">
-		UPDATE T1_USER
+		UPDATE T_USER
 		SET
 		   EMAIL = #{email}
 		  , PHONE = #{phone}
 		  , MODI_DT = now()
 		  , MODI_ID = #{modiId}
-		where company_code = #{companyCode}
-		  and user_id = #{userId}
+		WHERE
+			USER_ID = #{userId}
 	</update>
 
 </mapper>

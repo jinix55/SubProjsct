@@ -91,7 +91,7 @@ public class EnvironmentCodeController {
     	
     	// 재질 리스트
     	environmentCodeModel.setGroupId(largeCategory);
-		environmentCodeModel.setAuthCode(authUser.getMemberModel().getAuthCode());
+		environmentCodeModel.setAuthId(authUser.getMemberModel().getAuthId());
 		
         largeModels = environmentCodeService.selectGroupIdList(environmentCodeModel);
         model.addAttribute("largeCodeList", largeModels);

@@ -34,6 +34,6 @@ public class MenuModel {
 	private String fullOrdSeq; // 전체 정렬 순서
 	private JSONObject menuAuthAttr; // 메뉴 속성
 	private JSONArray treeJson;
-	private String authCode;
+	private String authId;
 	private String authUseYn;
 }

@@ -30,7 +30,7 @@ public class Criteria implements Serializable {
     private String useYn;		   // 서비스 ON/OFF	
     private String authNm;
     private String companyCode;
-    private String authCode;
+    private String authId;
     private String filterLockYn;
     private String holiType;       //휴일타입
     private String holiNm;       //휴일타입

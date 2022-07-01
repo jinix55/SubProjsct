@@ -135,9 +135,6 @@
 			dbclick = 'Y';
 			return;
 		}
-		var subdomain = '${subdomain}';
-		if(subdomain === '' || subdomain === null)subdomain='pplus';
-		$('#userName').val(subdomain+"@"+userId);
 		document.getElementById('frm').submit();
 	}
 
@@ -239,7 +236,6 @@
 					<form id="frm" action="/lgn" method="post">
 						<div class="login-id h45">
 							 <input type="text" class="text-input pl35" id="userId" name="userId" placeholder="아이디을 입력하세요.">
-							 <input type="hidden" id="userName" name="userName">
 						</div>
 						<div class="login-pw h45">
 							 <input type="password" class="text-input pl35" id="userPwd" name="userPwd" placeholder="비밀번호을 입력하세요.">
