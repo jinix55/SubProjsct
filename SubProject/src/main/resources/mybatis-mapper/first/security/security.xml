@@ -31,29 +31,29 @@
     </select>
     
     <select id="selectUserPassCheck" parameterType="map" resultType="memberModel">
-		SELECT USER_ID, PASS_INIT, PASS_ERROR from t_user
-		WHERE USER_ID = #{userId} AND PASSWORD = <![CDATA[SHA2(#{password},256)]]> AND USE_YN = 'Y'
+		SELECT USER_ID, PASS_INIT, PASS_ERROR from t1_user
+		WHERE USER_ID = #{userId} AND COMPANY_CODE = #{companyCode} AND PASSWORD = <![CDATA[SHA2(#{password},256)]]> AND USE_YN = 'Y'
     </select>
     
     <select id="selectUserCheck" parameterType="map" resultType="memberModel">
-		SELECT USER_ID, PASS_INIT, PASS_ERROR from t_user
-		WHERE USER_ID = #{userId}
+		SELECT USER_ID, PASS_INIT, PASS_ERROR from t1_user
+		WHERE USER_ID = #{userId} AND COMPANY_CODE = #{companyCode}
     </select>
     
     <update id="updateUserPassword" parameterType="memberModel">
-		update T_USER SET PASSWORD = <![CDATA[SHA2(#{newPassword},256)]]>, PASS_ERROR = 0, PASS_INIT = 'N' WHERE USER_ID = #{userId} AND PASSWORD = <![CDATA[SHA2(#{password},256)]]>
+		update t1_user SET PASSWORD = <![CDATA[SHA2(#{newPassword},256)]]>, PASS_ERROR = 0, PASS_INIT = 'N' WHERE USER_ID = #{userId} AND COMPANY_CODE = #{companyCode} AND  PASSWORD = <![CDATA[SHA2(#{password},256)]]>
     </update>
     
     <update id="updatePasswordFail" parameterType="map">
-		update T_USER SET PASS_ERROR = #{passError} WHERE USER_ID = #{userId}
+		update t1_user SET PASS_ERROR = #{passError} WHERE USER_ID = #{userId} AND COMPANY_CODE = #{companyCode}
     </update>
     
     <update id="updatePasswordInit" parameterType="map">
-		update T_USER SET PASSWORD = <![CDATA[SHA2(#{newPassword},256)]]>, PASS_ERROR = 0, PASS_INIT = 'Y' WHERE USER_ID = #{userId}
+		update t1_user SET PASSWORD = <![CDATA[SHA2(#{newPassword},256)]]>, PASS_ERROR = 0, PASS_INIT = 'Y' WHERE COMPANY_CODE = #{companyCode} AND USER_ID = #{userId}
     </update>
     
 	<update id="updateLastLogDt" parameterType="string">
-		UPDATE T_USER SET LAST_LOG_DT = NOW(), PASS_ERROR = 0 WHERE USER_ID = #{userId}
+		UPDATE t1_user SET LAST_LOG_DT = NOW(), PASS_ERROR = 0 WHERE COMPANY_CODE = #{companyCode} AND USER_ID = #{userId}
 	</update>
 
 	<select id="selectLoginMessage" parameterType="string" resultType="string">

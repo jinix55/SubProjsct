@@ -111,7 +111,8 @@ public class AuthProvider extends DaoAuthenticationProvider {
 	private boolean checkDB(String userId, String password) {
 		boolean result = false;
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("userId",userId);
+		map.put("companyCode",userId.split("@")[0]);
+		map.put("userId",userId.split("@")[1]);
 		map.put("password",password);
 		int errorNo = 0;
 		String init = "";

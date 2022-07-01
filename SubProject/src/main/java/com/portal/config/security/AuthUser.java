@@ -38,8 +38,10 @@ public class AuthUser implements UserDetails {
 		this.authorities = authorities;
 		//계정 만료 :  - 접속일이 start_dt와 end_dt 사이에 있는지 : expired_yn
 		//this.isAccountNonExpired = StringUtils.equals("N",memberModel.getExpiredYn());
+		this.isAccountNonExpired = true;
 		// 계정 잠금 :  - 최종 로그인 180일 경과 : lock_yn
 		this.isAccountNonLocked = StringUtils.equals("N",memberModel.getLockYn());
+		this.isAccountNonLocked = true;
 		// 비번 만료 : 비번 관리하지 않음
 		this.isCredentialsNonExpired = true;
 		// 계정 활성 여부
