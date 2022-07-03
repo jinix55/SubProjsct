@@ -1,5 +1,7 @@
 package com.portal.adm.company;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -216,4 +218,85 @@ public class CompanyController {
     	return memberService.selectMemberList(criteria);
     }
     
+    @GetMapping("/company/detail/{companyCode}/{memberId}")
+    @ResponseBody
+    public MemberModel selectPopup(@PathVariable String companyCode, @PathVariable String memberId, Model model) {
+    	MemberModel memberModel = new MemberModel();
+    	memberModel.setUserId(memberId+"@"+companyCode);
+    	return memberService.selectMember(memberModel);
+    }
+    
+    @PostMapping("/company/update/{companyCode}")
+    public ResponseEntity<String> update(HttpServletRequest request,
+    								   @PathVariable String companyCode, 
+                                       @ModelAttribute MemberModel memberModel,
+                                       @AuthenticationPrincipal AuthUser authUser) {
+
+        try {
+            if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("dateFrom") + "T" + LocalTime.now().toString()));
+            }
+            if(!StringUtils.isEmpty(request.getParameter("dateTo"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("dateTo")+"T"+LocalTime.now().toString()));
+            }
+
+            memberModel.setRgstId(authUser.getMemberModel().getUserId());
+            memberModel.setModiId(authUser.getMemberModel().getUserId());
+
+            String result = memberService.save(memberModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+    @PostMapping("/company/insert/{companyCode}")
+    public ResponseEntity<String> insert(HttpServletRequest request,
+							    		@PathVariable String companyCode, 
+							    		@ModelAttribute MemberModel memberModel,
+                                        @AuthenticationPrincipal AuthUser authUser) {
+		for (String key : request.getParameterMap().keySet()) {
+//			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+		}
+		String subdomain = request.getServerName().split("\\.")[0];
+        try {
+            if(!StringUtils.isEmpty(request.getParameter("dateFrom"))) {
+                memberModel.setStartDt(LocalDateTime.parse(request.getParameter("dateFrom") + "T" + LocalTime.now().toString()));
+            }
+            if(!StringUtils.isEmpty(request.getParameter("dateTo"))) {
+                memberModel.setEndDt(LocalDateTime.parse(request.getParameter("dateTo")+"T"+LocalTime.now().toString()));
+            }
+
+            memberModel.setRgstId(authUser.getMemberModel().getUserId());
+            memberModel.setModiId(authUser.getMemberModel().getUserId());
+            //저장시 회사코드와 같이 적용
+            memberModel.setUserId(memberModel.getUserId()+"@"+memberModel.getCompanyCode());	
+            String result = memberService.insert(memberModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+    
+    @PostMapping("/company/delete/{companyCode}")
+    public ResponseEntity<String> delete(HttpServletRequest request,
+    									@PathVariable String companyCode, 
+                                        @ModelAttribute MemberModel memberModel,
+                                        @AuthenticationPrincipal AuthUser authUser) {
+		for (String key : request.getParameterMap().keySet()) {
+			log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
+		}
+        try {
+
+            memberModel.setModiId(authUser.getMemberModel().getUserId());
+
+            String result = memberService.delete(memberModel);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 }

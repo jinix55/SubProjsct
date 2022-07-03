@@ -523,51 +523,245 @@
 </div>
 
 <!-- 레이어 팝업 - 메시지 관리  -->
-  <form id="frmMembers">
-	  <div id="members" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-		aria-hidden="true" data-modal-parent="#myModal">
-		<input type="hidden" name="interfaceId" >
+ <form id="frmMembers">
+  <div id="members" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true" data-modal-parent="#myModal">
+	<input type="hidden" name="interfaceId" >
+	<div class="modal-content" style="width:1000px">
+	  <div class="modal-header">
+		<h4 class="modal-title" id="interfaceMessageTitle">계정관리</h4>
+		<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(members);"><img src="/images/icon_close.png"></button>
+	  </div>
+	  <div class="modal-body">
+		<table class="table">
+			<colgroup>
+				<col style="width: 6%;">
+				<col style="width: 12%;">
+				<col style="width: 15%;">
+				<col style="width: *%;">
+				<col style="width: 14%;">
+				<col style="width: 8%;">
+				<col style="width: 8%;">
+			</colgroup>
+			<thead>
+				<tr class="th-bg">
+					<th scope="col">번호</th>
+					<th scope="col">사용자 ID</th>
+					<th scope="col">사용자 이름</th>
+					<th scope="col">그룹 ID</th>
+					<th scope="col">등록일</th>
+					<th scope="col">사용여부</th>
+					<th scope="col">관리</th>
+				</tr>
+			</thead>
+			<tbody id="memberTable">
+				<tr>
+					<td colspan="7">등록된 정보가 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+	  </div>
+	  <div class="modal-footer btn-group">
+		<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(members);">취소</button>
+		<button type="button" class="button btn-success"> <a href="javascript:openInterfaceLayer('registerMember');" onclick="javascript:layerPopup(registerMember);" data-dismiss="modal">관리자 등록</a></button>
+	  </div>
+	</div>
+  </div>
+ </form>
+
+ <!-- 레이어 팝업 - 인터페이스 등록  -->
+  <form id="frmInsert">
+	  <div id="registerMember" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-content" style="width:1000px">
 		  <div class="modal-header">
-			<h4 class="modal-title" id="interfaceMessageTitle">계정관리</h4>
-			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(members);"><img src="/images/icon_close.png"></button>
+			<h4 class="modal-title">관리자 등록</h4>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(registerMember);"><img src="/images/icon_close.png"></button>
 		  </div>
 		  <div class="modal-body">
-			<table class="table">
-				<colgroup>
-					<col style="width: 6%;">
-					<col style="width: 12%;">
-					<col style="width: 15%;">
-					<col style="width: *%;">
-					<col style="width: 14%;">
-					<col style="width: 8%;">
-					<col style="width: 8%;">
-				</colgroup>
-				<thead>
-					<tr class="th-bg">
-						<th scope="col">번호</th>
-						<th scope="col">사용자 ID</th>
-						<th scope="col">사용자 이름</th>
-						<th scope="col">그룹 ID</th>
-						<th scope="col">등록일</th>
-						<th scope="col">사용여부</th>
-						<th scope="col">관리</th>
-					</tr>
-				</thead>
-				<tbody id="memberTable">
-					<tr>
-						<td colspan="7">등록된 정보가 없습니다.</td>
-					</tr>
-				</tbody>
-			</table>
+		  	<div class="row">
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">등록일시</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="rgstDt" name="rgstDt" type="text" class="text-input">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">수정일시</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="modiDt" name="modiDt" type="text" class="text-input">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 ID<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="userId" name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요">
+								<span class="search-box-append">
+									<button type="button" class="btn-search" id="idSearch">
+										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 이름<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="userNm" name="userNm" type="text" class="text-input" placeholder="이름을 입력해 주세요">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사명<em>*</em></label>
+						<div class="col-75">
+							<select id="companyCode" name="companyCode" class="select-box">
+								<option value="none">선택안함</option>
+								<c:forEach items="${companys }" var="company">
+									<option value="${company.companyCode}">${company.companyNm }</option>
+								</c:forEach> 
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">그룹 ID<em>*</em></label>
+						<div class="col-75">
+							<select id="authId" name="authId" class="select-box">
+								<option value="none">선택안함</option>
+								<c:forEach items="${roles }" var="role">
+									<option value="${role.authId}">${role.authNm }</option>
+								</c:forEach> 
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">이메일 주소<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<div class="email-add">
+									<div class="pr28"><input id="email1" name="email1" type="text" class="text-input email"></div>
+								</div>
+								<div class="email-add">
+									<div><input id="email2" name="email2" type="text" class="text-input email"></div>
+								</div>
+								<input type="hidden" id="email" name="email" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<input type="hidden" id="phone" name="phone" /> <label
+							class="col-25 form-label">연락처<em>*</em></label>
+						<div class="col-75">
+							<div class="form-input">
+								<div class="phone-number">
+									<div class="pr16"><input id="phone1" name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3"></div>
+								</div>
+								<div class="phone-number">
+									<div class="pr16"><input id="phone2" name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
+								</div>
+								<div class="phone-number">
+									<div><input id="phone3" name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">잠금상태</label>
+						<div class="col-75">
+							<div class="form-input-box">
+<!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
+								<div class="btn-form-small">
+									<input id="lockY" name="lockYn" type="radio" value="Y">
+									<label for="lockY" class="mr05">활성화</label>
+								</div>
+								<div class="btn-form-small">
+									<input id="lockN" name="lockYn" type="radio" value="N">
+									<label for="lockN" class="mr05">비활성화</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">기한적용</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-form-small">
+									<input id="dtLimitY" name="dtLimitYn" type="radio" value="Y">
+									<label for="dtLimitY" class="mr05">적용</label>
+								</div>
+								<div class="btn-form-small">
+									<input id="dtLimitN" name="dtLimitYn" type="radio" value="N">
+									<label for="dtLimitN" class="mr05">미적용</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용여부</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-form-small">
+									<input id="useY" name="useYn" type="radio" value="Y">
+									<label for="useY" class="mr05">YES</label>
+								</div>
+								<div class="btn-form-small">
+									<input id="useN" name="useYn" type="radio" value="N">
+									<label for="useN" class="mr05">NO</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">기간설정</label>
+						<div class="col-75">
+							<div class="search-date">
+								<input onkeyup="this.value = date_mask(this.value)" type="text"
+									id="startDt" name="dateFrom" class="text-input">
+							</div>
+							<div class="search-date">
+								<input onkeyup="this.value = date_mask(this.value)" type="text"
+									id="endDt" name="dateTo" class="text-input">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		  </div>
-		  <div class="modal-footer btn-group">
-			<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(members);">취소</button>
-		  </div>
+		  <!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button id="regMemberBtn" type="button" class="button btn-success insert" >저장</button>
+			<button type="button" class="button btn-cancel cancel" data-dismiss="modal"  onclick="javascript:layerPopupClose(registerMember);">취소</button>
+		</div>
 		</div>
 	  </div>
   </form>
-
 
 <script type="text/javascript">
 /**
