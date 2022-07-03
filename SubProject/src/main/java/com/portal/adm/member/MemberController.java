@@ -121,6 +121,17 @@ public class MemberController {
         return "member/member";
     }
 
+    @GetMapping("/member/detail/{companyCode}/members")
+    @ResponseBody
+    public List<MemberModel> getMembers(@PathVariable String companyCode, @ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, @AuthenticationPrincipal AuthUser authUser) {
+    	if("au2000001".equals(authUser.getMemberModel().getAuthId())) {
+        	criteria.setCompanyCode(companyCode);
+        }else {
+        	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        }
+    	return memberService.selectMemberAllList(criteria);
+    }
+    
     @PostMapping("/member/detail/{memberId}/{companyCode}")
     @ResponseBody
     public MemberModel selectPopup(@PathVariable String memberId, @PathVariable String companyCode, Model model) {

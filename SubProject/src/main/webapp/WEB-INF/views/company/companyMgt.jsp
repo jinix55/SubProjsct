@@ -86,7 +86,8 @@
 								<button type="button" class="btn-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
 							</td>
 							<td>
-								<a href="/member/member?companyCode=${company.companyCode}" class="btn-small02">계정관리</a>
+								<a href="javascript:void(0);" onclick="openMemberLayer('${company.companyCode}');" role="button" data-toggle="modal" class="btn-small02">계정관리</a>
+<%-- 								<a href="/member/member?companyCode=${company.companyCode}" class="btn-small02">계정관리</a> --%>
 							</td>
 							<td>
 								<div class="btn-group">
@@ -521,7 +522,51 @@
 	</div>
 </div>
 
-
+<!-- 레이어 팝업 - 메시지 관리  -->
+  <form id="frmMembers">
+	  <div id="members" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true" data-modal-parent="#myModal">
+		<input type="hidden" name="interfaceId" >
+		<div class="modal-content" style="width:1000px">
+		  <div class="modal-header">
+			<h4 class="modal-title" id="interfaceMessageTitle">계정관리</h4>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(members);"><img src="/images/icon_close.png"></button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table">
+				<colgroup>
+					<col style="width: 6%;">
+					<col style="width: 12%;">
+					<col style="width: 15%;">
+					<col style="width: *%;">
+					<col style="width: 14%;">
+					<col style="width: 8%;">
+					<col style="width: 8%;">
+				</colgroup>
+				<thead>
+					<tr class="th-bg">
+						<th scope="col">번호</th>
+						<th scope="col">사용자 ID</th>
+						<th scope="col">사용자 이름</th>
+						<th scope="col">그룹 ID</th>
+						<th scope="col">등록일</th>
+						<th scope="col">사용여부</th>
+						<th scope="col">관리</th>
+					</tr>
+				</thead>
+				<tbody id="memberTable">
+					<tr>
+						<td colspan="7">등록된 정보가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer btn-group">
+			<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(members);">취소</button>
+		  </div>
+		</div>
+	  </div>
+  </form>
 
 
 <script type="text/javascript">
@@ -921,4 +966,71 @@ function validation(){
 	return true;
 }
 
+//회사 소속 사용자 정보 조회
+function openMemberLayer(companyId) {
+	$.ajax({
+		url : '/system/company/detail/'+companyId+'/members',
+		dataType : 'JSON',
+		type : "GET",
+		async : false,
+		error : function(request, status, error) {
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(data) {
+			memberViewMake(data);
+		}
+	});
+}
+
+function memberViewMake(data){
+	$('#memberTable').empty();
+	var html = '';
+	if (data.length > 0) {
+		data.forEach(function(item, index) {
+			html += '<tr>';
+			html += '	<td>' + (data.length-index) + '</td>';
+			html += '	<td>'+item.userId+'</td>';
+			html += '	<td>'+item.userNm+'</td>';
+			html += '	<td>'+item.authNm+'</td>';
+			html += '	<td>'+item.rgstDt+'</td>';
+			if(item.useYn === 'Y') {
+				html += '	<td><button type="button" class="btn-yes">YES</button></td>';
+			}else {
+				if(item.lockYn === 'Y') {
+					html += '	<td><button type="button" class="btn-no backColorRed">Lock</button></td>';
+				}else {
+					html += '	<td><button type="button" class="btn-no">NO</button></td>';
+				}
+			}
+			html += '	<td>';
+			html += '		<div class="btn-group">';
+			html += '			<a href="javascript:updateMember(\'' + item.companyCode + '\',\'' + item.userId + '\');" role="button" data-toggle="modal">';
+			html += '				<img src="/images/icon_edit.png" alt="수정" class="btn-table-icon02">';
+			html += '			</a>';
+			html += '			<a href="javascript:deleteMember(\'' + item.companyCode + '\',\'' + item.userId + '\');" role="button" data-toggle="modal">';
+			html += '				<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">';
+			html += '			</a>';
+			html += '		</div>';
+			html += '	</td>';
+			html += '</tr>';
+		});
+	}else {
+		html += '<tr>';
+		html += '<td colspan="7">등록된 정보가 없습니다.</td>';
+		html += '</tr>';
+	}
+
+	$('#memberTable').append(html);
+	
+	layerPopup($('#members'));
+}
+
+function updateMember(companyCode, userId) {
+	
+}
+
+function deleteMember(companyCode, userId) {
+	
+}
 </script>

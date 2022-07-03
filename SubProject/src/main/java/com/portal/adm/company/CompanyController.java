@@ -21,7 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.company.model.CompanyModel;
 import com.portal.adm.company.service.CompanyService;
+import com.portal.adm.member.model.MemberCriteria;
 import com.portal.adm.member.model.MemberModel;
+import com.portal.adm.member.service.MemberService;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
 
@@ -37,6 +39,9 @@ public class CompanyController {
 
     @Resource
     private CompanyService companyService;
+    
+    @Resource
+    private MemberService memberService;
     
     @Resource
     private IdUtil idUtil;
@@ -198,6 +203,17 @@ public class CompanyController {
 		CompanyModel companyModels = companyService.selectCompanyId(companyId);
 
         return companyService.selectCompanyId(companyId);
+    }
+    
+    @GetMapping("/company/detail/{companyCode}/members")
+    @ResponseBody
+    public List<MemberModel> getMembers(@PathVariable String companyCode, @ModelAttribute MemberCriteria criteria, @ModelAttribute MemberModel memberModel, @AuthenticationPrincipal AuthUser authUser) {
+    	if("au2000001".equals(authUser.getMemberModel().getAuthId())) {
+        	criteria.setCompanyCode(companyCode);
+        }else {
+        	criteria.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+        }
+    	return memberService.selectMemberList(criteria);
     }
     
 }
