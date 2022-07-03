@@ -55,7 +55,11 @@ public class CompanyController {
      * @return
      */
     @GetMapping("/company")
-    public String company(@ModelAttribute CompanyModel companyModel, Model model) {
+    public String company(@ModelAttribute CompanyModel companyModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	
+    	companyModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	companyModel.setMemberAuthCl(authUser.getMemberModel().getAuthCl());
+    	
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));
         model.addAttribute("companys", models);

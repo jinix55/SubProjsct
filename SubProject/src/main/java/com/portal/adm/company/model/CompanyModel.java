@@ -33,4 +33,7 @@ public class CompanyModel extends Criteria{
     private LocalDateTime modiDt;						// 수정일시
     private String searchKey;       // 검색키
     private String searchValue;     // 검색값
+    
+    
+    private String memberAuthCl;                             // 조회용 사용자 권한
 }

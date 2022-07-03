@@ -40,6 +40,12 @@
 			, MODI_ID
 			, MODI_DT
 		FROM T_COMPANY
+		WHERE 1 = 1
+<!-- 		
+ 		<if test="memberAuthCl != 'P'"> 
+			and  company_code = #{companyCode}
+		</if>
+ -->		
 		<include refid="searchCompany"></include>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>

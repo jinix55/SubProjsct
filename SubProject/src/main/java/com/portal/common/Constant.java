@@ -234,4 +234,12 @@ public interface Constant {
 		public static final String TYPE_VW = "VW";
 	}
 	
+	
+	//권한
+	public interface AUTH_CL {
+		public static final String SUPER_ADMIN = "P";
+		public static final String ADMIN = "A";
+		public static final String USER  = "U";
+		public static final String GUEST = "G";
+	}	
 }
