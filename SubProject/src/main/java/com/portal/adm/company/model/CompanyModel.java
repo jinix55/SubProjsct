@@ -35,5 +35,5 @@ public class CompanyModel extends Criteria{
     private String searchValue;     // 검색값
     
     
-    private String memberAuthCl;                             // 조회용 사용자 권한
+    private String authId;                             // 조회용 사용자 권한
 }

@@ -58,7 +58,8 @@ public class CompanyController {
     public String company(@ModelAttribute CompanyModel companyModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	
     	companyModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
-    	companyModel.setMemberAuthCl(authUser.getMemberModel().getAuthCl());
+    	companyModel.setAuthId(authUser.getMemberModel().getAuthId());
+
     	
         List<CompanyModel> models = companyService.selectCompanyList(companyModel);
         companyModel.setTotalCount(companyService.selectCompanyListCount(companyModel));

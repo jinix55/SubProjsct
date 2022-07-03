@@ -41,11 +41,11 @@
 			, MODI_DT
 		FROM T_COMPANY
 		WHERE 1 = 1
-<!-- 		
- 		<if test="memberAuthCl != 'P'"> 
+ 		
+ 		<if test="authId != 'au2000001'">  
 			and  company_code = #{companyCode}
 		</if>
- -->		
+	 
 		<include refid="searchCompany"></include>
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
