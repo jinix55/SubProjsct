@@ -566,7 +566,11 @@
 	  </div>
 	  <div class="modal-footer btn-group">
 		<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(members);">취소</button>
-		<button type="button" class="button btn-success"> <a href="javascript:openInterfaceLayer('registerMember');" onclick="javascript:layerPopup(registerMember);" data-dismiss="modal">관리자 등록</a></button>
+		<c:set var="userType" value="사용자 관리"/>  
+		<c:if test="${pages.authId eq 'au2000001' }">
+			<c:set var="userType" value="관리자 관리"/>  
+		</c:if>
+		<button type="button" class="button btn-success"> <a href="javascript:openInterfaceLayer('registerMember');" onclick="javascript:layerPopup(registerMember);" data-dismiss="modal">${userType}</a></button>
 	  </div>
 	</div>
   </div>
