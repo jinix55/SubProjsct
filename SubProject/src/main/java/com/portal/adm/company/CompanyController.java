@@ -141,6 +141,7 @@ public class CompanyController {
     				memberModel.setAuthId("au2000002");
     				memberModel.setDtLimitYn("N");
     				memberModel.setUseYn("Y");
+    				memberModel.setCompanyCode(companyModel.getCompanyCode());
     				memberModel.setRgstId(authUser.getMemberModel().getUserId());
     				memberModel.setModiId(authUser.getMemberModel().getUserId());
     				result = memberService.insert(memberModel);
