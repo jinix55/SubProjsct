@@ -570,7 +570,7 @@
 		<c:if test="${pages.authId eq 'au2000001' }">
 			<c:set var="userType" value="관리자 관리"/>  
 		</c:if>
-		<button type="button" class="button btn-success"> <a href="javascript:openInterfaceLayer('registerMember');" onclick="javascript:layerPopup(registerMember);" data-dismiss="modal">${userType}</a></button>
+		<button type="button" class="button btn-success"> <a href="javascript:void(0);" onclick="javascript:openMemberRegistLayer('registerMember');" data-dismiss="modal">${userType}</a></button>
 	  </div>
 	</div>
   </div>
@@ -586,22 +586,23 @@
 		  </div>
 		  <div class="modal-body">
 		  	<div class="row">
-				<div class="col-50">
+				<div class="col-50" id="memberRgstDt">
 					<div class="form-group">
 						<label class="col-25 form-label">등록일시</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input name="rgstDt" type="text" class="text-input">
+								<input type="hidden" name="editModeYn" value="">
+								<input name="rgstDt" type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
+				<div class="col-50" id="memberModiDt">
 					<div class="form-group">
 						<label class="col-25 form-label">수정일시</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input name="modiDt" type="text" class="text-input">
+								<input name="modiDt" type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
@@ -611,7 +612,7 @@
 						<label class="col-25 form-label">사용자 ID<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요">
+								<input name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요"  disabled>
 								<span class="search-box-append">
 									<button type="button" class="btn-search" id="idSearch">
 										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
@@ -684,7 +685,7 @@
 									<div class="pr16"><input name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 								<div class="phone-number">
-									<div><input id="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
+									<div><input name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 							</div>
 						</div>
@@ -697,11 +698,11 @@
 							<div class="form-input-box">
 <!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
 								<div class="btn-form-small">
-									<input name="lockYn" type="radio" value="Y">
+									<input id="lockY" name="lockYn" type="radio" value="Y">
 									<label for="lockY" class="mr05">활성화</label>
 								</div>
 								<div class="btn-form-small">
-									<input name="lockYn" type="radio" value="N">
+									<input id="lockY" name="lockYn" type="radio" value="N">
 									<label for="lockN" class="mr05">비활성화</label>
 								</div>
 							</div>
@@ -714,11 +715,11 @@
 						<div class="col-75">
 							<div class="form-input-box">
 								<div class="btn-form-small">
-									<input name="dtLimitYn" type="radio" value="Y">
+									<input id="dtLimitY" name="dtLimitYn" type="radio" value="Y">
 									<label for="dtLimitY" class="mr05">적용</label>
 								</div>
 								<div class="btn-form-small">
-									<input name="dtLimitYn" type="radio" value="N">
+									<input id="dtLimitN" name="dtLimitYn" type="radio" value="N">
 									<label for="dtLimitN" class="mr05">미적용</label>
 								</div>
 							</div>
@@ -731,12 +732,12 @@
 						<div class="col-75">
 							<div class="form-input-box">
 								<div class="btn-form-small">
-									<input name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">YES</label>
+									<input id="mUseY" name="useYn" type="radio" value="Y">
+									<label for="mUseY" class="mr05">YES</label>
 								</div>
 								<div class="btn-form-small">
-									<input name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">NO</label>
+									<input id="mUseN" name="useYn" type="radio" value="N">
+									<label for="mUseN" class="mr05">NO</label>
 								</div>
 							</div>
 						</div>
@@ -761,7 +762,7 @@
 		  </div>
 		  <!-- 버튼 -->
 		<div class="modal-footer btn-group">
-			<button id="regMemberBtn" type="button" class="button btn-success insert" >저장</button>
+			<button id="saveMemberBtn" type="button" class="button btn-success insert" >저장</button>
 			<button type="button" class="button btn-cancel cancel" data-dismiss="modal"  onclick="javascript:layerPopupClose(registerMember);">취소</button>
 		</div>
 		</div>
@@ -1122,6 +1123,19 @@ $(document).ready(function() {
 	$('.codeCheck').click(function(){
 		codeCheckReset();
 	});
+	
+	$('#saveMemberBtn').click(function(){
+		saveMember();
+	});
+	
+	$('.email').keyup(function(){
+		setEmail();
+	});
+	
+	$('.phone').keyup(function(){
+		setPhoneNo();
+	});
+	
 });
 
 function validation(){
@@ -1246,8 +1260,56 @@ function updateMember(companyCode, userId) {
 	});
 }
 
-function memberEditMake(data) {
-	console.log(data);
+function memberEditMake(data){
+	var phone1 = '';
+	var phone2 = '';
+	var phone3 = '';
+	var email1 = '';
+	var email2 = '';
+	var companyCd = 'none';
+	var authId = 'none';
+	var useYn = 'N';
+	var lockYn = 'N';
+	var dtLimitYn = 'N';
+	
+	if(data.phone){
+		phone1 = data.phone.split("-")[0];
+		phone2 = data.phone.split("-")[1];
+		phone3 = data.phone.split("-")[2];
+	}
+	
+	if(data.email){
+		email1 = data.email.split("@")[0];
+		email2 = data.email.split("@")[1];
+	}
+	
+	if(data.useYn != ''){
+		useYn = data.useYn;
+	}
+	
+	if(data.lockYn != ''){
+		lockYn = data.lockYn;
+	}
+	
+	if(data.dtLimitYn != ''){
+		dtLimitYn = data.dtLimitYn;
+	}
+	
+	if(data.companyCode){
+		companyCd = data.companyCode;
+	}
+	
+	if(data.authId){
+		authId = data.authId;
+	}
+	
+	$("#memberRgstDt").show();
+	$("#memberModiDt").show();
+	$("#frmInsert input[name=editModeYn]").val('Y');
+	
+	$("#memberRgstDt").show();
+	$("#memberModiDt").show();
+	$("#frmInsert input[name=editModeYn]").val('Y');
 	$("#frmInsert input[name=rgstDt]").val(data.rgstDt);
 	$("#frmInsert input[name=modiDt]").val(data.modiDt);
 	$("#frmInsert input[name=userId]").val(data.userId.split("@")[0]);
@@ -1257,11 +1319,19 @@ function memberEditMake(data) {
 	$("#frmInsert input[name=authId]").val(data.authId);
 	$("#frmInsert input[name=authNm]").val(data.authNm);
 	$("#frmInsert input[name=email]").val(data.email);
-// 	$("#frmInsert input[name=email1]").val(data.email.split("@")[0]);
-// 	$("#frmInsert input[name=email2]").val(data.email.split("@")[1]);
-// 	$("#frmInsert input[name=phone1]").val(data.phone.split("-")[0]);
-// 	$("#frmInsert input[name=phone2]").val(data.email.split("-")[1]);
-// 	$("#frmInsert input[name=phone3]").val(data.email.split("-")[2]);
+	$("#frmInsert input[name=email1]").val(email1);
+	$("#frmInsert input[name=email2]").val(email2);
+	$("#frmInsert input[name=phone]").val(data.phone);
+	$("#frmInsert input[name=phone1]").val(phone1);
+	$("#frmInsert input[name=phone2]").val(phone2);
+	$("#frmInsert input[name=phone3]").val(phone3);
+	$("#frmInsert input[name=startDt]").val(data.startDt);
+	$("#frmInsert input[name=endDt]").val(data.endDt);
+	
+	$("#use"+useYn).prop('checked',true);
+	$("#lock"+lockYn).prop('checked',true);
+	$("#dtLimit"+dtLimitYn).prop('checked',true);
+	
 	layerPopup($('#registerMember'));
 }
 
@@ -1278,9 +1348,125 @@ function deleteMember(companyCode, userId) {
 		success : function(result) {
 			if(result == 'Delete'){
 				openMemberLayer(companyCode, $("#frmInsert input[name=companyNm]").val());
-// 				location.href = '/system/company';
 			}
 		}
+	});
+}
+
+function openMemberRegistLayer(){
+	$("#memberRgstDt").hide();
+	$("#memberModiDt").hide();
+	$("#frmInsert input[name=editModeYn]").val('N');
+	$('#lockY').val('Y');
+	$('#lockN').val('N');
+	$('#dtLimitY').val('Y');
+	$('#dtLimitN').val('N');
+	$('#useY').val('Y');
+	$('#useN').val('N');
+	$('#lockN').prop('checked',true);
+	$('#dtLimitY').prop('checked',true);
+	$('#useY').prop('checked',true);
+	
+	$("#frmInsert input[name=rgstDt]").val("");
+	$("#frmInsert input[name=modiDt]").val("");
+	$("#frmInsert input[name=userId]").val("");
+	$("#frmInsert input[name=userNm]").val("");
+	$("#frmInsert input[name=authId]").val('${userAuth}');
+	$("#frmInsert input[name=authNm]").val('${userAuthNm}');
+	$("#frmInsert input[name=email]").val("");
+	$("#frmInsert input[name=email1]").val("");
+	$("#frmInsert input[name=email2]").val("");
+	$("#frmInsert input[name=phone1]").val("");
+	$("#frmInsert input[name=phone2]").val("");
+	$("#frmInsert input[name=phone3]").val("");
+	$("#frmInsert input[name=startDt]").val("");
+	$("#frmInsert input[name=endDt]").val("");
+	layerPopup($('#registerMember'));
+}
+
+function setPhoneNo(){
+	var phone = $('#frmInsert input[name=phone1]').val()+'-'+$('#frmInsert input[name=phone2]').val()+'-'+$('#frmInsert input[name=phone3]').val(); 
+	$('#frmInsert input[name=phone]').val(phone);
+}
+
+function setEmail(){
+	var email = $('#frmInsert input[name=email1]').val()+'@'+$('#frmInsert input[name=email2]').val(); 
+	$('#frmInsert input[name=email]').val(email);
+}
+
+function setNumber(objValue){
+	str = objValue.replace(/[^0-9]/gi,"").toUpperCase();
+    return str;
+}
+
+function date_mask(objValue) {
+	var v = objValue.replace("--", "-");
+    if (v.match(/^\d{4}$/) !== null) {
+        v = v + '-';
+    } else if (v.match(/^\d{4}\-\d{2}$/) !== null) {
+        v = v + '-';
+    }
+    return v;
+}
+
+function validation(){
+	if($('#frmInsert input[name=userId]').val() == ''){
+		alert('아이디를 입력해 주세요..');
+		return false;
+	}
+	if($('#frmInsert input[name=userNm]').val() == ''){
+		alert('이름을 입력해 주세요..');
+		return false;
+	}
+	if($('#frmInsert input[name=email1]').val() == ''){
+		alert('메일을 입력해 주세요..');
+		return false;
+	}
+	if($('#frmInsert input[name=email2]').val() == ''){
+		alert('메일을 입력해 주세요..');
+		return false;
+	}
+	return true;
+}
+
+function saveMember() {
+	var action = "update";
+	var companyCode = $("#frmInsert input[name=companyCode]").val();
+	if($("#frmInsert input[name=editModeYn]").val() === 'N') {
+		var has = $('#idSearch').hasClass('search-Success');
+// 		if(!has){
+// 			alert('아이디 중복 학인이 필요합니다.');
+// 			return false;
+// 		}
+		action = "insert";
+	}
+	
+	if(validation()){
+		isDisabled = true;
+		
+		$('#frmInsert input[name=userId]').attr('disabled',false);
+		var param =  $('#frmInsert').serialize();
+		insertMemberAjax(companyCode, param,action);
+	}
+}
+
+function insertMemberAjax(companyCode, param, action){
+	isDisabled = true;
+	$.ajax({
+	    type : 'post',
+	    url : '/system/company/'+action+'/'+companyCode+'/members/',
+	    data : param,
+	    dataType : 'text',
+	    error: function(xhr, status, error){
+	        console.log(error);
+	    },
+	    success : function(result){
+	    	if(result == 'Update' || result == 'Insert'){
+	    		layerPopupClose($('#registerMember'));
+	    		openMemberLayer(companyCode, $("#frmInsert input[name=companyNm]").val());
+// 	    		location.href = '/member/member';
+	    	}
+	    }
 	});
 }
 </script>

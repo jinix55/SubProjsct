@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.adm.company.model.CompanyModel;
 import com.portal.adm.company.service.CompanyService;
@@ -135,7 +134,7 @@ public class CompanyController {
     			if("Insert".equals(result)) {
     				MemberModel memberModel = new MemberModel();
     				//저장시 회사코드와 같이 적용
-    				memberModel.setUserId("admin@"+companyModel.getCompanyCode());
+    				memberModel.setUserId("admin@"+companyModel.getCompanyCode().toLowerCase());
     				memberModel.setEmail("admin@"+companyModel.getCompanyCode().toLowerCase()+".pplusecho.com");
     				memberModel.setUserNm("사이트 관리자");
     				memberModel.setAuthId("au2000002");
@@ -265,6 +264,7 @@ public class CompanyController {
             memberModel.setRgstId(authUser.getMemberModel().getUserId());
             memberModel.setModiId(authUser.getMemberModel().getUserId());
 
+            memberModel.setUserId(memberModel.getUserId()+"@"+memberModel.getCompanyCode());	
             String result = memberService.save(memberModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
