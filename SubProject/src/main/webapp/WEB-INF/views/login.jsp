@@ -121,11 +121,11 @@
 			return;
 		}
 		dbclick = 'N';
-		var userId = document.getElementById("userId").value;
+		var userId = document.getElementById("inputUserId").value;
 		var userPwd = document.getElementById("userPwd").value;
 		if (userId == null || userId == '') {
 			alert("사번을 입력해 주세요.");
-			document.getElementById("userId").focus();
+			document.getElementById("inputUserId").focus();
 			dbclick = 'Y';
 			return;
 		}
@@ -135,6 +135,14 @@
 			dbclick = 'Y';
 			return;
 		}
+		
+		var subdomain = '${subdomain}';
+		if(subdomain !== '') {
+			$('#userId').val(userId+"@"+subdomain.toUpperCase());
+		}else {
+			$('#userId').val(userId);
+		}
+		console.log($('#userId').val());
 		document.getElementById('frm').submit();
 	}
 
@@ -235,7 +243,8 @@
 				<div class="login-form">
 					<form id="frm" action="/lgn" method="post">
 						<div class="login-id h45">
-							 <input type="text" class="text-input pl35" id="userId" name="userId" placeholder="아이디을 입력하세요.">
+							 <input type="hidden" id="userId" name="userId">
+							 <input type="text" class="text-input pl35" id="inputUserId" name="inputUserId" placeholder="아이디을 입력하세요.">
 						</div>
 						<div class="login-pw h45">
 							 <input type="password" class="text-input pl35" id="userPwd" name="userPwd" placeholder="비밀번호을 입력하세요.">
