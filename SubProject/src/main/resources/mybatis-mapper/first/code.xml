@@ -164,7 +164,7 @@
 					
 	<select id="getMatType" resultType="String" parameterType="String">
 		SELECT   GROUP_ID MAT_TYPE 
-		   FROM  t1_product_packaging 
+		   FROM  t_product_packaging 
 		  WHERE  USE_YN ='Y'
 		    AND  PRODUCT_CODE =  #{prodeuctCode}
 		    AND  PACKAGING_ORDER = 1

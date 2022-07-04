@@ -10,7 +10,7 @@
 
 	<select id="selectProductPackagingMatFileListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
 		SELECT COUNT(*)
-		FROM t1_product_packaging_mat_file
+		FROM t_product_packaging_mat_file
 		WHERE USE_YN = 'Y'
 	</select>
 	
@@ -30,7 +30,7 @@
 			, MODI_ID
 			, MODI_DT
 		FROM
-			t1_product_packaging_mat_file 
+			t_product_packaging_mat_file 
 		WHERE USE_YN = 'Y'
         ORDER BY RGST_DT DESC
         <include refid="paging"></include>		
@@ -51,7 +51,7 @@
 			, MODI_ID
 			, MODI_DT	
 		FROM
-			t1_product_packaging_mat_file
+			t_product_packaging_mat_file
 		WHERE PACKAGING_MAT_FILE_ID = #{packagingMatFileId} AND USE_YN = 'Y'
         ORDER BY RGST_DT DESC	
 	</select>
@@ -71,13 +71,13 @@
 			, MODI_ID
 			, MODI_DT
 		FROM
-			t1_product_packaging_mat_file 
+			t_product_packaging_mat_file 
 		WHERE PACKAGING_MAT_FILE_ID = #{packagingMatFileId} AND FILE_ID = #{fileId}
 		  AND USE_YN = 'Y'
 	</select>
 	
 	<insert id="insertProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
-		INSERT INTO t1_product_packaging_mat_file (
+		INSERT INTO t_product_packaging_mat_file (
 			  PACKAGING_MAT_FILE_ID
 			, PACKAGING_ID
 			, PART_CODE
@@ -107,7 +107,7 @@
 	</insert>
 	
 	<update id="updateProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
-		UPDATE t1_product_packaging_mat_file
+		UPDATE t_product_packaging_mat_file
 		SET
 			  USE_YN   = 'N'
 			, MODI_ID  = #{modiId}
@@ -119,7 +119,7 @@
 
 	
 	<update id="deleteProductPackagingMatFile" parameterType="com.portal.adm.product.model.ProductPackagingMatFileModel">
-		UPDATE t1_product_packaging_mat_file
+		UPDATE t_product_packaging_mat_file
 		SET
 			  USE_YN   = 'N'
 			, MODI_ID  = #{modiId}

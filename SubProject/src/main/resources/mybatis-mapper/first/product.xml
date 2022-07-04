@@ -34,14 +34,14 @@
 			a.GRADE_CODE,
 			dd.CODE_NM     AS 	SELF_EVL_GRAD_NM	
 		FROM
-			T1_PRODUCT a 
+			t_PRODUCT a 
 
-	   LEFT OUTER JOIN t1_product_packaging aa
+	   LEFT OUTER JOIN t_product_packaging aa
 	     ON  a.PRODUCT_CODE       =  aa.PRODUCT_CODE
 	    AND  aa.USE_YN  = 'Y'		
 	    AND  aa.PACKAGING_ORDER  = 1
 			
-	   LEFT OUTER JOIN t1_environment_code cc
+	   LEFT OUTER JOIN t_environment_code cc
 	     ON  cc.GROUP_ID     = 'GROUP_ID' 
 	    AND  cc.CODE_ID      =  aa.GROUP_ID
 	    AND  cc.USE_YN  = 'Y'	
@@ -64,7 +64,7 @@
 	
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
-		FROM T1_PRODUCT
+		FROM t_PRODUCT
 		WHERE USE_YN = 'Y'
 <!--TODO		
 		<include refid="searchProduct"></include>
@@ -73,7 +73,7 @@
 
 	<select id="selectProductListCountByProductCode" resultType="int" parameterType="String">
 		SELECT COUNT(*)
-		FROM T1_PRODUCT
+		FROM t_PRODUCT
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND USE_YN = 'Y'		
 	</select>	
@@ -103,13 +103,13 @@
 			, a.MODI_ID
 			, a.MODI_DT
 		FROM
-			T1_PRODUCT a 
+			t_PRODUCT a 
 
-	    LEFT OUTER JOIN T1_PRODUCT b
+	    LEFT OUTER JOIN t_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = upper(b.MAPPING_PRODUCT_CODE)
          AND b.USE_YN = 'Y'
 
-	    LEFT OUTER JOIN t1_product_packaging c
+	    LEFT OUTER JOIN t_product_packaging c
 	      ON upper(a.PRODUCT_CODE) = upper(c.PRODUCT_CODE)
 	     AND c.PACKAGING_ORDER = 1 
          AND c.USE_YN = 'Y'
@@ -120,7 +120,7 @@
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		INSERT INTO T1_PRODUCT (
+		INSERT INTO t_PRODUCT (
 			  PRODUCT_CODE
 			, PRODUCT_NM
 			, SUPPLIER_INFO
@@ -148,7 +148,7 @@
 	</insert>
 	
 	<update id="updateProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T1_PRODUCT
+		UPDATE t_PRODUCT
 		SET
 			  PRODUCT_NM          = #{productNm}
 			, SUPPLIER_INFO       = #{supplierInfo}
@@ -168,7 +168,7 @@
 
 	
 	<update id="deleteProduct" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T1_PRODUCT
+		UPDATE t_PRODUCT
 		SET
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
@@ -189,8 +189,8 @@
 			, a.CODE_ID
 			, d.CODE_NM  CODE_NM
 		FROM
-			t1_product_packaging a 
-	    LEFT OUTER JOIN T1_PRODUCT b
+			t_product_packaging a 
+	    LEFT OUTER JOIN t_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = UPPER(b.PRODUCT_CODE)
          AND b.USE_YN = 'Y'
     
@@ -215,7 +215,7 @@
 
 
 	<update id="updateProductRecycleGrade" parameterType="com.portal.adm.product.model.ProductModel">
-		UPDATE T1_PRODUCT
+		UPDATE t_PRODUCT
 		SET
 			RECYCLE_GRADE = #{recycleGrade}
 		WHERE
@@ -231,7 +231,7 @@
 			  , b.CODE_NM  GROUP_NM
 			  , a.CODE_ID
 			  , c.CODE_NM  CODE_NM
-		FROM t1_product_packaging a
+		FROM t_product_packaging a
 		     ,  t_environ_price b
 		     ,  t_environ_price c
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
@@ -243,7 +243,7 @@
 	</select>	
 
 	<update id="deleteProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
-		UPDATE t1_product_packaging
+		UPDATE t_product_packaging
 		SET
 			  USE_YN = 'N'
 			, MODI_ID              = #{modiId}           
@@ -279,7 +279,7 @@
 
 	<insert id="insertProductPackaging" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 	    <![CDATA[
-		INSERT INTO t1_product_packaging (
+		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   
 			, PRODUCT_CODE     
 			, PACKAGING_ORDER
@@ -319,7 +319,7 @@
 		      ,  b.CODE_ID
 		      ,  b.CODE_NM
 		      ,  b.ORD_SEQ
-		  FROM  t1_environment_code a
+		  FROM  t_environment_code a
 		      ,  t_code              b
 		 WHERE  a.GROUP_ID = #{inGroupId}
 		  AND   b.GROUP_ID = 'PROD_PART_TYPE'
@@ -343,7 +343,7 @@
 				  , a.PART_CODE
 				  , b.CODE_NM    PART_NM
 				  , b.ORD_SEQ
-			FROM t1_product_packaging_detail a
+			FROM t_product_packaging_detail a
 			
 	      LEFT OUTER JOIN t_code b
 	        ON   b.GROUP_ID   = 'PROD_PART_TYPE' 
@@ -375,7 +375,7 @@
 				  , a.MANAGER_ID
 				  , d.MANAGER_NM
 				  , d.MANAGER_MAIL
-			FROM t1_product_packaging_detail a
+			FROM t_product_packaging_detail a
 			
 	      LEFT OUTER JOIN t_code b
 	        ON   b.GROUP_ID   = 'PROD_PART_TYPE' 
@@ -402,7 +402,7 @@
 	</select>		
 	
 	<update id="delectProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
-		UPDATE t1_product_packaging_detail
+		UPDATE t_product_packaging_detail
 		SET
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
@@ -413,7 +413,7 @@
 	
 	
 	<insert id="insertProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
-		INSERT INTO t1_product_packaging_detail (
+		INSERT INTO t_product_packaging_detail (
 			  PACKAGING_DETAIL_ID   
 			, PACKAGING_ID     
 			, PART_CODE
@@ -452,7 +452,7 @@
 		
 		
 	<update id="updateProdPackagingDetail" parameterType="com.portal.adm.product.model.ProdPackagingDetailModel">
-		UPDATE t1_product_packaging_detail                    
+		UPDATE t_product_packaging_detail                    
 		SET                                                   
 			  PACKAGING_ID  = #{packagingId}                    
 			, PART_CODE     = #{partCode}                       
@@ -486,26 +486,26 @@
 		     ,  c.RPT_TEST
 		     ,  c.RPT_PERMISSION
 		     ,  c.RPT_ETC		     
-		  FROM  t1_environment_code a
+		  FROM  t_environment_code a
 		   LEFT OUTER JOIN t_code aa
 		     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'
 		     AND  aa.CODE_ID    =  right(a.CODE_ID,1)
 		     AND  aa.USE_YN  = 'Y'
 		
-		     ,  t1_environment_code b			       
+		     ,  t_environment_code b			       
 		   LEFT OUTER JOIN t_code bb
 		     ON   bb.GROUP_ID   =  'PROD_GRADE_TYPE'
 		     AND  bb.CODE_ID    =  right(b.CODE_ID,1)
 		     AND  bb.USE_YN  = 'Y'
 		     
-		     ,  t1_environment_code c	
-		   LEFT OUTER JOIN t1_product_packaging_self cc
+		     ,  t_environment_code c	
+		   LEFT OUTER JOIN t_product_packaging_self cc
 		     ON   cc.PACKAGING_ID  = #{packagingId}
 			  AND  c.GROUP_ID   =  cc.GROUP_ID
 		     AND  c.CODE_ID    =  cc.CODE_ID
 		     AND  cc.USE_YN  = 'Y'   
 		     
-		    ,  t1_product_packaging d	 
+		    ,  t_product_packaging d	 
 		 WHERE  d.PACKAGING_ID = #{packagingId}
 		   AND  a.GROUP_ID  = d.GROUP_ID
 		   AND  b.GROUP_ID  = a.CODE_ID 
@@ -516,12 +516,12 @@
 				
 				
 	<update id="delectProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
-		DELETE FROM t1_product_packaging_self
+		DELETE FROM t_product_packaging_self
 		WHERE PACKAGING_ID = #{packagingId}
 	</update>	
 	
 	<insert id="insertProdPackagingSelf" parameterType="com.portal.adm.product.model.ProdPackagingSelfModel">
-		INSERT INTO t1_product_packaging_self (
+		INSERT INTO t_product_packaging_self (
 			  PACKAGING_SELF_ID   
 			, PACKAGING_ID     
 			, GROUP_ID
@@ -550,14 +550,14 @@
 	    <![CDATA[
 		SELECT  IFNULL(MAX(PACKAGING_ORDER) + 1 , 1) AS PACKAGING_ORDER
 		     ,  CONCAT(IFNULL(MAX(PACKAGING_ORDER) + 1 , 1),'차포장') AS PACKAGING_ORDER_NM
-		  FROM  t1_product_packaging
+		  FROM  t_product_packaging
 		 WHERE  upper(PRODUCT_CODE) = upper(#{productCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER < 9  
 		UNION    
 		SELECT IFNULL(MAX(PACKAGING_ORDER) + 1 , 11)  AS PACKAGING_ORDER
 		     ,  '부속포장' AS PACKAGING_ORDER_NM
-		  FROM  t1_product_packaging
+		  FROM  t_product_packaging
 		 WHERE   upper(PRODUCT_CODE) = upper(#{productCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER > 10  
@@ -582,14 +582,14 @@
 			           ,  c.CODE_NM  MAT_REPORT_NM
 			           ,  a.ORD_SEQ  A_ORD_SEQ
 			           ,  c.ORD_SEQ  C_ORD_SEQ
-					  FROM  t1_environment_code a
+					  FROM  t_environment_code a
 			       
 			 		   LEFT OUTER JOIN t_code aa
 					     ON   aa.GROUP_ID   =  'PROD_PART_TYPE'
 					     AND  aa.CODE_ID    =  right(a.CODE_ID,1)
 					     AND  aa.USE_YN  = 'Y'
 				
-			 		    ,  t1_product_packaging b
+			 		    ,  t_product_packaging b
 					    ,  t_code c 	 	 
 						 
 					 WHERE  b.USE_YN   =  'Y'
@@ -599,7 +599,7 @@
 				      AND  c.USE_YN  = 'Y'         
 				 
 				 ) z
-			 		   LEFT OUTER JOIN t1_product_packaging_self_file z1
+			 		   LEFT OUTER JOIN t_product_packaging_self_file z1
 			   	     ON   z1.PACKAGING_ID = #{packagingId}
 					     AND  z1.PART_CODE = z.PART_CODE
 					     AND  z.MAT_REPORT_CODE = z1.MAT_REPORT_CODE
@@ -616,26 +616,26 @@
 	
 	<update id="deleteProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
 	<!-- 
-		UPDATE t1_product_packaging_self_file
+		UPDATE t_product_packaging_self_file
 		SET
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
 			, MODI_DT  = now()
 		WHERE PACKAGING_ID = #{packagingId}
 	 -->
-		DELETE FROM t1_product_packaging_self_file
+		DELETE FROM t_product_packaging_self_file
 		WHERE PACKAGING_ID = #{packagingId}
 	 	   	
 	</update>	
 	
 	<update id="deleteProdPackagingSelfFileByFileId" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
-		DELETE FROM t1_product_packaging_self_file
+		DELETE FROM t_product_packaging_self_file
 		WHERE FILE_ID = #{fileId}
 		   	
 	</update>		
 	
 	<insert id="insertProdPackagingSelfFile" parameterType="com.portal.adm.product.model.ProdPackagingSelfFileModel">
-		INSERT INTO t1_product_packaging_self_file (
+		INSERT INTO t_product_packaging_self_file (
 			  PACKAGING_SELF_FILE_ID   
 			, PACKAGING_ID     
 			, PART_CODE
@@ -663,8 +663,8 @@
 	<select id="selectProductMappingList" resultType="com.portal.adm.product.model.ProdMappingModel" parameterType="com.portal.adm.product.model.ProductModel">
 		<![CDATA[
 			SELECT   a.PRODUCT_CODE  MAPPING_PRODUCT_CODE, APPROVAL_NO
-			   FROM  t1_product a
-			       , t1_product_packaging b
+			   FROM  t_product a
+			       , t_product_packaging b
 			  WHERE  upper(a.PRODUCT_CODE) <> upper(#{productCode})
 			    AND  a.USE_YN ='Y'
 			    AND  b.USE_YN ='Y' 
@@ -682,7 +682,7 @@
 			, PACKING_TOTAL_WEIGHT
 			, RECYLE_CONTRIBUTIONS
 		FROM
-			T1_PRODUCT_RECYLE 
+			t_PRODUCT_RECYLE 
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND BASE_YEAR = #{inBaseYear}
 		  
@@ -697,8 +697,8 @@
 		     ,  d.UNIT_PRICE
 		     ,  d.PREMIUM
 		     ,  d.DISCOUNT
-		  FROM  t1_product_packaging a
-		     ,  t1_product_packaging_detail b
+		  FROM  t_product_packaging a
+		     ,  t_product_packaging_detail b
 		     ,  t_environ_price c
 		     ,  t_environ_price d
 		 WHERE  upper(PRODUCT_CODE) = upper(#{productCode})
@@ -719,8 +719,8 @@
 		SELECT COUNT(*) FROM (
 			SELECT  DISTINCT
 			        a2.CODE_ID
-			  FROM  t1_product_packaging a1
-			     ,  t1_product_packaging_self a2
+			  FROM  t_product_packaging a1
+			     ,  t_product_packaging_self a2
 			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{productCode})
 			  AND   a1.USE_YN = 'Y'
 			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
@@ -728,8 +728,8 @@
 			  AND   a2.CODE_ID NOT IN (
 			SELECT  DISTINCT
 			        a2.CODE_ID
-			  FROM  t1_product_packaging a1
-			     ,  t1_product_packaging_self a2
+			  FROM  t_product_packaging a1
+			     ,  t_product_packaging_self a2
 			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{mappingProductCode})
 			  AND   a1.USE_YN = 'Y'
 			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
@@ -738,8 +738,8 @@
 			UNION   
 			SELECT  DISTINCT
 			        a2.CODE_ID
-			  FROM  t1_product_packaging a1
-			     ,  t1_product_packaging_self a2
+			  FROM  t_product_packaging a1
+			     ,  t_product_packaging_self a2
 			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{mappingProductCode})
 			  AND   a1.USE_YN = 'Y'
 			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    
@@ -747,8 +747,8 @@
 			  AND   a2.CODE_ID NOT IN (
 			SELECT  DISTINCT
 			        a2.CODE_ID
-			  FROM  t1_product_packaging a1
-			     ,  t1_product_packaging_self a2
+			  FROM  t_product_packaging a1
+			     ,  t_product_packaging_self a2
 			 WHERE  upper(a1.PRODUCT_CODE) = upper(#{productCode})
 			  AND   a1.USE_YN = 'Y'
 			  AND   a1.PACKAGING_ID = a2.PACKAGING_ID    

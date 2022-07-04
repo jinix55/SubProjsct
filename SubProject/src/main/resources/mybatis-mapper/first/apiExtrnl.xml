@@ -88,7 +88,7 @@
     <select id="selectProdApiInfo" parameterType="com.portal.adm.product.model.ProdPackagingDetailApiModel" resultType="com.portal.adm.product.model.ProdPackagingDetailApiModel">
     	SELECT 
 			  PP.PACKAGING_DETAIL_ID
- 			, (SELECT PRODUCT_NM FROM t1_product WHERE PRODUCT_CODE = b.PRODUCT_CODE) AS PRODUCT_NM
+ 			, (SELECT PRODUCT_NM FROM t_product WHERE PRODUCT_CODE = b.PRODUCT_CODE) AS PRODUCT_NM
 			, b.PRODUCT_CODE
 			, b.PACKAGING_ORDER
 			, b.GROUP_ID
@@ -107,8 +107,8 @@
 			, S.MANAGEMENT_ID 
 			, (SELECT USER_NM FROM T_USER WHERE USER_ID = S.MANAGEMENT_ID) AS MANAGEMENT_NM
 			, S.REPRESENTATIVE_NM 
-		FROM t1_product_packaging_detail PP
-		LEFT JOIN t1_product_packaging b  ON PP.PACKAGING_ID = b.PACKAGING_ID
+		FROM t_product_packaging_detail PP
+		LEFT JOIN t_product_packaging b  ON PP.PACKAGING_ID = b.PACKAGING_ID
 		LEFT JOIN T_API_PRODUCT_PACKAGE APP ON PP.PACKAGING_DETAIL_ID = APP.PACKAGING_ID
 		LEFT JOIN T_SUPPLIER S ON APP.TO_COMPANY_CODE = S.SUPPLIER_CODE
 		WHERE PP.PACKAGING_DETAIL_ID = #{packagingDetailId}
@@ -126,7 +126,7 @@
 	</insert>
 	
 	<update id="updatePackagingInfo">
-		UPDATE t1_product_packaging_detail
+		UPDATE t_product_packaging_detail
 		SET  
 <!--  		MAT_TYPE = #{matType}
 		, PART_TYPE = #{partType}
