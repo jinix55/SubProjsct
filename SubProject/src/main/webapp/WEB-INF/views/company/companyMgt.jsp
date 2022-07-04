@@ -86,7 +86,7 @@
 								<button type="button" class="btn-<c:choose><c:when test="${company.useYn eq 'Y'}">yes</c:when><c:otherwise>no</c:otherwise></c:choose>"><c:choose><c:when test="${company.useYn eq 'Y'}">YES</c:when><c:otherwise>NO</c:otherwise></c:choose></button>
 							</td>
 							<td>
-								<a href="javascript:void(0);" onclick="openMemberLayer('${company.companyCode}');" role="button" data-toggle="modal" class="btn-small02">계정관리</a>
+								<a href="javascript:void(0);" onclick="openMemberLayer('${company.companyCode}', '${company.companyNm}', true);" role="button" data-toggle="modal" class="btn-small02">계정관리</a>
 <%-- 								<a href="/member/member?companyCode=${company.companyCode}" class="btn-small02">계정관리</a> --%>
 							</td>
 							<td>
@@ -635,12 +635,8 @@
 					<div class="form-group">
 						<label class="col-25 form-label">회사명<em>*</em></label>
 						<div class="col-75">
-							<select name="companyCode" class="select-box">
-								<option value="none">선택안함</option>
-								<c:forEach items="${companys }" var="company">
-									<option value="${company.companyCode}">${company.companyNm }</option>
-								</c:forEach> 
-							</select>
+							<input name="companyCode" value="" type="hidden">
+							<input name="companyNm" value="" type="text" class="text-input" disabled>
 						</div>
 					</div>
 				</div>
@@ -648,12 +644,14 @@
 					<div class="form-group">
 						<label class="col-25 form-label">그룹 ID<em>*</em></label>
 						<div class="col-75">
-							<select name="authId" class="select-box">
-								<option value="none">선택안함</option>
-								<c:forEach items="${roles }" var="role">
-									<option value="${role.authId}">${role.authNm }</option>
-								</c:forEach> 
-							</select>
+							<c:set var="userAuth" value="au2000003"/>  
+							<c:set var="userAuthNm" value="사이트 사용자"/>
+							<c:if test="${pages.authId eq 'au2000001' }">
+								<c:set var="userAuth" value="au2000002"/>  
+								<c:set var="userAuthNm" value="사이트 관리자"/>
+							</c:if>
+							<input name="authId" value="${userAuth}" type="hidden">
+							<input name="authNm" value="${userAuthNm}" type="text" class="text-input" disabled>
 						</div>
 					</div>
 				</div>
@@ -1171,9 +1169,11 @@ function validation(){
 }
 
 //회사 소속 사용자 정보 조회
-function openMemberLayer(companyId) {
+function openMemberLayer(companyCode, companyNm, openLayer) {
+	$("#frmInsert input[name=companyCode]").val(companyCode);
+	$("#frmInsert input[name=companyNm]").val(companyNm);
 	$.ajax({
-		url : '/system/company/detail/'+companyId+'/members',
+		url : '/system/company/detail/'+companyCode+'/members',
 		dataType : 'JSON',
 		type : "GET",
 		async : false,
@@ -1182,19 +1182,19 @@ function openMemberLayer(companyId) {
 			alert(request.responseText);
 		},
 		success : function(data) {
-			memberViewMake(data);
+			memberViewMake(data, openLayer);
 		}
 	});
 }
 
-function memberViewMake(data){
+function memberViewMake(data, openLayer){
 	$('#memberTable').empty();
 	var html = '';
 	if (data.length > 0) {
 		data.forEach(function(item, index) {
 			html += '<tr>';
 			html += '	<td>' + (data.length-index) + '</td>';
-			html += '	<td>'+item.userId+'</td>';
+			html += '	<td>'+item.userId.split("@")[0]+'</td>';
 			html += '	<td>'+item.userNm+'</td>';
 			html += '	<td>'+item.authNm+'</td>';
 			html += '	<td>'+item.rgstDt+'</td>';
@@ -1209,10 +1209,10 @@ function memberViewMake(data){
 			}
 			html += '	<td>';
 			html += '		<div class="btn-group">';
-			html += '			<a href="javascript:updateMember(\'' + item.companyCode + '\',\'' + item.userId + '\');" role="button" data-toggle="modal">';
+			html += '			<a href="javascript:updateMember(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');" role="button" data-toggle="modal">';
 			html += '				<img src="/images/icon_edit.png" alt="수정" class="btn-table-icon02">';
 			html += '			</a>';
-			html += '			<a href="javascript:deleteMember(\'' + item.companyCode + '\',\'' + item.userId + '\');" role="button" data-toggle="modal">';
+			html += '			<a href="javascript:deleteMember(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');" role="button" data-toggle="modal">';
 			html += '				<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02">';
 			html += '			</a>';
 			html += '		</div>';
@@ -1227,14 +1227,60 @@ function memberViewMake(data){
 
 	$('#memberTable').append(html);
 	
-	layerPopup($('#members'));
+	if(openLayer)layerPopup($('#members'));
 }
 
 function updateMember(companyCode, userId) {
-	
+	$.ajax({
+		url : '/system/company/detail/'+companyCode+'/members/'+userId,
+		dataType : 'JSON',
+		type : "GET",
+		async : false,
+		error : function(request, status, error) {
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(data) {
+			memberEditMake(data);
+		}
+	});
+}
+
+function memberEditMake(data) {
+	console.log(data);
+	$("#frmInsert input[name=rgstDt]").val(data.rgstDt);
+	$("#frmInsert input[name=modiDt]").val(data.modiDt);
+	$("#frmInsert input[name=userId]").val(data.userId.split("@")[0]);
+	$("#frmInsert input[name=userNm]").val(data.userNm);
+	$("#frmInsert input[name=companyCode]").val(data.companyCode);
+	$("#frmInsert input[name=companyNm]").val(data.companyNm);
+	$("#frmInsert input[name=authId]").val(data.authId);
+	$("#frmInsert input[name=authNm]").val(data.authNm);
+	$("#frmInsert input[name=email]").val(data.email);
+// 	$("#frmInsert input[name=email1]").val(data.email.split("@")[0]);
+// 	$("#frmInsert input[name=email2]").val(data.email.split("@")[1]);
+// 	$("#frmInsert input[name=phone1]").val(data.phone.split("-")[0]);
+// 	$("#frmInsert input[name=phone2]").val(data.email.split("-")[1]);
+// 	$("#frmInsert input[name=phone3]").val(data.email.split("-")[2]);
+	layerPopup($('#registerMember'));
 }
 
 function deleteMember(companyCode, userId) {
-	
+// 	var param = $("#companyInst").serialize();
+	$.ajax({
+		url : '/system/company/delete/'+companyCode+'/members',
+		dataType : 'text',
+		type : "POST",
+		data : {'companyCode': companyCode, 'userId': userId},
+	    error: function(xhr, status, error){
+	        console.log(error);
+	    },
+		success : function(result) {
+			if(result == 'Delete'){
+				openMemberLayer(companyCode, $("#frmInsert input[name=companyNm]").val());
+// 				location.href = '/system/company';
+			}
+		}
+	});
 }
 </script>

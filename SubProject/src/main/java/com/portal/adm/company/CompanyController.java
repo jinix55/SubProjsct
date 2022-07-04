@@ -302,7 +302,7 @@ public class CompanyController {
         }
     }
     
-    @PostMapping("/company/delete/{companyCode}")
+    @PostMapping("/company/delete/{companyCode}/members")
     public ResponseEntity<String> delete(HttpServletRequest request,
     									@PathVariable String companyCode, 
                                         @ModelAttribute MemberModel memberModel,
