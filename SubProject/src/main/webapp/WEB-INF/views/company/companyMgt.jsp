@@ -94,7 +94,7 @@
 									<a href="#edit" onclick="detailView('${company.companyId}');" role="button" data-toggle="modal">
 										<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02">
 									</a>
-									<c:if test="${company.useYn eq 'Y'}">
+									<c:if test="${company.useYn eq 'Y' and pages.authId eq 'au2000001'}">
 										<a href="#delete" data-nm="${company.companyNm }" data-id="${company.companyId }" data-code="${company.companyCode }" data-no="${company.companyNo }" role="button" data-toggle="modal"
 											class="btn-table-icon02 deleteBtnAction"><img src="/images/icon_delete2.png"
 											alt="삭제하기" class="btn-table-icon02">
@@ -116,11 +116,13 @@
 		</div>
 	</div>
 	<!-- E_그리드-->
-	<div class="btn-group pt15 tr">
-		<button type="button" class="button btn-success" data-toggle="modal">
-			<a href="#register" data-toggle="modal">등록</a>
-		</button>
-	</div>
+	<c:if test="${pages.authId eq 'au2000001' }">
+		<div class="btn-group pt15 tr">
+			<button type="button" class="button btn-success" data-toggle="modal">
+				<a href="#register" data-toggle="modal">등록</a>
+			</button>
+		</div>
+	</c:if>
 	<!-- S_페이징-->
 	<div class="board-paging">
 	</div>
@@ -328,7 +330,7 @@
 						<label class="col-25 form-label">회사ID</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="companyId" name="companyId" type="text" class="text-input" disabled>
+								<input id="companyId" name="companyId" type="text" class="text-input" readonly>
 							</div>
 						</div>
 					</div>
@@ -338,7 +340,8 @@
 						<label class="col-25 form-label">회사코드</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled>
+<!-- 								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled> -->
+									<input id="companyCode" name="companyCode" type="text" class="text-input" readonly>
 							</div>
 						</div>
 					</div>
@@ -584,7 +587,7 @@
 						<label class="col-25 form-label">등록일시</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="rgstDt" name="rgstDt" type="text" class="text-input">
+								<input name="rgstDt" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -594,7 +597,7 @@
 						<label class="col-25 form-label">수정일시</label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="modiDt" name="modiDt" type="text" class="text-input">
+								<input name="modiDt" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -604,7 +607,7 @@
 						<label class="col-25 form-label">사용자 ID<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="userId" name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요">
+								<input name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요">
 								<span class="search-box-append">
 									<button type="button" class="btn-search" id="idSearch">
 										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
@@ -619,7 +622,7 @@
 						<label class="col-25 form-label">사용자 이름<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="userNm" name="userNm" type="text" class="text-input" placeholder="이름을 입력해 주세요">
+								<input name="userNm" type="text" class="text-input" placeholder="이름을 입력해 주세요">
 							</div>
 						</div>
 					</div>
@@ -628,7 +631,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">회사명<em>*</em></label>
 						<div class="col-75">
-							<select id="companyCode" name="companyCode" class="select-box">
+							<select name="companyCode" class="select-box">
 								<option value="none">선택안함</option>
 								<c:forEach items="${companys }" var="company">
 									<option value="${company.companyCode}">${company.companyNm }</option>
@@ -641,7 +644,7 @@
 					<div class="form-group">
 						<label class="col-25 form-label">그룹 ID<em>*</em></label>
 						<div class="col-75">
-							<select id="authId" name="authId" class="select-box">
+							<select name="authId" class="select-box">
 								<option value="none">선택안함</option>
 								<c:forEach items="${roles }" var="role">
 									<option value="${role.authId}">${role.authNm }</option>
@@ -656,12 +659,12 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="email-add">
-									<div class="pr28"><input id="email1" name="email1" type="text" class="text-input email"></div>
+									<div class="pr28"><input name="email1" type="text" class="text-input email"></div>
 								</div>
 								<div class="email-add">
-									<div><input id="email2" name="email2" type="text" class="text-input email"></div>
+									<div><input name="email2" type="text" class="text-input email"></div>
 								</div>
-								<input type="hidden" id="email" name="email" />
+								<input type="hidden" name="email" />
 							</div>
 						</div>
 					</div>
@@ -673,13 +676,13 @@
 						<div class="col-75">
 							<div class="form-input">
 								<div class="phone-number">
-									<div class="pr16"><input id="phone1" name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3"></div>
+									<div class="pr16"><input name="phone1" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="3"></div>
 								</div>
 								<div class="phone-number">
-									<div class="pr16"><input id="phone2" name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
+									<div class="pr16"><input name="phone2" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 								<div class="phone-number">
-									<div><input id="phone3" name="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
+									<div><input id="phone3" onkeyup="this.value = setNumber(this.value)" type="text" class="text-input phone" maxlength="4"></div>
 								</div>
 							</div>
 						</div>
@@ -692,11 +695,11 @@
 							<div class="form-input-box">
 <!-- 								<button type="button" id="lockYn" name ="lockYn" class="btn-yes" style="height:26px;width:80px;line-height:26px;background:red;">Yes</button> -->
 								<div class="btn-form-small">
-									<input id="lockY" name="lockYn" type="radio" value="Y">
+									<input name="lockYn" type="radio" value="Y">
 									<label for="lockY" class="mr05">활성화</label>
 								</div>
 								<div class="btn-form-small">
-									<input id="lockN" name="lockYn" type="radio" value="N">
+									<input name="lockYn" type="radio" value="N">
 									<label for="lockN" class="mr05">비활성화</label>
 								</div>
 							</div>
@@ -709,11 +712,11 @@
 						<div class="col-75">
 							<div class="form-input-box">
 								<div class="btn-form-small">
-									<input id="dtLimitY" name="dtLimitYn" type="radio" value="Y">
+									<input name="dtLimitYn" type="radio" value="Y">
 									<label for="dtLimitY" class="mr05">적용</label>
 								</div>
 								<div class="btn-form-small">
-									<input id="dtLimitN" name="dtLimitYn" type="radio" value="N">
+									<input name="dtLimitYn" type="radio" value="N">
 									<label for="dtLimitN" class="mr05">미적용</label>
 								</div>
 							</div>
@@ -726,11 +729,11 @@
 						<div class="col-75">
 							<div class="form-input-box">
 								<div class="btn-form-small">
-									<input id="useY" name="useYn" type="radio" value="Y">
+									<input name="useYn" type="radio" value="Y">
 									<label for="useY" class="mr05">YES</label>
 								</div>
 								<div class="btn-form-small">
-									<input id="useN" name="useYn" type="radio" value="N">
+									<input name="useYn" type="radio" value="N">
 									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
@@ -743,11 +746,11 @@
 						<div class="col-75">
 							<div class="search-date">
 								<input onkeyup="this.value = date_mask(this.value)" type="text"
-									id="startDt" name="dateFrom" class="text-input">
+									name="dateFrom" class="text-input">
 							</div>
 							<div class="search-date">
 								<input onkeyup="this.value = date_mask(this.value)" type="text"
-									id="endDt" name="dateTo" class="text-input">
+									name="dateTo" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -856,6 +859,7 @@ function setEdit(){
 	$('#edit textarea').attr('disabled',false);
 	$('#edit select').attr('disabled',false);
 	$('#companyId').attr('disabled',true);
+	$('#companyCode').attr('readonly',true);
 	$('.btnCheck').text('취소');
 	$('.btnEdit').text('저장');
 	$('.btnEdit').addClass('btnSave');
@@ -881,7 +885,7 @@ function deleteCompanyAction(){
 	param = {
 			companyId : $('.delCompanyAction').val()
 	}
-	if(validation()){
+// 	if(validation()){
 		if(isDisabled){
 			return false;
 		}else{
@@ -901,11 +905,12 @@ function deleteCompanyAction(){
 				}
 			});
 		}
-	}
+// 	}
 }
 
 function companySave(){
 	$('#companyId').attr('disabled',false);
+	$('#companyCode').attr('disabled',false);
 	var param = $("#companyInst").serialize();
 	callInsertAjax(param)
 }
@@ -931,11 +936,12 @@ function companyInsert(){
 			note : $('#reg_note').val(),
 			useYn : $('#reg_useYn').val()
 		};
+	isDisabled = false;
 	callInsertAjax(param);
 }
 
 function callInsertAjax(param){
-	if(validation()){
+// 	if(validation()){
 		if(isDisabled){
 			return false;
 		}else{
@@ -955,7 +961,7 @@ function callInsertAjax(param){
 			    }
 			});
 		}
-	}
+// 	}
 }
 
 function codeSearch(){
@@ -1125,38 +1131,38 @@ function validation(){
 		alert('회사 이름을 입력해 주세요..');
 		return false;
 	}
-	if($('#reg_representativeNm').val() == ''){
-		alert('대표자을 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_address').val() == ''){
-		alert('회사 주소를 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_companyNo1').val() == ''){
-		alert('회사 사업자번호을 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_companyNo2').val() == ''){
-		alert('회사 사업자번호을 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_companyNo3').val() == ''){
-		alert('회사 사업자번호을 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_telephoneNo1').val() == ''){
-		alert('회사 연락처를 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_telephoneNo2').val() == ''){
-		alert('회사 연락처를 입력해 주세요..');
-		return false;
-	}
-	if($('#reg_telephoneNo3').val() == ''){
-		alert('회사 연락처를 입력해 주세요..');
-		return false;
-	}
+// 	if($('#reg_representativeNm').val() == ''){
+// 		alert('대표자을 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_address').val() == ''){
+// 		alert('회사 주소를 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_companyNo1').val() == ''){
+// 		alert('회사 사업자번호을 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_companyNo2').val() == ''){
+// 		alert('회사 사업자번호을 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_companyNo3').val() == ''){
+// 		alert('회사 사업자번호을 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_telephoneNo1').val() == ''){
+// 		alert('회사 연락처를 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_telephoneNo2').val() == ''){
+// 		alert('회사 연락처를 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#reg_telephoneNo3').val() == ''){
+// 		alert('회사 연락처를 입력해 주세요..');
+// 		return false;
+// 	}
 	return true;
 }
 

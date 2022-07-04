@@ -130,6 +130,22 @@ public class CompanyController {
     			companyModel.setModiId(authUser.getMemberModel().getUserId());
     			
     			result = companyService.save(companyModel);
+    			
+    			//company 등록 후 사이트 관리자 자동 등록 해줌
+    			if("Insert".equals(result)) {
+    				MemberModel memberModel = new MemberModel();
+    				//저장시 회사코드와 같이 적용
+    				memberModel.setUserId("admin@"+companyModel.getCompanyCode());
+    				memberModel.setEmail("admin@"+companyModel.getCompanyCode().toLowerCase()+".pplusecho.com");
+    				memberModel.setUserNm("사이트 관리자");
+    				memberModel.setAuthId("au2000002");
+    				memberModel.setDtLimitYn("N");
+    				memberModel.setUseYn("Y");
+    				memberModel.setRgstId(authUser.getMemberModel().getUserId());
+    				memberModel.setModiId(authUser.getMemberModel().getUserId());
+    				result = memberService.insert(memberModel);
+    			}
+
     		}else {
     			result = "권한이 없습니다./n관리자에게 문의하세요.";
     		}
@@ -223,7 +239,7 @@ public class CompanyController {
     	return memberService.selectMemberList(criteria);
     }
     
-    @GetMapping("/company/detail/{companyCode}/{memberId}")
+    @GetMapping("/company/detail/{companyCode}/members/{memberId}")
     @ResponseBody
     public MemberModel selectPopup(@PathVariable String companyCode, @PathVariable String memberId, Model model) {
     	MemberModel memberModel = new MemberModel();
@@ -231,7 +247,7 @@ public class CompanyController {
     	return memberService.selectMember(memberModel);
     }
     
-    @PostMapping("/company/update/{companyCode}")
+    @PostMapping("/company/update/{companyCode}/members")
     public ResponseEntity<String> update(HttpServletRequest request,
     								   @PathVariable String companyCode, 
                                        @ModelAttribute MemberModel memberModel,
@@ -256,7 +272,7 @@ public class CompanyController {
         }
     }
     
-    @PostMapping("/company/insert/{companyCode}")
+    @PostMapping("/company/insert/{companyCode}/members")
     public ResponseEntity<String> insert(HttpServletRequest request,
 							    		@PathVariable String companyCode, 
 							    		@ModelAttribute MemberModel memberModel,
