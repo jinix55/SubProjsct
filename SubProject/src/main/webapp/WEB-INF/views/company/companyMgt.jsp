@@ -1689,9 +1689,8 @@ function login(companyCode, userId) {
 			console.log(request.responseText);
 
 			if(request.responseText === 'Y'){
-				var subdomain = '${subdomain}';
-				if(subdomain !== '') {
-					$('#frm input[name=userId]').val(userId+"@"+subdomain.toUpperCase());
+				if(companyCode !== '') {
+					$('#frm input[name=userId]').val(userId+"@"+companyCode.toUpperCase());
 				}else {
 					$('#frm input[name=userId]').val(userId);
 				}
@@ -1702,9 +1701,8 @@ function login(companyCode, userId) {
 			}
 		},
 		success : function(data) {
-			var subdomain = '${subdomain}';
-			if(subdomain !== '') {
-				$('#frm input[name=userId]').val(userId+"@"+subdomain.toUpperCase());
+			if(companyCode !== '') {
+				$('#frm input[name=userId]').val(userId+"@"+companyCode.toUpperCase());
 			}else {
 				$('#frm input[name=userId]').val(userId);
 			}

@@ -449,7 +449,7 @@ public class CompanyController {
     		result = "Y";
     		HttpSession session = request.getSession();
     		if(session != null) {
-    			session.setAttribute("loginId", memberModel.getUserId());
+    			session.setAttribute("loginId", memberModel.getUserId()+"@"+companyCode);
     		}
 		}
         return result;
