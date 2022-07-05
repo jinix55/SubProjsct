@@ -409,27 +409,33 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">사용여부</label>
-						<div class="col-75">
-							<div class="form-input-box">
-								<div class="btn-form-small">
-									<input id="useY" name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">YES</label>
+				<c:if test="${pages.authId eq 'au2000001' }">
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">사용여부</label>
+							<div class="col-75">
+								<div class="form-input-box">
+									<div class="btn-form-small">
+										<input id="useY" name="useYn" type="radio" value="Y">
+										<label for="useY" class="mr05">YES</label>
+									</div>
+									<div class="btn-form-small">
+										<input id="useN" name="useYn" type="radio" value="N">
+										<label for="useN" class="mr05">NO</label>
+									</div>
 								</div>
-								<div class="btn-form-small">
-									<input id="useN" name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">NO</label>
-								</div>
+								<!-- <select id="useYn" name="useYn" class="select-box" disabled>
+									   <option value="Y">예</option>
+									   <option value="N">아니요</option>
+								//</select> -->
 							</div>
-							<!-- <select id="useYn" name="useYn" class="select-box" disabled>
-								   <option value="Y">예</option>
-								   <option value="N">아니요</option>
-							//</select> -->
 						</div>
 					</div>
-				</div>
+				</c:if>
+				<c:if test="${pages.authId ne 'au2000001' }">
+					<input id="useY" name="useYn" type="radio" value="Y" style="display:none;">
+					<input id="useN" name="useYn" type="radio" value="N" style="display:none;">
+				</c:if>
 				<div class="col-50">
 					<div class="form-group">
 						<label class="col-25 form-label">사업자번호</label>
@@ -692,24 +698,24 @@
 						</div>
 					</div>
 				</div>
+				<c:set var="userAuth" value="au2000003"/>  
+				<c:set var="userAuthNm" value="사이트 사용자"/>
+				<c:if test="${pages.authId eq 'au2000001' }">
+					<c:set var="userAuth" value="au2000002"/>  
+					<c:set var="userAuthNm" value="사이트 관리자"/>
+				</c:if>
+				<input name="authId" value="${userAuth}" type="hidden">
+<!-- 				<div class="col-50"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-25 form-label">그룹 ID<em>*</em></label> -->
+<!-- 						<div class="col-75"> -->
+<%-- 							<input name="authNm" value="${userAuthNm}" type="text" class="text-input" disabled> --%>
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">그룹 ID<em>*</em></label>
-						<div class="col-75">
-							<c:set var="userAuth" value="au2000003"/>  
-							<c:set var="userAuthNm" value="사이트 사용자"/>
-							<c:if test="${pages.authId eq 'au2000001' }">
-								<c:set var="userAuth" value="au2000002"/>  
-								<c:set var="userAuthNm" value="사이트 관리자"/>
-							</c:if>
-							<input name="authId" value="${userAuth}" type="hidden">
-							<input name="authNm" value="${userAuthNm}" type="text" class="text-input" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일 주소<em>*</em></label>
+						<label class="col-25 form-label">이메일 주소</label>
 						<div class="col-75">
 							<div class="form-input">
 								<div class="email-add">
@@ -726,7 +732,7 @@
 				<div class="col-50">
 					<div class="form-group">
 						<input type="hidden" id="phone" name="phone" /> <label
-							class="col-25 form-label">연락처<em>*</em></label>
+							class="col-25 form-label">연락처</label>
 						<div class="col-75">
 							<div class="form-input">
 								<div class="phone-number">
@@ -753,7 +759,7 @@
 									<label for="lockY" class="mr05">활성화</label>
 								</div>
 								<div class="btn-form-small">
-									<input id="lockY" name="lockYn" type="radio" value="N">
+									<input id="lockN" name="lockYn" type="radio" value="N">
 									<label for="lockN" class="mr05">비활성화</label>
 								</div>
 							</div>
@@ -1552,8 +1558,8 @@ function memberEditMake(data){
 	$("#frmInsert input[name=phone3]").val(phone3);
 	$("#frmInsert input[name=startDt]").val(data.startDt);
 	$("#frmInsert input[name=endDt]").val(data.endDt);
-	
-	$("#use"+useYn).prop('checked',true);
+
+	$("#mUse"+useYn).prop('checked',true);
 	$("#lock"+lockYn).prop('checked',true);
 	$("#dtLimit"+dtLimitYn).prop('checked',true);
 	
@@ -1583,15 +1589,9 @@ function openMemberRegistLayer(){
 	$("#memberModiDt").hide();
 	$('#frmInsert input[name=userId]').attr('disabled',false);
 	$("#frmInsert input[name=editModeYn]").val('N');
-	$('#lockY').val('Y');
-	$('#lockN').val('N');
-	$('#dtLimitY').val('Y');
-	$('#dtLimitN').val('N');
-	$('#useY').val('Y');
-	$('#useN').val('N');
-	$('#lockN').prop('checked',true);
-	$('#dtLimitY').prop('checked',true);
-	$('#useY').prop('checked',true);
+	$("#mUseY").prop('checked',true);
+	$("#lockY").prop('checked',true);
+	$("#dtLimitN").prop('checked',true);
 	
 	$("#frmInsert input[name=rgstDt]").val("");
 	$("#frmInsert input[name=modiDt]").val("");
@@ -1644,14 +1644,14 @@ function memberValidation(){
 		alert('이름을 입력해 주세요..');
 		return false;
 	}
-	if($('#frmInsert input[name=email1]').val() == ''){
-		alert('메일을 입력해 주세요..');
-		return false;
-	}
-	if($('#frmInsert input[name=email2]').val() == ''){
-		alert('메일을 입력해 주세요..');
-		return false;
-	}
+// 	if($('#frmInsert input[name=email1]').val() == ''){
+// 		alert('메일을 입력해 주세요..');
+// 		return false;
+// 	}
+// 	if($('#frmInsert input[name=email2]').val() == ''){
+// 		alert('메일을 입력해 주세요..');
+// 		return false;
+// 	}
 	return true;
 }
 

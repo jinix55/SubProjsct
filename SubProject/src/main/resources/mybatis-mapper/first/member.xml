@@ -324,7 +324,7 @@
 			, #{userNm}
 			, #{email}
 			, #{phone}
-			, <![CDATA[SHA2('pp12#$',256)]]>
+			, <![CDATA[SHA2(#{password},256)]]>
 			, #{pstnCode}
 			, #{deptCode}
 			, #{hdeptCode}

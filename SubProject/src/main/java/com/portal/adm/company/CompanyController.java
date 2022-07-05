@@ -231,7 +231,8 @@ public class CompanyController {
     				MemberModel memberModel = new MemberModel();
     				//저장시 회사코드와 같이 적용
     				memberModel.setUserId("admin@"+companyModel.getCompanyCode());
-    				memberModel.setEmail("admin@"+companyModel.getCompanyCode().toLowerCase()+".pplusecho.com");
+    				memberModel.setPassword("admin@"+companyModel.getCompanyCode());
+//    				memberModel.setEmail("admin@"+companyModel.getCompanyCode().toLowerCase()+".pplusecho.com");
     				memberModel.setUserNm("사이트 관리자");
     				memberModel.setAuthId("au2000002");
     				memberModel.setDtLimitYn("N");
@@ -390,6 +391,7 @@ public class CompanyController {
             memberModel.setModiId(authUser.getMemberModel().getUserId());
             //저장시 회사코드와 같이 적용
             memberModel.setUserId(memberModel.getUserId()+"@"+memberModel.getCompanyCode());	
+            memberModel.setPassword(memberModel.getUserId()+"@"+memberModel.getCompanyCode());
             String result = memberService.insert(memberModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);

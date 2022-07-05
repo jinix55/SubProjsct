@@ -37,7 +37,7 @@
 <section id="lnb">
 	<a href="#" class="menu" title="메뉴 열기/닫기"><img src="/images/arr_menu_left.png" alt="메뉴 열기/닫기"/></a>
 	<div class="btn-lnb-comp">
-		<img id="logonLogo" src="/images/logo_${subdomain}.png" alt="회사로고">
+		<img id="logonLogo" src="/images/logo_${subdomain}.png" alt="회사로고" onerror="if (this.src != '/images/logo_p.png') this.src = '/images/logo_p.png';">
 	</div>
 	<div class="lnb-user">
 		<span class="img"><img src="/images/icon_user02.png" alt="정보수정"></span>
