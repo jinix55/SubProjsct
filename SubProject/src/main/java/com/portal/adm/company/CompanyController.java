@@ -433,4 +433,20 @@ public class CompanyController {
         }
         
     }
+    
+    /**
+     * 회사관리 페이지로 이동
+     *
+     * @param criteria
+     * @return
+     */
+    @PostMapping("/system/company/detail/{companyCode}/members/login")
+    @ResponseBody
+    public String login(@ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	String result = "N";
+    	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P") || StringUtils.equals(authUser.getMemberModel().getAuthCl(), "A")) {
+    		result = "Y";
+		}
+        return result;
+    }
 }

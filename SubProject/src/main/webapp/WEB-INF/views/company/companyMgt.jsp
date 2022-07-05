@@ -1662,9 +1662,9 @@ function insertMemberAjax(companyCode, param, action){
 function login(companyCode, userId) {
 	alert('작업중!');
 // 	$.ajax({
-// 		url : '/system/company/detail/'+companyCode+'/members/'+userId,
+// 		url : '/system/company/detail/'+companyCode+'/members/login',
 // 		dataType : 'JSON',
-// 		type : "GET",
+// 		type : "POST",
 // 		async : false,
 // 		error : function(request, status, error) {
 // 			console.log(request.responseText);
