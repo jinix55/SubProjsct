@@ -406,4 +406,21 @@ public class CompanyController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
+    
+    @PostMapping("/company/detail/popup/{companyCode}/members/{memberId}")
+    @ResponseBody
+    public String select(@PathVariable String memberId, @PathVariable String companyCode, Model model) {
+        MemberModel memberModel = new MemberModel();
+        if(!StringUtils.equals(memberId, "")) {
+        	memberModel.setUserId(memberId+"@"+companyCode);
+        	memberModel = memberService.selectMember(memberModel);
+        }
+        
+        if(memberModel == null) {
+        	return memberId;
+        }else {
+        	return "none";
+        }
+        
+    }
 }

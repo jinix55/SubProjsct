@@ -641,8 +641,8 @@
 							<div class="search-box">
 								<input name="userId" type="text" class="text-input w-auto" placeholder="ID를 입력해 주세요"  disabled>
 								<span class="search-box-append">
-									<button type="button" class="btn-search" id="idSearch">
-										<a id="idSearchCheck" href="#overlap" role="button" data-toggle="modal">중복확인</a>
+									<button type="button" class="btn-search" id="memberIdSearch">
+										<a id="memberIdSearchCheck" href="javascript:void(0);" onclick="javascript:layerPopup(memberOverlap);" role="button" data-toggle="modal">중복확인</a>
 									</button>
 								</span>
 							</div>
@@ -795,6 +795,45 @@
 		</div>
 	  </div>
   </form>
+
+<!-- 레이어 팝업 아이디 중복 확인 -->
+<div id="memberOverlap" class="modal" data-backdrop-limit="1" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-modal-parent="#myModal">
+	<div class="modal-content" style="width: 400px">
+		<div class="modal-header">
+			<h4 class="modal-title">중복확인</h4>
+			<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(memberOverlap);">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label">사용자 ID<em>*</em></label>
+						<div class="col-75">
+							<div class="search-box">
+								<input id="re_userId" name="re_userId" type="text" class="text-input w-auto">
+								<span class="search-box-append">
+									<button id="re_memberIdSearch" name="re_memberIdSearch" type="button" class="btn-search">
+										<img src="/images/icon_search.png" title="검색">
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-notice"  style="display:none">* [ww]는 사용가능한 ID입니다</div>
+				</div>
+			</div>
+		</div>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btn-success memberIdCheck" data-dismiss="modal">확인</button>
+			<button type="button" class="button btn-cancel" data-dismiss="modal"   onclick="javascript:layerPopupClose(memberOverlap);">취소</button>
+		</div>
+	</div>
+</div>
 
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script type="text/javascript">
@@ -1200,8 +1239,87 @@ $(document).ready(function() {
 	$('.phone').keyup(function(){
 		setPhoneNo();
 	});
+
+	$("#memberIdSearch").keyup(function(e) {
+        if(e.keyCode == '13'){
+        	memberIdSearch();
+        	$("#memberIdSearchCheck").click();
+        }
+    });
+
+	$("#memberIdSearch, #memberIdSearchCheck").mouseup(function(e) {
+		memberIdSearch();
+		$("#memberIdSearchCheck").click();
+    });
+	
+	$('#re_memberIdSearch').click(function(){
+		re_memberIdSearch();
+	});
+	
+	$('.memberIdCheck').click(function(){
+		memberIdCheckReset();
+	});
 	
 });
+
+function memberIdSearch(){
+	var idSearch = $('#frmInsert input[name=userId]').val();
+	if(idSearch){
+		$('#re_userId').val(idSearch);
+		searchMemberIdAction(idSearch);
+	}else{
+		$('#re_userId').val('');
+		$('.form-notice').text("확인이 필요합니다.");
+		$('.form-notice').hide();
+	}
+}
+
+function re_memberIdSearch(){
+	var re_idSearch = $('#re_userId').val();
+	if(re_idSearch){
+		searchMemberIdAction(re_idSearch);
+	}
+}
+
+function memberIdCheckReset(){
+	$('.form-notice').text("확인이 필요합니다.");
+	$('.form-notice').hide();
+	$('.form-notice').hide();
+	if($('#re_userId').val() == ''){
+		$('#memberIdSearch').removeClass('search-Success');
+	}
+	layerPopupClose($('#memberOverlap'));
+}
+
+function searchMemberIdAction(idSearch){
+	var companyCode = $("#frmInsert input[name=companyCode]").val();
+	$.ajax({
+	    type : 'post',
+	    url : '/system/company/detail/popup/'+companyCode+'/members/'+idSearch,
+	    data : {memberId:idSearch},
+	    dataType : 'text',
+	    error: function(xhr, status, error){
+	        console.log(error);
+	    },
+	    success : function(result){
+	    	console.log(result)
+	    	if(result == 'none'){
+	    		$('.form-notice').text("이미 사용중인 아이디 입니다.");
+	    		$('.form-notice').addClass("colorRed");
+	    		$('#memberIdSearch').removeClass('search-Success');
+	    		$('#memberIdSearch').addClass('search-Fail');
+	    		$('#memberIdSearchCheck').text('다시확인');
+	    	}else{
+	    		$('.form-notice').text("사용 가능한 아이디 입니다.");
+	    		$('.form-notice').addClass("fontColorBlue");
+	    		$('#frmInsert input[name=userId]').val(result);
+	    		$('#re_userId').val(result);
+	    		$('#memberIdSearch').addClass('search-Success');
+	    	}
+	    		$('.form-notice').show();
+	    }
+	});
+}
 
 function validation(){
 	if($('#reg_companyId').val() == ''){
@@ -1421,6 +1539,7 @@ function deleteMember(companyCode, userId) {
 function openMemberRegistLayer(){
 	$("#memberRgstDt").hide();
 	$("#memberModiDt").hide();
+	$('#frmInsert input[name=userId]').attr('disabled',false);
 	$("#frmInsert input[name=editModeYn]").val('N');
 	$('#lockY').val('Y');
 	$('#lockN').val('N');
@@ -1498,11 +1617,11 @@ function saveMember() {
 	var action = "update";
 	var companyCode = $("#frmInsert input[name=companyCode]").val();
 	if($("#frmInsert input[name=editModeYn]").val() === 'N') {
-		var has = $('#idSearch').hasClass('search-Success');
-// 		if(!has){
-// 			alert('아이디 중복 학인이 필요합니다.');
-// 			return false;
-// 		}
+		var has = $('#memberIdSearch').hasClass('search-Success');
+		if(!has){
+			alert('아이디 중복 학인이 필요합니다.');
+			return false;
+		}
 		action = "insert";
 	}
 	
