@@ -157,7 +157,7 @@
 		if(subdomain !== '') {
 			$('#userId').val(userId+"@"+subdomain.toUpperCase());
 		}else {
-			$('#userId').val(userId);
+			$('#userId').val(userId+"@PPLUS");
 		}
 		console.log($('#userId').val());
 		document.getElementById('frm').submit();
