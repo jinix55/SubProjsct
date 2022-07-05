@@ -1661,18 +1661,19 @@ function insertMemberAjax(companyCode, param, action){
 
 function login(companyCode, userId) {
 	alert('작업중!');
-// 	$.ajax({
-// 		url : '/system/company/detail/'+companyCode+'/members/login',
-// 		dataType : 'JSON',
-// 		type : "POST",
-// 		async : false,
-// 		error : function(request, status, error) {
-// 			console.log(request.responseText);
-// 			alert(request.responseText);
-// 		},
-// 		success : function(data) {
-// 			memberEditMake(data);
-// 		}
-// 	});
+	$.ajax({
+		url : '/system/company/detail/'+companyCode+'/members/login',
+		dataType : 'JSON',
+		data : {'userId':userId},
+		type : "POST",
+		async : false,
+		error : function(request, status, error) {
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(data) {
+			alert(data);
+		}
+	});
 }
 </script>

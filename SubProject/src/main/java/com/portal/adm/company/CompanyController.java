@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -442,10 +443,15 @@ public class CompanyController {
      */
     @PostMapping("/system/company/detail/{companyCode}/members/login")
     @ResponseBody
-    public String login(@ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String login(HttpServletRequest request, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "N";
     	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P") || StringUtils.equals(authUser.getMemberModel().getAuthCl(), "A")) {
     		result = "Y";
+    		HttpSession session = request.getSession();
+    		if(session != null) {
+    			session.setAttribute("loginId", memberModel.getUserId());
+    			System.out.println(session.getAttribute("loginId"));
+    		}
 		}
         return result;
     }

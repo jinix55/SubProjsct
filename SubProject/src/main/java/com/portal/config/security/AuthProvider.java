@@ -5,10 +5,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +43,10 @@ public class AuthProvider extends DaoAuthenticationProvider {
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		// DB 조회 정보
 		AuthUser authUser = (AuthUser) userDetails;
-
+		HttpSession session = request.getSession();
+		if(session != null && session.getAttribute("loginId") != null) {
+			String loginId = (String)session.getAttribute("loginId");
+		}
 		// 사용자 입력 ID, PW
 		// ID : authentication.getName()
 		// PW : authentication.getCredentials().toString()
