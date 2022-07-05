@@ -213,7 +213,6 @@
 			dbclick = 'Y';
 			return;
 		}
-		
 		document.getElementById('resetForm').submit();
 	}
 	
@@ -243,6 +242,12 @@
 			document.getElementById("ch_pwdNew").focus();
 			dbclick = 'Y';
 			return;
+		}
+		var subdomain = '${subdomain}';
+		if(subdomain !== '') {
+			$('#ch_userId').val(userId+"@"+subdomain.toUpperCase());
+		}else {
+			$('#ch_userId').val(userId+"@PPLUS");
 		}
 		document.getElementById('changeForm').submit();
 	}

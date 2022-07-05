@@ -117,7 +117,8 @@ public class LoginController {
 		if(alarmCheck == null) {
 			alarmModel.setAlarmId(idUtil.getAlarmId());
 			alarmService.save(alarmModel);
-			authMember.setPassword("rt12#$");
+			authMember.setNewPassword(member.getUserNm());
+			authMember.setPassword(member.getUserNm());
 			securityMapper.updateUserPassword(authMember);
 		}else {
 			model.addAttribute("resetRes", formatter.format(alarmCheck.getRgstDt())+"에 초기화 신청을 하셧습니다.");
