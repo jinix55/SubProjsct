@@ -34,6 +34,7 @@
 			, TELEPHONE_NO
 			, REPRESENTATIVE_NM
 			, NOTE
+			, LOGO_FILE_ID
 			, USE_YN
 			, RGST_ID
 			, RGST_DT
@@ -73,6 +74,7 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
+			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -88,6 +90,7 @@
 			#{telephoneNo},
 			#{representativeNm},
 			#{note},
+			#{logoFileId},
 			#{useYn},
 			#{rgstId},
 			NOW(),
@@ -106,6 +109,7 @@
 			TELEPHONE_NO = #{telephoneNo},
 			REPRESENTATIVE_NM = #{representativeNm},
 			NOTE = #{note},
+			LOGO_FILE_ID = #{logoFileId},
 			USE_YN = #{useYn},
 			MODI_ID = #{modiId},
 			MODI_DT = NOW()
@@ -133,6 +137,7 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
+			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -155,6 +160,7 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
+			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,
@@ -177,6 +183,7 @@
 			TELEPHONE_NO,
 			REPRESENTATIVE_NM,
 			NOTE,
+			LOGO_FILE_ID,
 			USE_YN,
 			RGST_ID,
 			RGST_DT,

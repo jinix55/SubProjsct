@@ -51,6 +51,7 @@
 <%-- 					<col style="width: 30px;"> --%>
 					<col style="width: 6%;">
 					<col style="width: 15%;">
+					<col style="width: 15%;">
 					<col style="width: *;">
 					<col style="width: 15%;">
 					<col style="width: 14%;">
@@ -62,6 +63,7 @@
 					<tr class="th-bg">
 <!-- 						<th><input type="checkbox" name="all" id="checkAll"></th> -->
 						<th scope="col">번호</th>
+						<th scope="col">회사 로고</th>
 						<th scope="col">회사 코드</th>
 						<th scope="col">회사명</th>
 						<th scope="col">사업자번호</th>
@@ -78,6 +80,11 @@
 						<tr id="tr_${company.companyId}" >
 <!-- 							<th><input type="checkbox" name="chk"></th> -->
 							<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
+							<td>
+								<c:if test="${company.logoFileId ne ''}">
+									<img src="/file/view/${company.logoFileId}"  width="70" height="auto">
+								</c:if>	
+							</td>
 							<td class="text-point <c:if test="${company.useYn eq 'N'}">colorGray</c:if>">${company.companyCode }</td>
 							<td>${company.companyNm }</td>
 							<td>${company.companyNo }</td>
@@ -107,7 +114,7 @@
 					</c:when>
 					<c:otherwise>
 						<tr>
-							<td colspan="9">데이터가 없습니다.</td>
+							<td colspan="10">데이터가 없습니다.</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
@@ -131,7 +138,7 @@
 
 
 <!-- 레이어 팝업 - 등록  -->
-<form>
+<form  id="frmCompanyRegister" enctype="multipart/form-data">
 <div id="register" class="modal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-content" style="width: 800px">
@@ -256,6 +263,14 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-25 form-label-img">회사 로고</label>
+						<div class="col-75">
+						  <div class="form-input-img">
+							<input id="reg_logoFileId" name="logoFileId" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
+						  </div>
+						</div>
+				    </div>
+					<div class="form-group">
 						<label class="col-25 form-label-textarea">비고</label>
 						<div class="col-75">
 							<div class="form-input">
@@ -313,159 +328,170 @@
 	</div>
 </div>
 <!-- 레이어 팝업 - 수정 -->
-<div id="edit" class="modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width: 800px">
-		<div class="modal-header">
-			<h4 class="modal-title">상세</h4>
-			<button type="button" class="close" data-dismiss="modal">
-				<img src="/images/icon_close.png">
-			</button>
-		</div>
-		<form id="companyInst">
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">회사ID</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input id="companyId" name="companyId" type="text" class="text-input" readonly>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">회사코드</label>
-						<div class="col-75">
-							<div class="form-input">
-<!-- 								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled> -->
-									<input id="companyCode" name="companyCode" type="text" class="text-input" readonly>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">회사명</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input id="companyNm" name="companyNm" type="text" class="text-input" disabled>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">대표자명</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input id="representativeNm" name="representativeNm" type="text" class="text-input" disabled>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">주소</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input id="address" name="address" type="text" class="text-input" disabled>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">사용여부</label>
-						<div class="col-75">
-							<div class="form-input-box">
-								<div class="btn-form-small">
-									<input id="useY" name="useYn" type="radio" value="Y">
-									<label for="useY" class="mr05">YES</label>
-								</div>
-								<div class="btn-form-small">
-									<input id="useN" name="useYn" type="radio" value="N">
-									<label for="useN" class="mr05">NO</label>
-								</div>
-							</div>
-							<!-- <select id="useYn" name="useYn" class="select-box" disabled>
-								   <option value="Y">예</option>
-								   <option value="N">아니요</option>
-							//</select> -->
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">사업자번호</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input type="hidden" id="companyNo" name="companyNo" />
-								<div class="phone-number">
-									<div class="pr16"><input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'></div>
-								</div>
-								<div class="phone-number">
-									<div class="pr16"><input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'></div>
-								</div>
-								<div class="phone-number">
-									<div><input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'></div>
+<form  id="frmCompanyEdit" enctype="multipart/form-data">
+	<div id="edit" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-content" style="width: 800px">
+			<div class="modal-header">
+				<h4 class="modal-title">상세</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<img src="/images/icon_close.png">
+				</button>
+			</div>
+			<form id="companyInst">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">회사ID</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input id="companyId" name="companyId" type="text" class="text-input" readonly>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">회사코드</label>
+							<div class="col-75">
+								<div class="form-input">
+	<!-- 								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled> -->
+										<input id="companyCode" name="companyCode" type="text" class="text-input" readonly>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">회사명</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input id="companyNm" name="companyNm" type="text" class="text-input" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">대표자명</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input id="representativeNm" name="representativeNm" type="text" class="text-input" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">주소</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input id="address" name="address" type="text" class="text-input" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">사용여부</label>
+							<div class="col-75">
+								<div class="form-input-box">
+									<div class="btn-form-small">
+										<input id="useY" name="useYn" type="radio" value="Y">
+										<label for="useY" class="mr05">YES</label>
+									</div>
+									<div class="btn-form-small">
+										<input id="useN" name="useYn" type="radio" value="N">
+										<label for="useN" class="mr05">NO</label>
+									</div>
+								</div>
+								<!-- <select id="useYn" name="useYn" class="select-box" disabled>
+									   <option value="Y">예</option>
+									   <option value="N">아니요</option>
+								//</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">사업자번호</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input type="hidden" id="companyNo" name="companyNo" />
+									<div class="phone-number">
+										<div class="pr16"><input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'></div>
+									</div>
+									<div class="phone-number">
+										<div class="pr16"><input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'></div>
+									</div>
+									<div class="phone-number">
+										<div><input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-50">
+						<div class="form-group">
+							<label class="col-25 form-label">전화번호</label>
+							<div class="col-75">
+								<div class="form-input">
+									<input type="hidden" id="telephoneNo" name="telephoneNo" />
+									<div class="phone-number">
+										<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled></div>
+									</div>
+									<div class="phone-number">
+										<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
+									</div>
+									<div class="phone-number">
+										<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">전화번호</label>
-						<div class="col-75">
-							<div class="form-input">
-								<input type="hidden" id="telephoneNo" name="telephoneNo" />
-								<div class="phone-number">
-									<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled></div>
+				<div class="row">
+					<div class="col-100">
+						<div class="form-group">
+							<label class="col-25 form-label-textarea">회사설명</label>
+							<div class="col-75">
+								<div class="form-input">
+									<textarea id="companyDsc" name="companyDsc" class="textarea" disabled></textarea>
 								</div>
-								<div class="phone-number">
-									<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
-								</div>
-								<div class="phone-number">
-									<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-25 form-label-img">회사 로고</label>
+							<div class="col-75">
+							  <div class="form-input-img">
+								<input id="logoFileId" name="logoFileId" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
+							  </div>
+							</div>
+					    </div>
+						<div class="form-group">
+							<label class="col-25 form-label-textarea">비고</label>
+							<div class="col-75">
+								<div class="form-input">
+									<textarea id="note" name="note" class="textarea" disabled></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<label class="col-25 form-label-textarea">회사설명</label>
-						<div class="col-75">
-							<div class="form-input">
-								<textarea id="companyDsc" name="companyDsc" class="textarea" disabled></textarea>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-25 form-label-textarea">비고</label>
-						<div class="col-75">
-							<div class="form-input">
-								<textarea id="note" name="note" class="textarea" disabled></textarea>
-							</div>
-						</div>
-					</div>
-				</div>
+			</form>
+			<!-- 버튼 -->
+			<div class="modal-footer btn-group">
+				<button type="button" class="button btnEdit">수정</button>
+				<button type="button" class="button btnCheck btn-cancel" data-dismiss="modal">확인</button>
 			</div>
-		</div>
-		</form>
-		<!-- 버튼 -->
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btnEdit">수정</button>
-			<button type="button" class="button btnCheck btn-cancel" data-dismiss="modal">확인</button>
 		</div>
 	</div>
-</div>
+</form>
+
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -769,6 +795,7 @@
 	  </div>
   </form>
 
+<script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script type="text/javascript">
 /**
  * 페이징 처리 공통 함수
@@ -1047,7 +1074,19 @@ $(document).ready(function() {
 	if(searchKey){
 		$('#searchKey').val('${pages.searchKey}');
 	}
-	
+
+	$('.afile-img').MultiFile({
+        max: 1, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        accept: 'png', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
+        STRING: { //Multi-lingual support : 메시지 수정 가능
+          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+          duplicate: "$file 은 이미 선택된 파일입니다.",
+          denied: "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+          selected: '$file 을 선택했습니다.',
+          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+        }
+      });
+    
 	$('.deleteBtnAction').click(function(){
 		var code = this.dataset.code;
 		var id = this.dataset.id;

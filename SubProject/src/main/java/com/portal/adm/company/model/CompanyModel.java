@@ -36,4 +36,5 @@ public class CompanyModel extends Criteria{
     
     
     private String authId;                             // 조회용 사용자 권한
+    private String logoFileId;                             // 회사 로고
 }
