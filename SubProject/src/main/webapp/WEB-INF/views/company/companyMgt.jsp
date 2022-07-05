@@ -155,7 +155,7 @@
 						<label class="col-25 form-label">회사 Code<em>*</em></label>
 						<div class="col-75">
 							<div class="search-box">
-									<input id="reg_companyCode" name="reg_companyCode" type="text"
+									<input id="reg_companyCode" name="companyCode" type="text"
 										class="text-input eInput w-auto">
 									<span class="search-box-append">
 									<button id="codeSearch" name="codeSearch" type="button" class="btn-search codeSearch">
@@ -171,7 +171,7 @@
 						<label class="col-25 form-label">회사명<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="reg_companyNm" name="reg_companyNm" type="text" class="text-input">
+								<input id="reg_companyNm" name="companyNm" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -181,7 +181,7 @@
 						<label class="col-25 form-label">대표자명<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="reg_representativeNm" name="reg_representativeNm" type="text" class="text-input">
+								<input id="reg_representativeNm" name="representativeNm" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -191,7 +191,7 @@
 						<label class="col-25 form-label">주소<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
-								<input id="reg_address" name="reg_address" type="text" class="text-input">
+								<input id="reg_address" name="address" type="text" class="text-input">
 							</div>
 						</div>
 					</div>
@@ -201,6 +201,7 @@
 						<label class="col-25 form-label">사업자번호<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
+								<input type="hidden" name="companyNo">
 								<div class="phone-number">
 									<div class="pr16"><input id="reg_companyNo1" name="reg_companyNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 								</div>
@@ -219,6 +220,7 @@
 						<label class="col-25 form-label">전화번호<em>*</em></label>
 						<div class="col-75">
 							<div class="form-input">
+								<input type="hidden" name="telephoneNo">
 								<div class="phone-number">
 									<div class="pr16"><input id="reg_telephoneNo1" name="reg_telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)'></div>
 								</div>
@@ -258,7 +260,7 @@
 						<label class="col-25 form-label-textarea">회사설명</label>
 						<div class="col-75">
 							<div class="form-input">
-								<textarea id="reg_companyDsc" name="reg_companyDsc" class="textarea"></textarea>
+								<textarea id="reg_companyDsc" name="companyDsc" class="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -266,7 +268,7 @@
 						<label class="col-25 form-label-img">회사 로고</label>
 						<div class="col-75">
 						  <div class="form-input-img">
-							<input id="reg_logoFileId" name="logoFileId" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
+							<input id="reg_logoFileId" name="logo" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
 						  </div>
 						</div>
 				    </div>
@@ -274,7 +276,7 @@
 						<label class="col-25 form-label-textarea">비고</label>
 						<div class="col-75">
 							<div class="form-input">
-								<textarea id="reg_note" name="reg_note" class="textarea"></textarea>
+								<textarea id="reg_note" name="note" class="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -328,169 +330,167 @@
 	</div>
 </div>
 <!-- 레이어 팝업 - 수정 -->
-<form  id="frmCompanyEdit" enctype="multipart/form-data">
-	<div id="edit" class="modal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-content" style="width: 800px">
-			<div class="modal-header">
-				<h4 class="modal-title">상세</h4>
-				<button type="button" class="close" data-dismiss="modal">
-					<img src="/images/icon_close.png">
-				</button>
-			</div>
-			<form id="companyInst">
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">회사ID</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input id="companyId" name="companyId" type="text" class="text-input" readonly>
-								</div>
+<div id="edit" class="modal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-content" style="width: 800px">
+		<div class="modal-header">
+			<h4 class="modal-title">상세</h4>
+			<button type="button" class="close" data-dismiss="modal">
+				<img src="/images/icon_close.png">
+			</button>
+		</div>
+		<form id="companyInst"  enctype="multipart/form-data">
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사ID</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="companyId" name="companyId" type="text" class="text-input" readonly>
 							</div>
 						</div>
 					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">회사코드</label>
-							<div class="col-75">
-								<div class="form-input">
-	<!-- 								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled> -->
-										<input id="companyCode" name="companyCode" type="text" class="text-input" readonly>
-								</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사코드</label>
+						<div class="col-75">
+							<div class="form-input">
+<!-- 								<input id="companyCode" name="companyCode" type="text" class="text-input" onkeypress='return checkEnglish(event)' disabled> -->
+									<input id="companyCode" name="companyCode" type="text" class="text-input" readonly>
 							</div>
 						</div>
 					</div>
-	
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">회사명</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input id="companyNm" name="companyNm" type="text" class="text-input" disabled>
-								</div>
+				</div>
+
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">회사명</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="companyNm" name="companyNm" type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">대표자명</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input id="representativeNm" name="representativeNm" type="text" class="text-input" disabled>
-								</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">대표자명</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="representativeNm" name="representativeNm" type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">주소</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input id="address" name="address" type="text" class="text-input" disabled>
-								</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">주소</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input id="address" name="address" type="text" class="text-input" disabled>
 							</div>
 						</div>
 					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">사용여부</label>
-							<div class="col-75">
-								<div class="form-input-box">
-									<div class="btn-form-small">
-										<input id="useY" name="useYn" type="radio" value="Y">
-										<label for="useY" class="mr05">YES</label>
-									</div>
-									<div class="btn-form-small">
-										<input id="useN" name="useYn" type="radio" value="N">
-										<label for="useN" class="mr05">NO</label>
-									</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사용여부</label>
+						<div class="col-75">
+							<div class="form-input-box">
+								<div class="btn-form-small">
+									<input id="useY" name="useYn" type="radio" value="Y">
+									<label for="useY" class="mr05">YES</label>
 								</div>
-								<!-- <select id="useYn" name="useYn" class="select-box" disabled>
-									   <option value="Y">예</option>
-									   <option value="N">아니요</option>
-								//</select> -->
-							</div>
-						</div>
-					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">사업자번호</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input type="hidden" id="companyNo" name="companyNo" />
-									<div class="phone-number">
-										<div class="pr16"><input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'></div>
-									</div>
-									<div class="phone-number">
-										<div class="pr16"><input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'></div>
-									</div>
-									<div class="phone-number">
-										<div><input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'></div>
-									</div>
+								<div class="btn-form-small">
+									<input id="useN" name="useYn" type="radio" value="N">
+									<label for="useN" class="mr05">NO</label>
 								</div>
 							</div>
+							<!-- <select id="useYn" name="useYn" class="select-box" disabled>
+								   <option value="Y">예</option>
+								   <option value="N">아니요</option>
+							//</select> -->
 						</div>
 					</div>
-					<div class="col-50">
-						<div class="form-group">
-							<label class="col-25 form-label">전화번호</label>
-							<div class="col-75">
-								<div class="form-input">
-									<input type="hidden" id="telephoneNo" name="telephoneNo" />
-									<div class="phone-number">
-										<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled></div>
-									</div>
-									<div class="phone-number">
-										<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
-									</div>
-									<div class="phone-number">
-										<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
-									</div>
+				</div>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">사업자번호</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input type="hidden" id="companyNo" name="companyNo" />
+								<div class="phone-number">
+									<div class="pr16"><input id="companyNo1" name="companyNo1" type="text" class="text-input" maxlength="3" disabled  onkeypress='return checkNumber(event)'></div>
+								</div>
+								<div class="phone-number">
+									<div class="pr16"><input id="companyNo2" name="companyNo2" type="text" class="text-input" maxlength="2" disabled  onkeypress='return checkNumber(event)'></div>
+								</div>
+								<div class="phone-number">
+									<div><input id="companyNo3" name="companyNo3" type="text" class="text-input" maxlength="5" disabled  onkeypress='return checkNumber(event)'></div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-100">
-						<div class="form-group">
-							<label class="col-25 form-label-textarea">회사설명</label>
-							<div class="col-75">
-								<div class="form-input">
-									<textarea id="companyDsc" name="companyDsc" class="textarea" disabled></textarea>
+				<div class="col-50">
+					<div class="form-group">
+						<label class="col-25 form-label">전화번호</label>
+						<div class="col-75">
+							<div class="form-input">
+								<input type="hidden" id="telephoneNo" name="telephoneNo" />
+								<div class="phone-number">
+									<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" maxlength="3" onkeypress='return checkNumber(event)' disabled></div>
 								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-25 form-label-img">회사 로고</label>
-							<div class="col-75">
-							  <div class="form-input-img">
-								<input id="logoFileId" name="logoFileId" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
-							  </div>
-							</div>
-					    </div>
-						<div class="form-group">
-							<label class="col-25 form-label-textarea">비고</label>
-							<div class="col-75">
-								<div class="form-input">
-									<textarea id="note" name="note" class="textarea" disabled></textarea>
+								<div class="phone-number">
+									<div class="pr16"><input id="telephoneNo2" name="telephoneNo2" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
+								</div>
+								<div class="phone-number">
+									<div><input id="telephoneNo3" name="telephoneNo3" type="text" class="text-input" maxlength="4"  onkeypress='return checkNumber(event)' disabled></div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			</form>
-			<!-- 버튼 -->
-			<div class="modal-footer btn-group">
-				<button type="button" class="button btnEdit">수정</button>
-				<button type="button" class="button btnCheck btn-cancel" data-dismiss="modal">확인</button>
+			<div class="row">
+				<div class="col-100">
+					<div class="form-group">
+						<label class="col-25 form-label-textarea">회사설명</label>
+						<div class="col-75">
+							<div class="form-input">
+								<textarea id="companyDsc" name="companyDsc" class="textarea" disabled></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-25 form-label-img">회사 로고</label>
+						<div class="col-75">
+						  <div class="form-input-img">
+							<input id="logoFileId" name="logo" type="file" multiple="multiple"  id="our-file01" class="with-preview afile-img">
+						  </div>
+						</div>
+				    </div>
+					<div class="form-group">
+						<label class="col-25 form-label-textarea">비고</label>
+						<div class="col-75">
+							<div class="form-input">
+								<textarea id="note" name="note" class="textarea" disabled></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		</form>
+		<!-- 버튼 -->
+		<div class="modal-footer btn-group">
+			<button type="button" class="button btnEdit">수정</button>
+			<button type="button" class="button btnCheck btn-cancel" data-dismiss="modal">확인</button>
+		</div>
 	</div>
-</form>
+</div>
 
 <!-- 레이어 팝업 - delete -->
 <div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1"
@@ -845,6 +845,7 @@ function setView(data){
 	$('#edit input').attr('disabled',true);
 	$('#edit textarea').attr('disabled',true);
 	$('#edit select').attr('disabled',true);
+	$(".MultiFile-list").empty();
 	
 	var companyNo1;
 	var companyNo2;
@@ -880,6 +881,10 @@ function setView(data){
     $('#representativeNm').val(data.representativeNm);
     $('#note').val(data.note);
     $('#useYn').val(data.useYn);
+
+    if(data.logoFileId && data.logoFileId !== '' && data.logoFileId !== null) {
+	    $('#logoFileId  > .MultiFile-list').append('<div class="MultiFile-label" ><a class="MultiFile-remove" href="#" onclick=\'deleteFileAjax("'+data.logoFileId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+data.logoFileId+' 을 선택했습니다."><span class="MultiFile-title">'+data.logoFileId+'</span><img id="'+data.logoFileId+'" class="MultiFile-preview" style="max-height:100px; max-width:100px;" src="/file/view/'+data.logoFileId+'"></span></span></div>');
+    }
     
 }
 
@@ -908,6 +913,7 @@ function resetView(){
 function regResetView(){
 	$('#register input').val('');
 	$('#register .codeSearch').removeClass('search-Success');
+	$("#.MultiFile-list").empty();
 }
 
 function deleteCompanyAction(){
@@ -941,7 +947,9 @@ function deleteCompanyAction(){
 function companySave(){
 	$('#companyId').attr('disabled',false);
 	$('#companyCode').attr('disabled',false);
-	var param = $("#companyInst").serialize();
+// 	var param = $("#companyInst").serialize();
+	var form = $('#companyInst')[0];
+	var param = new FormData(form);
 	callInsertAjax(param)
 }
 
@@ -954,19 +962,23 @@ function companyInsert(){
 	
 	var companyNo = $('#reg_companyNo1').val()+"-"+$('#reg_companyNo2').val()+"-"+$('#reg_companyNo3').val();
 	var telephoneNo = $('#reg_telephoneNo1').val()+"-"+$('#reg_telephoneNo2').val()+"-"+$('#reg_telephoneNo3').val();
-	var param = {
-			companyCode : $('#reg_companyCode').val(),
-			companyId : $('#reg_companyId').val(),
-			companyNo : companyNo,
-			companyNm : $('#reg_companyNm').val(),
-			companyDsc : $('#reg_companyDsc').val(),
-			address : $('#reg_address').val(),
-			telephoneNo : telephoneNo,
-			representativeNm : $('#reg_representativeNm').val(),
-			note : $('#reg_note').val(),
-			useYn : $('#reg_useYn').val()
-		};
+	$('#frmCompanyRegister input[name=companyNo]').val(companyNo);
+	$('#frmCompanyRegister input[name=telephoneNo]').val(telephoneNo);
+// 	var param = {
+// 			companyCode : $('#reg_companyCode').val(),
+// 			companyId : $('#reg_companyId').val(),
+// 			companyNo : companyNo,
+// 			companyNm : $('#reg_companyNm').val(),
+// 			companyDsc : $('#reg_companyDsc').val(),
+// 			address : $('#reg_address').val(),
+// 			telephoneNo : telephoneNo,
+// 			representativeNm : $('#reg_representativeNm').val(),
+// 			note : $('#reg_note').val(),
+// 			useYn : $('#reg_useYn').val()
+// 		};
 	isDisabled = false;
+	var form = $('#frmCompanyRegister')[0];
+	var param = new FormData(form);
 	callInsertAjax(param);
 }
 
@@ -980,7 +992,12 @@ function callInsertAjax(param){
 			    type : 'post',
 			    url : '/system/company/insert',
 			    data : param,
-			    dataType : 'text',
+			    enctype : 'multipart/form-data',
+				dataType : 'text',
+				processData : false,
+				contentType : false,
+				cache : false,
+				timeout : 600000,
 			    error: function(xhr, status, error){
 			        console.log(error);
 			    },
