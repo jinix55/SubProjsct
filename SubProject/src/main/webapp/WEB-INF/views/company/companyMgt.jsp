@@ -584,7 +584,9 @@
 				<col style="width: *%;">
 				<col style="width: 14%;">
 				<col style="width: 8%;">
-				<col style="width: 8%;">
+				<c:if test="${pages.authId eq 'au2000001' }">
+					<col style="width: 8%;">
+				</c:if>
 				<col style="width: 8%;">
 			</colgroup>
 			<thead>
@@ -595,13 +597,20 @@
 					<th scope="col">그룹 ID</th>
 					<th scope="col">등록일</th>
 					<th scope="col">사용여부</th>
-					<th scope="col">로그인</th>
+					<c:if test="${pages.authId eq 'au2000001' }">
+						<th scope="col">로그인</th>
+					</c:if>
 					<th scope="col">관리</th>
 				</tr>
 			</thead>
 			<tbody id="memberTable">
 				<tr>
-					<td colspan="8">등록된 정보가 없습니다.</td>
+					<c:if test="${pages.authId eq 'au2000001' }">
+						<td colspan="8">등록된 정보가 없습니다.</td>
+					</c:if>
+					<c:if test="${pages.authId ne 'au2000001' }">
+						<td colspan="7">등록된 정보가 없습니다.</td>
+					</c:if>
 				</tr>
 			</tbody>
 		</table>
@@ -1418,14 +1427,18 @@ function memberViewMake(data, openLayer){
 			html += '	<td>'+item.rgstDt+'</td>';
 			if(item.useYn === 'Y') {
 				html += '	<td><button type="button" class="btn-yes">YES</button></td>';
-				html += '	<td><button type="button" class="btn-yes" onclick="javascript:login(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');">로그인</button></td>';
+				<c:if test="${pages.authId eq 'au2000001' }">
+					html += '	<td><button type="button" class="btn-yes" onclick="javascript:login(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');">로그인</button></td>';
+				</c:if>
 			}else {
 				if(item.lockYn === 'Y') {
 					html += '	<td><button type="button" class="btn-no backColorRed">Lock</button></td>';
 				}else {
 					html += '	<td><button type="button" class="btn-no">NO</button></td>';
 				}
-				html += '	<td><button type="button" class="btn-no">로그인</button></td>';
+				<c:if test="${pages.authId eq 'au2000001' }">
+					html += '	<td><button type="button" class="btn-no">로그인</button></td>';
+				</c:if>
 			}
 			
 			html += '	<td>';
@@ -1442,7 +1455,12 @@ function memberViewMake(data, openLayer){
 		});
 	}else {
 		html += '<tr>';
-		html += '<td colspan="8">등록된 정보가 없습니다.</td>';
+		<c:if test="${pages.authId eq 'au2000001' }">
+			html += '<td colspan="8">등록된 정보가 없습니다.</td>';
+		</c:if>
+		<c:if test="${pages.authId ne 'au2000001' }">
+			html += '<td colspan="7">등록된 정보가 없습니다.</td>';
+		</c:if>
 		html += '</tr>';
 	}
 
