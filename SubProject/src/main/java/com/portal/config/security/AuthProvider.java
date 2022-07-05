@@ -136,6 +136,7 @@ public class AuthProvider extends DaoAuthenticationProvider {
 				if(loginId.equals(userId)) {
 					model = mapper.selectUserCheck(map);
 				}
+				session.removeAttribute("loginId");
 			}else {
 				model = mapper.selectUserPassCheck(map);
 			}
