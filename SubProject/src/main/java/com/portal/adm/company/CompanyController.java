@@ -410,8 +410,8 @@ public class CompanyController {
 		}
         try {
 
-            memberModel.setModiId(authUser.getMemberModel().getUserId());
-
+            memberModel.setModiId(authUser.getMemberModel().getUserId()+"@"+memberModel.getCompanyCode());
+            memberModel.setUserId(memberModel.getUserId()+"@"+memberModel.getCompanyCode());
             String result = memberService.delete(memberModel);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
