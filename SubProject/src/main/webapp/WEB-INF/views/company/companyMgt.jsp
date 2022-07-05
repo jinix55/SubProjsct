@@ -1544,6 +1544,7 @@ function memberEditMake(data){
 	$("#frmInsert input[name=rgstDt]").val(data.rgstDt);
 	$("#frmInsert input[name=modiDt]").val(data.modiDt);
 	$("#frmInsert input[name=userId]").val(data.userId.split("@")[0]);
+	$("#frmInsert input[name=userId]").attr('disabled',true);
 	$("#frmInsert input[name=userNm]").val(data.userNm);
 	$("#frmInsert input[name=companyCode]").val(data.companyCode);
 	$("#frmInsert input[name=companyNm]").val(data.companyNm);
