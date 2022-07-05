@@ -43,7 +43,8 @@
 		<span class="img"><img src="/images/icon_user02.png" alt="정보수정"></span>
 		<div class="desc">
 			<a href="/member/userInfoChange" class="depart">${myInfo.companyNm}
-				<small class="name">${myInfo.userNm}님(${myInfo.userId})</small>
+				<c:set var="userId" value="${fn:split(myInfo.userId, '@')}" />
+				<small class="name">${myInfo.userNm}님(${userId[0]})</small>
 			</a>
 		</div>
 	</div>
