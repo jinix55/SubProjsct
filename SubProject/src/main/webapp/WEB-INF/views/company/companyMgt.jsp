@@ -340,6 +340,7 @@
 			</button>
 		</div>
 		<form id="companyInst"  enctype="multipart/form-data">
+		<input name="logoFileId" type="hidden">
 		<div class="modal-body">
 			<div class="row">
 				<div class="col-50">
@@ -880,12 +881,19 @@ function setView(data){
     $('#telephoneNo3').val(telephoneNo3);
     $('#representativeNm').val(data.representativeNm);
     $('#note').val(data.note);
-    $('#useYn').val(data.useYn);
-
+    $('#companyInst input[id=use'+data.useYn+']').prop('checked',true);
+    $('#companyInst input[name=logoFileId]').val(data.logoFileId);
+    
     if(data.logoFileId && data.logoFileId !== '' && data.logoFileId !== null) {
 	    $('#logoFileId  > .MultiFile-list').append('<div class="MultiFile-label" ><a class="MultiFile-remove" href="#" onclick=\'deleteFileAjax("'+data.logoFileId+'", this);\'>x</a> <span><span class="MultiFile-label" title='+data.logoFileId+' 을 선택했습니다."><span class="MultiFile-title">'+data.logoFileId+'</span><img id="'+data.logoFileId+'" class="MultiFile-preview" style="max-height:100px; max-width:100px;" src="/file/view/'+data.logoFileId+'"></span></span></div>');
     }
     
+}
+
+function deleteFileAjax(fileId) {
+	$('#companyInst input[name=logoFileId]').val("");
+	companySave();
+	$("#.MultiFile-list").empty();
 }
 
 function setEdit(){
@@ -894,7 +902,7 @@ function setEdit(){
 	$('#edit textarea').attr('disabled',false);
 	$('#edit select').attr('disabled',false);
 	$('#companyId').attr('disabled',true);
-	$('#companyCode').attr('readonly',true);
+	$('#companyCode').attr('disabled',true);
 	$('.btnCheck').text('취소');
 	$('.btnEdit').text('저장');
 	$('.btnEdit').addClass('btnSave');
@@ -947,6 +955,7 @@ function deleteCompanyAction(){
 function companySave(){
 	$('#companyId').attr('disabled',false);
 	$('#companyCode').attr('disabled',false);
+	$('#logoFileId').attr('disabled',false);
 // 	var param = $("#companyInst").serialize();
 	var form = $('#companyInst')[0];
 	var param = new FormData(form);
