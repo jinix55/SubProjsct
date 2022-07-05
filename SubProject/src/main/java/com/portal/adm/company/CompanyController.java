@@ -113,13 +113,23 @@ public class CompanyController {
     @ResponseBody
     public String companySave(@ModelAttribute CompanyModel companyModel, MultipartRequest multipart, @AuthenticationPrincipal AuthUser authUser) {
     		String result = null;
-    		if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    		String companyId = companyModel.getCompanyId();
+    		boolean saveYn = false;
+    		if(StringUtils.equals(companyId, null) || StringUtils.equals(companyId, "")) {
+    			if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P")) {
+    				saveYn = true;
+    			}
+    		}else {
+    			if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P") || StringUtils.equals(authUser.getMemberModel().getAuthCl(), "A")) {
+    				saveYn = true;
+    			}
+    		}
+    		if(saveYn) {
     			
 //    			CompanyModel companyModel = new CompanyModel();
 //    			for (String key : request.getParameterMap().keySet()) {
 //    				log.debug("===== request.Parameter" + key + " :" + request.getParameter(key));
 //    			}
-    			String companyId = companyModel.getCompanyId();
 //    			String companyCode = request.getParameter("companyCode");
 //    			String companyNo = request.getParameter("companyNo");
 //    			String companyNm = request.getParameter("companyNm");

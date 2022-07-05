@@ -998,6 +998,7 @@ function companySave(){
 // 	var param = $("#companyInst").serialize();
 	var form = $('#companyInst')[0];
 	var param = new FormData(form);
+	isDisabled = false;
 	callInsertAjax(param)
 }
 
