@@ -556,10 +556,9 @@
  <form id="frmMembers">
   <div id="members" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	aria-hidden="true" data-modal-parent="#myModal">
-	<input type="hidden" name="interfaceId" >
 	<div class="modal-content" style="width:1000px">
 	  <div class="modal-header">
-		<h4 class="modal-title" id="interfaceMessageTitle">계정관리</h4>
+		<h4 class="modal-title" id="memberTitle">계정관리</h4>
 		<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(members);"><img src="/images/icon_close.png"></button>
 	  </div>
 	  <div class="modal-body">
@@ -572,6 +571,7 @@
 				<col style="width: 14%;">
 				<col style="width: 8%;">
 				<col style="width: 8%;">
+				<col style="width: 8%;">
 			</colgroup>
 			<thead>
 				<tr class="th-bg">
@@ -581,12 +581,13 @@
 					<th scope="col">그룹 ID</th>
 					<th scope="col">등록일</th>
 					<th scope="col">사용여부</th>
+					<th scope="col">로그인</th>
 					<th scope="col">관리</th>
 				</tr>
 			</thead>
 			<tbody id="memberTable">
 				<tr>
-					<td colspan="7">등록된 정보가 없습니다.</td>
+					<td colspan="8">등록된 정보가 없습니다.</td>
 				</tr>
 			</tbody>
 		</table>
@@ -1398,13 +1399,16 @@ function memberViewMake(data, openLayer){
 			html += '	<td>'+item.rgstDt+'</td>';
 			if(item.useYn === 'Y') {
 				html += '	<td><button type="button" class="btn-yes">YES</button></td>';
+				html += '	<td><button type="button" class="btn-yes" onclick="javascript:login(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');">로그인</button></td>';
 			}else {
 				if(item.lockYn === 'Y') {
 					html += '	<td><button type="button" class="btn-no backColorRed">Lock</button></td>';
 				}else {
 					html += '	<td><button type="button" class="btn-no">NO</button></td>';
 				}
+				html += '	<td><button type="button" class="btn-no">로그인</button></td>';
 			}
+			
 			html += '	<td>';
 			html += '		<div class="btn-group">';
 			html += '			<a href="javascript:updateMember(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');" role="button" data-toggle="modal">';
@@ -1419,7 +1423,7 @@ function memberViewMake(data, openLayer){
 		});
 	}else {
 		html += '<tr>';
-		html += '<td colspan="7">등록된 정보가 없습니다.</td>';
+		html += '<td colspan="8">등록된 정보가 없습니다.</td>';
 		html += '</tr>';
 	}
 
@@ -1653,5 +1657,22 @@ function insertMemberAjax(companyCode, param, action){
 	    	}
 	    }
 	});
+}
+
+function login(companyCode, userId) {
+	alert('작업중!');
+// 	$.ajax({
+// 		url : '/system/company/detail/'+companyCode+'/members/'+userId,
+// 		dataType : 'JSON',
+// 		type : "GET",
+// 		async : false,
+// 		error : function(request, status, error) {
+// 			console.log(request.responseText);
+// 			alert(request.responseText);
+// 		},
+// 		success : function(data) {
+// 			memberEditMake(data);
+// 		}
+// 	});
 }
 </script>
