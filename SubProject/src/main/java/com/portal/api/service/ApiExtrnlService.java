@@ -258,4 +258,14 @@ public class ApiExtrnlService {
 		}
 		return result;
 	}
+	
+	/**
+     * 회사 로고 조회한다.
+     *
+     * @param String
+     * @return  회사 삭제
+     */
+    public String selectCompanyLogoByCompanyCode(String companyCode) {
+    	return apiExtrnlMapper.selectCompanyLogoByCompanyCode(companyCode);
+    }
 }

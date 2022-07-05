@@ -53,4 +53,12 @@ public interface ApiExtrnlMapper {
     
     long updateUseYnN(ProdPackagingDetailApiModel model);
 
+
+    /**
+     * 회사 로고 조회한다.
+     *
+     * @param String
+     * @return  회사 삭제
+     */
+    String selectCompanyLogoByCompanyCode(String companyCode);
 }

@@ -6,7 +6,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +25,14 @@ import com.portal.adm.company.model.CompanyModel;
 import com.portal.adm.company.service.CompanyService;
 import com.portal.adm.environmentCode.model.EnvironmentCodeModel;
 import com.portal.adm.environmentCode.service.EnvironmentCodeService;
+import com.portal.adm.file.service.FileService;
 import com.portal.adm.product.model.ProdPackagingDetailApiModel;
-import com.portal.adm.product.model.ProdPackagingModel;
 import com.portal.adm.supplier.model.SupplierModel;
 import com.portal.adm.supplier.service.SupplierService;
 import com.portal.api.model.ApiExtrnlModel;
 import com.portal.api.service.ApiExtrnlService;
 import com.portal.common.IdUtil;
+import com.portal.common.annotation.NoLogging;
 import com.portal.config.security.AuthUser;
 import com.portal.mail.MailUtil;
 
@@ -64,6 +67,9 @@ public class ApiExtrnlController {
     
     @Resource
     private CompanyService companyService;
+    
+    @Resource(name="fileService")
+	private FileService service;
  
     /**
 	 * 포장 api 발송
@@ -237,4 +243,27 @@ public class ApiExtrnlController {
     public String updateSuccess(HttpServletRequest request) {
     	return "/api/success";
     }
+    
+    /**
+	 * 포장 api 완료
+	 * @param 
+	 * @return
+	 */
+    @RequestMapping(value="/company/{companyCode}/logo" , method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody	
+    public String getCompanyLogo(HttpServletRequest request, @PathVariable("companyCode") String companyCode) {
+    	return apiExtrnlService.selectCompanyLogoByCompanyCode(companyCode);
+    }
+    
+    /**
+	 * Tableau view Download
+	 * @param request
+	 * @return
+	 */
+	@NoLogging
+	@RequestMapping(value="/company/file/view/{uuid}", method=RequestMethod.GET)
+	public ResponseEntity<ByteArrayResource> viewUrl(HttpServletRequest request, @PathVariable String uuid) {
+		ResponseEntity<ByteArrayResource> result = service.getView(request, uuid);
+		return result;
+	}
 }

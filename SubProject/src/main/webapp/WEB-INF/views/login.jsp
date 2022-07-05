@@ -31,6 +31,23 @@
 
 <script>
 	$(function() {
+		//Logo 조회
+		var companyCode = '${subdomain}';
+		if(companyCode !== '') {
+			$.ajax({
+			    type : 'get',
+			    url : '/api/v1/company/'+companyCode+'/logo/',
+			    data : {},
+			    dataType : 'text',
+			    error: function(xhr, status, error){
+			        console.log(error);
+			    },
+			    success : function(result){
+			    	console.log(result);
+			    	$('#logonLogo').attr("src", "/api/v1/company/file/view/"+result);
+			    }
+			});
+		}
 		// 	let userInfo = '${userInfo}';
 		// 	console.log(userInfo);
 		// 	if (userInfo) {
@@ -234,7 +251,7 @@
 	<div class="wrapper">
 		<!-- S_본문-->
 		<section class="container">
-			<div class="logon-logo"><img src="../images/${subdomain}logo_03.png" alt="회사로고" style="width:140px;"></div>
+			<div class="logon-logo"><img id="logonLogo" src="/images/${subdomain}logo_03.png" alt="회사로고" style="width:140px;"></div>
 <!-- 			<h2 class="com-title" style="margin-bottom:20px;">희성전자</h2> -->
 			<div class="login-tltle login" style="margin-bottom:20px;">로그인</div>
 			<div class="login-tltle pass_reset" style="margin-bottom:20px;">비밀번호 초기화</div>

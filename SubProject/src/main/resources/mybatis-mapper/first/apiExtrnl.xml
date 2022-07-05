@@ -164,4 +164,12 @@
 <!-- 		    extrnl_id = #{extrnlId} -->
 <!--     </delete> -->
 
+	<select id="selectCompanyLogoByCompanyCode" resultType="string" parameterType="string">
+		SELECT
+			LOGO_FILE_ID
+		FROM
+			t_company
+		WHERE
+			COMPANY_CODE = #{companyCode}
+	</select>
 </mapper>

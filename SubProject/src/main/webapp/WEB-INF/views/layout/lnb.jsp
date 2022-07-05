@@ -15,13 +15,29 @@
 	pageContext.setAttribute("subdomain", subdomain);
 %>
 <script type="text/javascript">
-
+//Logo 조회
+	var companyCode = '${subdomain}';
+	if(companyCode !== 'P') {
+		$.ajax({
+		    type : 'get',
+		    url : '/api/v1/company/'+companyCode+'/logo/',
+		    data : {},
+		    dataType : 'text',
+		    error: function(xhr, status, error){
+		        console.log(error);
+		    },
+		    success : function(result){
+		    	console.log(result);
+		    	$('#logonLogo').attr("src", "/api/v1/company/file/view/"+result);
+		    }
+		});
+	}
 </script>
 
 <section id="lnb">
 	<a href="#" class="menu" title="메뉴 열기/닫기"><img src="/images/arr_menu_left.png" alt="메뉴 열기/닫기"/></a>
 	<div class="btn-lnb-comp">
-		<img src="/images/logo_${subdomain}.png" alt="회사로고">
+		<img id="logonLogo" src="/images/logo_${subdomain}.png" alt="회사로고">
 	</div>
 	<div class="lnb-user">
 		<span class="img"><img src="/images/icon_user02.png" alt="정보수정"></span>
