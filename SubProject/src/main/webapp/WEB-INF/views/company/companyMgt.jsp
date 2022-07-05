@@ -1409,7 +1409,7 @@ function date_mask(objValue) {
     return v;
 }
 
-function validation(){
+function memberValidation(){
 	if($('#frmInsert input[name=userId]').val() == ''){
 		alert('아이디를 입력해 주세요..');
 		return false;
@@ -1441,7 +1441,7 @@ function saveMember() {
 		action = "insert";
 	}
 	
-	if(validation()){
+	if(memberValidation()){
 		isDisabled = true;
 		
 		$('#frmInsert input[name=userId]').attr('disabled',false);
