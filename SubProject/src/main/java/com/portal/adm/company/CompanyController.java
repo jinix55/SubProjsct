@@ -441,16 +441,15 @@ public class CompanyController {
      * @param criteria
      * @return
      */
-    @PostMapping("/system/company/detail/{companyCode}/members/login")
+    @PostMapping("/company/detail/{companyCode}/members/{memberId}/login")
     @ResponseBody
-    public String login(HttpServletRequest request, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    public String login(HttpServletRequest request, @PathVariable String companyCode, @PathVariable String memberId, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	String result = "N";
     	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P") || StringUtils.equals(authUser.getMemberModel().getAuthCl(), "A")) {
     		result = "Y";
     		HttpSession session = request.getSession();
     		if(session != null) {
     			session.setAttribute("loginId", memberModel.getUserId());
-    			System.out.println(session.getAttribute("loginId"));
     		}
 		}
         return result;

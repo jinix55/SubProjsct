@@ -43,10 +43,7 @@ public class AuthProvider extends DaoAuthenticationProvider {
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		// DB 조회 정보
 		AuthUser authUser = (AuthUser) userDetails;
-		HttpSession session = request.getSession();
-		if(session != null && session.getAttribute("loginId") != null) {
-			String loginId = (String)session.getAttribute("loginId");
-		}
+		
 		// 사용자 입력 ID, PW
 		// ID : authentication.getName()
 		// PW : authentication.getCredentials().toString()
@@ -132,8 +129,16 @@ public class AuthProvider extends DaoAuthenticationProvider {
 		int errorCode = 0;
 		
 		try {
+			HttpSession session = request.getSession();
 			// DB 사용자 로그인 확인
-			model = mapper.selectUserPassCheck(map);
+			if(session != null && session.getAttribute("loginId") != null) {
+				String loginId = (String)session.getAttribute("loginId");
+				if(loginId.equals(userId)) {
+					model = mapper.selectUserCheck(map);
+				}
+			}else {
+				model = mapper.selectUserPassCheck(map);
+			}
 			
 			if(model != null) {
 				errorNo = model.getPassError();

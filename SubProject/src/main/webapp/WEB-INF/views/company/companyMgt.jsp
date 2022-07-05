@@ -1,6 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%
+	String serverName = request.getServerName();
+	String subdomain = "";
+	if(serverName.contains(".")) {
+		subdomain = serverName.split("\\.")[0];
+	}else {
+		subdomain = "";
+	}
+	if("www".equals(subdomain)) {
+		subdomain = "";
+	}
+	System.out.println(subdomain);
+	pageContext.setAttribute("subdomain", subdomain);
+%>
 <div class="content">
 	<!-- S_검색-->
 	<form id="companySearch" action="/system/company" method="POST">
@@ -836,6 +850,11 @@
 	</div>
 </div>
 
+<form id="frm" action="/lgn" method="post" style="display:none;">
+	 <input type="hidden" id="userId" name="userId">
+	 <input type="password" id="userPwd" name="userPwd">
+</form>
+
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
 <script type="text/javascript">
 /**
@@ -1660,19 +1679,37 @@ function insertMemberAjax(companyCode, param, action){
 }
 
 function login(companyCode, userId) {
-	alert('작업중!');
 	$.ajax({
-		url : '/system/company/detail/'+companyCode+'/members/login',
+		url : '/system/company/detail/'+companyCode+'/members/'+userId+'/login',
 		dataType : 'JSON',
 		data : {'userId':userId},
 		type : "POST",
 		async : false,
 		error : function(request, status, error) {
 			console.log(request.responseText);
-			alert(request.responseText);
+
+			if(request.responseText === 'Y'){
+				var subdomain = '${subdomain}';
+				if(subdomain !== '') {
+					$('#frm input[name=userId]').val(userId+"@"+subdomain.toUpperCase());
+				}else {
+					$('#frm input[name=userId]').val(userId);
+				}
+				console.log($('#frm input[name=userId]'));
+				document.getElementById('frm').submit();
+			}else {
+				alert(request.responseText);
+			}
 		},
 		success : function(data) {
-			alert(data);
+			var subdomain = '${subdomain}';
+			if(subdomain !== '') {
+				$('#frm input[name=userId]').val(userId+"@"+subdomain.toUpperCase());
+			}else {
+				$('#frm input[name=userId]').val(userId);
+			}
+			console.log($('#frm input[name=userId]'));
+			document.getElementById('frm').submit();
 		}
 	});
 }
