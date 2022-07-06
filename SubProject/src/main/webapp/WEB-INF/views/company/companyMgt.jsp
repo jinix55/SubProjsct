@@ -748,7 +748,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-50">
+				<div class="col-50" style="display:none;">
 					<div class="form-group">
 						<label class="col-25 form-label">잠금상태</label>
 						<div class="col-75">
