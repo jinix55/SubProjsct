@@ -43,6 +43,7 @@ import com.portal.adm.member.service.MemberService;
 import com.portal.common.Constant;
 import com.portal.common.IdUtil;
 import com.portal.config.security.AuthUser;
+import com.portal.config.security.mapper.SecurityMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +57,9 @@ public class CompanyController {
 
     @Resource
     private CompanyService companyService;
+    
+    @Resource(name = "securityMapper")
+	private SecurityMapper securityMapper;
     
     @Resource
     private MemberService memberService;
@@ -458,4 +462,24 @@ public class CompanyController {
 		}
         return result;
     }
+    
+    /**
+     * 회사관리 페이지로 이동
+     *
+     * @param criteria
+     * @return
+     */
+    @PostMapping("/company/detail/{companyCode}/members/{memberId}/initPassword")
+    @ResponseBody
+    public String updatePasswordInit(HttpServletRequest request, @PathVariable String companyCode, @PathVariable String memberId, @ModelAttribute MemberModel memberModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	String result = "N";
+    	if(StringUtils.equals(authUser.getMemberModel().getAuthCl(), "P") || StringUtils.equals(authUser.getMemberModel().getAuthCl(), "A")) {
+    		memberModel.setNewPassword(memberId);
+    		memberModel.setUserId(memberId+"@"+companyCode);
+    		securityMapper.updatePasswordInit(memberModel);
+    		result = "Y";
+		}
+        return result;
+    }
+    
 }

@@ -594,6 +594,7 @@
 					<col style="width: 8%;">
 				</c:if>
 				<col style="width: 8%;">
+				<col style="width: 8%;">
 			</colgroup>
 			<thead>
 				<tr class="th-bg">
@@ -606,16 +607,17 @@
 					<c:if test="${pages.authId eq 'au2000001' }">
 						<th scope="col">로그인</th>
 					</c:if>
+					<th scope="col">비밀번호 초기화</th>
 					<th scope="col">관리</th>
 				</tr>
 			</thead>
 			<tbody id="memberTable">
 				<tr>
 					<c:if test="${pages.authId eq 'au2000001' }">
-						<td colspan="8">등록된 정보가 없습니다.</td>
+						<td colspan="9">등록된 정보가 없습니다.</td>
 					</c:if>
 					<c:if test="${pages.authId ne 'au2000001' }">
-						<td colspan="7">등록된 정보가 없습니다.</td>
+						<td colspan="8">등록된 정보가 없습니다.</td>
 					</c:if>
 				</tr>
 			</tbody>
@@ -1446,7 +1448,7 @@ function memberViewMake(data, openLayer){
 					html += '	<td><button type="button" class="btn-no">로그인</button></td>';
 				</c:if>
 			}
-			
+			html += '	<td><button type="button" class="btn-yes" onclick="javascript:passwordInit(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');">초기화</button></td>';
 			html += '	<td>';
 			html += '		<div class="btn-group">';
 			html += '			<a href="javascript:updateMember(\'' + item.companyCode + '\',\'' + item.userId.split("@")[0] + '\');" role="button" data-toggle="modal">';
@@ -1730,4 +1732,26 @@ function login(companyCode, userId) {
 		}
 	});
 }
+
+function passwordInit(companyCode, userId) {
+	$.ajax({
+		url : '/system/company/detail/'+companyCode+'/members/'+userId+'/initPassword',
+		dataType : 'JSON',
+		data : {'userId':userId},
+		type : "POST",
+		async : false,
+		error : function(request, status, error) {
+			console.log(request.responseText);
+			if(request.responseText === 'Y'){
+				alert("정상적으로 비밀번호 초기화 되었습니다.");
+			}else {
+				alert(request.responseText);
+			}
+		},
+		success : function(data) {
+			alert("정상적으로 비밀번호 초기화 되었습니다.");
+		}
+	});
+}
+
 </script>
