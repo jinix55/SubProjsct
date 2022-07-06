@@ -256,7 +256,7 @@
 	<div class="wrapper">
 		<!-- S_본문-->
 		<section class="container">
-			<div class="logon-logo"><img id="logonLogo" src="/images/${subdomain}logo_03.png" alt="회사로고" style="width:140px;" onerror="if (this.src != 'error.jpg') this.src = 'error.jpg';"></div>
+			<div class="logon-logo"><img id="logonLogo" src="/images/${subdomain}logo_03.png" alt="회사로고" style="width:140px;"  onerror="if (this.src != '/images/logo_p.png') this.src = '/images/logo_p.png';"></div>
 <!-- 			<h2 class="com-title" style="margin-bottom:20px;">희성전자</h2> -->
 			<div class="login-tltle login" style="margin-bottom:20px;">로그인</div>
 			<div class="login-tltle pass_reset" style="margin-bottom:20px;">비밀번호 초기화</div>
