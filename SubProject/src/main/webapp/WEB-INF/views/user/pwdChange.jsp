@@ -1,25 +1,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div class="content tc">
 						<!-- S_content-->
 						<div class="login-tltle">비밀번호 변경</div>
 							<div class="login-content" style="background: none;border: 0px;">
 								<div class="login-form">
-									<form>
+									<form id="pwdChange">
 										<div class="login-id h45">
-											 <input type="text" class="text-input pl35" placeholder="아이디을 입력하세요.">
+											 <c:set var="userId" value="${fn:split(memberInfo.userId, '@')}" />
+											 <input type="hidden" id="ch_userId" name="ch_userId"  value="${memberInfo.userId}">
+											<input type="text" class="text-input pl35" value="${userId[0] }" disabled>
 										</div>
 										<div class="login-pw h45">
-											 <input type="password" class="text-input pl35" placeholder="비밀번호 입력하세요.">
+											 <input type="password" class="text-input pl35" id="ch_pwdOld" name="ch_pwdOld" placeholder="현재 비밀번호을 입력하세요.">
 										</div>
 										<div class="login-pw h45">
-											 <input type="password" class="text-input pl35" placeholder="새 비밀번호 입력하세요.">
+											 <input type="password" class="text-input pl35" id="ch_pwdNew" name="ch_pwdNew" placeholder="현경하실 비밀번호을 입력하세요.">
 										</div>
 										<div class="login-pw h45">
-											 <input type="password" class="text-input pl35" placeholder="새 비밀번호 확인.">
+											 <input type="password" class="text-input pl35" id="ch_pwdNewConfirm" name="ch_pwdNewConfirm" placeholder="새 비밀번호 확인.">
 										</div>
 										<div class="btn-group">
-											<button type="button" class="button btn-success w100"><a href="../login/Login.html">비밀번호 변경</a></button>
+											<button type="button" class="button btn-success w100"  onclick="changePassword();"><a href="javascript:void(0);">비밀번호 변경</a></button>
 										</div>
 									</form>
 								</div>
@@ -59,4 +62,59 @@ $('.paging_cont').bootpag({        // 페이징을 표시할 div의 클래스
     $("#page").val(num);
     $("#holiBdForm").submit();
 });
+
+let dbclick = 'Y';
+function changePassword(){
+	if (dbclick != 'Y') {
+		return;
+	}
+	dbclick = 'N';
+	var userPwdOld = document.getElementById("ch_pwdOld").value;
+	var userPwdNew = document.getElementById("ch_pwdNew").value;
+	var userPwdNewConfirm = document.getElementById("ch_pwdNewConfirm").value;
+	if(userPwdOld == null || userPwdOld == ''){
+		alert("현재 비밀번호를 입력해 주세요.");
+		document.getElementById("ch_pwdOld").focus();
+		dbclick = 'Y';
+		return;
+	}
+	
+	if(userPwdNew == null || userPwdNew == ''){
+		alert("변경할 비밀번호를 입력해 주세요.");
+		document.getElementById("ch_pwdNew").focus();
+		dbclick = 'Y';
+		return;
+	}
+	
+
+	if(userPwdNewConfirm == null || userPwdNewConfirm == ''){
+		alert("새 비밀번호 확인해 주세요.");
+		document.getElementById("ch_pwdNewConfirm").focus();
+		dbclick = 'Y';
+		return;
+	}
+	
+	if(userPwdNew != userPwdNewConfirm) {
+		alert("새 비밀번호와 확인 비밀번호가 다릅니다.");
+		document.getElementById("ch_pwdNewConfirm").focus();
+		dbclick = 'Y';
+		return;
+	}
+	var param = $('#pwdChange').serialize();
+	$.ajax({
+		url : '/member/pwdChange',
+		dataType : 'JSON',
+		data : param,
+		type : "POST",
+		async : false,
+		error : function(request, status, error) {
+			console.log(request.responseText);
+			alert(request.responseText);
+		},
+		success : function(data) {
+			alert(data);
+			console.log(data);
+		}
+	});
+}
 </script>

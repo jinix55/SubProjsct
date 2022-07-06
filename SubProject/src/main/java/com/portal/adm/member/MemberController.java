@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ import com.portal.adm.member.service.MemberService;
 import com.portal.adm.role.model.RoleModel;
 import com.portal.adm.role.service.RoleService;
 import com.portal.config.security.AuthUser;
+import com.portal.config.security.mapper.SecurityMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +50,9 @@ public class MemberController {
     @Resource
     private MemberService memberService;
 
+    @Resource(name = "securityMapper")
+	private SecurityMapper securityMapper;
+    
     @Resource
     private CodeService codeService;
 
@@ -296,7 +301,7 @@ public class MemberController {
      */
     @GetMapping("/pwdChange")
     public String pwdChange(@ModelAttribute MemberCriteria criteria, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	
+    	model.addAttribute("memberInfo",memberService.selectMember(authUser.getMemberModel()));
     	return "user/pwdChange";
     }
     
@@ -333,4 +338,36 @@ public class MemberController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
+    
+    /**
+	 * 비밀번호 변경
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/pwdChange")
+	public ResponseEntity<String> pwdChange(HttpServletRequest request, @ModelAttribute MemberModel memberModel, @AuthenticationPrincipal AuthUser authUser, Model model) {
+		try {
+			String result = "정상적으로 비밀번호 변경되었습니다.";
+			Map<String,String> param = new HashMap<String,String>();
+			param.put("userId", request.getParameter("ch_userId"));
+			if(!param.get("userId").equals(authUser.getMemberModel().getUserId())) {
+				return new ResponseEntity<>("본인 비밀번호만 변경 가능합니다.", HttpStatus.NOT_ACCEPTABLE);
+			}
+			param.put("password", request.getParameter("ch_pwdOld"));
+			MemberModel member = new MemberModel();
+			member = securityMapper.selectUserPassCheck(param);
+			if(member != null){
+				member.setUserId(request.getParameter("ch_userId"));
+				member.setPassword(request.getParameter("ch_pwdOld"));
+				member.setNewPassword(request.getParameter("ch_pwdNew"));
+				securityMapper.updateUserPassword(member);
+			}else{
+				result = "사용자 또는 비밀번호가 틀립니다.";
+			}
+			return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+	}
 }
