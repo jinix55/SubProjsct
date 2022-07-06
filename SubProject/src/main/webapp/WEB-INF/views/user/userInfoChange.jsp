@@ -111,7 +111,7 @@
 	<!-- 버튼 -->
 	<div class="modal-footer btn-group mb20">
 		<button type="button" class="button btn-success" onclick="save();">저장</button>
-		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
+<!-- 		<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button> -->
 	</div>
 </div>
 </div>
