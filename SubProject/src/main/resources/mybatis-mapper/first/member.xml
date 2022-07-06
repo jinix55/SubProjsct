@@ -472,7 +472,8 @@
 	 <update id="updateMember" parameterType="com.portal.adm.member.model.MemberModel">
 		UPDATE T_USER
 		SET
-		   EMAIL = #{email}
+		  	USER_NM = #{userNm}
+		  , EMAIL = #{email}
 		  , PHONE = #{phone}
 		  , MODI_DT = now()
 		  , MODI_ID = #{modiId}

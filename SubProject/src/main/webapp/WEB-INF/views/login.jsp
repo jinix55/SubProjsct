@@ -71,11 +71,12 @@
 				$('.error_text li.msg' + index).text(msg[index]);
 			});
 			$('.error_text').show();
-// 			$('.last.init').hide();
+			$('.last.init').hide();
 			if(init == 1){
 				$('.pwdMgt').show();
-				$('.last.change').hide();
-				$('.last.init').show();
+				$('.last.change').show();
+// 				$('.last.change').hide();
+// 				$('.last.init').show();
 			}
 			if(init == 2){
 				$('.pwdMgt').show();
@@ -224,6 +225,7 @@
 		var userId = document.getElementById("ch_userId").value;
 		var userPwdOld = document.getElementById("ch_pwdOld").value;
 		var userPwdNew = document.getElementById("ch_pwdNew").value;
+		var userPwdNewConfirm = document.getElementById("ch_pwdNewConfirm").value;
 		if(userId == null || userId == ''){
 			alert("아이디을 입력해 주세요.");
 			document.getElementById("ch_userId").focus();
@@ -243,6 +245,21 @@
 			dbclick = 'Y';
 			return;
 		}
+		
+		if(userPwdNewConfirm == null || userPwdNewConfirm == ''){
+			alert("새 비밀번호 확인해 주세요.");
+			document.getElementById("ch_pwdNewConfirm").focus();
+			dbclick = 'Y';
+			return;
+		}
+		
+		if(userPwdNew != userPwdNewConfirm) {
+			alert("새 비밀번호와 확인 비밀번호가 다릅니다.");
+			document.getElementById("ch_pwdNewConfirm").focus();
+			dbclick = 'Y';
+			return;
+		}
+		
 		var subdomain = '${subdomain}';
 		if(subdomain !== '') {
 			$('#ch_userId').val(userId+"@"+subdomain.toUpperCase());
@@ -326,6 +343,9 @@
 						</div>
 						<div class="login-pw h45">
 							 <input type="password" class="text-input pl35" id="ch_pwdNew" name="ch_pwdNew" placeholder="현경하실 비밀번호을 입력하세요.">
+						</div>
+						<div class="login-pw h45">
+							 <input type="password" class="text-input pl35" id="ch_pwdNewConfirm" name="ch_pwdNewConfirm" placeholder="새 비밀번호 확인.">
 						</div>
 						<div style="margin-top:10px; margin-bottom:10px;">
 							<span class="chMsg" style="color:red;"></span>
