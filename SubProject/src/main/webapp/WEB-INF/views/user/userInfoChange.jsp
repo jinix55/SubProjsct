@@ -15,7 +15,8 @@
 					<label class="col-25 form-label">ID</label>
 					<div class="col-75">
 						<c:set var="userId" value="${fn:split(memberInfo.userId, '@')}" />
-						<input id="userId" name="userId" type="text" class="text-input" value="${userId[0] }" disabled>
+						<input id="userId" name="userId" type="hidden" class="text-input" value="${memberInfo.userId}">
+						<input type="text" class="text-input" value="${userId[0] }" disabled>
 					</div>
 				</div>
 			</div>
