@@ -37,7 +37,7 @@
 					<col style="width: 180px;">
 					<col style="width: 100px;">
 					<col style="width: 80px;">
-					<col style="width: 100px;">
+<%-- 					<col style="width: 100px;"> --%>
 					<col style="width: 90px;">
 				</colgroup>
 				<thead>
@@ -47,7 +47,7 @@
 						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-						<th scope="col">담당 관리자</th>
+<!-- 						<th scope="col">담당 관리자</th> -->
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -62,11 +62,11 @@
 									<td>${list.supplierNm}</td>
 									<td>${list.supplierNo}</td>
 									<td>${list.representativeNm}</td>
-									<td>
-										<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point">
-											<img src="/images/icon_user2.png"> ${list.managementNm }
-										</a>
-									</td>
+<!-- 									<td> -->
+<%-- 										<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point"> --%>
+<%-- 											<img src="/images/icon_user2.png"> ${list.managementNm } --%>
+<!-- 										</a> -->
+<!-- 									</td> -->
 									<td>
 										<div class="btn-group">
 											<a href="#edit" role="button" data-toggle="modal"
@@ -84,7 +84,7 @@
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td colspan="7">
+								<td colspan="6">
 									등록된 업체가 없습니다.
 								</td>
 							</tr>
@@ -373,6 +373,34 @@
 										<div class="col-75">
 											<div class="form-input">
 												<textarea id="supplierDsc" name="supplierDsc" class="textarea"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">담당자 아이디</label>
+										<div class="col-75">
+											<div class="search-box">
+												<input id="managementId" name="managementId" type="hidden" >
+												<input id="managementIdDisplay" name="managementIdDisplay" type="text" class="text-input w-auto" placeholder="담당자 정보 검색해 주세요" disabled>
+												<span class="">
+													<button type="button" class="btn-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기
+				<!-- 										<a id="userSearchCheck" href="#overlap" role="button" data-toggle="modal">찾기</a> -->
+													</button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-50">
+									<div class="form-group">
+										<label class="col-25 form-label">담당자 성명</label>
+										<div class="col-75">
+											<div class="search-box">
+												<input id="managementNm" name="managementNm" type="text" class="text-input w-auto" disabled>
 											</div>
 										</div>
 									</div>
@@ -1053,6 +1081,9 @@
 			$('#edit #managerRepresent').prop('checked',false);
 		}
 		$('#edit #representativeNm').val(data.representativeNm);
+		$('#edit #managementId').val(data.managementId);
+		$('#edit #managementIdDisplay').val(data.managementId.split("@")[0]);
+		$('#edit #managementNm').val(data.managementNm);
 		$('#edit #note').val(data.note);
 		$('#edit #useYn').val(data.useYn);
 		$('#edit #rgstDt').val(data.rgstDt);
@@ -1149,6 +1180,8 @@
 		$('#tab01 #rgstDt').attr('disabled', true);
 		$('#tab01 #modiDt').attr('disabled', true);
 		$('#tab01 #supplierCode').attr('disabled', true);
+		$('#edit #managementIdDisplay').attr('disabled', true);
+		$('#edit #managementNm').attr('disabled', true);
 		$('#edit .btn-success').text('저장');
 		$('#edit .btn-success').removeClass('edit');
 		$('#edit .btn-success').addClass('save');
@@ -1173,6 +1206,9 @@
 		$('#edit .btn-success').text('저장');
 		$('#edit .btn-success').removeClass('edit');
 		$('#edit .btn-success').addClass('save');
+		
+		$('#edit #managementIdDisplay').prop('disabled', true);
+		$('#edit #managementNm').prop('disabled', true);
 	}
 	
 	function saveSupplier(){
@@ -1444,7 +1480,10 @@
 			isDisabled = false;
 		}else if(type == 2){
 			data = managementData2[$("input[name='userCheck"+type+"']:checked").val()];
-			managerDetailView(data);
+			$('#edit #managementId').val(data.userId);
+			$('#edit #managementIdDisplay').val(data.userId.split("@")[0]);
+			$('#edit #managementNm').val(data.userNm);
+// 			managerDetailView(data);
 		}
 	}
 	

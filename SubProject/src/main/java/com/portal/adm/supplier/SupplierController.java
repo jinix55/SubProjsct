@@ -236,6 +236,15 @@ public class SupplierController {
     @ResponseBody
     public ResponseEntity<SupplierModel> codesForGroupCd(@ModelAttribute SupplierModel supplierModel, @PathVariable("supplierId") String supplierId) {
     	supplierModel = supplierService.selectSupplierId(supplierId);
+    	MemberModel memberModel = new MemberModel();
+    	
+    	String memId = supplierModel.getManagementId();
+    	memberModel.setUserId(memId);
+    	memberModel = memberService.selectMember(memberModel);
+    	if(memberModel != null) {
+    		supplierModel.setManagementId(memId);
+    		supplierModel.setManagementNm(memberModel.getUserNm());
+    	}
     	return new ResponseEntity<>(supplierModel, HttpStatus.OK);
     }
     
