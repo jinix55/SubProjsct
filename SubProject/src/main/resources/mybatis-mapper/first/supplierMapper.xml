@@ -343,7 +343,7 @@
 			left outer join t_group_auth tga on tgm.auth_id = tga.auth_id
 			left outer join t_company c ON c.company_code = u.company_code
 		where
-			u.user_Nm like concat('%',#{userNm},'%') 
+			u.user_Nm like concat('%',#{userNm},'%') and u.company_code = #{companyCode}
 	</select>
 	
 </mapper>

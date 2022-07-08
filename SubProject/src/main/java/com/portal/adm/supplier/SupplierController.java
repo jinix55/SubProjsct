@@ -272,9 +272,10 @@ public class SupplierController {
      */
     @RequestMapping(value="/supplier/detail/popup/{userNm}", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<MemberModel>> selectManagerUserNm(@ModelAttribute SupplierModel supplierModel, @PathVariable("userNm") String userNm) {
+    public ResponseEntity<List<MemberModel>> selectManagerUserNm(@ModelAttribute SupplierModel supplierModel, @PathVariable("userNm") String userNm, @AuthenticationPrincipal AuthUser authUser) {
     	MemberModel memberModel = new MemberModel();
     	memberModel.setUserNm(userNm);
+    	memberModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<MemberModel> list = supplierService.selectUserNmList(memberModel);
 		return new ResponseEntity<>(list, HttpStatus.OK);
     }
