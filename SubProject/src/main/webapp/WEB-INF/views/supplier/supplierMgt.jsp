@@ -37,7 +37,7 @@
 					<col style="width: 180px;">
 					<col style="width: 100px;">
 					<col style="width: 80px;">
-<%-- 					<col style="width: 100px;"> --%>
+					<col style="width: 100px;">
 					<col style="width: 90px;">
 				</colgroup>
 				<thead>
@@ -47,7 +47,7 @@
 						<th scope="col">공급업체 명</th>
 						<th scope="col">사업자번호</th>
 						<th scope="col">대표자</th>
-<!-- 						<th scope="col">담당 관리자</th> -->
+						<th scope="col">담당자 관리</th>
 						<th scope="col">관리</th>
 					</tr>
 				</thead>
@@ -62,15 +62,15 @@
 									<td>${list.supplierNm}</td>
 									<td>${list.supplierNo}</td>
 									<td>${list.representativeNm}</td>
-<!-- 									<td> -->
-<%-- 										<a href="#charge" role="button" onclick="selectManager('${list.managementId}','${list.supplierCode}');" data-toggle="modal" class="btn-icon text-point"> --%>
-<%-- 											<img src="/images/icon_user2.png"> ${list.managementNm } --%>
-<!-- 										</a> -->
-<!-- 									</td> -->
+									<td>
+										<a href="javascript:void(0);" role="button" onclick="detailView('${list.supplierId}', 'tabnav02');" data-toggle="modal" class="btn-icon text-point">
+											<img src="/images/icon_user2.png">
+										</a>
+									</td>
 									<td>
 										<div class="btn-group">
-											<a href="#edit" role="button" data-toggle="modal"
-												onclick="detailView('${list.supplierId}');">
+											<a href="javascript:void(0);" role="button" data-toggle="modal"
+												onclick="detailView('${list.supplierId}', 'tabnav01');">
 												<img src="/images/icon_edit.png" alt="상세보기" class="btn-table-icon">
 											</a> <a href="#delete" role="button" data-toggle="modal"
 												onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"
@@ -84,7 +84,7 @@
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td colspan="6">
+								<td colspan="7">
 									등록된 업체가 없습니다.
 								</td>
 							</tr>
@@ -255,13 +255,13 @@
 		<div class="modal-content" style="width: 900px;">
 			<div class="modal-header">
 				<h4 class="modal-title">공급업체 상세</h4>
-				<button type="button" class="close" data-dismiss="modal">
+				<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(edit);">
 					<img src="/images/icon_close.png">
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="tab">
-					<ul class="tabnav">
+					<ul class="tabnav" style="display:none;">
 						<li><a id="tabnav01" href="#tab01">기업정보</a></li>
 						<li><a id="tabnav02" href="#tab02">담당자</a></li>
 					</ul>
@@ -518,7 +518,7 @@
 			<!-- 버튼 -->
 			<div class="modal-footer btn-group">
 				<button type="button" class="button btn-success edit" id="suppDetailBtn" >수정</button>
-				<button type="button" class="button btn-cancel cancel" data-dismiss="modal">취소</button>
+				<button type="button" class="button btn-cancel cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(edit);">취소</button>
 			</div>
 		</div>
 	</div>
@@ -1029,22 +1029,27 @@
 		isDisabled = false;
 	}
 
-	function detailView(id) {
-		$.ajax({
-			url : '/supplier/supplier/detail/' + id,
-			dataType : 'JSON',
-			type : "POST",
-			error : function(xhr, status, error) {
-				console.log(error);
-			},
-			success : function(data) {
-				detailViewMake(data);
-				isDisabled = false;
-			}
-		});
+	function detailView(id, tabId) {
+		setSupplierCode = id;
+		if(tabId === 'tabnav02'){
+			managersView(id, tabId);
+		}else {
+			$.ajax({
+				url : '/supplier/supplier/detail/' + id,
+				dataType : 'JSON',
+				type : "POST",
+				error : function(xhr, status, error) {
+					console.log(error);
+				},
+				success : function(data) {
+					detailViewMake(data, tabId);
+					isDisabled = false;
+				}
+			});
+		}
 	}
 
-	function detailViewMake(data) {
+	function detailViewMake(data, tabId) {
 		$('#edit input').attr('disabled', true);
 		$('#edit select').attr('disabled', true);
 		$('#edit textarea').attr('disabled', true);
@@ -1088,10 +1093,14 @@
 		$('#edit #useYn').val(data.useYn);
 		$('#edit #rgstDt').val(data.rgstDt);
 		$('#edit #modiDt').val(data.modiDt);
+		
+		$('#'+tabId).click();
+		$('#edit .modal-title').text('공급업체 상세');
+		layerPopup($('#edit'));
 	}
 
 	// 담당자 검색
-	function managersView(id) {
+	function managersView(id, tabId) {
 		setManager = 'Y';
 		if (isDisabled) {
 			return false;
@@ -1105,7 +1114,7 @@
 					console.log(error);
 				},
 				success : function(data) {
-					managersViewMake(data);
+					managersViewMake(data, tabId);
 					isDisabled = false;
 				}
 			});
@@ -1144,7 +1153,7 @@
 		
 	}
 
-	function managersViewMake(data) {
+	function managersViewMake(data, tabId) {
 		setManagerList = data
 		$('#managerTable').empty();
 		var html = '';
@@ -1171,6 +1180,9 @@
 			html += '</tr>';
 		}
 		$('#managerTable').append(html);
+		$('#'+tabId).click();
+		$('#edit .modal-title').text('공급업체 담당자');
+		layerPopup($('#edit'));
 	}
 	
 	function resetInput1(){
