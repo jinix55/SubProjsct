@@ -17,6 +17,7 @@ import lombok.Data;
 @Data
 public class ProductModel extends Criteria{
 
+	private String companyCode;     //제품 코드
     private String productCode;     //제품 코드
     private String productNm;       //제품 명 
     private String supplierInfo;    //납품기업

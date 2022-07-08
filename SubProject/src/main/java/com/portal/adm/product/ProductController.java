@@ -103,37 +103,28 @@ public class ProductController {
     @RequestMapping(value="/prodList", method= {RequestMethod.GET,RequestMethod.POST})
     public String product(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	// 상품 목록 조회
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<ProductModel> models = productService.selectProductList(productModel);
-    	
-    	System.out.println("models " + models);
-    	
     	productModel.setTotalCount(productService.selectProductListCount(productModel));
         model.addAttribute("products", models);
         model.addAttribute("pages", productModel);
     	
-        
-//		<if test="searchKey != '' and searchKey == 'ALL' and searchValue != ''">
-//		and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%') or upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%') or (upper(RECYCLE_GRADE) like concat('%',upper(#{searchValue}),'%')))
-//	</if>
-    	
     	//재질 정보 조회
-//    	List<PackagingCodeModel> productMatType = productService.selectProductMatType();
     	EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
     	environmentCodeModel.setGroupId("GROUP_ID");
-    	environmentCodeModel.setRevisionYear("2022");
-    	environmentCodeModel.setRevisionMonth("03");
-//    	if(environmentCodeModel.getRevision() != null && !StringUtils.equals(environmentCodeModel.getRevision(), "")) {
-//    		String[] revision = environmentCodeModel.getRevision().split("-");
-//    	}
     	List<EnvironmentCodeModel> productMatType = environmentCodeService.selectList(environmentCodeModel);
     	model.addAttribute("productMatTypeList", productMatType);  
     	
     	//공급업체 정보 조회
     	SupplierModel supplierModel = new SupplierModel();
     	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	supplierModel.setOffSet(0);
     	supplierModel.setPageSize(9999);
         List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
+        System.out.println("supplierModel = " + supplierModel);
+        System.out.println("supplierList = " + supplierList);
+        
         model.addAttribute("suppliers", supplierList);
         
         
@@ -167,8 +158,9 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<String> saveProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
 //    public ResponseEntity<String> insertProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
-    	System.out.println("productModel" + productModel.getProductCode());
-        if(productService.selectProductListCountByProductCode(productModel.getProductCode()) > 0) {
+
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());    
+        if(productService.selectCountSameProductCode(productModel) > 0) {
         	return ResponseEntity.badRequest().body("동일한 상품코드로 등록된 상품이 있습니다.");
         }
         

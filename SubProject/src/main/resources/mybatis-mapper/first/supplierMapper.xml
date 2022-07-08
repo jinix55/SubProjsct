@@ -20,6 +20,7 @@
 		limit #{offSet}, #{pageSize}
 	</sql>
 
+    <!-- 확인 2022-07-08 -->
 	<select id="selectSupplierList" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
@@ -42,9 +43,7 @@
 		WHERE 1 = 1
 		AND USE_YN = 'Y' 
 		<if test="authId != 'au2000001'">
-			<if test="companyCode != null and companyCode != ''">
-				AND COMPANY_CODE = #{companyCode}
-			</if>
+			AND COMPANY_CODE = #{companyCode}
 		</if>
 		<include refid="searchSupplier"></include>
 		ORDER BY ROWNUM ASC

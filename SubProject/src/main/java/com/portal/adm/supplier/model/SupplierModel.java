@@ -11,13 +11,14 @@ import lombok.Data;
 
 @Data
 public class SupplierModel extends Criteria {
+	private String authId;          					// 권한
 	private String rownum;          					// 순번
 	private String supplierId;							// 공급업체 ID
 	private String supplierNm;							// 공급업체 명
 	private String supplierDsc;							// 공급업체 설명
 	private String supplierCode;						// 공급업체 코드
 	private String supplierNo;							// 공급업체 사업자번호
-	private String companyCode;						// 공급업체 소속 회사
+	private String companyCode;						    // 공급업체 소속 회사
 	private String address;								// 주소
 	private String telephoneNo;							// 전화번호
 	private String representativeNm;					// 대표자명

@@ -553,8 +553,8 @@ public class ProductService {
 		return productMapper.getProductNm(productCoded);
 	}		
 	
-	public int selectProductListCountByProductCode(String productCoded) {
-		return productMapper.selectProductListCountByProductCode(productCoded);
+	public int selectCountSameProductCode(ProductModel productModel) {
+		return productMapper.selectCountSameProductCode(productModel);
 	}
 
 	public List<ProdPackagingMatModel>  selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel) {

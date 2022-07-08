@@ -22,6 +22,7 @@
 		LIMIT #{offSet}, #{pageSize}
 	</sql>
 
+    <!-- 확인 2022-07-08 -->
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
 		    ROW_NUMBER() OVER (ORDER BY a.PRODUCT_NM DESC) AS ROWNUM,
@@ -54,28 +55,35 @@
 	   LEFT OUTER JOIN t_code dd
 	     ON  dd.GROUP_ID = 'PROD_GRADE_TYPE' 
 	    AND  dd.CODE_ID  =  a.GRADE_CODE
-	    AND  dd.USE_YN   = 'Y'		
+	    AND  dd.USE_YN   = 'Y'	
+	   
+	   WHERE a.COMPANY_CODE =  #{companyCode}
 <!--TODO 	    	
 		<include refid="searchProduct"></include>	
-        ORDER BY a.PRODUCT_CODE, ROWNUM	
-        <include refid="paging"></include>
- -->        		
+ -->    
+      ORDER BY a.PRODUCT_CODE, ROWNUM   
+      <include refid="paging"></include>		
 	</select>
 	
+	
+	    <!-- 확인 2022-07-08 -->
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
 		FROM t_PRODUCT
 		WHERE USE_YN = 'Y'
+		AND   COMPANY_CODE =  #{companyCode}
 <!--TODO		
 		<include refid="searchProduct"></include>
  -->			
 	</select>	
 
-	<select id="selectProductListCountByProductCode" resultType="int" parameterType="String">
+     <!-- 확인 2022-07-08 -->
+	<select id="selectCountSameProductCode" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
 		FROM t_PRODUCT
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND USE_YN = 'Y'		
+		  AND   COMPANY_CODE =  #{companyCode}
 	</select>	
 
 	
@@ -970,8 +978,6 @@
 <!-- 			, PART_TYPE       -->
 			, GROUP_ID       
 			, CODE_ID         
-			, REVISION_YEAR       
-			, REVISION_MONTH          
 			, USE_YN         
 			, RGST_ID        
 			, RGST_DT        
@@ -994,8 +1000,6 @@
 <!-- 			, PART_TYPE       -->
 			, GROUP_ID       
 			, CODE_ID         
-			, REVISION_YEAR       
-			, REVISION_MONTH          
 			, USE_YN         
 			, RGST_ID        
 			, RGST_DT        
@@ -1011,8 +1015,6 @@
 <!-- 			, #{partType} -->
 			, #{groupId}
 			, #{codeId}
-			, #{revisionYear}
-			, #{revisionMonth}
 			, 'Y'
 			, #{rgstId}
 			, now()

@@ -148,8 +148,6 @@
 		from 
 		   t_environment_code
 		where  CODE_ID = #{codeId}
-		  and  REVISION_YEAR = "2022"
-		  and  REVISION_MONTH = "03"
 	</select>	
 	
 	<select id="getCodeNmOnSupplier" resultType="String" parameterType="String">

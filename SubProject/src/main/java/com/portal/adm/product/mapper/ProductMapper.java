@@ -242,7 +242,7 @@ public interface ProductMapper {
     
     public String getProductNm(String productCoded);
     
-    public int selectProductListCountByProductCode(String productCoded);
+    public int selectCountSameProductCode(ProductModel productModel);
     
     List<ProdPackagingMatModel> selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
     long insertProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);

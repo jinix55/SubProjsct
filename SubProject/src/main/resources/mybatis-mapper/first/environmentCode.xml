@@ -8,21 +8,6 @@
 		LIMIT #{offSet}, #{pageSize}
 	</sql>
 	
-	<select id="selectCodeDayList"  resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
-		SELECT
-			REVISION_YEAR,
-			REVISION_MONTH
-		FROM
-			T_ENVIRONMENT_CODE
-		WHERE
-			GROUP_ID = 'GROUP_ID'
-		GROUP BY
-			REVISION_YEAR ,
-			REVISION_MONTH
-		ORDER BY
-			REVISION_YEAR DESC ,
-			REVISION_MONTH DESC
-	</select>
 	
 	<select id="selectGroupIdList" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		SELECT
@@ -30,8 +15,6 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
-			REVISION_YEAR,
-			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			ORD_SEQ,
@@ -48,7 +31,6 @@
 			MODI_DT
 		FROM T_ENVIRONMENT_CODE
 		where GROUP_ID = #{groupId} 
-		AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 		ORDER BY ROWNUM ASC
 		<include refid="paging"></include>
 	</select>
@@ -68,8 +50,6 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
-			REVISION_YEAR,
-			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -91,8 +71,6 @@
 			GROUP_ID,
 			CODE_ID,
 			CODE_KEY,
-			REVISION_YEAR,
-			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			USE_YN,
@@ -104,8 +82,6 @@
 			T_ENVIRONMENT_CODE
 		WHERE
 			GROUP_ID = #{groupId}
-		AND
-			REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 	</select>
 
 	<select id="select" resultType="com.portal.adm.environmentCode.model.EnvironmentCodeModel" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -114,8 +90,6 @@
 			CODE_ID,
 			CODE_KEY,
 			ORD_SEQ,
-			REVISION_YEAR,
-			REVISION_MONTH,
 			CODE_NM,
 			CODE_DSC,
 			RPT_MAT_STRUCT,
@@ -133,8 +107,6 @@
 			T_ENVIRONMENT_CODE
 		WHERE
 			CODE_ID = #{codeId} AND GROUP_ID = #{groupId}
-		AND
-			REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
 	</select>
 
 	<insert id="insert" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -142,7 +114,6 @@
 			GROUP_ID
 			, CODE_ID
 			, CODE_KEY
-			, UP_COMPANY_CODE
 			, CODE_NM
 			, CODE_DSC
 			, RPT_MAT_STRUCT
@@ -157,13 +128,10 @@
 			, MODI_ID
 			, MODI_DT
 			, ORD_SEQ
-			, REVISION_YEAR
-			, REVISION_MONTH
 		) VALUES (
 			#{groupId}
 			, #{codeId}
 			, #{codeKey}
-			, #{upCompanyCode}
 			, #{codeNm}
 			, #{codeDsc}
 			, #{rptMatStruct}
@@ -178,8 +146,6 @@
 			, #{modiId}
 			, now()
 			, #{ordSeq}
-			, #{revisionYear}
-			, #{revisionMonth}
 		)
 	</insert>
 
@@ -207,12 +173,12 @@
 
 	<delete id="delete" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		DELETE FROM T_ENVIRONMENT_CODE
-		WHERE GROUP_ID = #{groupId} AND CODE_ID = #{codeId} AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
+		WHERE GROUP_ID = #{groupId} AND CODE_ID = #{codeId}
 	</delete>
 	
 	<delete id="deleteDownCode" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
 		DELETE FROM T_ENVIRONMENT_CODE
-		WHERE GROUP_ID = #{codeId} AND REVISION_YEAR = #{revisionYear} AND REVISION_MONTH = #{revisionMonth}
+		WHERE GROUP_ID = #{codeId} 
 	</delete>
 
 	<select id="selectCodeCountForGroupId" resultType="int" parameterType="com.portal.adm.environmentCode.model.EnvironmentCodeModel">
@@ -247,20 +213,9 @@
 		    , a.code_nm
 		from 
 			  t_environment_code a
-			, t_code y
-			, t_code m
 		where 1 = 1
 		and   a.USE_YN = 'Y'
-		and   y.USE_YN = 'Y'
-		and   m.USE_YN = 'Y'
 		and   a.GROUP_ID = #{groupId}
-	
-		and   y.GROUP_ID = 'REVISION_YEAR_MONTH'
-		and   y.CODE_ID  = 'REVISION_YEAR'
-		and   a.REVISION_YEAR = y.CODE_NM
-		and   m.GROUP_ID = 'REVISION_YEAR_MONTH'
-		and   m.CODE_ID  = 'REVISION_MONTH'
-		and   a.REVISION_MONTH = m.CODE_NM
 		ORDER BY a.ORD_SEQ
 		 
 		
