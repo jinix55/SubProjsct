@@ -53,7 +53,7 @@ public class SupplierController {
      */
     @RequestMapping(value="/supplier", method= {RequestMethod.GET,RequestMethod.POST})
     public String code(@ModelAttribute SupplierModel supplierModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
-    	supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
         List<SupplierModel> models = supplierService.selectSupplierList(supplierModel);
         supplierModel.setTotalCount(supplierService.selectSupplierListCount(supplierModel));
@@ -64,12 +64,14 @@ public class SupplierController {
         	String memId = models.get(i).getManagementId();
         	memberModel.setUserId(memId);
         	memberModel = memberService.selectMember(memberModel);
-        	models.get(i).setManagementId(memId);
-        	models.get(i).setManagementNm(memberModel.getUserNm());
-        	models.get(i).setManagementPhone(memberModel.getPhone());
-        	models.get(i).setManagementMail(memberModel.getEmail());
-        	models.get(i).setManagementDept(memberModel.getDeptNm());
-        	models.get(i).setManagementPstn(memberModel.getPstnNm());
+        	if(memberModel != null) {
+        		models.get(i).setManagementId(memId);
+        		models.get(i).setManagementNm(memberModel.getUserNm());
+        		models.get(i).setManagementPhone(memberModel.getPhone());
+        		models.get(i).setManagementMail(memberModel.getEmail());
+        		models.get(i).setManagementDept(memberModel.getDeptNm());
+        		models.get(i).setManagementPstn(memberModel.getPstnNm());
+        	}
         }
         
         model.addAttribute("suppliers", models);
@@ -90,12 +92,15 @@ public class SupplierController {
     		
     		if(supplierModel.getSupplierId() == null || StringUtils.equals(supplierModel.getSupplierId(),"")) {
     			supplierModel.setSupplierId(idUtil.getSupplierId());
-    			supplierModel.setManagerId(idUtil.getManagerId());
+//    			supplierModel.setManagerId(idUtil.getManagerId());
     		}
     		if(supplierModel.getManagerRepresent() == null) {
         		supplierModel.setManagerRepresent("N");
         	}
-    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    		if(supplierModel.getManagementId() == null || "".equals(supplierModel.getManagementId())) {
+    			supplierModel.setManagementId(authUser.getMemberModel().getUserId());
+    		}
+    		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
     		supplierModel.setModiId(authUser.getMemberModel().getUserId());
             String result = supplierService.save(supplierModel);
@@ -123,7 +128,7 @@ public class SupplierController {
 		}
 		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
 		supplierModel.setUseYn(supplierModel.getMaUseYn());
-		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
 		supplierModel.setModiId(authUser.getMemberModel().getUserId());
 		supplierService.saveManager(supplierModel);
@@ -147,7 +152,7 @@ public class SupplierController {
 		}
 		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
 		supplierModel.setUseYn(supplierModel.getMaUseYn());
-		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
 		supplierModel.setModiId(authUser.getMemberModel().getUserId());
 		supplierService.updateManager(supplierModel);
@@ -166,7 +171,7 @@ public class SupplierController {
     @PostMapping("/supplier/insert/supplier")
     public ResponseEntity<String> saveSupplier(@ModelAttribute SupplierModel supplierModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
     	try {
-    		supplierModel.setUpCompanyCode(authUser.getMemberModel().getCompanyCode());
+    		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
     		supplierModel.setModiId(authUser.getMemberModel().getUserId());
             String result = supplierService.updateSupplier(supplierModel);

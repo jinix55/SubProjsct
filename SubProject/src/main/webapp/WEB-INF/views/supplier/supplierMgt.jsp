@@ -148,7 +148,7 @@
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">사업자번호<em>*</em></label>
+						<label class="col-25 form-label">사업자번호</label>
 						<div class="col-75">
 							<div class="phone-number">
 								<div class="pr16"><input id="supplierNo1" name="supplierNo1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
@@ -165,7 +165,7 @@
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">연락처<em>*</em></label>
+						<label class="col-25 form-label">연락처</label>
 						<div class="col-75">
 							<div class="phone-number">
 								<div class="pr16"><input id="telephoneNo1" name="telephoneNo1" type="text" class="text-input" placeholder="지역번호" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
@@ -195,7 +195,7 @@
 			<div class="row">
 				<div class="col-100">
 					<div class="form-group">
-						<label class="col-25 form-label">주소<em>*</em></label>
+						<label class="col-25 form-label">주소</label>
 						<div class="col-75">
 							<input id="address" name="address" type="text" placeholder="주소를 입력해 주세요" class="text-input">
 						</div>
@@ -211,18 +211,14 @@
 				</div>
 			</div>
 			
-			
-			<h4 class="tl mb10 pt15">
-				<span class="title-point">[담당 관리자]</span>
-			</h4>
-			<input id="managementId" name="managementId" type="hidden" class="text-input">
 			<div class="row">
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">성명<em>*</em></label>
+						<label class="col-25 form-label">담당자 아이디</label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="managementNm" name="managementNm" type="text" class="text-input w-auto" placeholder="이름을 검색해 주세요" disabled>
+								<input id="managementId" name="managementId" type="hidden" >
+								<input id="managementIdDisplay" name="managementIdDisplay" type="text" class="text-input w-auto" placeholder="담당자 정보 검색해 주세요" disabled>
 								<span class="">
 									<button type="button" class="btn-search" id="userSearch" href="#overlap" data-toggle="modal">찾기
 <!-- 										<a id="userSearchCheck" href="#overlap" role="button" data-toggle="modal">찾기</a> -->
@@ -234,136 +230,11 @@
 				</div>
 				<div class="col-50">
 					<div class="form-group">
-						<label class="col-25 form-label">회사명<em>*</em></label>
+						<label class="col-25 form-label">담당자 성명</label>
 						<div class="col-75">
-							<input id="managementCompanyNm" name="managementCompanyNm" type="text" class="text-input" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input id="managementDept" name="managementDept" type="text" class="text-input" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input id="managementPstn" name="managementPstn" type="text" class="text-input" disabled>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
-						<div class="col-75">
-							<div class="phone-number">
-								<div class="pr16"><input id="managementPhone1" name="managementPhone1" type="text" class="text-input" maxlength="3" onkeyup="this.value = setNumber(this.value)" disabled></div>
+							<div class="search-box">
+								<input id="managementNm" name="managementNm" type="text" class="text-input w-auto" disabled>
 							</div>
-							<div class="phone-number">
-								<div class="pr16"><input id="managementPhone2" name="managementPhone2" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
-							</div>
-							<div class="phone-number end">
-								<div><input id="managementPhone3" name="managementPhone3" type="text" class="text-input" maxlength="4" onkeyup="this.value = setNumber(this.value)" disabled></div>
-							</div>
-							<input type="hidden" id="managementPhone" name="managementPhone" disabled/>
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일<em>*</em></label>						
-						<div class="col-75">
-							<div class="form-input">
-								<div class="email-add">
-									<div class="pr28"><input id="managementMail1" name="managementMail1" type="text" class="text-input email" disabled></div>
-								</div>
-								<div class="email-add">
-									<div><input id="managementMail2" name="managementMail2" type="text" class="text-input email" disabled></div>
-								</div>
-								<input type="hidden" id="managementMail" name="managementMail"  disabled/>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			
-			<h4 class="tl mb10 pt15">
-				<span class="title-point">[공급업체 담당자]</span>
-			</h4>
-			<div class="row">
-				<div class="col-100 mb10">
-					<input id="managerRepresent" name="managerRepresent" type="checkbox" name="chk" style="margin-left: 0;">대표 적용
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">성명<em>*</em></label>
-						<div class="col-75">
-							<input id="managerNm" name="managerNm" placeholder="이름을 입력해 주세요" type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">휴대폰번호<em>*</em></label>
-						<div class="col-75">
-							<div class="phone-number">
-								<div class="pr16"><input id="managerPhone1" name="managerPhone1" type="text" class="text-input" placeholder="3자리" maxlength="3" onkeyup="this.value = setNumber(this.value)"></div>
-							</div>
-							<div class="phone-number">
-								<div class="pr16"><input id="managerPhone2" name="managerPhone2" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
-							</div>
-							<div class="phone-number end">
-								<div><input id="managerPhone3" name="managerPhone3" type="text" class="text-input" placeholder="4자리" maxlength="4" onkeyup="this.value = setNumber(this.value)"></div>
-							</div>
-							<input type="hidden" id="managerPhone" name="managerPhone" />
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">부서</label>
-						<div class="col-75">
-							<input id="managerDept" name="managerDept" type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">직위</label>
-						<div class="col-75">
-							<input id="managerPstn" name="managerPstn" type="text" class="text-input">
-						</div>
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">이메일<em>*</em></label>
-						<div class="col-75">
-							<div class="form-input">
-								<div class="email-add">
-									<div class="pr28"><input id="managerMail1" name="managerMail1" type="text" placeholder="아이디" class="text-input email"></div>
-								</div>
-								<div class="email-add">
-									<div><input id="managerMail2" name="managerMail2" type="text" placeholder="주소" class="text-input email"></div>
-								</div>
-								<input type="hidden" id="managerMail" name="managerMail" />
-							</div>
-						</div>	
-					</div>
-				</div>
-				<div class="col-50">
-					<div class="form-group">
-						<label class="col-25 form-label">사용여부</label>
-						<div class="col-75">
-							<select id="maUseYn" name="maUseYn" class="select-box">
-								<option value="Y">YES</option>
-								<option value="N">NO</option>
-							</select>
 						</div>
 					</div>
 				</div>
@@ -437,7 +308,7 @@
 								</div>
 								<div class="col-50">
 									<div class="form-group">
-										<label class="col-25 form-label">납품기업</label>
+										<label class="col-25 form-label">공급업체</label>
 										<div class="col-75">
 											<input id="supplierNm" name="supplierNm" type="text"
 												class="text-input">
@@ -512,8 +383,8 @@
 							<table class="table">
 								<colgroup>
 									<col style="width: 15%;">
-									<col style="width: 10%;">
-									<col style="width: 10%;">
+<%-- 									<col style="width: 10%;"> --%>
+<%-- 									<col style="width: 10%;"> --%>
 									<col style="width: 20%;">
 									<col style="width: 20%;">
 									<col style="width: 5%;">
@@ -521,8 +392,8 @@
 								<thead>
 									<tr class="th-bg">
 										<th scope="col">성명</th>
-										<th scope="col">부서</th>
-										<th scope="col">직위</th>
+<!-- 										<th scope="col">부서</th> -->
+<!-- 										<th scope="col">직위</th> -->
 										<th scope="col">연락처</th>
 										<th scope="col">메일</th>
 										<th scope="col">관리</th>
@@ -530,17 +401,17 @@
 								</thead>
 								<tbody id="managerTable">
 									<tr>
-										<td colspan="6">등록된 담당자가 없습니다.</td>
+										<td colspan="4">등록된 담당자가 없습니다.</td>
 									</tr>
 								</tbody>
 							</table>
 							<div id="managerInfo" class="row pt30">
 								<input id="managerId" name="managerId" type="hidden" class="text-input">
 								<input id="maSupplierCode" name="maSupplierCode" type="hidden" class="text-input">
-								<div class="col-100 mb10">
-									<input id="managerRepresent" name="managerRepresent" type="checkbox" style="margin: 0;">
-									<label for="managerRepresent">대표 적용</label>
-								</div>
+<!-- 								<div class="col-100 mb10"> -->
+<!-- 									<input id="managerRepresent" name="managerRepresent" type="checkbox" style="margin: 0;"> -->
+<!-- 									<label for="managerRepresent">대표 적용</label> -->
+<!-- 								</div> -->
 								<div class="col-50">
 									<div class="form-group">
 										<label class="col-25 form-label"><em>*</em>성명</label>
@@ -566,24 +437,24 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-50">
-									<div class="form-group">
-										<label class="col-25 form-label">부서</label>
-										<div class="col-75">
-											<input id="managerDept" name="managerDept" type="text"
-												class="text-input">
-										</div>
-									</div>
-								</div>
-								<div class="col-50">
-									<div class="form-group">
-										<label class="col-25 form-label">직위</label>
-										<div class="col-75">
-											<input id="managerPstn" name="managerPstn" type="text"
-												class="text-input">
-										</div>
-									</div>
-								</div>
+<!-- 								<div class="col-50"> -->
+<!-- 									<div class="form-group"> -->
+<!-- 										<label class="col-25 form-label">부서</label> -->
+<!-- 										<div class="col-75"> -->
+<!-- 											<input id="managerDept" name="managerDept" type="text" -->
+<!-- 												class="text-input"> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="col-50"> -->
+<!-- 									<div class="form-group"> -->
+<!-- 										<label class="col-25 form-label">직위</label> -->
+<!-- 										<div class="col-75"> -->
+<!-- 											<input id="managerPstn" name="managerPstn" type="text" -->
+<!-- 												class="text-input"> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
 								<div class="col-50">
 									<div class="form-group">
 										<label class="col-25 form-label"><em>*</em>이메일</label>
@@ -679,7 +550,7 @@
 						<label class="col-25 form-label">성명</label>
 						<div class="col-75">
 							<div class="search-box">
-								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input w-auto" value="홍나리" disabled>
+								<input id="pop_managerNm" name="pop_managerNm" type="text" class="text-input w-auto" value="" disabled>
 								<span class="overlapMngmt" style="display:none;">
 									<button type="button" class="btn-search" id="userSearch" href="#overlapMngmt" data-toggle="modal">찾기</button>
 								</span>
@@ -977,21 +848,21 @@
 				$('#register #supplierNo').val(supplierNo);
 				$('#register #telephoneNo').val(telephoneNo);
 				
-				var managementPhone = $('#register #managementPhone1').val()+'-'+$('#register #managementPhone2').val()+'-'+$('#register #managementPhone3').val();
-				var managementMail = $('#register #managementMail1').val()+'@'+$('#register #managementMail2').val();
-				$('#register #managementPhone').val(managementPhone);
-				$('#register #managementMail').val(managementMail);
+// 				var managementPhone = $('#register #managementPhone1').val()+'-'+$('#register #managementPhone2').val()+'-'+$('#register #managementPhone3').val();
+// 				var managementMail = $('#register #managementMail1').val()+'@'+$('#register #managementMail2').val();
+// 				$('#register #managementPhone').val(managementPhone);
+// 				$('#register #managementMail').val(managementMail);
 				
-				var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
-				var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
-				$('#register #managerPhone').val(managerPhone);
-				$('#register #managerMail').val(managerMail);
+// 				var managerPhone = $('#register #managerPhone1').val()+'-'+$('#register #managerPhone2').val()+'-'+$('#register #managerPhone3').val();
+// 				var managerMail = $('#register #managerMail1').val()+'@'+$('#register #managerMail2').val();
+// 				$('#register #managerPhone').val(managerPhone);
+// 				$('#register #managerMail').val(managerMail);
 				
-				if($('#register #managerRepresent').is(':checked')){
-					$('#register #managerRepresent').val('Y');
-				}else{
-					$('#register #managerRepresent').val('');
-				}
+// 				if($('#register #managerRepresent').is(':checked')){
+// 					$('#register #managerRepresent').val('Y');
+// 				}else{
+// 					$('#register #managerRepresent').val('');
+// 				}
 				var param = $('#frmRegister').serialize();
 				insertSupplierAjax(param, 'insert');
 			}
@@ -1114,36 +985,35 @@
 	function managerDetailView(data) {
 		$('#pop_managerId').val(data.userId);
 		$('#pop_managerNm').val(data.userNm);
-		$('#pop_managerPhone1').val(data.phone.split('-')[0]);
-		$('#pop_managerPhone2').val(data.phone.split('-')[1]);
-		$('#pop_managerPhone3').val(data.phone.split('-')[2]);
-		$('#pop_managerPhone').val(data.phone);
-		$('#pop_managerMail1').val(data.email.split('@')[0]);
-		$('#pop_managerMail2').val(data.email.split('@')[1]);
-		$('#pop_managerMail').val(data.email);
-		$('#pop_managerDept').val(data.deptNm);
-		$('#pop_managerPstn').val(data.pstnNm);
+		if(data.phone){
+			$('#pop_managerPhone1').val(data.phone.split('-')[0]);
+			$('#pop_managerPhone2').val(data.phone.split('-')[1]);
+			$('#pop_managerPhone3').val(data.phone.split('-')[2]);
+			$('#pop_managerPhone').val(data.phone);
+		}
+		if(data.email){
+			$('#pop_managerMail1').val(data.email.split('@')[0]);
+			$('#pop_managerMail2').val(data.email.split('@')[1]);
+			$('#pop_managerMail').val(data.email);
+		}
+// 		$('#pop_managerDept').val(data.deptNm);
+// 		$('#pop_managerPstn').val(data.pstnNm);
 		isDisabled = false;
 	}
 
 	function detailView(id) {
-		if (isDisabled) {
-			return false;
-		} else {
-			isDisabled = true;
-			$.ajax({
-				url : '/supplier/supplier/detail/' + id,
-				dataType : 'JSON',
-				type : "POST",
-				error : function(xhr, status, error) {
-					console.log(error);
-				},
-				success : function(data) {
-					detailViewMake(data);
-					isDisabled = false;
-				}
-			});
-		}
+		$.ajax({
+			url : '/supplier/supplier/detail/' + id,
+			dataType : 'JSON',
+			type : "POST",
+			error : function(xhr, status, error) {
+				console.log(error);
+			},
+			success : function(data) {
+				detailViewMake(data);
+				isDisabled = false;
+			}
+		});
 	}
 
 	function detailViewMake(data) {
@@ -1151,27 +1021,32 @@
 		$('#edit select').attr('disabled', true);
 		$('#edit textarea').attr('disabled', true);
 		setSupplierCode = data.supplierCode;
-		var telephoneNo = data.telephoneNo.split('-');
-		var telephoneNo1 = telephoneNo[0];
-		var telephoneNo2 = telephoneNo[1];
-		var telephoneNo3 = telephoneNo[2];
-		var supplierNo = data.supplierNo.split('-');
-		var supplierNo1 = supplierNo[0];
-		var supplierNo2 = supplierNo[1];
-		var supplierNo3 = supplierNo[2];
 		$('#edit #supplierId').val(data.supplierId);
 		$('#edit #supplierCode').val(data.supplierCode);
-		$('#edit #supplierNo').val(data.supplierNo);
-		$('#edit #supplierNo1').val(supplierNo1);
-		$('#edit #supplierNo2').val(supplierNo2);
-		$('#edit #supplierNo3').val(supplierNo3);
+		
+		if(data.supplierNo) {
+			var supplierNo = data.supplierNo.split('-');
+			var supplierNo1 = supplierNo[0];
+			var supplierNo2 = supplierNo[1];
+			var supplierNo3 = supplierNo[2];
+			$('#edit #supplierNo').val(data.supplierNo);
+			$('#edit #supplierNo1').val(supplierNo1);
+			$('#edit #supplierNo2').val(supplierNo2);
+			$('#edit #supplierNo3').val(supplierNo3);
+		}
 		$('#edit #supplierNm').val(data.supplierNm);
 		$('#edit #supplierDsc').val(data.supplierDsc);
 		$('#edit #address').val(data.address);
-		$('#edit #telephoneNo').val(data.telephoneNo);
-		$('#edit #telephoneNo1').val(telephoneNo1);
-		$('#edit #telephoneNo2').val(telephoneNo2);
-		$('#edit #telephoneNo3').val(telephoneNo2);
+		if(data.telephoneNo) {
+			$('#edit #telephoneNo').val(data.telephoneNo);
+			var telephoneNo = data.telephoneNo.split('-');
+			var telephoneNo1 = telephoneNo[0];
+			var telephoneNo2 = telephoneNo[1];
+			var telephoneNo3 = telephoneNo[2];
+			$('#edit #telephoneNo1').val(telephoneNo1);
+			$('#edit #telephoneNo2').val(telephoneNo2);
+			$('#edit #telephoneNo3').val(telephoneNo2);
+		}
 		if(data.representativeNm == 'Y'){
 			$('#edit #managerRepresent').prop('checked',true);
 		}else{
@@ -1246,8 +1121,8 @@
 			data.forEach(function(item, index) {
 				html += '<tr >';
 				html += '	<td class="text-point" thisData="'+item+'"  onclick="setManagerView(\''+index+'\');">' + item.managerNm + '</td>';
-				html += '	<td>' + item.managerDept + '</td>';
-				html += '	<td>' + item.managerPstn + '</td>';
+// 				html += '	<td>' + item.managerDept + '</td>';
+// 				html += '	<td>' + item.managerPstn + '</td>';
 				html += '	<td>' + item.managerPhone + '</td>';
 				html += '	<td>' + item.managerMail + '</td>';
 				html += '	<td>';
@@ -1261,7 +1136,7 @@
 			});
 		} else {
 			html += '<tr>';
-			html += '	<td colspan="6">등록된 담당자가 없습니다.</td>';
+			html += '	<td colspan="4">등록된 담당자가 없습니다.</td>';
 			html += '</tr>';
 		}
 		$('#managerTable').append(html);
@@ -1320,7 +1195,7 @@
 	}
 	
 	function saveManager(){
-		if(validationManager()){
+		if(validationManager('edit')){
 			if (isDisabled) {
 				return false;
 			} else {
@@ -1554,17 +1429,18 @@
 		if(type == 1){
 			data = managementData1[$("input[name='userCheck"+type+"']:checked").val()];
 			$('#managementId').val(data.userId);
+			$('#managementIdDisplay').val(data.userId.split("@")[0]);
 			$('#managementNm').val(data.userNm);
-			$('#managementCompanyNm').val(data.companyNm);
-			$('#managementPhone1').val(data.phone.split('-')[0]);
-			$('#managementPhone2').val(data.phone.split('-')[1]);
-			$('#managementPhone3').val(data.phone.split('-')[2]);
-			$('#managementPhone').val(data.phone);
-			$('#managementMail1').val(data.email.split('@')[0]);
-			$('#managementMail2').val(data.email.split('@')[1]);
-			$('#managementMail').val(data.email);
-			$('#managementDept').val(data.deptNm);
-			$('#managementPstn').val(data.pstn);
+// 			$('#managementCompanyNm').val(data.companyNm);
+// 			$('#managementPhone1').val(data.phone.split('-')[0]);
+// 			$('#managementPhone2').val(data.phone.split('-')[1]);
+// 			$('#managementPhone3').val(data.phone.split('-')[2]);
+// 			$('#managementPhone').val(data.phone);
+// 			$('#managementMail1').val(data.email.split('@')[0]);
+// 			$('#managementMail2').val(data.email.split('@')[1]);
+// 			$('#managementMail').val(data.email);
+// 			$('#managementDept').val(data.deptNm);
+// 			$('#managementPstn').val(data.pstn);
 			isDisabled = false;
 		}else if(type == 2){
 			data = managementData2[$("input[name='userCheck"+type+"']:checked").val()];
@@ -1585,63 +1461,63 @@
 			alert('대표자을 입력해 주세요.');
 			return false;
 		}
-		if ($('#'+type+' #address').val() == '') {
-			alert('회사 주소를 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #supplierNo1').val() == '') {
-			alert('공급업체 사업자번호을 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #supplierNo2').val() == '') {
-			alert('공급업체 사업자번호을 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #supplierNo3').val() == '') {
-			alert('공급업체 사업자번호을 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #telephoneNo1').val() == '') {
-			alert('공급업체 연락처를 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #telephoneNo2').val() == '') {
-			alert('공급업체 연락처를 입력해 주세요.');
-			return false;
-		}
-		if ($('#'+type+' #telephoneNo3').val() == '') {
-			alert('공급업체 연락처를 입력해 주세요.');
-			return false;
-		}
+// 		if ($('#'+type+' #address').val() == '') {
+// 			alert('회사 주소를 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #supplierNo1').val() == '') {
+// 			alert('공급업체 사업자번호을 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #supplierNo2').val() == '') {
+// 			alert('공급업체 사업자번호을 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #supplierNo3').val() == '') {
+// 			alert('공급업체 사업자번호을 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #telephoneNo1').val() == '') {
+// 			alert('공급업체 연락처를 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #telephoneNo2').val() == '') {
+// 			alert('공급업체 연락처를 입력해 주세요.');
+// 			return false;
+// 		}
+// 		if ($('#'+type+' #telephoneNo3').val() == '') {
+// 			alert('공급업체 연락처를 입력해 주세요.');
+// 			return false;
+// 		}
 		if(type == 'register'){
-			if($('#managementNm').val() == ''){
-				alert('담당 관리자를 선택해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerNm').val() == '') {
-				alert('담당자 이름를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone1').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone2').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerPhone3').val() == '') {
-				alert('담당자 연락처를 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerMail1').val() == '') {
-				alert('담당자 메일을 입력해 주세요.');
-				return false;
-			}
-			if ($('#'+type+' #managerMail2').val() == '') {
-				alert('담당자 메일을 입력해 주세요.');
-				return false;
-			}
+// 			if($('#managementNm').val() == ''){
+// 				alert('담당 관리자를 선택해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerNm').val() == '') {
+// 				alert('담당자 이름를 입력해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerPhone1').val() == '') {
+// 				alert('담당자 연락처를 입력해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerPhone2').val() == '') {
+// 				alert('담당자 연락처를 입력해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerPhone3').val() == '') {
+// 				alert('담당자 연락처를 입력해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerMail1').val() == '') {
+// 				alert('담당자 메일을 입력해 주세요.');
+// 				return false;
+// 			}
+// 			if ($('#'+type+' #managerMail2').val() == '') {
+// 				alert('담당자 메일을 입력해 주세요.');
+// 				return false;
+// 			}
 		}
 		return true;
 	}

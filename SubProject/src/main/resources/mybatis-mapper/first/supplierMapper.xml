@@ -24,7 +24,7 @@
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY UPPER(MODI_DT) ASC) AS ROWNUM
 			, SUPPLIER_ID
-			, UP_COMPANY_CODE
+			, COMPANY_CODE
 			, SUPPLIER_CODE
 			, SUPPLIER_NO
 			, SUPPLIER_NM
@@ -42,8 +42,8 @@
 		WHERE 1 = 1
 		AND USE_YN = 'Y' 
 		<if test="authId != 'au2000001'">
-			<if test="upCompanyCode != null and upCompanyCode != ''">
-				AND UP_COMPANY_CODE = #{upCompanyCode}
+			<if test="companyCode != null and companyCode != ''">
+				AND COMPANY_CODE = #{companyCode}
 			</if>
 		</if>
 		<include refid="searchSupplier"></include>
@@ -58,8 +58,8 @@
 		WHERE 1 = 1
 		AND USE_YN = 'Y'
 		<if test="authId != 'au2000001'">
-			<if test="upCompanyCode != null and upCompanyCode != ''">
-				AND UP_COMPANY_CODE = #{upCompanyCode}
+			<if test="companyCode != null and companyCode != ''">
+				AND COMPANY_CODE = #{companyCode}
 			</if>
 		</if>
 		<include refid="searchSupplier"></include>
@@ -68,7 +68,7 @@
 	<insert id="insert" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		INSERT INTO T_SUPPLIER (
 			SUPPLIER_ID
-			, UP_COMPANY_CODE
+			, COMPANY_CODE
 			, SUPPLIER_CODE
 			, SUPPLIER_NO
 			, SUPPLIER_NM
@@ -84,7 +84,7 @@
 			, MODI_DT
 		) VALUES (
 			#{supplierId}
-			, #{upCompanyCode}
+			, #{companyCode}
 			, #{supplierCode}
 			, #{supplierNo}
 			, #{supplierNm}
@@ -115,13 +115,13 @@
 			, MODI_ID = #{modiId}
 			, MODI_DT = NOW()
 		WHERE
-			SUPPLIER_ID = #{supplierId} AND UP_COMPANY_CODE = #{upCompanyCode}
+			SUPPLIER_ID = #{supplierId} AND COMPANY_CODE = #{companyCode}
 	</update>
 	
 	<select id="select" resultType="com.portal.adm.supplier.model.SupplierModel" parameterType="string">
 		SELECT
 			SUPPLIER_ID
-			, UP_COMPANY_CODE
+			, COMPANY_CODE
 			, SUPPLIER_CODE
 			, SUPPLIER_NO
 			, SUPPLIER_NM
