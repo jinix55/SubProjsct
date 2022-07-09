@@ -41,6 +41,7 @@
 	     ON  a.PRODUCT_CODE       =  aa.PRODUCT_CODE
 	    AND  aa.USE_YN  = 'Y'		
 	    AND  aa.PACKAGING_ORDER  = 1
+	    AND  aa.COMPANY_CODE =  #{companyCode}
 			
 	   LEFT OUTER JOIN t_environment_code cc
 	     ON  cc.GROUP_ID     = 'GROUP_ID' 
@@ -116,20 +117,23 @@
 	    LEFT OUTER JOIN t_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = upper(b.MAPPING_PRODUCT_CODE)
          AND b.USE_YN = 'Y'
-
+        AND  b.COMPANY_CODE =  #{companyCode}
+        
 	    LEFT OUTER JOIN t_product_packaging c
 	      ON upper(a.PRODUCT_CODE) = upper(c.PRODUCT_CODE)
 	     AND c.PACKAGING_ORDER = 1 
          AND c.USE_YN = 'Y'
-
+         AND c.COMPANY_CODE =  #{companyCode}
 
 		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
 		  AND a.USE_YN = 'Y'
+		  AND a.COMPANY_CODE =  #{companyCode}
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
 		INSERT INTO t_PRODUCT (
-			  PRODUCT_CODE
+		      COMPANY_CODE
+			, PRODUCT_CODE
 			, PRODUCT_NM
 			, SUPPLIER_INFO
 			, SUMMARY
@@ -141,7 +145,8 @@
 			, MODI_ID
 			, MODI_DT
 		) VALUES (
-			  #{productCode}
+		      #{companyCode}
+			, #{productCode}
 			, #{productNm}
 			, #{supplierInfo}
 			, #{summary}
@@ -171,6 +176,7 @@
 			, MAPPING_PRODUCT_CODE   = #{mappingProductCode}
 		WHERE
 			upper(PRODUCT_CODE) = upper(#{productCode})
+	    AND COMPANY_CODE =  #{companyCode}
 	</update>
 	
 
@@ -182,6 +188,7 @@
 	 		, MODI_ID  = #{modiId}
 			, MODI_DT  = now()
 		WHERE	upper(PRODUCT_CODE) = upper(#{productCode})
+		 AND    COMPANY_CODE =  #{companyCode}
 		   	
 	</update>
 
@@ -201,6 +208,7 @@
 	    LEFT OUTER JOIN t_PRODUCT b
 	      ON upper(a.PRODUCT_CODE) = UPPER(b.PRODUCT_CODE)
          AND b.USE_YN = 'Y'
+         AND b.COMPANY_CODE =  #{companyCode}
     
         LEFT OUTER JOIN t_environ_price c
 	      ON c.GROUP_ID = 'GROUP_ID' 
@@ -211,6 +219,7 @@
 	     AND d.CODE_ID = a.CODE_ID
 		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
 		  AND a.USE_YN = 'Y'	 
+		  AND a.COMPANY_CODE =  #{companyCode}
 		  <if test="packagingOrder  != null and packagingOrder != ''">
 				and (a.PACKAGING_ORDER = #{packagingOrder})
 		  </if>
@@ -243,6 +252,7 @@
 		     ,  t_environ_price b
 		     ,  t_environ_price c
 		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
+		AND a.COMPANY_CODE =  #{companyCode}
 		AND b.GROUP_ID = 'GROUP_ID'
 		AND b.CODE_ID = a.GROUP_ID
 		AND c.GROUP_ID = a.GROUP_ID
@@ -259,6 +269,7 @@
 		WHERE 1 = 1 
 	      <if test="productCode  != null and productCode != ''">	
 			    and (upper(PRODUCT_CODE) = upper(#{productCode}))
+			    AND COMPANY_CODE =  #{companyCode}
 	      </if>
 <!--20220518 	      		    
 		  <if test="packagingOrder  != null and packagingOrder != '' and packagingOrder != '-1'">
