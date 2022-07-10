@@ -6,17 +6,19 @@
 
 	<sql id="searchProduct">
 		<where>
+			a.USE_YN = 'Y'
+			and a.COMPANY_CODE =  #{companyCode}
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
-				and (upper(PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
+				and (upper(a.PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'packingType' and searchValue != ''">
-				and (upper(PACKING_TYPE) like concat('%',upper(#{searchValue}),'%'))
+				and (upper(a.PACKING_TYPE) like concat('%',upper(#{searchValue}),'%'))
 			</if>
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
-				and (upper(RECYCLE_GRADE) = upper(#{searchValue}))
+				and (upper(a.RECYCLE_GRADE) = upper(#{searchValue}))
 			</if>
 			<if test="searchKey != '' and searchKey == 'masterProductCode' and searchValue != ''">
-				and NULLIF(MASTER_PRODUCT_CODE    ,'') IS NULL
+				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
 			</if>
 		</where>
 	</sql>
@@ -62,10 +64,10 @@
 	    AND  dd.CODE_ID  =  a.GRADE_CODE
 	    AND  dd.USE_YN   = 'Y'	
 	   
-	   WHERE a.COMPANY_CODE =  #{companyCode}
-<!--TODO 	    	
+<!-- 	   WHERE a.COMPANY_CODE =  #{companyCode} -->
+<!--TODO 	-->    	
 		<include refid="searchProduct"></include>	
- -->    
+     
       ORDER BY a.PRODUCT_CODE, ROWNUM   
       <include refid="paging"></include>		
 	</select>
@@ -74,12 +76,12 @@
 	    <!-- 확인 2022-07-08 -->
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
-		FROM t_PRODUCT
-		WHERE USE_YN = 'Y'
-		AND   COMPANY_CODE =  #{companyCode}
-<!--TODO		
+		FROM t_PRODUCT a
+<!-- 		WHERE USE_YN = 'Y' -->
+<!-- 		AND   COMPANY_CODE =  #{companyCode} -->
+<!--TODO	 -->	
 		<include refid="searchProduct"></include>
- -->			
+			
 	</select>	
 
      <!-- 확인 2022-07-08 -->
