@@ -340,8 +340,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-50">
-					</div>
+
 					<div class="col-50">
 					  <div class="form-group">
 						<label class="col-25 form-label">상품명</label>
@@ -350,6 +349,10 @@
 						</div>
 					  </div>
 					</div>
+					
+					<div class="col-50">
+					</div>					
+					
 					<div class="col-50">
 					  <div class="form-group">
 						<label class="col-25 form-label">납품기업</label>
@@ -369,6 +372,8 @@
 						</div>
 					  </div>
 					</div>
+					
+<!-- KBK					
 					<div class="col-25">
 					  <div class="form-group">
 						<label class="col-40 form-label">포장재총중량</label>
@@ -386,6 +391,12 @@
 						</div>
 					  </div>
 					</div>
+KBK  -->
+ 
+ 
+ 
+ 
+ 					
 <!-- 					<div class="col-35"> -->
 <!-- 					  <div class="form-group"> -->
 <!-- 						<label class="col-40 form-label"  id="edit_baseYear_1">누적판매량(1년전)</label> -->

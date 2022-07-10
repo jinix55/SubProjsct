@@ -141,6 +141,7 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<ProductModel> selectProduct(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	//상품 상세정보 조회
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	System.out.println("productModel" + productModel.getProductCode());
     	ProductModel product = productService.selectProduct(productModel);
     	System.out.println("selectProduct " + product);
@@ -195,8 +196,8 @@ public class ProductController {
     @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
-//    public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
     	System.out.println("updateProduct productModel " + productModel);
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode()); 
     	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
     		if(!(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals(""))) {
     			return ResponseEntity.badRequest().body("접수번호를 등록 할수 없습니다.");	
@@ -268,8 +269,8 @@ public class ProductController {
      */
     @PostMapping("/delete")
     public ResponseEntity<String> productDelete(@ModelAttribute ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {
-//    public ResponseEntity<String> productDelete(@RequestBody ProductModel productModel, HttpServletRequest request, @AuthenticationPrincipal AuthUser authUser) {	
         try {            
+        	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
             productModel.setModiId(authUser.getMemberModel().getUserId());
             String result = productService.deleteProduct(productModel);
             
@@ -412,6 +413,7 @@ public class ProductController {
     public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
 //    public ResponseEntity<String> insertProductPackaging(HttpServletRequest request, @RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser) {
     	try {
+    		prodPackagingModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 			prodPackagingModel.setRgstId(authUser.getMemberModel().getUserId());
 			prodPackagingModel.setModiId(authUser.getMemberModel().getUserId());
 			prodPackagingModel.setPackagingId(idUtil.getPackagingId());

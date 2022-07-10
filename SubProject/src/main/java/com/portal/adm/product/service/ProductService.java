@@ -99,12 +99,13 @@ public class ProductService {
 		
 		productRecyleContributionsModel = new ProductModel();
 		
-		System.out.println("productModel " + productModel);
+		
 		
 		productRecyleContributionsModel = productMapper.selectProductRecyle(productModel);
 		
-       	outProductModel.setBaseYear("2021");
+       	
     	if(productRecyleContributionsModel != null) {
+    		outProductModel.setBaseYear("2021");
     		outProductModel.setAccumulateSaleQty(productRecyleContributionsModel.getAccumulateSaleQty());
     		outProductModel.setPackingTotalWeight(productRecyleContributionsModel.getPackingTotalWeight());
     		outProductModel.setRecyleContributions(productRecyleContributionsModel.getRecyleContributions());

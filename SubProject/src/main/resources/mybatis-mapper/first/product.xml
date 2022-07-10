@@ -30,6 +30,11 @@
     <!-- 확인 2022-07-08 -->
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
+		   CASE
+		   	   WHEN  a.MASTER_PRODUCT_CODE IS NULL THEN a.PRODUCT_CODE
+		       WHEN  a.MASTER_PRODUCT_CODE = ''    THEN a.PRODUCT_CODE         
+		       ELSE  a.MASTER_PRODUCT_CODE
+		    END AS SORT_CODE,
 		    ROW_NUMBER() OVER (ORDER BY a.PRODUCT_NM DESC) AS ROWNUM,
 			a.MASTER_PRODUCT_CODE,
 			a.PRODUCT_CODE,
@@ -68,10 +73,10 @@
 <!--TODO 	-->    	
 		<include refid="searchProduct"></include>	
      
-      ORDER BY a.PRODUCT_CODE, ROWNUM   
+      ORDER BY SORT_CODE, a.MASTER_PRODUCT_CODE, a.PRODUCT_CODE, ROWNUM DESC   
       <include refid="paging"></include>		
 	</select>
-	
+	 
 	
 	    <!-- 확인 2022-07-08 -->
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
@@ -311,6 +316,7 @@
 		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   
 			, PRODUCT_CODE     
+			, COMPANY_CODE
 			, PACKAGING_ORDER
 			, PACKAGING_ORDER_NM
 			, GROUP_ID       
@@ -323,6 +329,7 @@
 		) VALUES (
 			  #{packagingId}
 			, #{productCode}
+			, #{companyCode}
 			, #{packagingOrder}
 			, IF(#{packagingOrder}<10, CONCAT(CAST(#{packagingOrder} AS CHAR),'차포장'), '부속포장')
 			, #{groupId}
@@ -711,8 +718,9 @@
 			, PACKING_TOTAL_WEIGHT
 			, RECYLE_CONTRIBUTIONS
 		FROM
-			t_PRODUCT_RECYLE 
-		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
+			t_product_recyle_contributions 
+		WHERE COMPANY_CODE = #{companyCode}
+		  AND upper(PRODUCT_CODE) = upper(#{productCode})
 		  AND BASE_YEAR = #{inBaseYear}
 		  
 	</select>	
