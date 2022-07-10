@@ -65,6 +65,7 @@
 					<option value="matTypeNm">포장유형</option>
 					<option value="selfEvlGradNm">재활용등급</option>
 					<option value="masterApplyNm">상태</option>
+					<option value="masterProductCode">마스터 상품만 보기</option>
                   </select>
                 </div>
                 <div class="form-inline">
@@ -77,6 +78,10 @@
                     </span>
                   </div>
                 </div>
+                <div class="form-inline btn-form-small">
+					<input type="checkbox" name="masterProductCodeCheck" id="masterProductCodeCheck" ${pages.searchKey eq 'masterProductCode' ? 'checked' : ''}>
+					<label for="masterProductCodeCheck" class="mr05 pt1">마스터 상품만 보기</label>
+			    </div>
               </div>
             </div>
           </form>
@@ -90,27 +95,29 @@
                   <col style="width: 40px;">
                   <col style="width: 80px;">
                   <col style="width: 80px;">
+                  <col style="width: 80px;">
                   <col style="width: 100px;">
                   <col style="width: 100px;">
                   <col style="width: 50px;">
                   <col style="width: 50px;">
-                  <col style="width: 50px;">
-                  <col style="width: 60px;">
+<%--                   <col style="width: 50px;"> --%>
+<%--                   <col style="width: 60px;"> --%>
                   <col style="width: 60px;">
                   <!-- <col style="width: 40px;"> -->
-                  <col style="width: 40px;">
+                  <col style="width: 60px;">
                 </colgroup>
                 <thead>
                   <tr class="th-bg">
                     <th scope="col">번호</th>
+                    <th scope="col">마스터 상품코드</th>
                     <th scope="col">상품코드</th>
                     <th scope="col">사진</th>
                     <th scope="col">상품명</th>
-                    <th scope="col">포장유형</th>
+                    <th scope="col">포장정보</th>
                     <th scope="col">재활용등급</th>
                     <th scope="col">진행상태</th>
-                    <th scope="col">포장정보</th>
-                    <th scope="col">자가진단</th>
+<!--                     <th scope="col">포장정보</th> -->
+<!--                     <th scope="col">자가진단</th> -->
                     <th scope="col">재활용<br>분담금결과</th>
                     <!-- <th scope="col">육안판정</th> -->
                     <th scope="col">관리</th>
@@ -121,6 +128,7 @@
 						<c:forEach items="${products}" var="product" varStatus="status">
 							<tr>
 								<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
+								<td><input type="text" style="border:none" value="${product.masterProductCode}" readonly="readonly"  ></td>
 								<td><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
 									<c:if test="${product.photoGfileId ne ''}">
@@ -128,7 +136,11 @@
 									</c:if>	
 								</td>
 								<td>${product.productNm} </td>
-								<td>${product.matTypeNm}</td>
+								<td>
+									<c:if test="${empty product.masterProductCode}">
+										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.matTypeNm ? '등록': product.matTypeNm}</a>
+									</c:if>
+								</td>
 								<td class="fontColorBlue">
 									<c:choose>
 										<c:when test="${product.selfEvlGradNm eq '최우수'}">
@@ -147,17 +159,22 @@
 											<img src="/images/free-icon-smile-356662.png" width="26px">
 										</c:otherwise>
 									</c:choose>
-									${product.selfEvlGradNm}
-								</td>
-								<td>${product.masterApplyNm}</td>
-								<td>
-									<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a>
-								</td>
-								<td>
-									<c:if test="${not empty product.matType}">
-										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a>
+									
+									<c:if test="${not empty product.matType and empty product.masterProductCode}">
+										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.selfEvlGradNm ? '확인' : product.selfEvlGradNm}</a>
 									</c:if>
 								</td>
+								<td>${product.masterApplyNm}</td>
+<!-- 								<td> -->
+<%-- 									<c:if test="${empty product.masterProductCode}"> --%>
+<%-- 										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a> --%>
+<%-- 									</c:if> --%>
+<!-- 								</td> -->
+<!-- 								<td> -->
+<%-- 									<c:if test="${not empty product.matType and empty product.masterProductCode}"> --%>
+<%-- 										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">자가진단</a> --%>
+<%-- 									</c:if> --%>
+<!-- 								</td> -->
 								<td>
 									<c:if test="${not empty product.matType}">
 										<a href="javascript:void(0);" onclick="openProductPackagingEnviResultLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">결과확인</a>
@@ -165,6 +182,9 @@
 								</td>
 								<td>
 									<div class="btn-group">
+										<a href="javascript:openProductLayer('registSubProduct', '${product.productCode}');"   onclick="javascript:layerPopup(register);"   role="button" data-toggle="modal" class="btn-small02">
+											서브등록
+										</a>
 										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productCode}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
@@ -179,7 +199,7 @@
 					</c:when>
 					<c:otherwise>
 					    <tr>
-							<td colspan="11">
+							<td colspan="10">
 								등록된 상품정보가 없습니다.
 							</td>
 						</tr>
@@ -191,7 +211,7 @@
             <!-- E_그리드-->
             <div class="btn-group pt15 tr">
               <button id="registView" type="button" class="button btn-success" data-toggle="modal">
-              	<a href="javascript:openProductLayer('registProduct');" onclick="javascript:layerPopup(register);" data-toggle="modal">상품등록</a></button>
+              	<a href="javascript:openProductLayer('registProduct');" onclick="javascript:layerPopup(register);" data-toggle="modal">마스터 등록</a></button>
             </div>
             <!-- S_페이징-->
             <div class="board-paging"></div>
@@ -219,6 +239,7 @@
 				<div class="form-group">
 				  <label class="col-25 form-label">상품코드</label>
 				  <div class="col-75">
+					<input name="masterProductCode" type="hidden">
 					<input name="productCode" type="text" class="text-input" value="" autocomplete="off"  maxlength="100">
 				  </div>
 				</div>
@@ -300,10 +321,11 @@
 					  <div class="form-group">
 						<label class="col-25 form-label">상품코드</label>
 						<div class="col-75">
-						  <input name="productCode" type="hidden" class="text-input">
-						  <input name="matType" type="hidden" class="text-input">
-						  <input name="photoGfileId" type="hidden" class="text-input">
-						  <input name="specGfileId" type="hidden" class="text-input">
+						  <input name="masterProductCode" type="hidden">
+						  <input name="productCode" type="hidden">
+						  <input name="matType" type="hidden">
+						  <input name="photoGfileId" type="hidden">
+						  <input name="specGfileId" type="hidden">
 						  <input name="productCodeView" type="text" class="text-input" value="" disabled>
 						</div>
 					  </div>
@@ -889,6 +911,15 @@
 			saveProdPackagingDetail();
 		});
 
+		$("#masterProductCodeCheck").change(function() {
+		    if(this.checked) {
+		    	$("#searchKey").val('masterProductCode');
+		    }else{
+		    	$("#searchKey").val('');
+		    }
+		    $("#searchFrm").submit();
+		});
+		
 		$(document).on('change', '.supplierCode', function() {
 			if(this.value){
 				console.log($(this).find("option:selected").text());
@@ -980,8 +1011,9 @@
 	});
 	
 	//상품 등록 레이어 오픈시 기존 값 초기화
-	function openProductLayer(type){
+	function openProductLayer(type, masterProductCode){
 		if (type == 'registProduct') {
+			$("#frmInsert input[name=masterProductCode]").val('');
 			$("#frmInsert input[name=productCode]").val('');
 			$("#frmInsert input[name=productNm]").val('');
 			$("#frmInsert input[name=supplierInfo]").val('');
@@ -989,7 +1021,17 @@
 			$("#frmInsert input[name=photos]").val('');
 			$("#frmInsert input[name=specs]").val('');
 			$("#frmInsert .MultiFile-list").empty();
+		} else if (type == 'registSubProduct') {
+			$("#frmInsert input[name=masterProductCode]").val(masterProductCode);
+			$("#frmUpdate input[name=productCode]").val('');
+			$("#frmUpdate input[name=productNm]").val('');
+			$("#frmUpdate input[name=supplierInfo]").val('');
+			$("#frmUpdate textarea[name=summary]").val('');
+			$("#frmUpdate input[name=photos]").val('');
+			$("#frmUpdate input[name=specs]").val('');
+			$("#frmUpdate .MultiFile-list").empty();
 		} else if (type == 'editProduct') {
+			$("#frmInsert input[name=masterProductCode]").val('');
 			$("#frmUpdate input[name=productCode]").val('');
 			$("#frmUpdate input[name=productNm]").val('');
 			$("#frmUpdate input[name=supplierInfo]").val('');
@@ -1153,6 +1195,7 @@
 	// 조회된 상품상세정보 설정
 	function setProductDetailView(data){
 		//hidden 정보
+		$("#frmUpdate input[name=masterProductCode]").val(data.masterProductCode);
 		$("#frmUpdate input[name=productCode]").val(data.productCode);
 		$("#frmUpdate input[name=matType]").val(data.matType);
 		$("#frmUpdate input[name=photoGfileId]").val(data.photoGfileId);
@@ -2582,4 +2625,5 @@
 					});
 			 }
 		  }
+	  
 </script>

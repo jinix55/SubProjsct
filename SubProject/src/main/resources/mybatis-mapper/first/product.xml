@@ -15,6 +15,9 @@
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
 				and (upper(RECYCLE_GRADE) = upper(#{searchValue}))
 			</if>
+			<if test="searchKey != '' and searchKey == 'masterProductCode' and searchValue != ''">
+				and NULLIF(MASTER_PRODUCT_CODE    ,'') IS NULL
+			</if>
 		</where>
 	</sql>
 	
@@ -26,6 +29,7 @@
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
 		    ROW_NUMBER() OVER (ORDER BY a.PRODUCT_NM DESC) AS ROWNUM,
+			a.MASTER_PRODUCT_CODE,
 			a.PRODUCT_CODE,
 			a.PRODUCT_NM,
 			(SELECT FILE_ID FROM t_group_file WHERE GFILE_ID = PHOTO_GFILE_ID AND DEL_YN = 'N' AND USE_YN = 'Y' ORDER BY RGST_DT ASC LIMIT 1) AS PHOTO_GFILE_ID,
@@ -91,6 +95,7 @@
 	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
 			  a.PRODUCT_CODE  
+			, a.MASTER_PRODUCT_CODE,
 			, a.PRODUCT_NM
 			, a.SUPPLIER_INFO
 			, a.PRODUCT_MAKER
@@ -134,6 +139,7 @@
 		INSERT INTO t_PRODUCT (
 		      COMPANY_CODE
 			, PRODUCT_CODE
+			, MASTER_PRODUCT_CODE
 			, PRODUCT_NM
 			, SUPPLIER_INFO
 			, SUMMARY
@@ -147,6 +153,7 @@
 		) VALUES (
 		      #{companyCode}
 			, #{productCode}
+			, #{masterProductCode}
 			, #{productNm}
 			, #{supplierInfo}
 			, #{summary}
