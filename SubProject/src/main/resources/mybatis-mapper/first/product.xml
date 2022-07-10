@@ -17,7 +17,7 @@
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
 				and (upper(a.RECYCLE_GRADE) = upper(#{searchValue}))
 			</if>
-			<if test="searchKey != '' and searchKey == 'masterProductCode' and searchValue != ''">
+			<if test="searchKey != '' and searchKey == 'masterProductCode'">
 				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
 			</if>
 		</where>
@@ -97,7 +97,7 @@
 	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
 			  a.PRODUCT_CODE  
-			, a.MASTER_PRODUCT_CODE,
+			, a.MASTER_PRODUCT_CODE
 			, a.PRODUCT_NM
 			, a.SUPPLIER_INFO
 			, a.PRODUCT_MAKER
@@ -173,6 +173,7 @@
 		UPDATE t_PRODUCT
 		SET
 			  PRODUCT_NM          = #{productNm}
+			, MASTER_PRODUCT_CODE = #{masterProductCode}
 			, SUPPLIER_INFO       = #{supplierInfo}
 			, PRODUCT_MAKER       = #{productMaker}
 			, SUMMARY             = #{summary}

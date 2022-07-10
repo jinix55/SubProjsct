@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <script type="text/javascript">
@@ -137,7 +138,7 @@
 								</td>
 								<td>${product.productNm} </td>
 								<td>
-									<c:if test="${empty product.masterProductCode}">
+									<c:if test="${empty product.masterProductCode or fn:trim(product.masterProductCode) == ''}">
 										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.matTypeNm ? '등록': product.matTypeNm}</a>
 									</c:if>
 								</td>
@@ -182,9 +183,11 @@
 								</td>
 								<td>
 									<div class="btn-group">
-										<a href="javascript:openProductLayer('registSubProduct', '${product.productCode}');"   onclick="javascript:layerPopup(register);"   role="button" data-toggle="modal" class="btn-small02">
-											서브등록
-										</a>
+										<c:if test="${empty product.masterProductCode or fn:trim(product.masterProductCode) == ''}">
+											<a href="javascript:openProductLayer('registSubProduct', '${product.productCode}');"   onclick="javascript:layerPopup(register);"   role="button" data-toggle="modal" class="btn-small02">
+												서브등록
+											</a>
+										</c:if>
 										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productCode}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
@@ -321,12 +324,19 @@
 					  <div class="form-group">
 						<label class="col-25 form-label">상품코드</label>
 						<div class="col-75">
-						  <input name="masterProductCode" type="hidden">
 						  <input name="productCode" type="hidden">
 						  <input name="matType" type="hidden">
 						  <input name="photoGfileId" type="hidden">
 						  <input name="specGfileId" type="hidden">
 						  <input name="productCodeView" type="text" class="text-input" value="" disabled>
+						</div>
+					  </div>
+					</div>
+					<div class="col-50">
+					  <div class="form-group">
+						<label class="col-25 form-label">마스터 상품코드</label>
+						<div class="col-75">
+						  <input name="masterProductCode" type="text" class="text-input">
 						</div>
 					  </div>
 					</div>
