@@ -161,7 +161,7 @@
 	<select id="selectSupplierMngRepper" parameterType="com.portal.adm.supplier.model.SupplierModel" resultType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			MANAGER_ID,
-			SUPPLIER_CODE,
+			SUPPLIER_ID,
 			MANAGER_NM,
 			MANAGER_PHONE,
 			MANAGER_MAIL,
@@ -176,7 +176,7 @@
 		FROM
 			T_SUPPLIER_MANAGER
 		WHERE
-			USE_YN = 'Y' AND SUPPLIER_CODE = #{supplierCode}
+			USE_YN = 'Y' AND SUPPLIER_ID = #{supplierId}
 		ORDER BY MANAGER_REPRESENT DESC, RGST_DT DESC
 		LIMIT 1
 	</select>
@@ -184,7 +184,7 @@
 	<select id="selectSupplierManager" parameterType="string" resultType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			MANAGER_ID,
-			SUPPLIER_CODE,
+			SUPPLIER_ID,
 			MANAGER_NM,
 			MANAGER_PHONE,
 			MANAGER_MAIL,
@@ -199,13 +199,13 @@
 		FROM
 			T_SUPPLIER_MANAGER
 		WHERE
-			USE_YN = 'Y' AND MANAGER_ID = #{managerId}
+			USE_YN = 'Y' AND SUPPLIER_ID = #{supplierId}
 	</select>
 	
 	<select id="selectSupplierManagerSearch" parameterType="com.portal.adm.supplier.model.SupplierModel" resultType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			MANAGER_ID,
-			SUPPLIER_CODE,
+			SUPPLIER_ID,
 			MANAGER_NM,
 			MANAGER_PHONE,
 			MANAGER_MAIL,
@@ -220,13 +220,13 @@
 		FROM
 			T_SUPPLIER_MANAGER
 		WHERE
-			MANAGER_NM = #{managerNm} AND MANAGER_MAIL = #{managerMail} AND SUPPLIER_CODE = #{supplierCode}
+			MANAGER_NM = #{managerNm} AND MANAGER_MAIL = #{managerMail} AND SUPPLIER_ID = #{supplierId}
 	</select>
 	
 	<select id="selectSupplierManagers" parameterType="string" resultType="com.portal.adm.supplier.model.SupplierModel">
 		SELECT
 			MANAGER_ID,
-			SUPPLIER_CODE,
+			SUPPLIER_ID,
 			MANAGER_NM,
 			MANAGER_PHONE,
 			MANAGER_MAIL,
@@ -241,13 +241,13 @@
 		FROM
 			T_SUPPLIER_MANAGER
 		WHERE
-			USE_YN = 'Y' AND SUPPLIER_CODE = #{supplierCode}
+			USE_YN = 'Y' AND SUPPLIER_ID = #{supplierId}
 	</select>
 	
 	<insert id="insertManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		INSERT INTO T_SUPPLIER_MANAGER (
 			MANAGER_ID
-			, SUPPLIER_CODE
+			, SUPPLIER_ID
 			, MANAGER_NM
 			, MANAGER_PHONE
 			, MANAGER_MAIL
@@ -260,8 +260,8 @@
 			, MODI_ID
 			, MODI_DT
 		) VALUES (
-			#{managerId}
-			, #{supplierCode}
+			  #{managerId}
+			, #{supplierId}
 			, #{managerNm}
 			, #{managerPhone}
 			, #{managerMail}
@@ -278,7 +278,7 @@
 	
 	<update id="updateManager" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		UPDATE T_SUPPLIER_MANAGER SET
-			SUPPLIER_CODE = #{supplierCode}
+			  SUPPLIER_ID = #{supplierId}
 			, MANAGER_NM = #{managerNm}
 			, MANAGER_PHONE = #{managerPhone}
 			, MANAGER_MAIL = #{managerMail}
@@ -294,7 +294,7 @@
 	
 	<update id="updateManagementId" parameterType="com.portal.adm.supplier.model.SupplierModel">
 		UPDATE T_SUPPLIER SET
-			MANAGEMENT_ID = #{managementId}
+			  MANAGEMENT_ID = #{managementId}
 			, MODI_ID = #{modiId}
 			, MODI_DT = NOW()
 		WHERE

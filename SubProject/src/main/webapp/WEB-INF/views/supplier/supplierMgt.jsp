@@ -63,14 +63,14 @@
 									<td>${list.supplierNo}</td>
 									<td>${list.representativeNm}</td>
 									<td>
-										<a href="javascript:void(0);" role="button" onclick="detailView('${list.supplierCode}', 'tabnav02');" data-toggle="modal" class="btn-icon text-point">
+										<a href="javascript:void(0);" role="button" onclick="detailView('${list.supplierId}', 'tabnav02');" data-toggle="modal" class="btn-icon text-point">
 											<img src="/images/icon_user2.png">
 										</a>
 									</td>
 									<td>
 										<div class="btn-group">
 											<a href="javascript:void(0);" role="button" data-toggle="modal"
-												onclick="detailView('${list.supplierCode}', 'tabnav01');">
+												onclick="detailView('${list.supplierId}', 'tabnav01');">
 												<img src="/images/icon_edit.png" alt="상세보기" class="btn-table-icon">
 											</a> <a href="#delete" role="button" data-toggle="modal"
 												onclick="deleteSupSet('${list.supplierNm}','${list.supplierId}');"

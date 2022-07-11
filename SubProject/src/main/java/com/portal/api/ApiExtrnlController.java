@@ -88,7 +88,7 @@ public class ApiExtrnlController {
         String fromCompanyCode = authUser.getMemberModel().getCompanyCode();		// 보내는 회사 코드
         
         String toCompanyNm = prodPackagingDetailModel.getSupplierNm();				// 받는 회사 명
-        String toCompanyCode = prodPackagingDetailModel.getSupplierCode();				// 받는 회사 코드
+        String toCompanyCode = prodPackagingDetailModel.getSupplierId();				// 받는 회사 코드
         String managerNm = prodPackagingDetailModel.getManagerNm();					// 받는 사람(담당자 명)
 		String managerId = prodPackagingDetailModel.getManagerId();// 받는 사암 ID(담당자 ID)
         String managerMail = prodPackagingDetailModel.getManagerMail();					// 받는 사람(담당자 메일)
@@ -190,12 +190,12 @@ public class ApiExtrnlController {
         	prodPackagingDetailModel.setPackagingDetailId(extrnlModel.getPackagingId());
         	prodPackagingDetailModel = apiExtrnlService.selectProdApiInfo(prodPackagingDetailModel);
         	
-        	dayList = environmentCodeService.selectCodeDayList();
-        	
+//        	dayList = environmentCodeService.selectCodeDayList();
+//        	
         	EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
-        	
-        	environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
-        	environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
+//        	
+//        	environmentCodeModel.setRevisionMonth(dayList.get(0).getRevisionMonth());
+//        	environmentCodeModel.setRevisionYear(dayList.get(0).getRevisionYear());
         	
         	// 재질 유형 정보
         	environmentCodeModel.setGroupId("GROUP_ID");
@@ -209,7 +209,7 @@ public class ApiExtrnlController {
         	middleEnv = codeService.selectGroupIdList(codeModel);
         	prodPackagingDetailModel.setApiKey(apiKey);
         	// 공급업체 담당자 정보
-        	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingDetailModel.getSupplierCode());
+        	List<SupplierModel> managersModel = supplierService.selectSupplierManagers(prodPackagingDetailModel.getSupplierId());
         	
         	model.addAttribute("packagingModel",prodPackagingDetailModel);
         	model.addAttribute("largeEnv",largeEnv);

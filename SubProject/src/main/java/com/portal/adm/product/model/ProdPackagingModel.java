@@ -17,6 +17,7 @@ public class ProdPackagingModel extends Criteria{
     
 	private String packagingId;
 	private String productCode;
+	private String supplierId;
 	private String subProductCode;
 	private int packagingOrder;
 	private String packagingOrderNm;

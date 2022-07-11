@@ -27,6 +27,7 @@ public class ProdPackagingDetailApiModel extends Criteria{
     private String color;
     private String summary;
     private String matFileId;
+    private String supplierId;
     private String supplierCode;
     private String managerId;	
     private String useYn;           // 사용여부

@@ -406,7 +406,7 @@
 				  , a.MAT_FILE_ID
 				  , e.FILE_NM AS MAT_FILE_NM
 				  , e.FILE_URL AS MAT_FILE_URL
-				  , a.SUPPLIER_CODE
+				  , a.SUPPLIER_ID
 				  , c.SUPPLIER_NM
 				  , a.MANAGER_ID
 				  , d.MANAGER_NM
@@ -419,11 +419,11 @@
 	        AND  b.USE_YN  = 'Y'
 	        
 	      LEFT OUTER JOIN t_supplier c
-	        ON   a.SUPPLIER_CODE  = c.SUPPLIER_CODE
+	        ON   a.SUPPLIER_ID  = c.SUPPLIER_ID
 	        AND  c.USE_YN  = 'Y'        
 	        
 	      LEFT OUTER JOIN t_supplier_manager d
-	        ON   a.SUPPLIER_CODE  = d.SUPPLIER_CODE
+	        ON   a.SUPPLIER_ID  = d.SUPPLIER_ID
 	        AND  a.MANAGER_ID  =  d.MANAGER_ID
 	        AND  d.USE_YN  = 'Y'     
 	        
@@ -459,7 +459,7 @@
 			, COLOR
 			, SUMMARY
 			, MAT_FILE_ID
-			, SUPPLIER_CODE
+			, SUPPLIER_ID
 			, MANAGER_ID
 			, USE_YN         
 			, RGST_ID        
@@ -476,7 +476,7 @@
 			, #{color}
 			, #{summary}
 			, #{matFileId}
-			, #{supplierCode}
+			, #{supplierId}
 			, #{managerId}
 			, 'Y'
 			, #{rgstId}
@@ -498,7 +498,7 @@
 			, COLOR         = #{color}                          
 			, SUMMARY       = #{summary}                        
 			, MAT_FILE_ID   = #{matFileId}                      
-			, SUPPLIER_CODE = #{supplierCode}                   
+			, SUPPLIER_ID   = #{supplierId}                   
 			, MANAGER_ID    = #{managerId}                      
 	 		, MODI_ID       = #{modiId}                         
 			, MODI_DT       = now()                             
@@ -813,7 +813,7 @@
 			, a.COLOR
 			, a.SUMMARY
 			, a.MAT_FILE_ID
-			, a.SUPPLIER_CODE
+			, a.SUPPLIER_ID
 			, a.MANAGER_ID
 			, a.USE_YN
 			, a.RGST_ID
@@ -849,7 +849,7 @@
 			, COLOR                = #{color}        
 			, ADD_EXPLAN           = #{addExplan}      
 			, MAT_FILE_ID          = #{matFileId}     
-			, SUPPLIER_CODE        = #{supplierCode} 
+			, SUPPLIER_ID          = #{supplierId} 
 			, MANAGER_ID           = #{managerId} 
 			, MODI_ID              = #{modiId}           
 			, MODI_DT              = now()         
@@ -939,7 +939,7 @@
 			, a.COLOR                                                 
 			, a.ADD_EXPLAN                                       
 			, a.MAT_FILE_ID        
-			, a.SUPPLIER_CODE      
+			, a.SUPPLIER_ID     
 			, a.MANAGER_ID         
 		FROM                                                       
 			T_PRODUCT_PACKAGING a 
@@ -967,7 +967,7 @@
 			, a.COLOR                                                 
 			, a.ADD_EXPLAN                                       
 			, a.MAT_FILE_ID        
-			, a.SUPPLIER_CODE      
+			, a.SUPPLIER_ID      
 			, a.MANAGER_ID         
 		FROM                                                       
 			T_PRODUCT_PACKAGING a 

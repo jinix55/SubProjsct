@@ -944,7 +944,7 @@ KBK  -->
 		    $("#searchFrm").submit();
 		});
 		
-		$(document).on('change', '.supplierCode', function() {
+		$(document).on('change', '.supplierId', function() {
 			if(this.value){
 				console.log($(this).find("option:selected").text());
 				$("#frmDetail input[name=supplierNm]").val($(this).find("option:selected").text());
@@ -970,10 +970,10 @@ KBK  -->
 			var param =  $('#frmDetail').serialize();
 			var packagingDetailId = $("#frmDetail input[name=packagingDetailId]").val();
 		  	if(packagingDetailId != '' && packagingDetailId != null) {
-		  		var supplierCode = $("#frmDetail select[name=supplierCode]").val();
+		  		var supplierId = $("#frmDetail select[name=supplierId]").val();
 		  		sendEmail(param);
 		  	}else {
-// 				saveProductPackagingDetailAjax(param,'insert', true);
+				saveProductPackagingDetailAjax(param,'insert', true);
 			}
 			
 		});
@@ -1100,10 +1100,10 @@ KBK  -->
 				return false;
 			}
 		} else if (type == 'savePackaging') {
-// 			var supplierCode = $("#frmDetail select[name=supplierCode]").val();
-// 			if (supplierCode == '') {
+// 			var supplierId = $("#frmDetail select[name=supplierId]").val();
+// 			if (supplierId == '') {
 // 				alert('공급업체를 선택해 주세요.');
-// 				$("#frmDetail select[name=supplierCode]").focus();
+// 				$("#frmDetail select[name=supplierId]").focus();
 // 				return false;
 // 			}
 // 			var managerId = $("#frmDetail select[name=managerIdList]").val();
@@ -1822,10 +1822,10 @@ KBK  -->
 		innerHtml += '<label class="col-25 form-label">공급업체</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<select name="supplierCode" class="select-box supplierCode">';
+		innerHtml += '<select name="supplierId" class="select-box supplierId">';
 		innerHtml += '<option value="">선택</option>';
 		<c:forEach items="${suppliers}" var="supplier" varStatus="status">
-			innerHtml += '<option value="${supplier.supplierCode}">${supplier.supplierNm}</option>';
+			innerHtml += '<option value="${supplier.supplierId}">${supplier.supplierNm}</option>';
 		</c:forEach>
 		innerHtml += '</select>';
 		innerHtml += '</div>';
@@ -1918,12 +1918,12 @@ KBK  -->
 				var data = JSON.parse(result);
 				console.log(data.packagingDetailId);
 				$("#frmDetail input[name=packagingDetailId]").val(data.packagingDetailId);
-				alert("정상적으로 저장되었습니다.")
-// 				if(sendMail) {
-// 					sendEmail($('#frmDetail').serialize());
-// 				}else {
-// 					alert("정상적으로 저장되었습니다.")
-// 				}
+// 				alert("정상적으로 저장되었습니다.")
+				if(sendMail) {
+					sendEmail($('#frmDetail').serialize());
+				}else {
+					alert("정상적으로 저장되었습니다.")
+				}
 			}
 		});
 	  }
@@ -1957,10 +1957,10 @@ KBK  -->
 
 	  //이메일 전송 테스트
 	  function sendEmail(param) {
-		  var supplierCode  = $("#frmDetail select[name=supplierCode]").val();
-		  if (supplierCode == '') {
+		  var supplierId  = $("#frmDetail select[name=supplierId]").val();
+		  if (supplierId == '') {
 				alert('공급업체를 선택해 주세요.');
-				$("#frmDetail select[name=supplierCode]").focus();
+				$("#frmDetail select[name=supplierId]").focus();
 				return false;
 			}
 			var managerId = $("#frmDetail select[name=managerIdList]").val();
@@ -2020,9 +2020,9 @@ KBK  -->
 				},
 				success : function(data) {
 			        $('#mytable_1_in1:last').append(getProductDetailInfoHtml(data.partCode, data.partNm, packagingId, data));
-			        $('.supplierCode option[value="'+data.supplierCode+'"]').attr("selected", "selected");
+			        $('.supplierId option[value="'+data.supplierId+'"]').attr("selected", "selected");
 			        if(data.managerId && data.managerId !== null && data.managerId !== ''){
-				        managersView(data.supplierCode, data.managerId);
+				        managersView(data.supplierId, data.managerId);
 			        }
 			        
 			        $('#partCodeDetail a').removeClass('on');

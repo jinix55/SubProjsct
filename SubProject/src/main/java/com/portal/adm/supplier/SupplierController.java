@@ -126,7 +126,7 @@ public class SupplierController {
 		if(supplierModel.getManagerRepresent() == null) {
 			supplierModel.setManagerRepresent("N");
 		}
-		supplierModel.setSupplierCode(supplierModel.getSupplierCode());
+		supplierModel.setSupplierId(supplierModel.getMaSupplierCode());
 		supplierModel.setUseYn(supplierModel.getMaUseYn());
 		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
@@ -140,7 +140,7 @@ public class SupplierController {
     
     /**
      * 공급업체 저장 및 수정
-     *
+     * 
      * @param request
      * @return
      */
@@ -150,7 +150,7 @@ public class SupplierController {
 		if(supplierModel.getManagerRepresent() == null) {
 			supplierModel.setManagerRepresent("N");
 		}
-		supplierModel.setSupplierCode(supplierModel.getSupplierCode());
+		supplierModel.setSupplierId(supplierModel.getMaSupplierCode());
 		supplierModel.setUseYn(supplierModel.getMaUseYn());
 		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
