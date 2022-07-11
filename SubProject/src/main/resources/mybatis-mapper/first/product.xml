@@ -588,6 +588,7 @@
 		     ,  CONCAT(IFNULL(MAX(PACKAGING_ORDER) + 1 , 1),'차포장') AS PACKAGING_ORDER_NM
 		  FROM  t_product_packaging
 		 WHERE  upper(PRODUCT_CODE) = upper(#{productCode})
+		   AND  upper(COMPANY_CODE) = upper(#{companyCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER < 9  
 		UNION    
@@ -595,6 +596,7 @@
 		     ,  '부속포장' AS PACKAGING_ORDER_NM
 		  FROM  t_product_packaging
 		 WHERE   upper(PRODUCT_CODE) = upper(#{productCode})
+		   AND  upper(COMPANY_CODE) = upper(#{companyCode})
 		   AND  USE_YN = 'Y'
 		   AND  PACKAGING_ORDER > 10  
 		]]>	 	

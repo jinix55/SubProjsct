@@ -335,10 +335,11 @@ public class ProductController {
     
     @RequestMapping(value="/detail/selectProductPackaging", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@ModelAttribute ProdPackagingModel productPackagingModel) {
+    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@ModelAttribute ProdPackagingModel productPackagingModel, @AuthenticationPrincipal AuthUser authUser) {
 //    public ResponseEntity<List<ProdPackagingModel>> selectProductPackaging(@RequestBody ProdPackagingModel productPackagingModel) {
     	// 상품 목록 조회
-        System.out.println("productPackagingModel " + productPackagingModel );       
+        System.out.println("productPackagingModel " + productPackagingModel );  
+        productPackagingModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<ProdPackagingModel> prodPackagingModelList = productService.selectProductPackaging(productPackagingModel);
         return new ResponseEntity<>(prodPackagingModelList, HttpStatus.OK);
     }    
@@ -486,12 +487,12 @@ public class ProductController {
     
     @RequestMapping(value="/update/prodPackagingDetail", method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> updateProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
+    public ResponseEntity<ProdPackagingDetailModel> updateProdPackagingDetail(@ModelAttribute ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
 //    public ResponseEntity<String> updateProdPackagingDetail(@RequestBody ProdPackagingDetailModel prodPackagingDetailModel,@AuthenticationPrincipal AuthUser authUser ) {
     	prodPackagingDetailModel.setModiId(authUser.getMemberModel().getUserId());
     	prodPackagingDetailModel.setRgstId(authUser.getMemberModel().getUserId());
 		String result  = productService.updateProdPackagingDetail(prodPackagingDetailModel);
-	    return new ResponseEntity<>(result, HttpStatus.OK);
+	    return new ResponseEntity<>(prodPackagingDetailModel, HttpStatus.OK);
     }      
     
     @RequestMapping(value="/detail/selectProdPackagingSelfList", method= {RequestMethod.GET,RequestMethod.POST})
@@ -540,6 +541,7 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@ModelAttribute ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
 //    public ResponseEntity<List<ProdPackagingModel>> selectProdPackagingOrderNmList(@RequestBody ProdPackagingModel prodPackagingModel,@AuthenticationPrincipal AuthUser authUser ) {
+    	prodPackagingModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<ProdPackagingModel>  prodPackagingList  = productService.selectProdPackagingOrderNmList(prodPackagingModel);
     	List<ProdPackagingModel>  outList = new ArrayList<>();
     	

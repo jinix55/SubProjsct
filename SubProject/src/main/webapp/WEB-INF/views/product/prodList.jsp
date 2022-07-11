@@ -143,29 +143,32 @@
 									</c:if>
 								</td>
 								<td class="fontColorBlue">
-									<c:choose>
-										<c:when test="${product.selfEvlGradNm eq '최우수'}">
-											<img src="/images/free-icon-in-love-356695.png" width="26px">
-										</c:when>
-										<c:when test="${product.selfEvlGradNm eq '우수'}">
-											<img src="/images/free-icon-emoji-3456813.png" width="26px">
-										</c:when>
-										<c:when test="${product.selfEvlGradNm eq '보통'}">
-											<img src="/images/free-icon-smile-356662.png" width="26px">
-										</c:when>
-										<c:when test="${product.selfEvlGradNm eq '어려움'}">
-											<img src="/images/free-icon-angry-1747839.png" width="26px">
-										</c:when>
-										<c:otherwise>
-											<img src="/images/free-icon-smile-356662.png" width="26px">
-										</c:otherwise>
-									</c:choose>
-									
-									<c:if test="${not empty product.matType and empty product.masterProductCode}">
+									<c:if test="${not empty product.matType and (empty product.masterProductCode  or fn:trim(product.masterProductCode) == '')}">
+										<c:choose>
+											<c:when test="${product.selfEvlGradNm eq '최우수'}">
+												<img src="/images/free-icon-in-love-356695.png" width="26px">
+											</c:when>
+											<c:when test="${product.selfEvlGradNm eq '우수'}">
+												<img src="/images/free-icon-emoji-3456813.png" width="26px">
+											</c:when>
+											<c:when test="${product.selfEvlGradNm eq '보통'}">
+												<img src="/images/free-icon-smile-356662.png" width="26px">
+											</c:when>
+											<c:when test="${product.selfEvlGradNm eq '어려움'}">
+												<img src="/images/free-icon-angry-1747839.png" width="26px">
+											</c:when>
+											<c:otherwise>
+												<img src="/images/free-icon-smile-356662.png" width="26px">
+											</c:otherwise>
+										</c:choose>
 										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.selfEvlGradNm ? '확인' : product.selfEvlGradNm}</a>
 									</c:if>
 								</td>
-								<td>${product.masterApplyNm}</td>
+								<td>
+									<c:if test="${empty product.masterProductCode  && fn:trim(product.masterProductCode) == ''}">
+										${product.masterApplyNm}
+									</c:if>
+								</td>
 <!-- 								<td> -->
 <%-- 									<c:if test="${empty product.masterProductCode}"> --%>
 <%-- 										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">포장정보등록</a> --%>
@@ -1096,18 +1099,18 @@ KBK  -->
 				return false;
 			}
 		} else if (type == 'savePackaging') {
-			var supplierCode = $("#frmDetail select[name=supplierCode]").val();
-			if (supplierCode == '') {
-				alert('공급업체를 선택해 주세요.');
-				$("#frmDetail select[name=supplierCode]").focus();
-				return false;
-			}
-			var managerId = $("#frmDetail select[name=managerIdList]").val();
-			if (managerId == '') {
-				alert('담당자를 선택해 주세요.');
-				$("#frmDetail select[name=managerIdList]").focus();
-				return false;
-			}
+// 			var supplierCode = $("#frmDetail select[name=supplierCode]").val();
+// 			if (supplierCode == '') {
+// 				alert('공급업체를 선택해 주세요.');
+// 				$("#frmDetail select[name=supplierCode]").focus();
+// 				return false;
+// 			}
+// 			var managerId = $("#frmDetail select[name=managerIdList]").val();
+// 			if (managerId == '') {
+// 				alert('담당자를 선택해 주세요.');
+// 				$("#frmDetail select[name=managerIdList]").focus();
+// 				return false;
+// 			}
 		} else if (type == 'recyleContributions') {
 			var accumulateSaleQty = $(
 					"#frmUpdate input[name=edit_accumulateSaleQty]").val();
@@ -1914,11 +1917,12 @@ KBK  -->
 				var data = JSON.parse(result);
 				console.log(data.packagingDetailId);
 				$("#frmDetail input[name=packagingDetailId]").val(data.packagingDetailId);
-				if(sendMail) {
-					sendEmail($('#frmDetail').serialize());
-				}else {
-					alert("정상적으로 저장되었습니다.")
-				}
+				alert("정상적으로 저장되었습니다.")
+// 				if(sendMail) {
+// 					sendEmail($('#frmDetail').serialize());
+// 				}else {
+// 					alert("정상적으로 저장되었습니다.")
+// 				}
 			}
 		});
 	  }
@@ -1996,7 +2000,9 @@ KBK  -->
 				success : function(data) {
 			        $('#mytable_1_in1:last').append(getProductDetailInfoHtml(data.partCode, data.partNm, packagingId, data));
 			        $('.supplierCode option[value="'+data.supplierCode+'"]').attr("selected", "selected");
-			        managersView(data.supplierCode, data.managerId);
+			        if(data.managerId && data.managerId !== null && data.managerId !== ''){
+				        managersView(data.supplierCode, data.managerId);
+			        }
 			        
 			        $('#partCodeDetail a').removeClass('on');
 			        if(obj) {
