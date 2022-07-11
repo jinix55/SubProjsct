@@ -970,9 +970,10 @@ KBK  -->
 			var param =  $('#frmDetail').serialize();
 			var packagingDetailId = $("#frmDetail input[name=packagingDetailId]").val();
 		  	if(packagingDetailId != '' && packagingDetailId != null) {
+		  		var supplierCode = $("#frmDetail select[name=supplierCode]").val();
 		  		sendEmail(param);
 		  	}else {
-				saveProductPackagingDetailAjax(param,'insert', true);
+// 				saveProductPackagingDetailAjax(param,'insert', true);
 			}
 			
 		});
@@ -1956,7 +1957,27 @@ KBK  -->
 
 	  //이메일 전송 테스트
 	  function sendEmail(param) {
-	    $.ajax({
+		  var supplierCode  = $("#frmDetail select[name=supplierCode]").val();
+		  if (supplierCode == '') {
+				alert('공급업체를 선택해 주세요.');
+				$("#frmDetail select[name=supplierCode]").focus();
+				return false;
+			}
+			var managerId = $("#frmDetail select[name=managerIdList]").val();
+			if (managerId == '') {
+				alert('담당자를 선택해 주세요.');
+				$("#frmDetail select[name=managerIdList]").focus();
+				return false;
+			}
+			
+			var managerMail = $("#frmDetail input[name=managerMail]").val();
+			if (managerId == '') {
+				alert('담당자 이메일 정보가 없습니다.');
+				$("#frmDetail input[name=managerMail]").focus();
+				return false;
+			}
+			
+		  $.ajax({
 			url : '/api/v1/call/sendMail',
 			dataType : 'text',
 			data : param,
