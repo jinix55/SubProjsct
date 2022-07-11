@@ -126,7 +126,7 @@ public class SupplierController {
 		if(supplierModel.getManagerRepresent() == null) {
 			supplierModel.setManagerRepresent("N");
 		}
-		supplierModel.setSupplierCode(supplierModel.getMaSupplierCode());
+		supplierModel.setSupplierCode(supplierModel.getSupplierCode());
 		supplierModel.setUseYn(supplierModel.getMaUseYn());
 		supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
 		supplierModel.setRgstId(authUser.getMemberModel().getUserId());
