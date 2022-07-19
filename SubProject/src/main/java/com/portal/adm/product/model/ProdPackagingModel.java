@@ -15,6 +15,7 @@ import lombok.Data;
 @Data
 public class ProdPackagingModel extends Criteria{
     
+	private String productId;       //제품 ID
 	private String packagingId;
 	private String productCode;
 	private String supplierId;

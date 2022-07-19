@@ -191,11 +191,11 @@
 												서브등록
 											</a>
 										</c:if>
-										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productCode}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
+										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productId}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
-										<a href="javascript:openProductDeleteLayer('${product.productCode}');"  onclick="javascript:layerPopup(deleteProduct);" role="button" data-toggle="modal" class="btn-icon">
+										<a href="javascript:openProductDeleteLayer('${product.productId}');"  onclick="javascript:layerPopup(deleteProduct);" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
@@ -863,8 +863,8 @@ KBK  -->
 	var selectedProductNm = "";
 	var selectedPackagingId = "";
 	//다른페이지에서 특정 프로덕트코드 파라미터로 들어올때 해당 상품상세 정보 호출
-	if('${param.productCode}') {
-		  $('#editBtn_${param.productCode}').click();
+	if('${param.productId}') {
+		  $('#editBtn_${param.productId}').click();
 	}
 	var totalPage = ${pages.totalPage};
 	var page = ${pages.page};
@@ -1197,7 +1197,7 @@ KBK  -->
 	}
 	
 	// 상품수정 버튼 클릭시 정보 조회 후 레이어 표시
-	function productDetail(productCode) {
+	function productDetail(productId) {
 		//기존정보 초기화
 		openProductLayer('editProduct');
 		
@@ -1205,7 +1205,7 @@ KBK  -->
 			url : '/product/detail/',
 			dataType : 'json',
 			data : {
-				'productCode' : productCode
+				'productId' : productId
 			},
 			type : "POST",
 			async : false,
@@ -1386,9 +1386,9 @@ KBK  -->
 	}
 	
 	//상품 삭제 레이어 노출
-	function openProductDeleteLayer(productCode) {
-	  	$('.delName').text(productCode);
-	  	$("#frmDelete input[name=productCode]").val(productCode);
+	function openProductDeleteLayer(productId) {
+	  	$('.delName').text(productId);
+	  	$("#frmDelete input[name=productId]").val(productId);
 		$('#delType').val('small');
 		$('.tc div.fontColorRed').remove();
 		$('.tc').append('<div class="pt05 fontColorRed">ㆍ삭제시 하위 코드 모두 삭제 됩니다.</div>');

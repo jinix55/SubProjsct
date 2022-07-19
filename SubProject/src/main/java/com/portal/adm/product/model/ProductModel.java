@@ -17,6 +17,7 @@ import lombok.Data;
 @Data
 public class ProductModel extends Criteria{
 
+	private String productId;       //제품 ID
 	private String companyCode;     //제품 코드
     private String productCode;     //제품 코드
     private String productNm;       //제품 명
@@ -84,8 +85,6 @@ public class ProductModel extends Criteria{
     private List<CodeModel> environmentProceedStatCode; 
     private List<CodeModel> mappingStatCode;
     
-    
-    
-    private String productId;
+
     
 }

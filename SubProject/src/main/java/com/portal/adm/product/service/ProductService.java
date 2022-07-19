@@ -129,6 +129,7 @@ public class ProductService {
 	@Transactional
 	public String insertProduct(ProductModel productModel) {
 		System.out.println("insertProduct productModel " + productModel);
+		productModel.setProductId(idUtil.getProductId());  
 		long count = productMapper.insertProduct(productModel);
 		
 		if (count > 0) {

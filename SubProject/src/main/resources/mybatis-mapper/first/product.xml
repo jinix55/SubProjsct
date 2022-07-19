@@ -30,6 +30,7 @@
     <!-- 확인 2022-07-08 -->
 	<select id="selectProductList" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
+		   a.PRODUCT_ID,
 		   CASE
 		   	   WHEN  a.MASTER_PRODUCT_CODE IS NULL THEN a.PRODUCT_CODE
 		       WHEN  a.MASTER_PRODUCT_CODE = ''    THEN a.PRODUCT_CODE         
@@ -49,10 +50,9 @@
 			t_PRODUCT a 
 
 	   LEFT OUTER JOIN t_product_packaging aa
-	     ON  a.PRODUCT_CODE       =  aa.PRODUCT_CODE
+	     ON  a.PRODUCT_ID       =  aa.PRODUCT_ID
 	    AND  aa.USE_YN  = 'Y'		
 	    AND  aa.PACKAGING_ORDER  = 1
-	    AND  aa.COMPANY_CODE =  #{companyCode}
 			
 	   LEFT OUTER JOIN t_environment_code cc
 	     ON  cc.GROUP_ID     = 'GROUP_ID' 
@@ -101,7 +101,8 @@
 	
 	<select id="selectProduct" resultType="com.portal.adm.product.model.ProductModel" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT
-			  a.PRODUCT_CODE  
+		      a.PRODUCT_ID
+			, a.PRODUCT_CODE  
 			, a.MASTER_PRODUCT_CODE
 			, a.PRODUCT_NM
 			, a.SUPPLIER_INFO
@@ -113,10 +114,11 @@
 			, a.RECEIPT_NO
 			, a.APPROVAL_NO
 			
+<!-- 
 			, a.MASTER_MAPPING_CODE
 			, a.MAPPING_PRODUCT_CODE
 			, b.PRODUCT_NM           MAPPING_PRODUCT_NM 
-			
+ -->			
 			, c.GROUP_ID   AS  MAT_TYPE
 			
 			, a.RGST_ID
@@ -125,26 +127,26 @@
 			, a.MODI_DT
 		FROM
 			t_PRODUCT a 
-
+<!-- 
 	    LEFT OUTER JOIN t_PRODUCT b
-	      ON upper(a.PRODUCT_CODE) = upper(b.MAPPING_PRODUCT_CODE)
+	      ON a.PRODUCT_ID = b.MAPPING_PRODUCT_CODE)
          AND b.USE_YN = 'Y'
         AND  b.COMPANY_CODE =  #{companyCode}
+ -->     
         
 	    LEFT OUTER JOIN t_product_packaging c
-	      ON upper(a.PRODUCT_CODE) = upper(c.PRODUCT_CODE)
+	      ON a.PRODUCT_ID = c.PRODUCT_ID
 	     AND c.PACKAGING_ORDER = 1 
          AND c.USE_YN = 'Y'
-         AND c.COMPANY_CODE =  #{companyCode}
 
-		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
+		WHERE a.PRODUCT_ID = #{productId}
 		  AND a.USE_YN = 'Y'
-		  AND a.COMPANY_CODE =  #{companyCode}
 	</select>
 	
 	<insert id="insertProduct" parameterType="com.portal.adm.product.model.ProductModel">
 		INSERT INTO t_PRODUCT (
-		      COMPANY_CODE
+		      PRODUCT_ID
+		    , COMPANY_CODE
 			, PRODUCT_CODE
 			, MASTER_PRODUCT_CODE
 			, PRODUCT_NM
@@ -158,7 +160,8 @@
 			, MODI_ID
 			, MODI_DT
 		) VALUES (
-		      #{companyCode}
+		      #{productId}
+		    , #{companyCode}
 			, #{productCode}
 			, #{masterProductCode}
 			, #{productNm}
@@ -190,8 +193,7 @@
 			, MASTER_MAPPING_CODE = #{masterMappingCode}
 			, MAPPING_PRODUCT_CODE   = #{mappingProductCode}
 		WHERE
-			upper(PRODUCT_CODE) = upper(#{productCode})
-	    AND COMPANY_CODE =  #{companyCode}
+			PRODUCT_ID =  #{productId}
 	</update>
 	
 
@@ -202,8 +204,7 @@
 			  USE_YN = 'N'
 	 		, MODI_ID  = #{modiId}
 			, MODI_DT  = now()
-		WHERE	upper(PRODUCT_CODE) = upper(#{productCode})
-		 AND    COMPANY_CODE =  #{companyCode}
+		WHERE	PRODUCT_ID =  #{productId}
 		   	
 	</update>
 
@@ -211,6 +212,7 @@
 	<select id="selectProductPackaging" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
 		SELECT
 			  a.PACKAGING_ID
+			, a.PRODUCT_ID
 			, a.PRODUCT_CODE
 			, b.PRODUCT_NM
 			, a.PACKAGING_ORDER
@@ -219,11 +221,11 @@
 			, a.CODE_ID
 			, d.CODE_NM  CODE_NM
 		FROM
-			t_product_packaging a 
+			t_product_packaging a
+			 
 	    LEFT OUTER JOIN t_PRODUCT b
-	      ON upper(a.PRODUCT_CODE) = UPPER(b.PRODUCT_CODE)
+	      ON a.PRODUCT_ID = b.PRODUCT_ID
          AND b.USE_YN = 'Y'
-         AND b.COMPANY_CODE =  #{companyCode}
     
         LEFT OUTER JOIN t_environ_price c
 	      ON c.GROUP_ID = 'GROUP_ID' 
@@ -232,9 +234,8 @@
         LEFT OUTER JOIN t_environ_price d
 	      ON d.GROUP_ID = a.GROUP_ID 
 	     AND d.CODE_ID = a.CODE_ID
-		WHERE upper(a.PRODUCT_CODE) = upper(#{productCode})
+		WHERE a.PRODUCT_ID = #{productId}
 		  AND a.USE_YN = 'Y'	 
-		  AND a.COMPANY_CODE =  #{companyCode}
 		  <if test="packagingOrder  != null and packagingOrder != ''">
 				and (a.PACKAGING_ORDER = #{packagingOrder})
 		  </if>
@@ -255,19 +256,20 @@
 	</update>
 	
 	<select id="selectProductPackagingOrder" resultType="com.portal.adm.product.model.ProdPackagingModel" parameterType="com.portal.adm.product.model.ProdPackagingModel">
- 		SELECT a.PRODUCT_CODE
-		     , a.PACKAGING_ID 
+ 		SELECT  a.PRODUCT_CODE
+		      , a.PACKAGING_ID 
+		      , a.PRODUCT_ID
 			  , a.PACKAGING_ORDER
 			  , a.PACKAGING_ORDER_NM
 			  , a.GROUP_ID
 			  , b.CODE_NM  GROUP_NM
 			  , a.CODE_ID
 			  , c.CODE_NM  CODE_NM
+			  
 		FROM t_product_packaging a
 		     ,  t_environ_price b
 		     ,  t_environ_price c
-		WHERE upper(PRODUCT_CODE) = upper(#{productCode})
-		AND a.COMPANY_CODE =  #{companyCode}
+		WHERE PRODUCT_ID = #{productId}
 		AND b.GROUP_ID = 'GROUP_ID'
 		AND b.CODE_ID = a.GROUP_ID
 		AND c.GROUP_ID = a.GROUP_ID
@@ -282,9 +284,8 @@
 			, MODI_ID              = #{modiId}           
 			, MODI_DT              = now()   
 		WHERE 1 = 1 
-	      <if test="productCode  != null and productCode != ''">	
-			    and (upper(PRODUCT_CODE) = upper(#{productCode}))
-			    AND COMPANY_CODE =  #{companyCode}
+	      <if test="productId  != null and productId != ''">	
+			    and PRODUCT_ID = #{productId}
 	      </if>
 <!--20220518 	      		    
 		  <if test="packagingOrder  != null and packagingOrder != '' and packagingOrder != '-1'">
@@ -315,6 +316,7 @@
 	    <![CDATA[
 		INSERT INTO t_product_packaging (
 			  PACKAGING_ID   
+			, PRODUCT_ID  
 			, PRODUCT_CODE     
 			, COMPANY_CODE
 			, PACKAGING_ORDER
@@ -328,6 +330,7 @@
 			, MODI_DT        
 		) VALUES (
 			  #{packagingId}
+			, #{productId}  
 			, #{productCode}
 			, #{companyCode}
 			, #{packagingOrder}
