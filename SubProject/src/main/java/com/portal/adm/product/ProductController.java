@@ -235,7 +235,7 @@ public class ProductController {
     	}
     	
     	
-    	if(productModel.getMasterApplyCode() != null && productModel.getMasterMappingCode().equals("UNMAPPING")) { //매핑전
+    	if(productModel.getMasterApplyCode() != null && (productModel.getMasterMappingCode() != null && productModel.getMasterMappingCode().equals("UNMAPPING"))) { //매핑전
     	   productModel.setMappingProductCode(""); 
     	}    	
     	

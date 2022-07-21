@@ -139,7 +139,7 @@
 								<td>${product.productNm} </td>
 								<td>
 									<c:if test="${empty product.masterProductCode or fn:trim(product.masterProductCode) == ''}">
-										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.matTypeNm ? '등록': product.matTypeNm}</a>
+										<a href="javascript:void(0);" onclick="openProductPackagingLayer('${product.productCode}', '${product.productId}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.matTypeNm ? '등록': product.matTypeNm}</a>
 									</c:if>
 								</td>
 								<td class="fontColorBlue">
@@ -161,7 +161,7 @@
 												<img src="/images/free-icon-smile-356662.png" width="26px">
 											</c:otherwise>
 										</c:choose>
-										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.selfEvlGradNm ? '확인' : product.selfEvlGradNm}</a>
+										<a href="javascript:void(0);" onclick="openProductPackagingSelfLayer('${product.productCode}', '${product.productId}','${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">${empty product.selfEvlGradNm ? '확인' : product.selfEvlGradNm}</a>
 									</c:if>
 								</td>
 								<td>
@@ -181,7 +181,7 @@
 <!-- 								</td> -->
 								<td>
 									<c:if test="${not empty product.matType}">
-										<a href="javascript:void(0);" onclick="openProductPackagingEnviResultLayer('${product.productCode}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">결과확인</a>
+										<a href="javascript:void(0);" onclick="openProductPackagingEnviResultLayer('${product.productId}', '${product.productNm}');" role="button" data-toggle="modal" class="btn-small02">결과확인</a>
 									</c:if>
 								</td>
 								<td>
@@ -195,7 +195,7 @@
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
 										  
-										<a href="javascript:openProductDeleteLayer('${product.productId}');"  onclick="javascript:layerPopup(deleteProduct);" role="button" data-toggle="modal" class="btn-icon">
+										<a href="javascript:openProductDeleteLayer('${product.productId}', '${product.productCode}');"  onclick="javascript:layerPopup(deleteProduct);" role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" >
 										</a>
 									</div>
@@ -328,6 +328,7 @@
 						<label class="col-25 form-label">상품코드</label>
 						<div class="col-75">
 						  <input name="productCode" type="hidden">
+						  <input name="productId" type="hidden">
 						  <input name="matType" type="hidden">
 						  <input name="photoGfileId" type="hidden">
 						  <input name="specGfileId" type="hidden">
@@ -587,7 +588,7 @@ KBK  -->
   <form id="frmDelete">
 	  <div id="deleteProduct" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true" data-modal-parent="#myModal">
-		<input type="hidden" name="productCode" >
+		<input type="hidden" name="productId" >
 		<div class="modal-content" style="width:400px">
 		  <div class="modal-header">
 			<h4 class="modal-title">삭제</h4>
@@ -694,6 +695,7 @@ KBK  -->
 	            <div class="form-group"  id="matTypeSelectpackagingOrderNm">
 	              <label class="col-25 form-label">포장차수</label>
 	              <div class="col-75">
+	                <input type="hidden" name="productId">
 	                <input type="hidden" name="productCode">
 	                <select class="select-box" id="packagingOrderNmApply" name="packagingOrder"></select>
 	              </div>
@@ -859,6 +861,7 @@ KBK  -->
 	var grade = [];
 	var button = '<button class="tab-close" type="button" title="Remove this page">×</button>';
 	var tabID = 0;
+	var selectedProductId = "";
 	var selectedProductCode = "";
 	var selectedProductNm = "";
 	var selectedPackagingId = "";
@@ -1002,7 +1005,7 @@ KBK  -->
 
 		$('#btn-add-tab').click(function () {
 // 			$('#btn-add-tab').hide();
-			getPodPackagingOrderNmList(selectedProductCode);
+			getPodPackagingOrderNmList(selectedProductId);
 			getMatTypeList();
 	    });
 
@@ -1222,6 +1225,7 @@ KBK  -->
 		//hidden 정보
 		$("#frmUpdate input[name=masterProductCode]").val(data.masterProductCode);
 		$("#frmUpdate input[name=productCode]").val(data.productCode);
+		$("#frmUpdate input[name=productId]").val(data.productId);
 		$("#frmUpdate input[name=matType]").val(data.matType);
 		$("#frmUpdate input[name=photoGfileId]").val(data.photoGfileId);
 		$("#frmUpdate input[name=specGfileId]").val(data.specGfileId);
@@ -1386,8 +1390,8 @@ KBK  -->
 	}
 	
 	//상품 삭제 레이어 노출
-	function openProductDeleteLayer(productId) {
-	  	$('.delName').text(productId);
+	function openProductDeleteLayer(productId, productCode) {
+	  	$('.delName').text(productCode);
 	  	$("#frmDelete input[name=productId]").val(productId);
 		$('#delType').val('small');
 		$('.tc div.fontColorRed').remove();
@@ -1428,7 +1432,8 @@ KBK  -->
 	      - 목록중 첫번째 데이터 노출
 	 3. 패캐징 정보 없는 경우 탭 및 재질 정보 조회 후 등록할수 있게 작업
 	**/
-	function openProductPackagingLayer(productCode, productNm, self){
+	function openProductPackagingLayer(productCode, productId, productNm, self){
+		selectedProductId = productId;
 		selectedProductCode = productCode;
 		selectedProductNm = productNm;
 		$('#detailTitle').text('상품포장정보('+productNm+')');
@@ -1442,7 +1447,7 @@ KBK  -->
 		$.ajax({
 				url : '/product/detail/selectProductPackaging',
 				dataType : 'JSON',
-				data : {'productCode':productCode},
+				data : {'productCode':productCode, 'productId': productId},
 				type : "POST",
 				async: false,
 				error: function(request, status, error){
@@ -1473,7 +1478,7 @@ KBK  -->
 							}else {
 								$('#tab-list').append('<li class="active"><a href="#" onclick=\'getProdPackagingDetailList("'+item.packagingId+'", this);\' role="tab" data-toggle="tab"><span>' +
 										packagingOrder +
-								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingTab("'+ item.productCode + '", "'+ item.packagingId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
+								        ' ('+item.groupNm+')</span><button class="tab-close" type="button"  onclick=\'deleteProductPackagingTab("'+ item.productId + '", "'+ item.packagingId + '", "'+ item.packagingOrder + '", this);\' title="Remove this page">×</button></a></li>'
 								     );
 								
 								// 텝 추가후 1차 포장정보 서버에서 조회 함
@@ -1487,7 +1492,7 @@ KBK  -->
 						});
 					}else {
 						if(!self){
-							getPodPackagingOrderNmList(productCode);
+							getPodPackagingOrderNmList(productId);
 							getMatTypeList();
 						}
 
@@ -1497,12 +1502,12 @@ KBK  -->
 	}
 	
 	// 포장등록 안 되어 있으면 등록 레이어 노출
-	function getPodPackagingOrderNmList(productCode){
+	function getPodPackagingOrderNmList(productId){
 		 $.ajax({
 			type : 'post',
 			url : '/product/detail/selectProdPackagingOrderNmList/',
 			dataType : 'json',
-			data : {'productCode':productCode},
+			data : {'productId':productId},
 			error: function(request, status, error){
 				console.log(request.responseText);
 			},
@@ -1586,6 +1591,7 @@ KBK  -->
 		  }else {
 			  if(groupId) {
 				//포장 차수 및 재질유형을 선택했을 경우에 패캐징 정보 등록 해줌
+				$("#frmPackagingOrder input[name=productId]").val(selectedProductId);
 				$("#frmPackagingOrder input[name=productCode]").val(selectedProductCode);
 				$("#frmPackagingOrder input[name=codeId]").val(groupId);
 				$("#frmPackagingOrder input[name=groupId]").val(groupId.split("_")[0]);
@@ -1613,7 +1619,7 @@ KBK  -->
 				//레이어창 취소
 				layerPopupClose($("#insertPackagingOrder"));
 				//포장정보 레이어 노출 시킴
-				openProductPackagingLayer(selectedProductCode, selectedProductNm);
+				openProductPackagingLayer(selectedProductCode, selectedProductId, selectedProductNm);
 			}
 		});
 	}
@@ -2069,13 +2075,13 @@ KBK  -->
 	  }
 
 	 // 포창 차수 삭제 버튼 클릭시
-	 function deleteProductPackagingTab(productCode, packagingId, packagingOrder) {
+	 function deleteProductPackagingTab(productId, packagingId, packagingOrder) {
 		  var result = confirm(packagingOrder+"차 포장정보를 삭제하시겠습니까?");
-		  if(result)deletePackagingInfoAjax(productCode, packagingId, packagingOrder);
+		  if(result)deletePackagingInfoAjax(productId, packagingId, packagingOrder);
 	  }
 
 	 //포창차수 삭제
-	 function deletePackagingInfoAjax(productCode, packagingId, packagingOrder) {
+	 function deletePackagingInfoAjax(productId, packagingId, packagingOrder) {
 		  	$.ajax({
 			type : 'post',
 			url : '/product/delete/productPackaging',
@@ -2098,8 +2104,8 @@ KBK  -->
 	  }
 
 	  //자가진단 설정하여 패캐징 정보 조회 후  레이어 호출
-	  function openProductPackagingSelfLayer(productCode, productNm) {
-		  openProductPackagingLayer(productCode, productNm, true);
+	  function openProductPackagingSelfLayer(productCode, productId, productNm) {
+		  openProductPackagingLayer(productCode, productId, productNm, true);
 	  }
 
 	  //자가진단 목록 조회
@@ -2345,7 +2351,7 @@ KBK  -->
 	 function insertProdPackagingSelfAjax(){
 	    var res = prodPackagingSelfResult();
 	    $("#frmSelfDiagnose input[name=recycleGrade]").val(res);
-	    $("#frmSelfDiagnose input[name=productCode]").val(selectedProductCode);
+	    $("#frmSelfDiagnose input[name=productId]").val(selectedProductId);
 	    $("#frmSelfDiagnose input[name=packagingId]").val(selectedPackagingId);
 	    if(res){
 		    	alert(res);
@@ -2540,11 +2546,11 @@ KBK  -->
 	  }
 
 	  //재활용 분담금결과 확인
-	  function openProductPackagingEnviResultLayer(productCode, productNm) {
+	  function openProductPackagingEnviResultLayer(productId, productNm) {
 		  $.ajax({
 				url : '/product/detail/selectProdRecycleList/',
 				dataType : 'JSON',
-				data : {'productCode': productCode},
+				data : {'productId': productId},
 				type : "POST",
 				async: false,
 				error: function(request, status, error){
@@ -2555,7 +2561,7 @@ KBK  -->
 					$('#enviRecycleList').empty();
 					data.forEach(function(item, index) {
 						console.log(item);
-						$('#enviRecycleList').append(getProductPackagingEnviResultItem(productCode, item));
+						$('#enviRecycleList').append(getProductPackagingEnviResultItem(productId, item));
 					});
 		  			layerPopup($('#envi_result'));
 				}
@@ -2563,7 +2569,7 @@ KBK  -->
 	  }
 
 	  //재활용분단금 html 생성
-	  function getProductPackagingEnviResultItem(productCode, item){
+	  function getProductPackagingEnviResultItem(productId, item){
 		    var innerHtml = "";
 			innerHtml += '<div>';
 			innerHtml += '<div class="col-35">';
@@ -2579,7 +2585,7 @@ KBK  -->
 			innerHtml += '		<div class="form-group">';
 			innerHtml += '		  <label class="col-40 form-label">출고량</label>';
 			innerHtml += '		  <div class="col-60">';
-			innerHtml += '			<input type="hidden" name="productCode" class="text-input" value="'+productCode+'">';
+			innerHtml += '			<input type="hidden" name="productId" class="text-input" value="'+productId+'">';
 			innerHtml += '			<input type="text" name="saleQty" class="text-input" placeholder="1차포장 (입력x)">';
 			innerHtml += '		  </div>';
 			innerHtml += '		</div>';

@@ -141,7 +141,7 @@ public class ProductGroupFileService {
 	 */
 	public String saveProuductGroupFile(ProductModel productModel, MultipartFile[] files, String productGroupFileId) {
 		try {
-    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/";
+    		String fileUrl = "C:/PPLUS/" + productModel.getProductCode() + "/" + productModel.getProductId() + "/";
     		String result = "success";
     		String resultMessage = "성공";
     		
