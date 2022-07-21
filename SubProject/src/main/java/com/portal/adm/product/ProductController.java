@@ -171,6 +171,7 @@ public class ProductController {
         
         try {
         	String result = "success";
+        	productModel.setProductId(idUtil.getProductId());
         	productModel.setRgstId(authUser.getMemberModel().getUserId());
     		productModel.setModiId(authUser.getMemberModel().getUserId());
         	String photoGfileId = productGroupFileService.saveProuductGroupFile(productModel, photos, "");
