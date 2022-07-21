@@ -213,7 +213,7 @@ public class ProductController {
     	}
     	
     	
-    	if(productModel.getMasterApplyCode().equals("PROCEEDING")) { //진행중
+    	if(productModel.getMasterApplyCode() != null && productModel.getMasterApplyCode().equals("PROCEEDING")) { //진행중
     		if(productModel.getReceiptNo() == null || productModel.getReceiptNo().trim().equals("")) {
     			return ResponseEntity.badRequest().body("접수번호가 누락 되었습니다.");	
     		}
@@ -227,7 +227,7 @@ public class ProductController {
     		}
     	}
     	
-    	if(productModel.getMasterApplyCode().equals("COMPLETION")) { //완료
+    	if(productModel.getMasterApplyCode() != null && productModel.getMasterApplyCode().equals("COMPLETION")) { //완료
     		if(productModel.getApprovalNo() == null || productModel.getApprovalNo().trim().equals("")) {
     			return ResponseEntity.badRequest().body("승인번호가가 누락 되었습니다.");	
     		}
@@ -235,7 +235,7 @@ public class ProductController {
     	}
     	
     	
-    	if(productModel.getMasterMappingCode().equals("UNMAPPING")) { //매핑전
+    	if(productModel.getMasterApplyCode() != null && productModel.getMasterMappingCode().equals("UNMAPPING")) { //매핑전
     	   productModel.setMappingProductCode(""); 
     	}    	
     	
