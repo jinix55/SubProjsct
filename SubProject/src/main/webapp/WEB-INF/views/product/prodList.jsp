@@ -1103,6 +1103,12 @@ KBK  -->
 				return false;
 			}
 		} else if (type == 'savePackaging') {
+			var weight = $("#frmDetail input[name=weight]").val();
+			if (weight == '') {
+// 				alert('공급업체를 선택해 주세요.');
+				$("#frmDetail input[name=weight]").val(0);
+				return false;
+			}
 // 			var supplierId = $("#frmDetail select[name=supplierId]").val();
 // 			if (supplierId == '') {
 // 				alert('공급업체를 선택해 주세요.');
@@ -1785,7 +1791,7 @@ KBK  -->
 		innerHtml += '<label class="col-25 form-label">포장재 중량(g)</label>';
 		innerHtml += '<div class=col-75>';
 		innerHtml += '<div class=form-input>';
-		innerHtml += '<input type=number step=0.01 placeholder="내용물을 제외한 전체포장재만의 무게" class=text-input name="weight" value="'+weight+'">';
+		innerHtml += '<input type=number step=0.01 placeholder="내용물을 제외한 전체포장재만의 무게" class=text-input name="weight" value="'+weight+'" onkeyup="this.value = setNumber(this.value)">';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
 		innerHtml += '</div>';
@@ -1886,6 +1892,12 @@ KBK  -->
 		return innerHtml;
 	}  
 
+	function setNumber(objValue){
+		str = objValue.replace(/[^0-9]/gi,"").toUpperCase();
+		//if(str === '' || str === null)str = 0;
+	    return str;
+	}
+	
 	//첨부파일 다운로드
 	function downloadFile(id) {
 		if(id != '' && id) {
