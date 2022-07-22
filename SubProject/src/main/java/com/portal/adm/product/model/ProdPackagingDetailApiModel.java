@@ -14,6 +14,7 @@ import lombok.Data;
  */
 @Data
 public class ProdPackagingDetailApiModel extends Criteria{
+	private String productId;
 	private String productCode;
 	private String productNm;
 	private String packagingOrder;

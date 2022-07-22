@@ -148,7 +148,8 @@ body {
 				<input id="packagingId" name="packagingDetailId" type="hidden" class="text-input w200" value="${packagingModel.packagingDetailId }">
 				<input id="packagingNm" name="packagingNm" type="hidden" class="text-input w200" value="${packagingModel.packagingNm }">
 				<input id="packagingOrder" name="packagingOrder" type="hidden" class="text-input w200" value="${packagingModel.packagingOrder }">
-				<input id="productId" name="productCode" type="hidden" class="text-input w200" value="${packagingModel.productCode }">
+				<input id="productId" name="productId" type="hidden" class="text-input w200" value="${packagingModel.productId }">
+				<input id="productCode" name="productCode" type="hidden" class="text-input w200" value="${packagingModel.productCode }">
 				<input id="managementId" name="managementId" type="hidden" class="text-input w200" value="${packagingModel.managementId }">
 				<div class="tab-in-nav d-flex">
 					<span class="pt10 pr10">ㆍ재질유형</span>

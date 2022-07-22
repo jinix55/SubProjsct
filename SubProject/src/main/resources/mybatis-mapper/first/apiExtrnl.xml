@@ -88,8 +88,9 @@
     <select id="selectProdApiInfo" parameterType="com.portal.adm.product.model.ProdPackagingDetailApiModel" resultType="com.portal.adm.product.model.ProdPackagingDetailApiModel">
     	SELECT 
 			  PP.PACKAGING_DETAIL_ID
- 			, (SELECT PRODUCT_NM FROM t_product WHERE PRODUCT_CODE = b.PRODUCT_CODE) AS PRODUCT_NM
+ 			, (SELECT PRODUCT_NM FROM t_product WHERE PRODUCT_ID = b.PRODUCT_ID) AS PRODUCT_NM
 			, b.PRODUCT_CODE
+			, b.PRODUCT_ID
 			, b.PACKAGING_ORDER
 			, b.GROUP_ID
 			, PP.PART_CODE
