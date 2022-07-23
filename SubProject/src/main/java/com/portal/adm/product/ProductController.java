@@ -1273,6 +1273,22 @@ try {
 	
 	
 	/**
+     * 상품 이미지 목록 조회
+     *  
+     * @param 
+     * @return
+     */
+	@RequestMapping(value="/detail/{productId}/groupImages/{gfileId}", method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<List<ProductGroupFileModel>> getGroupImages(@PathVariable("productId") String productId, @PathVariable("gfileId") String gfileId) {
+		ProductGroupFileModel productGroupFileModel = new ProductGroupFileModel();
+		productGroupFileModel.setGfileId(gfileId);
+		List<ProductGroupFileModel> fileList = productGroupFileService.selectProductGroupFileListByGfileId(productGroupFileModel);
+	    
+		return new ResponseEntity<>(fileList, HttpStatus.OK);
+	}
+	
+	/**
      * 에러 전달
      *  
      * @param 

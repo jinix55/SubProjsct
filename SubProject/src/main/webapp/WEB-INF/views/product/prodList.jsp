@@ -132,8 +132,8 @@
 								<td><input type="text" style="border:none" value="${product.masterProductCode}" readonly="readonly"  ></td>
 								<td><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
-									<c:if test="${product.photoGfileId ne ''}">
-										<img src="/file/view/${product.photoGfileId}"  width="70" height="auto">
+									<c:if test="${product.photofileId ne '' && not empty product.photofileId}">
+										<img src="/file/view/${product.photofileId}"  onclick="getGroupImages('${product.productId}', '${product.photoGfileId}');" width="70" height="auto">
 									</c:if>	
 								</td>
 								<td>${product.productNm} </td>
@@ -853,8 +853,48 @@ KBK  -->
 	  </div>
 	</div>
   </form>  
+  
+  <!-- 레이어 팝업 - 이메지 갤러리  -->
+  <div id="deleteZoomLayer" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true" data-modal-parent="#myModal">
+	<input type="hidden" name="productId" >
+	<div class="modal-content" style="width:400px">
+	  <div class="modal-header">
+		<h4 class="modal-title">상품 이미지</h4>
+		<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteZoomLayer);"><img src="/images/icon_close.png"></button>
+	  </div>
+	  <div class="modal-body">
+		<div class="row">
+		  <!-- Primary carousel image -->
+	     <div class="show" href="pro_img01.jpeg">
+	       <img src="/images/pro_img01.jpeg" id="show-img">
+	     </div>
+	
+	     <!-- Secondary carousel image thumbnail gallery -->
+	
+	     <div class="small-img">
+	      <img src="/images/next-icon.png" class="icon-left" alt="" id="prev-img">
+	       <div class="small-container">
+	        <div id="small-img-roll">
+	          <img src="/images/pro_img01.jpeg" class="show-small-img" alt="">
+	          <img src="/images/pro_img02.jpeg" class="show-small-img" alt="">
+	          <img src="/images/pro_img03.jpeg" class="show-small-img" alt="">
+	          <img src="/images/pro_img04.jpeg" class="show-small-img" alt="">
+	        </div>
+	       </div>
+	      <img src="/images/next-icon.png" class="icon-right" alt="" id="next-img">
+	     </div>
+		</div>
+	  </div>
+	  <div class="modal-footer btn-group">
+		<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteZoomLayer);">취소</button>
+	  </div>
+	</div>
+  </div>
 
 <script src='/js/plugins/jquery.MultiFile.min.js' type="text/javascript" language="javascript"></script>
+<script src="/js/plugins/zoom/zoom-image.js"></script>
+<script src="/js/plugins/zoom/main.js"></script>
 <script>
 	var selectedPartCode ="";
 	var selectedPartNm ="";
@@ -2691,5 +2731,28 @@ KBK  -->
 					});
 			 }
 		  }
-	  
+
+	// image group 조회
+	function getGroupImages(productId, gfileId) {
+		$.ajax({
+			url : '/product/detail/'+productId+'/groupImages/'+gfileId,
+			dataType : 'json',
+			type : "GET",
+			async : false,
+			success : function(data) {
+				console.log(data);
+				$('#small-img-roll').empty();
+				var html ="";
+				data.forEach(function(item, index) {
+					console.log(item);
+					if(index === 0) {
+						$('#show-img').attr("src",'<img src="/file/view/'+item.fileId+'" id="show-img">');
+					}
+					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
+				});
+				$('#small-img-roll').append(html);
+				layerPopup($('#deleteZoomLayer'));
+			}
+		});
+	}
 </script>
