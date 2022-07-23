@@ -930,6 +930,16 @@ KBK  -->
 		$("#searchFrm").submit();
 	});
 	
+	if( page > 10) {
+		if(page.toString().charAt(page.toString().length - 1) === '0') {
+			console.log(page.toString());
+			$('.prev').attr("data-lp", parseInt(page.toString().replace(/.$/, '')+'0')-pageSize);
+			$('.next').attr("data-lp", parseInt(page.toString().replace(/.$/, '')+'0')+1);
+		}else {
+			$('.prev').attr("data-lp", page.toString().replace(/.$/, '')+'0');
+			$('.next').attr("data-lp", parseInt(page.toString().replace(/.$/, '')+'0')+1+pageSize);
+		}
+	}
 	$(document).ready(function () {
 		//[2] 업로드할수있는 파일수 제한 및 확장자 필터
 	      $('.afile-txt').MultiFile({
