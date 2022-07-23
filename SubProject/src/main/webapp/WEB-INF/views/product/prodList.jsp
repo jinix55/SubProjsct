@@ -930,6 +930,7 @@ KBK  -->
 		$("#searchFrm").submit();
 	});
 	
+	//피이징 처리 잘 안 되어서 추가 했음, 향후 좋은 방법으로 처리 필요
 	if( page > 10) {
 		if(page.toString().charAt(page.toString().length - 1) === '0') {
 			console.log(page.toString());
