@@ -214,7 +214,7 @@ public interface Constant {
 		//상품번호
 		public static final String PRODUCT = "pd";
 		//상품첨부파일그룹
-		public static final String PRODUCT_FILE_GROUP = "pfg";
+		public static final String GROUP_FILE = "gfl";
 		//자가진단정보
 		public static final String PACKAGINGMAT = "pam";
 		

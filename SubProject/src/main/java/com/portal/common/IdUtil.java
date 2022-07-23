@@ -223,7 +223,7 @@ public class IdUtil {
 	 * 알람 ID : 상품 그룹첨부파일ID
 	 */
 	public String getProductGroupFileId() {
-		return service.getId(Constant.ID.PRODUCT_FILE_GROUP);
+		return service.getId(Constant.ID.GROUP_FILE);
 	}
 	
 	/**
