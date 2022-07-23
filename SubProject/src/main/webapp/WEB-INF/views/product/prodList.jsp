@@ -2741,16 +2741,16 @@ KBK  -->
 			async : false,
 			success : function(data) {
 				console.log(data);
-// 				$('#small-img-roll').empty();
-// 				var html ="";
-// 				data.forEach(function(item, index) {
+				$('#small-img-roll').empty();
+				var html ="";
+				data.forEach(function(item, index) {
 // 					console.log(item);
-// 					if(index === 0) {
-// 						$('#show-img').attr("src","/file/view/"+item.fileId);
-// 					}
-// 					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
-// 				});
-// 				$('#small-img-roll').append(html);
+					if(index === 0) {
+						$('#show-img').attr("src","/file/view/"+item.fileId);
+					}
+					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
+				});
+				$('#small-img-roll').append(html);
 				layerPopup($('#deleteZoomLayer'));
 			}
 		});
