@@ -866,7 +866,7 @@ KBK  -->
 	  <div class="modal-body">
 		<div class="row">
 		  <!-- Primary carousel image -->
-	     <div class="show" href="pro_img01.jpeg">
+	     <div class="show">
 	       <img src="/images/pro_img01.jpeg" id="show-img">
 	     </div>
 	
@@ -2741,16 +2741,16 @@ KBK  -->
 			async : false,
 			success : function(data) {
 				console.log(data);
-				$('#small-img-roll').empty();
-				var html ="";
-				data.forEach(function(item, index) {
-					console.log(item);
-					if(index === 0) {
-						$('#show-img').attr("src",'<img src="/file/view/'+item.fileId+'" id="show-img">');
-					}
-					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
-				});
-				$('#small-img-roll').append(html);
+// 				$('#small-img-roll').empty();
+// 				var html ="";
+// 				data.forEach(function(item, index) {
+// 					console.log(item);
+// 					if(index === 0) {
+// 						$('#show-img').attr("src","/file/view/"+item.fileId);
+// 					}
+// 					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
+// 				});
+// 				$('#small-img-roll').append(html);
 				layerPopup($('#deleteZoomLayer'));
 			}
 		});
