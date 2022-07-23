@@ -133,7 +133,7 @@
 								<td><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
 									<c:if test="${product.photofileId ne '' && not empty product.photofileId}">
-										<img src="/file/view/${product.photofileId}"  onclick="getGroupImages('${product.productId}', '${product.photoGfileId}');" width="70" height="auto">
+										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}');" ><img src="/file/view/${product.photofileId}" width="70" height="auto"></a>
 									</c:if>	
 								</td>
 								<td>${product.productNm} </td>
