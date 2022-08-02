@@ -1152,7 +1152,11 @@ KBK  -->
 				html += '<tr>';
 				html += '	<td>'+(index+1)+'</td>';
 				html += '	<td><input type="text" style="border:none" value="'+item.productCode+'"readonly="readonly"  ></td>';
-				html += '	<td><img src="/file/view/'+item.photofileId+'" width="70" height="auto"</td>';
+				if(item.photofileId && item.photofileId !== '' && item.photofileId !== null) {
+					html += '	<td><a href="javascript:getGroupImages(\''+item.productId+'\',\''+item.photoGfileId+'\');" ><img src="/file/view/'+item.photofileId+'" width="70" height="auto"></a></td>';
+				}else {
+					html += '	<td></td>';
+				}
 				html += '	<td class="text-point tr-item">'+item.productNm+'</td>';
 				html += '	<td></td>';
 				html += '	<td></td>';
