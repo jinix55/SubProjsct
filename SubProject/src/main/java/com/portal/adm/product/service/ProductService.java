@@ -590,6 +590,10 @@ public class ProductService {
 		}
 		return "정상";
 	}
+
+	public List<ProductModel> selectSubProductList(ProductModel productModel) {
+		return productMapper.selectSubProductList(productModel);
+	}
 	
 	
 }

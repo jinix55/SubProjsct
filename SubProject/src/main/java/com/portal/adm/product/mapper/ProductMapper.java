@@ -247,5 +247,7 @@ public interface ProductMapper {
     List<ProdPackagingMatModel> selectProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
     long insertProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
     long deleteProductSelfPackaging(ProdPackagingMatModel prodPackagingMatModel);
+
+	List<ProductModel> selectSubProductList(ProductModel productModel);
     
 }

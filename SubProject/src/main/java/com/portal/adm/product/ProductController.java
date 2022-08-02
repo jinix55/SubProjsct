@@ -1289,6 +1289,21 @@ try {
 	}
 	
 	/**
+     * 상품 서브목록 조회한다.
+     *
+     * @param productCode
+     * @return
+     */
+    @RequestMapping(value="/detail/subProdList", method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<List<ProductModel>> selectSubProductList(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	//상품 서브목록정보 조회
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	List<ProductModel> productList = productService.selectSubProductList(productModel);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+    
+	/**
      * 에러 전달
      *  
      * @param 

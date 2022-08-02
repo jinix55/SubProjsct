@@ -66,7 +66,7 @@
 					<option value="matTypeNm">포장유형</option>
 					<option value="selfEvlGradNm">재활용등급</option>
 					<option value="masterApplyNm">상태</option>
-					<option value="masterProductCode">마스터 상품만 보기</option>
+<!-- 					<option value="masterProductCode">마스터 상품만 보기</option> -->
                   </select>
                 </div>
                 <div class="form-inline">
@@ -79,10 +79,10 @@
                     </span>
                   </div>
                 </div>
-                <div class="form-inline btn-form-small">
-					<input type="checkbox" name="masterProductCodeCheck" id="masterProductCodeCheck" ${pages.searchKey eq 'masterProductCode' ? 'checked' : ''}>
-					<label for="masterProductCodeCheck" class="mr05 pt1">마스터 상품만 보기</label>
-			    </div>
+<!--                 <div class="form-inline btn-form-small"> -->
+<%-- 					<input type="checkbox" name="masterProductCodeCheck" id="masterProductCodeCheck" ${pages.searchKey eq 'masterProductCode' ? 'checked' : ''}> --%>
+<!-- 					<label for="masterProductCodeCheck" class="mr05 pt1">마스터 상품만 보기</label> -->
+<!-- 			    </div> -->
               </div>
             </div>
           </form>
@@ -94,24 +94,20 @@
               <table class="table">
                 <colgroup>
                   <col style="width: 40px;">
-                  <col style="width: 80px;">
+                  <col style="width: 100px;">
+                  <col style="width: 100px;">
+                  <col style="width: 100px;">
+                  <col style="width: 140px;">
+                  <col style="width: 100px;">
                   <col style="width: 80px;">
                   <col style="width: 80px;">
                   <col style="width: 100px;">
-                  <col style="width: 100px;">
-                  <col style="width: 50px;">
-                  <col style="width: 50px;">
-<%--                   <col style="width: 50px;"> --%>
-<%--                   <col style="width: 60px;"> --%>
-                  <col style="width: 60px;">
-                  <!-- <col style="width: 40px;"> -->
-                  <col style="width: 60px;">
                 </colgroup>
                 <thead>
                   <tr class="th-bg">
                     <th scope="col">번호</th>
                     <th scope="col">마스터 상품코드</th>
-                    <th scope="col">상품코드</th>
+<!--                     <th scope="col">상품코드</th> -->
                     <th scope="col">사진</th>
                     <th scope="col">상품명</th>
                     <th scope="col">포장정보</th>
@@ -127,10 +123,10 @@
                   <c:choose>
 				    <c:when test="${products.size() > 0 }">
 						<c:forEach items="${products}" var="product" varStatus="status">
-							<tr>
+							<tr id="${product.productCode}" nm="${product.productCode}">
 								<td>${pages.totalCount - (status.index + (pages.page -1) * pages.pageSize)}</td>
-								<td><input type="text" style="border:none" value="${product.masterProductCode}" readonly="readonly"  ></td>
-								<td><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
+<%-- 								<td><input type="text" style="border:none" value="${product.masterProductCode}" readonly="readonly"  ></td> --%>
+								<td class="text-point tr-item"><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
 									<c:if test="${product.photofileId ne '' && not empty product.photofileId}">
 										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}');" ><img src="/file/view/${product.photofileId}" width="70" height="auto"></a>
@@ -201,11 +197,49 @@
 									</div>
 								</td>
 							</tr>
+							<!-- S_히든테이블 -->
+							<tr class="tr_${product.productCode} tr-hide">
+								<td colspan="9">
+									<div class="tab-box">
+										<h4 class="tl">
+											<span class="title-point">[서브상품 목록]</span>
+										</h4>
+										<table class="table">
+											<colgroup>
+												    <col style="width: 40px;">
+						                            <col style="width: 100px;">
+						                            <col style="width: 100px;">
+						                            <col style="width: 100px;">
+						                            <col style="width: 140px;">
+						                            <col style="width: 100px;">
+						                            <col style="width: 80px;">
+						                            <col style="width: 80px;">
+						                            <col style="width: 100px;">
+											</colgroup>
+											<thead>
+												<tr class="th-inbg">
+													<th scope="col">번호</th>
+								                    <th scope="col">상품코드</th>
+								                    <th scope="col">사진</th>
+								                    <th scope="col">상품명</th>
+								                    <th scope="col">포장정보</th>
+								                    <th scope="col">재활용등급</th>
+								                    <th scope="col">진행상태</th>
+								                    <th scope="col">재활용 분담금결과</th>
+								                    <th scope="col">관리</th>
+												</tr>
+											</thead>
+											<tbody id="tr_${product.productCode}_tb"></tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
+							<!-- E_히든테이블 -->
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
 					    <tr>
-							<td colspan="10">
+							<td colspan="9">
 								등록된 상품정보가 없습니다.
 							</td>
 						</tr>
@@ -896,6 +930,7 @@ KBK  -->
 <script src="/js/plugins/zoom/zoom-image.js"></script>
 <script src="/js/plugins/zoom/main.js"></script>
 <script>
+	var setMasterProductCode;
 	var selectedPartCode ="";
 	var selectedPartNm ="";
 	var grade = [];
@@ -989,14 +1024,14 @@ KBK  -->
 			saveProdPackagingDetail();
 		});
 
-		$("#masterProductCodeCheck").change(function() {
-		    if(this.checked) {
-		    	$("#searchKey").val('masterProductCode');
-		    }else{
-		    	$("#searchKey").val('');
-		    }
-		    $("#searchFrm").submit();
-		});
+// 		$("#masterProductCodeCheck").change(function() {
+// 		    if(this.checked) {
+// 		    	$("#searchKey").val('masterProductCode');
+// 		    }else{
+// 		    	$("#searchKey").val('');
+// 		    }
+// 		    $("#searchFrm").submit();
+// 		});
 		
 		$(document).on('change', '.supplierId', function() {
 			if(this.value){
@@ -1086,9 +1121,70 @@ KBK  -->
 	          $('#mytable_1_in1').append(innerHtml);
 	          return false;
 	      });
-		
+
+		$('.tr-item').click(function(){
+			setMasterProductCode = $(this).parent().attr('id');
+			upSubProductList(setMasterProductCode,$(this).parent().attr('nm'));
+		});
 		
 	});
+
+	/*상세를 눌렀을때*/
+	function upSubProductList(id,nm){
+		$.ajax({
+			url : '/product/detail/subProdList',
+			dataType : 'json',
+			type : "POST",
+			data : {'masterProductCode' : id},
+			async: false,
+			success : function(data) {
+				var result = data;
+				makeupSubProductList(data,id,nm);
+			}
+		});
+	}
+
+	function makeupSubProductList(data,id,nm){
+		$('#tr_'+id+'_tb').empty();
+		var html = '';
+		if(data.length > 0){
+			data.forEach(function(item, index) {
+				html += '<tr>';
+				html += '	<td>'+(index+1)+'</td>';
+				html += '	<td><input type="text" style="border:none" value="'+item.productCode+'"readonly="readonly"  ></td>';
+				html += '	<td><img src="/file/view/'+item.photofileId+'" width="70" height="auto"</td>';
+				html += '	<td class="text-point tr-item">'+item.productNm+'</td>';
+				html += '	<td></td>';
+				html += '	<td></td>';
+				html += '	<td></td>';
+				if(item.matType) {
+					html += '	<a href="javascript:void(0);"  onclick="javascript:openProductPackagingEnviResultLayer(\''+item.productId+'\',\''+item.productNm+'\');"  role="button" data-toggle="modal" class="btn-small02">결과확인</a>';
+				}else {
+					html += '	<td>결과확인</td>';
+				}
+				html += '	<td>';
+				html += '	<a href="javascript:void(0);"  onclick="javascript:productDetail(\''+item.productId+'\');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon"><img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" ></a>';
+				html += '	<a href="javascript:openProductDeleteLayer(\''+item.productId+'\',\''+item.productCode+'\');"  onclick="javascript:layerPopup(deleteProduct);"  role="button" data-toggle="modal" class="btn-icon"><img src="/images/icon_delete2.png" alt="삭제하기" class="btn-table-icon02" ></a>';
+				html += '	</td>';
+				html += '</tr>';
+			});
+			$('#tr_'+id+'_tb').append(html);
+		}else{
+			html += '<tr>';
+			html += '	<td colspan="9">';
+			html += '		등록된 서브상품이 없습니다.';
+			html += '	</td>';
+			html += '</tr>';
+			$('#tr_'+id+'_tb').append(html);
+		}
+		if($('.tr_'+id).hasClass("tr-hide")) {
+			$('.tr_'+id).removeClass('tr-hide');
+			$('.tr_'+id).addClass('tr-show');
+		}else {
+			$('.tr_'+id).removeClass('tr-show');
+			$('.tr_'+id).addClass('tr-hide');
+		}
+	}
 	
 	//상품 등록 레이어 오픈시 기존 값 초기화
 	function openProductLayer(type, masterProductCode){
