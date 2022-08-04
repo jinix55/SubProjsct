@@ -1116,6 +1116,8 @@ try {
     public String codePost(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
 
     	// 상품 목록 조회
+    	// 상품 목록 조회
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<ProductModel> models = productService.selectProductList(productModel);
     	productModel.setTotalCount(productService.selectProductListCount(productModel));
         model.addAttribute("products", models);

@@ -49,14 +49,14 @@
 					<c:forEach items="${products }" var="product" varStatus="status">
 						<div class="img-box">
 							<div class="img-view">
-								<img src="/file/view/${product.photo}">
+								<img src="/file/view/fl2205164">
 							</div>
 							<div class="img-cont ellipsis">
 								<ul>
 									<li class="text-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>${product.productNm}</span></li>
-									<li class="text-bold">ㆍ포장유형 : <span>${product.packingType}</span></li>
-									<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue">${product.recycleGrade}</span></li>
-									<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue">${product.completeStatus}</span></li>
+									<li class="text-bold">ㆍ포장유형 : <span></span></li>
+									<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue"></span></li>
+									<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue"></span></li>
 								</ul>
 							</div>
 							<div class="img-bottom tc">
