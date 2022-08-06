@@ -8,7 +8,6 @@
 		<where>
 			a.USE_YN = 'Y'
 			and a.COMPANY_CODE =  #{companyCode}
-			and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
 				and (upper(a.PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
@@ -18,9 +17,9 @@
 			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
 				and (upper(a.RECYCLE_GRADE) = upper(#{searchValue}))
 			</if>
-<!-- 			<if test="searchKey != '' and searchKey == 'masterProductCode'"> -->
-<!-- 				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL -->
-<!-- 			</if> -->
+			<if test="masterProductCode != '' and masterProductCode == 'masterProductCode'">
+				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
+			</if>
 		</where>
 	</sql>
 	

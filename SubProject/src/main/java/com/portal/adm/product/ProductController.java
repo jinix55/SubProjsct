@@ -104,6 +104,7 @@ public class ProductController {
     public String product(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
     	// 상품 목록 조회
     	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	productModel.setMasterProductCode("masterProductCode"); //마스터 상품만 조회
     	List<ProductModel> models = productService.selectProductList(productModel);
     	productModel.setTotalCount(productService.selectProductListCount(productModel));
         model.addAttribute("products", models);
@@ -131,6 +132,43 @@ public class ProductController {
         return "product/prodList";
     }
 
+    /**
+     * 상품 페이지로 이동
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/prodAllList", method= {RequestMethod.GET,RequestMethod.POST})
+    public String productAll(@ModelAttribute ProductModel productModel, Model model, @AuthenticationPrincipal AuthUser authUser) {
+    	// 상품 목록 조회
+    	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	List<ProductModel> models = productService.selectProductList(productModel);
+    	productModel.setTotalCount(productService.selectProductListCount(productModel));
+        model.addAttribute("products", models);
+        model.addAttribute("pages", productModel);
+    	
+    	//재질 정보 조회
+    	EnvironmentCodeModel environmentCodeModel = new EnvironmentCodeModel();
+    	environmentCodeModel.setGroupId("GROUP_ID");
+    	List<EnvironmentCodeModel> productMatType = environmentCodeService.selectList(environmentCodeModel);
+    	model.addAttribute("productMatTypeList", productMatType);  
+    	
+    	//공급업체 정보 조회
+    	SupplierModel supplierModel = new SupplierModel();
+    	supplierModel.setAuthId(authUser.getMemberModel().getAuthId());
+    	supplierModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
+    	supplierModel.setOffSet(0);
+    	supplierModel.setPageSize(9999);
+        List<SupplierModel> supplierList = supplierService.selectSupplierList(supplierModel);
+        System.out.println("supplierModel = " + supplierModel);
+        System.out.println("supplierList = " + supplierList);
+        
+        model.addAttribute("suppliers", supplierList);
+        
+        
+        return "product/prodAllList";
+    }
+    
     /**
      * 상품 상세정보를 조회한다.
      *
