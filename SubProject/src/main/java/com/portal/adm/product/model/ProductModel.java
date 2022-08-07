@@ -28,6 +28,7 @@ public class ProductModel extends Criteria{
     private String summary;         //설명
     private String photoGfileId;    //사진
     private String photofileId;    //사진
+    private String photoRepFileId; //대표사진
     private String specGfileId;     //설명	
     private String masterApplyCode; //진행상태
     private String receiptNo;       //접수번호

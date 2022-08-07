@@ -41,7 +41,7 @@
 			a.PRODUCT_CODE,
 			a.PRODUCT_NM,
 			a.PHOTO_GFILE_ID,
-			(SELECT FILE_ID FROM t_group_file WHERE GFILE_ID = PHOTO_GFILE_ID AND DEL_YN = 'N' AND USE_YN = 'Y' ORDER BY RGST_DT ASC LIMIT 1) AS PHOTO_FILE_ID,
+			a.PHOTO_REP_FILE_ID,
 			cc.CODE_ID     AS   MAT_TYPE,
 			cc.CODE_NM     AS   MAT_TYPE_NM,
 			bb.CODE_NM     AS   MASTER_APPLY_NM,
@@ -109,6 +109,7 @@
 			, a.SUPPLIER_INFO
 			, a.PRODUCT_MAKER
 			, a.SUMMARY
+			, a.PHOTO_REP_FILE_ID
 			, a.PHOTO_GFILE_ID
 			, a.SPEC_GFILE_ID
 			, a.MASTER_APPLY_CODE
@@ -153,6 +154,7 @@
 			, PRODUCT_NM
 			, SUPPLIER_INFO
 			, SUMMARY
+			, PHOTO_REP_FILE_ID
 			, PHOTO_GFILE_ID
 			, SPEC_GFILE_ID
 			, USE_YN
@@ -168,6 +170,7 @@
 			, #{productNm}
 			, #{supplierInfo}
 			, #{summary}
+			, #{photoRepFileId}
 			, #{photoGfileId}
 			, #{specGfileId}
 			, 'Y'
@@ -186,6 +189,7 @@
 			, SUPPLIER_INFO       = #{supplierInfo}
 			, PRODUCT_MAKER       = #{productMaker}
 			, SUMMARY             = #{summary}
+			, PHOTO_REP_FILE_ID   = #{photoRepFileId}
 			, PHOTO_GFILE_ID      = #{photoGfileId}
 			, SPEC_GFILE_ID       = #{specGfileId}
 			, MASTER_APPLY_CODE   = #{masterApplyCode}

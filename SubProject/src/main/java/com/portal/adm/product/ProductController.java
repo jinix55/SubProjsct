@@ -195,7 +195,7 @@ public class ProductController {
     //@RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value="/insert" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> saveProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
+    public ResponseEntity<String> saveProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel,@AuthenticationPrincipal AuthUser authUser, @RequestParam("mainPhoto") MultipartFile mainPhoto, @RequestParam("photos") MultipartFile[] photos, @RequestParam("specs") MultipartFile[] specs) {
 //    public ResponseEntity<String> insertProduct(@RequestBody ProductModel productModel, @AuthenticationPrincipal AuthUser authUser) {
 
     	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());    
@@ -212,6 +212,8 @@ public class ProductController {
         	productModel.setProductId(idUtil.getProductId());
         	productModel.setRgstId(authUser.getMemberModel().getUserId());
     		productModel.setModiId(authUser.getMemberModel().getUserId());
+    		String photoMainFileId = productGroupFileService.saveProuductMainFile(productModel, mainPhoto);
+    		productModel.setPhotoRepFileId(photoMainFileId);
         	String photoGfileId = productGroupFileService.saveProuductGroupFile(productModel, photos, "");
 	        productModel.setPhotoGfileId(photoGfileId);
 	        String specGfileId = productGroupFileService.saveProuductGroupFile(productModel, specs, "");
@@ -234,7 +236,7 @@ public class ProductController {
     //@RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST}, produces=MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value="/update" , method= {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
+    public ResponseEntity<String> updateProduct(HttpServletRequest request, @ModelAttribute ProductModel productModel, @AuthenticationPrincipal AuthUser authUser, @RequestParam("mainPhoto") MultipartFile mainPhoto , @RequestParam("photos") MultipartFile[] photos  , @RequestParam("specs") MultipartFile[] specs) {
     	System.out.println("updateProduct productModel " + productModel);
     	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode()); 
     	if((productModel.getMasterApplyCode().equals("UNPROCEED")) || (productModel.getMasterApplyCode().equals("EXCEPT"))) { //미진행
@@ -281,6 +283,8 @@ public class ProductController {
     	try {
         	String result = "success";
         	productModel.setModiId(authUser.getMemberModel().getUserId());
+        	String photoMainFileId = productGroupFileService.saveProuductMainFile(productModel, mainPhoto);
+    		productModel.setPhotoRepFileId(photoMainFileId);
         	String photoGfileId = productGroupFileService.saveProuductGroupFile(productModel, photos, productModel.getPhotoGfileId());
 	        productModel.setPhotoGfileId(photoGfileId);
 	        String specGfileId = productGroupFileService.saveProuductGroupFile(productModel, specs, productModel.getSpecGfileId());
