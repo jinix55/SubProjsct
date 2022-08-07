@@ -129,7 +129,7 @@
 								<td class="text-point"><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
 									<c:if test="${product.photoRepFileId ne '' && not empty product.photoRepFileId}">
-										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}');" ><img src="/file/view/${product.photoRepFileId}" width="70" height="auto"></a>
+										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}', '${product.photoRepFileId}');" ><img src="/file/view/${product.photoRepFileId}" width="70" height="auto"></a>
 									</c:if>	
 								</td>
 								<td>${product.productNm} </td>
@@ -1143,7 +1143,7 @@ KBK  -->
 				html += '	<td>'+(index+1)+'</td>';
 				html += '	<td><input type="text" style="border:none" value="'+item.productCode+'"readonly="readonly"  ></td>';
 				if(item.photoRepFileId && item.photoRepFileId !== '' && item.photoRepFileId !== null) {
-					html += '	<td><a href="javascript:getGroupImages(\''+item.productId+'\',\''+item.photoGfileId+'\');" ><img src="/file/view/'+item.photoRepFileId+'" width="70" height="auto"></a></td>';
+					html += '	<td><a href="javascript:getGroupImages(\''+item.productId+'\',\''+item.photoGfileId+'\',\''+item.photoRepFileId+'\');" ><img src="/file/view/'+item.photoRepFileId+'" width="70" height="auto"></a></td>';
 				}else {
 					html += '	<td></td>';
 				}
@@ -2846,79 +2846,88 @@ KBK  -->
 			 }
 		  }
 
-	// image group 조회
-	function getGroupImages(productId, gfileId) {
-		$.ajax({
-			url : '/product/detail/'+productId+'/groupImages/'+gfileId,
-			dataType : 'json',
-			type : "GET",
-			async : false,
-			success : function(data) {
-				console.log(data);
-				$('#small-img-roll').empty();
-				var html ="";
-				data.forEach(function(item, index) {
-// 					console.log(item);
-					if(index === 0) {
-						$('#show-img').attr("src","/file/view/"+item.fileId);
+	  function cssGroupImage() {
+			$('.show-small-img:first-of-type').css({'border': 'solid 1px #951b25', 'padding': '2px'})
+			$('.show-small-img:first-of-type').attr('alt', 'now').siblings().removeAttr('alt')
+			$(document).on('click', '.show-small-img', function () {
+			  $('#show-img').attr('src', $(this).attr('src'))
+			  $('#big-img').attr('src', $(this).attr('src'))
+			  $(this).attr('alt', 'now').siblings().removeAttr('alt')
+			  $(this).css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+			  if ($('#small-img-roll').children().length > 4) {
+			    if ($(this).index() >= 3 && $(this).index() < $('#small-img-roll').children().length - 1){
+			      $('#small-img-roll').css('left', -($(this).index() - 2) * 76 + 'px')
+			    } else if ($(this).index() == $('#small-img-roll').children().length - 1) {
+			      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+			    } else {
+			      $('#small-img-roll').css('left', '0')
+			    }
+			  }
+			});
+
+			//Enable the next button
+			$(document).on('click', '#next-img', function (){
+			  $('#show-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
+			  $('#big-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
+			  $(".show-small-img[alt='now']").next().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+			  $(".show-small-img[alt='now']").next().attr('alt', 'now').siblings().removeAttr('alt')
+			  if ($('#small-img-roll').children().length > 4) {
+			    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
+			      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
+			    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
+			      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+			    } else {
+			      $('#small-img-roll').css('left', '0')
+			    }
+			  }
+			});
+
+			//Enable the previous button
+			$(document).on('click', '#prev-img', function (){
+			  $('#show-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
+			  $('#big-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
+			  $(".show-small-img[alt='now']").prev().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+			  $(".show-small-img[alt='now']").prev().attr('alt', 'now').siblings().removeAttr('alt')
+			  if ($('#small-img-roll').children().length > 4) {
+			    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
+			      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
+			    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
+			      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+			    } else {
+			      $('#small-img-roll').css('left', '0')
+			    }
+			  }
+			});
+			layerPopup($('#deleteZoomLayer'));
+		}
+		// image group 조회
+		function getGroupImages(productId, gfileId, photoRepFileId) {
+			$('#small-img-roll').empty();
+			var html ="";
+			$('#show-img').attr("src","/file/view/"+photoRepFileId);
+			html +='<img src="/file/view/'+photoRepFileId+'" class="show-small-img" alt="">';
+			if(gfileId && gfileId !== null && gfileId !== '') {
+				$.ajax({
+					url : '/product/detail/'+productId+'/groupImages/'+gfileId,
+					dataType : 'json',
+					type : "GET",
+					async : false,
+					success : function(data) {
+						data.forEach(function(item, index) {
+		// 					console.log(item);
+		// 					if(index === 0) {
+		// 						$('#show-img').attr("src","/file/view/"+item.fileId);
+		// 					}
+							html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
+						});
+						
+						$('#small-img-roll').append(html);
+						cssGroupImage();
 					}
-					html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
 				});
+			}else {
 				$('#small-img-roll').append(html);
-				
-				$('.show-small-img:first-of-type').css({'border': 'solid 1px #951b25', 'padding': '2px'})
-				$('.show-small-img:first-of-type').attr('alt', 'now').siblings().removeAttr('alt')
-				$(document).on('click', '.show-small-img', function () {
-				  $('#show-img').attr('src', $(this).attr('src'))
-				  $('#big-img').attr('src', $(this).attr('src'))
-				  $(this).attr('alt', 'now').siblings().removeAttr('alt')
-				  $(this).css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
-				  if ($('#small-img-roll').children().length > 4) {
-				    if ($(this).index() >= 3 && $(this).index() < $('#small-img-roll').children().length - 1){
-				      $('#small-img-roll').css('left', -($(this).index() - 2) * 76 + 'px')
-				    } else if ($(this).index() == $('#small-img-roll').children().length - 1) {
-				      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
-				    } else {
-				      $('#small-img-roll').css('left', '0')
-				    }
-				  }
-				});
-
-				//Enable the next button
-				$(document).on('click', '#next-img', function (){
-				  $('#show-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
-				  $('#big-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
-				  $(".show-small-img[alt='now']").next().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
-				  $(".show-small-img[alt='now']").next().attr('alt', 'now').siblings().removeAttr('alt')
-				  if ($('#small-img-roll').children().length > 4) {
-				    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
-				      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
-				    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
-				      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
-				    } else {
-				      $('#small-img-roll').css('left', '0')
-				    }
-				  }
-				});
-
-				//Enable the previous button
-				$(document).on('click', '#prev-img', function (){
-				  $('#show-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
-				  $('#big-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
-				  $(".show-small-img[alt='now']").prev().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
-				  $(".show-small-img[alt='now']").prev().attr('alt', 'now').siblings().removeAttr('alt')
-				  if ($('#small-img-roll').children().length > 4) {
-				    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
-				      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
-				    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
-				      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
-				    } else {
-				      $('#small-img-roll').css('left', '0')
-				    }
-				  }
-				});
-				layerPopup($('#deleteZoomLayer'));
+				cssGroupImage();
 			}
-		});
-	}
+		}
 </script>
