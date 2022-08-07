@@ -128,8 +128,8 @@
 <%-- 								<td><input type="text" style="border:none" value="${product.masterProductCode}" readonly="readonly"  ></td> --%>
 								<td class="text-point"><input type="text" style="border:none" id="productCode_${product.rownum}" value="${product.productCode}" readonly="readonly"  ></td>
 								<td>
-									<c:if test="${product.photofileId ne '' && not empty product.photofileId}">
-										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}');" ><img src="/file/view/${product.photofileId}" width="70" height="auto"></a>
+									<c:if test="${product.photoRepFileId ne '' && not empty product.photoRepFileId}">
+										<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}');" ><img src="/file/view/${product.photoRepFileId}" width="70" height="auto"></a>
 									</c:if>	
 								</td>
 								<td>${product.productNm} </td>
@@ -139,7 +139,7 @@
 									</c:if>
 								</td>
 								<td class="fontColorBlue">
-									<c:if test="${not empty product.matType}">
+									<c:if test="${not empty product.matType and (empty product.masterProductCode  or fn:trim(product.masterProductCode) == '')}">
 										<c:choose>
 											<c:when test="${product.selfEvlGradNm eq '최우수'}">
 												<img src="/images/free-icon-in-love-356695.png" width="26px">
@@ -161,7 +161,9 @@
 									</c:if>
 								</td>
 								<td>
-									${product.masterApplyNm}
+									<c:if test="${empty product.masterProductCode  && fn:trim(product.masterProductCode) == ''}">
+										${product.masterApplyNm}
+									</c:if>
 								</td>
 <!-- 								<td> -->
 <%-- 									<c:if test="${empty product.masterProductCode}"> --%>
@@ -180,6 +182,11 @@
 								</td>
 								<td>
 									<div class="btn-group">
+										<c:if test="${empty product.masterProductCode or fn:trim(product.masterProductCode) == ''}">
+											<a href="javascript:openProductLayer('registSubProduct', '${product.productCode}');"   onclick="javascript:layerPopup(register);"   role="button" data-toggle="modal" class="btn-small02">
+												서브등록
+											</a>
+										</c:if>
 										<a href="javascript:void(0);"   onclick="javascript:productDetail('${product.productId}');layerPopup(edit);"  role="button" data-toggle="modal" class="btn-icon">
 											<img src="/images/icon_edit.png" alt="수정하기" class="btn-table-icon02" id="editBtn_${product.rownum}" >
 										</a>
@@ -267,6 +274,14 @@
 				  </div>
 				</div>
 				<div class="form-group">
+				  <label class="col-25 form-label-img">대표사진</label>
+				  <div class="col-75">
+					<div class="form-input-img">
+					  <input name="mainPhoto" type="file" class="with-preview afile-img-main">
+					</div>
+				  </div>
+				</div>
+				<div class="form-group">
 				  <label class="col-25 form-label-img">사진</label>
 				  <div class="col-75">
 					<div class="form-input-img">
@@ -319,6 +334,7 @@
 						  <input name="productCode" type="hidden">
 						  <input name="productId" type="hidden">
 						  <input name="matType" type="hidden">
+						  <input name="photoRepFileId" type="hidden">
 						  <input name="photoGfileId" type="hidden">
 						  <input name="specGfileId" type="hidden">
 						  <input name="productCodeView" type="text" class="text-input" value="" disabled>
@@ -456,6 +472,14 @@ KBK  -->
 						<div class="col-75">
 						  <div class="form-input">
 							<textarea name="summary" class="textarea"></textarea>
+						  </div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-25 form-label-img">대표사진</label>
+						<div class="col-75">
+						  <div class="form-input-img">
+							<input id="edit_mainPhoto" name="mainPhoto" type="file" multiple="multiple" class="multi with-preview">
 						  </div>
 						</div>
 					  </div>
@@ -956,6 +980,17 @@ KBK  -->
 	          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
 	        }
 	      });
+	      $('.afile-img-main').MultiFile({
+		        max: 1, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+		        accept: 'jpeg|jpg|png|gif', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
+		        STRING: { //Multi-lingual support : 메시지 수정 가능
+		          //remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+		          duplicate: "$file 은 이미 선택된 파일입니다.",
+		          denied: "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+		          selected: '$file 을 선택했습니다.',
+		          toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+		        }
+		      });
 
 	  	var searchKey = '${pages.searchKey}';
 		if(searchKey){
@@ -1107,8 +1142,8 @@ KBK  -->
 				html += '<tr>';
 				html += '	<td>'+(index+1)+'</td>';
 				html += '	<td><input type="text" style="border:none" value="'+item.productCode+'"readonly="readonly"  ></td>';
-				if(item.photofileId && item.photofileId !== '' && item.photofileId !== null) {
-					html += '	<td><a href="javascript:getGroupImages(\''+item.productId+'\',\''+item.photoGfileId+'\');" ><img src="/file/view/'+item.photofileId+'" width="70" height="auto"></a></td>';
+				if(item.photoRepFileId && item.photoRepFileId !== '' && item.photoRepFileId !== null) {
+					html += '	<td><a href="javascript:getGroupImages(\''+item.productId+'\',\''+item.photoGfileId+'\');" ><img src="/file/view/'+item.photoRepFileId+'" width="70" height="auto"></a></td>';
 				}else {
 					html += '	<td></td>';
 				}
@@ -1153,6 +1188,7 @@ KBK  -->
 			$("#frmInsert input[name=productNm]").val('');
 			$("#frmInsert input[name=supplierInfo]").val('');
 			$("#frmInsert textarea[name=summary]").val('');
+			$("#frmInsert input[name=mainPhoto]").val('');
 			$("#frmInsert input[name=photos]").val('');
 			$("#frmInsert input[name=specs]").val('');
 			$("#frmInsert .MultiFile-list").empty();
@@ -1163,6 +1199,7 @@ KBK  -->
 			$("#frmUpdate input[name=supplierInfo]").val('');
 			$("#frmUpdate textarea[name=summary]").val('');
 			$("#frmUpdate input[name=photos]").val('');
+			$("#frmUpdate input[name=mainPhoto]").val('');
 			$("#frmUpdate input[name=specs]").val('');
 			$("#frmUpdate .MultiFile-list").empty();
 		} else if (type == 'editProduct') {
@@ -1171,6 +1208,7 @@ KBK  -->
 			$("#frmUpdate input[name=productNm]").val('');
 			$("#frmUpdate input[name=supplierInfo]").val('');
 			$("#frmUpdate textarea[name=summary]").val('');
+			$("#frmUpdate input[name=mainPhoto]").val('');
 			$("#frmUpdate input[name=photos]").val('');
 			$("#frmUpdate input[name=specs]").val('');
 			$("#frmUpdate .MultiFile-list").empty();
@@ -1340,6 +1378,7 @@ KBK  -->
 		$("#frmUpdate input[name=productCode]").val(data.productCode);
 		$("#frmUpdate input[name=productId]").val(data.productId);
 		$("#frmUpdate input[name=matType]").val(data.matType);
+		$("#frmUpdate input[name=photoRepFileId]").val(data.photoRepFileId);
 		$("#frmUpdate input[name=photoGfileId]").val(data.photoGfileId);
 		$("#frmUpdate input[name=specGfileId]").val(data.specGfileId);
 		
@@ -1370,6 +1409,7 @@ KBK  -->
 		//상품추가정보
 // 		$("#frmUpdate textarea[name=productMaker]").val(data.productMaker);
 		$("#frmUpdate textarea[name=summary]").val(data.summary);
+		$('#edit_mainPhoto  > .MultiFile-list').append('<div class="MultiFile-label" ><a class="MultiFile-remove" href="#" onclick=\'deleteMainFileAjax(this);\'>x</a> <span><span class="MultiFile-label" title="대표이미지 을 선택했습니다."><span class="MultiFile-title">대표이미지</span><img id="'+data.photoRepFileId+'" class="MultiFile-preview" style="max-height:100px; max-width:100px;" src="/file/view/'+data.photoRepFileId+'"></span></span></div>');
 		getFileList('photos_'+data.productCode, "edit_photos", data.photoGfileId);
 		getFileList('specs_'+data.productCode, "edit_specs", data.specGfileId);
 		
@@ -1476,6 +1516,13 @@ KBK  -->
 		});
 	}
 
+	// 상품 삭제시 사용(공통)  
+	function deleteMainFileAjax(obj) {
+		$(obj).parent().remove();
+		$("#frmUpdate input[name=photoRepFileId]").val('');
+		alert('저장 버튼을 클릭해주세요')
+	}
+	
 	// 상품 삭제시 사용(공통)  
 	function deleteFileAjax(fileId, obj) {
 		$.ajax({
