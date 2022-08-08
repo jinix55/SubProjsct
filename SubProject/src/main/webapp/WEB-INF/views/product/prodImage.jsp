@@ -30,6 +30,14 @@
 			                 </select>
 						</div>
 						<div class="form-inline">
+							<select id="matTypeList" name="matTypeList" class="select-box w150">
+			                    <option value="ALL">전체</option>
+			                    <c:forEach items="${matTypeList }" var="matType" varStatus="status">
+									<option value="${matType.codeId}">${matType.codeNm}</option>
+								</c:forEach>
+			                 </select>
+						</div>
+						<div class="form-inline">
 							<div class="search-box w250">
 								<input id="searchValue" name="searchValue" value="${pages.searchValue}" type="text" class="text-input">
 								<span class="search-box-append">
@@ -49,18 +57,40 @@
 					<c:forEach items="${products }" var="product" varStatus="status">
 						<div class="img-box">
 							<div class="img-view">
-								<img src="/file/view/fl2205164">
+								<c:if test="${product.photoRepFileId ne '' && not empty product.photoRepFileId}">
+									<a href="javascript:getGroupImages('${product.productId}', '${product.photoGfileId}', '${product.photoRepFileId}');" ><img src="/file/view/${product.photoRepFileId}" width="70" height="auto"></a>
+								</c:if>
 							</div>
 							<div class="img-cont ellipsis">
 								<ul>
 									<li class="text-bold" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">ㆍ제품명 : <span>${product.productNm}</span></li>
-									<li class="text-bold">ㆍ포장유형 : <span></span></li>
-									<li class="text-bold">ㆍ재활용등급 : <span class="fontColorBlue"></span></li>
-									<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue"></span></li>
+									<li class="text-bold">ㆍ포장유형 : <span>${product.matType}</span></li>
+									<li class="text-bold">ㆍ재활용등급 : 
+										<span class="fontColorBlue">
+											<c:choose>
+												<c:when test="${product.selfEvlGradNm eq '최우수'}">
+													<img src="/images/free-icon-in-love-356695.png" width="26px">
+												</c:when>
+												<c:when test="${product.selfEvlGradNm eq '우수'}">
+													<img src="/images/free-icon-emoji-3456813.png" width="26px">
+												</c:when>
+												<c:when test="${product.selfEvlGradNm eq '보통'}">
+													<img src="/images/free-icon-smile-356662.png" width="26px">
+												</c:when>
+												<c:when test="${product.selfEvlGradNm eq '어려움'}">
+													<img src="/images/free-icon-angry-1747839.png" width="26px">
+												</c:when>
+												<c:otherwise>
+													<img src="/images/free-icon-smile-356662.png" width="26px">
+												</c:otherwise>
+											</c:choose>
+										</span>
+									</li>
+									<li class="text-bold">ㆍ진행상태 : <span class="fontColorBlue">${product.masterApplyNm}</span></li>
 								</ul>
 							</div>
 							<div class="img-bottom tc">
-									<button type="button" onclick="goToProductPage('${product.rownum}');" class="btn-none" data-dismiss="modal">상세보기</button>
+									<button type="button" onclick="getGroupImages('${product.productId}', '${product.photoGfileId}', '${product.photoRepFileId}');"" class="btn-none" data-dismiss="modal">상세보기</button>
 							 </div>
 					 	</div>
 					</c:forEach>
@@ -78,333 +108,39 @@
 		</div>
 	<!-- E_본문-->
 
-<!-- 레이어 팝업 - 상세  -->
-<div id="detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-content" style="width:1200px">
-		<div class="modal-header">
-			<h4 class="modal-title">상세</h4>
-			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="tab-content-box">
-						<p>
-								<button id="btn-add-tab" type="button" class="button-Rsmall fr">Add Tab</button>
-						</p>
-						<!-- Nav tabs -->
-						<ul id="tab-list" class="nav tab-nav" role="tablist">
-								<li class="active"><a href="#tab1" role="tab" data-toggle="tab"><span>1차 포장 </span></a></li>
-						</ul>
-						<!-- Tab panes -->
-					 <div style="clear: both;">
-						<div id="tab-content" class="tab-content" style="width:70%;display: inline-block;vertical-align: top;">
-							<div class="tab-in-nav">
-								<button type="button" class="button btn-radius"><a href="#tab01">몸체</a></button>
-								<button type="button" class="button btn-radius"><a href="#tab02">라벨</a></button>
-								<button type="button" class="button btn-radius"><a href="#tab03">마개및잡자재</a></button>
-								<button type="button" class="button btn-radius"><a href="#tab04">라벨 마개 및 잡자재</a></button>
-							</div>
-							<div class="tab-pane active" id="tab1">
-								<div class="tab-in-content">
-									<!-- 몸체 상세-->
-									<div id="tab01">
-									<h4 class="tl pt15"><span class="title-point">[몸체 상세]</span></h4>
-										<div class="row">
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">재질</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input" value="">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">중량(g)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">규격(장*폭*고)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">두께(mm)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">포장공장</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">색상</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-100">
-											 <div class="form-group">
-												 <label class="col-25 form-label-textarea">비고</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <textarea class="textarea"></textarea>
-													 </div>
-												 </div>
-											 </div>
-
-											 <div class="form-group">
-												 <label class="col-25 form-label-img">사진등록</label>
-												 <div class="col-75">
-													 <div class="form-input-img">
-														 <input name="files[]" type="file" multiple="multiple" id="our-file03" class="multi with-preview">
-													 </div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">설계문서</label>
-												 <div class="col-75">
-														 <input type="file" class="text-input">
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label h70">증빙문서</label>
-												 <div class="col-75 tl">
-													 <div class="text-input h70">
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">기기분석</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">육안판정</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">공인시험성적서</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">신고허가서류</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">기타</label>
-														 <div><input type="file"></div>
-													 </div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">보고서 생성</label>
-												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="button-Rsmall">육안판정서</button></div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">자가진단 등급</label>
-												 <div class="col-75 tl">
-													 <div class="text-input">우수</div>
-												 </div>
-											 </div>
-										 </div>
-										</div>
-									</div>
-									<!-- 라벨 상세-->
-									<div id="tab02">
-										<h4 class="tl pt15"><span class="title-point">[라벨 상세]</span></h4>
-										<div class="row">
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">재질</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input" value="">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">중량(g)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">규격(장*폭*고)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">두께(mm)</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">포장공장</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-50">
-											 <div class="form-group">
-												 <label class="col-25 form-label">색상</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <input type="text" class="text-input">
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-										 <div class="col-100">
-											 <div class="form-group">
-												 <label class="col-25 form-label-textarea">비고</label>
-												 <div class="col-75">
-													 <div class="form-input">
-														 <textarea class="textarea"></textarea>
-													 </div>
-												 </div>
-											 </div>
-
-											 <div class="form-group">
-												 <label class="col-25 form-label-img">사진등록</label>
-												 <div class="col-75">
-													 <div class="form-input-img">
-														 <input name="files[]" type="file" multiple="multiple" id="our-test" class="multi with-preview">
-													 </div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">설계문서</label>
-												 <div class="col-75">
-														 <input type="file" class="text-input">
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label h70">증빙문서</label>
-												 <div class="col-75 tl">
-													 <div class="text-input h70">
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">기기분석</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">육안판정</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">공인시험성적서</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">신고허가서류</label>
-														 <input type="radio" id="radio1" name="radio">
-														 <label for="radio1" class="mr05">기타</label>
-														 <div><input type="file"></div>
-													 </div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">보고서 생성</label>
-												 <div class="col-75 tl">
-													 <div class="text-input"><button type="button" class="button button-Rsmall">육안판정서</button></div>
-												 </div>
-											 </div>
-											 <div class="form-group">
-												 <label class="col-25 form-label">자가진단 등급</label>
-												 <div class="col-75 tl">
-													 <div class="text-input">우수</div>
-												 </div>
-											 </div>
-										 </div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					<!--이미지 -->
-					<div class="" style="width:30%;display: inline-block;margin-left:20px">
-						<div class="tab-in-nav">
-							<button type="button" class="button btn-radius"><a href="#tab01">이미지</a></button>
-						</div>
-						<ul>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
-							<li style="width:100%; height:150px;border: 1px solid #eee;border-radius: 4px;"><img src="/images/icon_edit.png" alt=""></li>
-						</ul>
-					</div>
-					</div>
-				</div>
-			</div>
-
-			<div>
-				<button type="button" class="button btn-success">저장</button>
-				<button type="button" class="button btn-cancel">취소</button>
-			</div>
-			<div class="tr pt40">
-				<button type="button" class="button btn-success" onclick="location.href='../myself/MySelf.html';">포장재질구조평가</button>
-				<button type="button" class="button btn-success">가이드보기</button>
-			</div>
-			<!-- 버튼 -->
-			<div class="modal-footer btn-group">
-				<button type="button" class="button btn-success" data-dismiss="modal">저장</button>
-				<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- 레이어 팝업 - delete -->
-<div id="delete" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-modal-parent="#myModal">
+	<!-- 레이어 팝업 - 이메지 갤러리  -->
+  <div id="deleteZoomLayer" class="modal" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true" data-modal-parent="#myModal">
+	<input type="hidden" name="productId" >
 	<div class="modal-content" style="width:400px">
-		<div class="modal-header">
-			<h4 class="modal-title">삭제</h4>
-			<button type="button" class="close" data-dismiss="modal"><img src="/images/icon_close.png"></button>
+	  <div class="modal-header">
+		<h4 class="modal-title">상품 이미지</h4>
+		<button type="button" class="close" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteZoomLayer);"><img src="/images/icon_close.png"></button>
+	  </div>
+	  <div class="modal-body">
+		<div class="row">
+		  <!-- Primary carousel image -->
+	     <div class="show">
+	       <img src="/images/pro_img01.jpeg" id="show-img">
+	     </div>
+	
+	     <!-- Secondary carousel image thumbnail gallery -->
+	
+	     <div class="small-img">
+	      <img src="/images/next-icon.png" class="icon-left" alt="" id="prev-img">
+	       <div class="small-container">
+	        <div id="small-img-roll">
+	        </div>
+	       </div>
+	      <img src="/images/next-icon.png" class="icon-right" alt="" id="next-img">
+	     </div>
 		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-100">
-					<div class="form-group">
-						<div class="tc">(<em class="text-bold">PEuser01</em>)삭제합니다.</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal-footer btn-group">
-			<button type="button" class="button btn-warning" data-dismiss="modal">삭제</button>
-			<button type="button" class="button btn-cancel" data-dismiss="modal">취소</button>
-		</div>
+	  </div>
+	  <div class="modal-footer btn-group">
+		<button type="button" class="button btn-cancel" data-dismiss="modal" onclick="javascript:layerPopupClose(deleteZoomLayer);">취소</button>
+	  </div>
 	</div>
-</div>
+  </div>
 <script>
 	var totalPage = ${pages.totalPage};
 	var page = ${pages.page};
@@ -429,5 +165,90 @@
 	
 	function goToProductPage(id) {
 		window.location.href = '/product/prodList?productId='+id;
+	}
+
+	function cssGroupImage() {
+		$('.show-small-img:first-of-type').css({'border': 'solid 1px #951b25', 'padding': '2px'})
+		$('.show-small-img:first-of-type').attr('alt', 'now').siblings().removeAttr('alt')
+		$(document).on('click', '.show-small-img', function () {
+		  $('#show-img').attr('src', $(this).attr('src'))
+		  $('#big-img').attr('src', $(this).attr('src'))
+		  $(this).attr('alt', 'now').siblings().removeAttr('alt')
+		  $(this).css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+		  if ($('#small-img-roll').children().length > 4) {
+		    if ($(this).index() >= 3 && $(this).index() < $('#small-img-roll').children().length - 1){
+		      $('#small-img-roll').css('left', -($(this).index() - 2) * 76 + 'px')
+		    } else if ($(this).index() == $('#small-img-roll').children().length - 1) {
+		      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+		    } else {
+		      $('#small-img-roll').css('left', '0')
+		    }
+		  }
+		});
+
+		//Enable the next button
+		$(document).on('click', '#next-img', function (){
+		  $('#show-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
+		  $('#big-img').attr('src', $(".show-small-img[alt='now']").next().attr('src'))
+		  $(".show-small-img[alt='now']").next().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+		  $(".show-small-img[alt='now']").next().attr('alt', 'now').siblings().removeAttr('alt')
+		  if ($('#small-img-roll').children().length > 4) {
+		    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
+		      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
+		    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
+		      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+		    } else {
+		      $('#small-img-roll').css('left', '0')
+		    }
+		  }
+		});
+
+		//Enable the previous button
+		$(document).on('click', '#prev-img', function (){
+		  $('#show-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
+		  $('#big-img').attr('src', $(".show-small-img[alt='now']").prev().attr('src'))
+		  $(".show-small-img[alt='now']").prev().css({'border': 'solid 1px #951b25', 'padding': '2px'}).siblings().css({'border': 'none', 'padding': '0'})
+		  $(".show-small-img[alt='now']").prev().attr('alt', 'now').siblings().removeAttr('alt')
+		  if ($('#small-img-roll').children().length > 4) {
+		    if ($(".show-small-img[alt='now']").index() >= 3 && $(".show-small-img[alt='now']").index() < $('#small-img-roll').children().length - 1){
+		      $('#small-img-roll').css('left', -($(".show-small-img[alt='now']").index() - 2) * 76 + 'px')
+		    } else if ($(".show-small-img[alt='now']").index() == $('#small-img-roll').children().length - 1) {
+		      $('#small-img-roll').css('left', -($('#small-img-roll').children().length - 4) * 76 + 'px')
+		    } else {
+		      $('#small-img-roll').css('left', '0')
+		    }
+		  }
+		});
+		layerPopup($('#deleteZoomLayer'));
+	}
+	// image group 조회
+	function getGroupImages(productId, gfileId, photoRepFileId) {
+		$('#small-img-roll').empty();
+		var html ="";
+		$('#show-img').attr("src","/file/view/"+photoRepFileId);
+		html +='<img src="/file/view/'+photoRepFileId+'" class="show-small-img" alt="">';
+		if(gfileId && gfileId !== null && gfileId !== '') {
+			$.ajax({
+				url : '/product/detail/'+productId+'/groupImages/'+gfileId,
+				dataType : 'json',
+				type : "GET",
+				async : false,
+				success : function(data) {
+					data.forEach(function(item, index) {
+	// 					console.log(item);
+	// 					if(index === 0) {
+	// 						$('#show-img').attr("src","/file/view/"+item.fileId);
+	// 					}
+						html +='<img src="/file/view/'+item.fileId+'" class="show-small-img" alt="">';
+					});
+					
+					$('#small-img-roll').append(html);
+					cssGroupImage();
+				}
+			});
+		}else {
+			$('#small-img-roll').append(html);
+			cssGroupImage();
+		}
 	}
 </script>

@@ -1162,6 +1162,9 @@ try {
     	productModel.setCompanyCode(authUser.getMemberModel().getCompanyCode());
     	List<ProductModel> models = productService.selectProductList(productModel);
     	productModel.setTotalCount(productService.selectProductListCount(productModel));
+    	// 포창차수 등록시 재질 조회
+    	List<EnvironPriceModel> matTypeList = productService.selectProductMatTypeList();
+    	model.addAttribute("matTypeList",matTypeList);
         model.addAttribute("products", models);
         model.addAttribute("pages", productModel);
         
