@@ -11,11 +11,11 @@
 			<if test="searchKey != '' and searchKey == 'productNm' and searchValue != ''">
 				and (upper(a.PRODUCT_NM) like concat('%',upper(#{searchValue}),'%'))
 			</if>
+<!-- 			<if test="searchKey != '' and searchKey == 'packingType' and searchValue != ''"> -->
+<!-- 				and (upper(a.PACKING_TYPE) like concat('%',upper(#{searchValue}),'%')) -->
+<!-- 			</if> -->
 			<if test="searchKey != '' and searchKey == 'packingType' and searchValue != ''">
-				and (upper(a.PACKING_TYPE) like concat('%',upper(#{searchValue}),'%'))
-			</if>
-			<if test="searchKey != '' and searchKey == 'recycleGrade' and searchValue != ''">
-				and (upper(a.RECYCLE_GRADE) = upper(#{searchValue}))
+				and (upper(cc.CODE_ID) = upper(#{searchValue}))
 			</if>
 			<if test="masterProductCode != '' and masterProductCode == 'masterProductCode'">
 				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
@@ -83,6 +83,25 @@
 	<select id="selectProductListCount" resultType="int" parameterType="com.portal.adm.product.model.ProductModel">
 		SELECT COUNT(*)
 		FROM t_PRODUCT a
+		 LEFT OUTER JOIN t_product_packaging aa
+	     ON  a.PRODUCT_ID       =  aa.PRODUCT_ID
+	    AND  aa.USE_YN  = 'Y'		
+	    AND  aa.PACKAGING_ORDER  = 1
+			
+	   LEFT OUTER JOIN t_environment_code cc
+	     ON  cc.GROUP_ID     = 'GROUP_ID' 
+	    AND  cc.CODE_ID      =  aa.GROUP_ID
+	    AND  cc.USE_YN  = 'Y'	
+		 			
+	   LEFT OUTER JOIN t_code bb
+	     ON  bb.GROUP_ID          = 'ENVIRONMENT_PROCEED_STAT_CODE' 
+	    AND  a.MASTER_APPLY_CODE  =  bb.CODE_ID
+	    AND  bb.USE_YN  = 'Y'		
+	    
+	   LEFT OUTER JOIN t_code dd
+	     ON  dd.GROUP_ID = 'PROD_GRADE_TYPE' 
+	    AND  dd.CODE_ID  =  a.GRADE_CODE
+	    AND  dd.USE_YN   = 'Y'	
 <!-- 		WHERE USE_YN = 'Y' -->
 <!-- 		AND   COMPANY_CODE =  #{companyCode} -->
 <!--TODO	 -->	

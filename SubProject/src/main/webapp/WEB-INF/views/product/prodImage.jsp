@@ -29,7 +29,7 @@
 <!-- 								<option value="completeStatus">상태</option> -->
 			                 </select>
 						</div>
-						<div class="form-inline">
+						<div class="form-inline" id="formInlineMatTypeList" style="display:none;">
 							<select id="matTypeList" name="matTypeList" class="select-box w150">
 			                    <option value="ALL">전체</option>
 			                    <c:forEach items="${matTypeList }" var="matType" varStatus="status">
@@ -162,6 +162,32 @@
 	    $("#page").val(num);
 		  $("#searchFrm").submit();
 	});
+	
+	$( document ).ready(function() {
+		$('#searchKey').on('change', function() {
+			if(this.value && this.value === 'packingType') {
+				$('#formInlineMatTypeList').show();
+				$('#searchValue').hide();
+			}else {
+				$('#formInlineMatTypeList').hide();
+				$('#searchValue').val('');
+				$('#searchValue').show();
+			}
+		});
+		$('#matTypeList').on('change', function() {
+			if(this.value) {
+				$('#searchValue').val(this.value);
+			}else {
+				$('#searchValue').val('');
+			}
+		});
+		
+		$('.button-search').on('click', function() {
+			$("#searchFrm").submit();
+		});
+		
+	});
+	
 	
 	function goToProductPage(id) {
 		window.location.href = '/product/prodList?productId='+id;
