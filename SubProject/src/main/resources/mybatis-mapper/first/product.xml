@@ -17,6 +17,9 @@
 			<if test="searchKey != '' and searchKey == 'packingType' and searchValue != ''">
 				and (upper(cc.CODE_ID) = upper(#{searchValue}))
 			</if>
+			<if test="searchKey != '' and searchKey == 'productCode' and searchValue != ''">
+				and (upper(a.PRODUCT_CODE) = upper(#{searchValue}))
+			</if>
 			<if test="masterProductCode != '' and masterProductCode == 'masterProductCode'">
 				and NULLIF(a.MASTER_PRODUCT_CODE    ,'') IS NULL
 			</if>

@@ -63,6 +63,7 @@
                   <select id="searchKey" name="searchKey" class="select-box w150">
                     <option value="ALL">전체</option>
 					<option value="productNm">상품명</option>
+					<option value="productCode">상품코드</option>
 					<option value="matTypeNm">포장유형</option>
 					<option value="selfEvlGradNm">재활용등급</option>
 					<option value="masterApplyNm">상태</option>
@@ -1034,6 +1035,12 @@ KBK  -->
 		if(searchKey){
 			$('#searchKey').val('${pages.searchKey}');
 		}
+		
+
+		$('.searchBtn').on('click', function() {
+			$("#searchFrm").submit();
+		});
+		
 		//상품등록 버튼 클릭시
 		$('#regBtn').click(function(){
 			productInsert();
@@ -1634,7 +1641,7 @@ KBK  -->
 		selectedProductId = productId;
 		selectedProductCode = productCode;
 		selectedProductNm = productNm;
-		$('#detailTitle').text('상품포장정보('+productNm+')');
+		$('#detailTitle').text('상품포장정보('+productCode+' : '+productNm+')');
 		$('#tab-list').empty();
 		$('#tab-list li.active').removeClass('active');
 		if(self){
@@ -1937,7 +1944,7 @@ KBK  -->
 	//packaging 상세 정보 조회 및 등록 화면 구성
 	function getProductDetailInfoHtml(partCode, partCodeNm, packagingId, data) {
 	  var matInfo = "";
-	  var weight = "";
+	  var weight = 0;
 	  var standard = "";
 	  var color = "";
 	  var summary = "";
@@ -1948,7 +1955,7 @@ KBK  -->
 	  var managerId ="";
 	  if(data) {
 		  matInfo = data.matInfo; 
-		  weight = data.weight; 
+		  weight = (data.weight && data.weight !== null && data.weight !== '') ? data.weight : 0; 
 		  standard = data.standard; 
 		  color = data.color; 
 		  summary = data.summary; 
@@ -2309,6 +2316,7 @@ KBK  -->
 
 	  //자가진단 설정하여 패캐징 정보 조회 후  레이어 호출
 	  function openProductPackagingSelfLayer(productCode, productId, productNm) {
+		  $('#selfDetailTitle').text('상품포장정보('+productCode+' : '+productNm+')');
 		  openProductPackagingLayer(productCode, productId, productNm, true);
 	  }
 
