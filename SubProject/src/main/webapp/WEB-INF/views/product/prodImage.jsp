@@ -25,8 +25,8 @@
 			                    <option value="ALL">전체</option>
 								<option value="productNm">상품명</option>
 								<option value="packingType">포장유형</option>
-								<option value="recycleGrade">재활용등급</option>
-								<option value="completeStatus">상태</option>
+<!-- 								<option value="recycleGrade">재활용등급</option> -->
+<!-- 								<option value="completeStatus">상태</option> -->
 			                 </select>
 						</div>
 						<div class="form-inline">
